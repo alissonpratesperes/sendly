@@ -6,8 +6,8 @@ CREATE TABLE `User` (
     `Email` VARCHAR(255) NOT NULL,
     `Password` VARCHAR(255) NOT NULL,
     `IsFirstAccess` BOOLEAN NOT NULL DEFAULT TRUE,
-    `PasswordToken` VARCHAR(512) NULL,
-    `PasswordTokenExpiresAt` DATETIME(3) NULL,
+    `PasswordResetToken` VARCHAR(255) NULL,
+    `PasswordResetTokenExpiresAt` DATETIME(3) NULL,
 
     `CreatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `UpdatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),

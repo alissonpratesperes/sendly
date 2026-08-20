@@ -1,13 +1,15 @@
 CREATE TABLE `Contact` (
     `Id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `CompanyId` INT UNSIGNED NOT NULL,
     `ListId` INT UNSIGNED NOT NULL,
 
     `Name` VARCHAR(150) NOT NULL,
     `Phone` VARCHAR(20) NOT NULL,
+
     `AllowedAt` DATETIME(3) NULL,
     `DisallowedAt` DATETIME(3) NULL,
-    `PermissionToken` VARCHAR(512) NULL,
-    `PermissionTokenExpiresAt` DATETIME(3) NULL,
+    `PermissionRequestToken` VARCHAR(255) NULL,
+    `PermissionRequestTokenExpiresAt` DATETIME(3) NULL,
 
     `CreatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `UpdatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
@@ -16,5 +18,6 @@ CREATE TABLE `Contact` (
     CONSTRAINT `PK_Contact` PRIMARY KEY (`Id`),
     CONSTRAINT `UK_Contact_Phone` UNIQUE (`Phone`),
 
+    CONSTRAINT `FK_Contact_CompanyId` FOREIGN KEY (`CompanyId`) REFERENCES `Company` (`Id`) ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT `FK_Contact_ListId` FOREIGN KEY (`ListId`) REFERENCES `List` (`Id`) ON DELETE RESTRICT ON UPDATE CASCADE
 );
