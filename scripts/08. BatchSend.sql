@@ -26,7 +26,7 @@ CREATE TABLE `BatchSend` (
     CONSTRAINT `UK_BatchSend_Batch_Contact_Template` UNIQUE (`BatchId`, `ContactId`, `TemplateId`),
 
     CONSTRAINT `FK_BatchSend_CompanyId` FOREIGN KEY (`CompanyId`) REFERENCES `Company` (`Id`) ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT `FK_BatchSend_BatchId` FOREIGN KEY (`BatchId`) REFERENCES `Batch` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT `FK_BatchSend_BatchId` FOREIGN KEY (`BatchId`) REFERENCES `Batch` (`Id`) ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT `FK_BatchSend_ContactId` FOREIGN KEY (`ContactId`) REFERENCES `Contact` (`Id`) ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT `FK_BatchSend_TemplateId` FOREIGN KEY (`TemplateId`) REFERENCES `Template` (`Id`) ON DELETE RESTRICT ON UPDATE CASCADE
 );
