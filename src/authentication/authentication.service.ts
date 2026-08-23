@@ -14,13 +14,13 @@ export class AuthenticationService {
     const user = await this.prismaService.user.findUnique({ where: { Email: authenticationDto.email } });
 
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException("User not found");
     }
 
     const bothPasswordMatches = await bcrypt.compare(authenticationDto.password, user.Password);
 
     if (!bothPasswordMatches) {
-      throw new ForbiddenException('Access denied');
+      throw new ForbiddenException("Access denied");
     }
 
     const generatedTokensForAuthenticatedUser = await this.getUserTokens(user.Id, user.Email);
@@ -41,16 +41,16 @@ export class AuthenticationService {
     const user = await this.prismaService.user.findUnique({ where: { Id: userId } });
 
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException("User not found");
     }
     if (!user.HashedRefreshToken) {
-      throw new ForbiddenException('Access denied');
+      throw new ForbiddenException("Access denied");
     }
 
     const bothRefreshTokenMatches = await bcrypt.compare(refreshToken, user.HashedRefreshToken);
 
     if (!bothRefreshTokenMatches) {
-      throw new ForbiddenException('Access denied');
+      throw new ForbiddenException("Access denied");
     }
 
     const generatedTokensForAuthenticatedUser = await this.getUserTokens(user.Id, user.Email);
@@ -64,11 +64,11 @@ export class AuthenticationService {
     const [accessToken, refreshToken] = await Promise.all([
         this.jwtService.signAsync(
             { sub: userId, email },
-            { secret: process.env.ACCESS_TOKEN_DECRYPT_SECRET, expiresIn: process.env.ACCESS_TOKEN_EXPIRATION_TIME as JwtSignOptions['expiresIn'] }
+            { secret: process.env.ACCESS_TOKEN_DECRYPT_SECRET, expiresIn: process.env.ACCESS_TOKEN_EXPIRATION_TIME as JwtSignOptions["expiresIn"] }
         ),
         this.jwtService.signAsync(
             { sub: userId, email },
-            { secret: process.env.REFRESH_TOKEN_DECRYPT_SECRET, expiresIn: process.env.REFRESH_TOKEN_EXPIRATION_TIME as JwtSignOptions['expiresIn'] }
+            { secret: process.env.REFRESH_TOKEN_DECRYPT_SECRET, expiresIn: process.env.REFRESH_TOKEN_EXPIRATION_TIME as JwtSignOptions["expiresIn"] }
         )
     ]);
 
