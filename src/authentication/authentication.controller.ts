@@ -1,5 +1,6 @@
 import { Body, Controller, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
 
+import { ForgotDto } from './dtos/forgot.dto';
 import { IsPublic } from './decorators/isPublic.decorator';
 import { AuthenticationDto } from './dtos/authentication.dto';
 import { AccessTokenGuard } from './guards/accessToken.guard';
@@ -17,14 +18,14 @@ export class AuthenticationController {
   @Post("login")
   @HttpCode(HttpStatus.OK)
   async login(@Body() authenticationDto: AuthenticationDto): Promise<AuthenticationTokenPair> {
-    return this.authenticationService.login(authenticationDto);
+    return await this.authenticationService.login(authenticationDto);
   }
 
   @Post("logout")
   @HttpCode(HttpStatus.OK)
   @UseGuards(AccessTokenGuard)
   async logout(@GetCurrentUserId() userId: number) {
-    return this.authenticationService.logout(userId);
+    return await this.authenticationService.logout(userId);
   }
 
   @IsPublic()
@@ -32,6 +33,13 @@ export class AuthenticationController {
   @HttpCode(HttpStatus.OK)
   @UseGuards(RefreshTokenGuard)
   async refresh(@GetCurrentUserId() userId: number, @GetCurrentUser("refreshToken") refreshToken: string) {
-    return this.authenticationService.refresh(userId, refreshToken);
+    return await this.authenticationService.refresh(userId, refreshToken);
+  }
+
+  @IsPublic()
+  @Post("forgot")
+  @HttpCode(HttpStatus.OK)
+  async forgot(@Body() forgotDto: ForgotDto) {
+    return await this.authenticationService.forgot(forgotDto);
   }
 }

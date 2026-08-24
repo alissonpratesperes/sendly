@@ -12,7 +12,7 @@ export class AccessTokenStrategy extends PassportStrategy(Strategy, Authenticati
     constructor(private readonly prismaService: PrismaService) {
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-            secretOrKey: process.env.ACCESS_TOKEN_DECRYPT_SECRET ?? "",
+            secretOrKey: process.env.ACCESS_TOKEN_SECRET ?? "",
         });
     }
 

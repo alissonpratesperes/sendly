@@ -6,13 +6,13 @@ const prismaClient = new PrismaClient();
 async function main() {
   const rootCompany = await prismaClient.company.upsert({
     where: {
-      Document: '45781858000179',
+      Document: "45781858000179",
     },
     update: {},
     create: {
-      Name: 'Thesle LTDA',
-      Document: '45781858000179',
-      Description: 'Soluções premium para telemetria',
+      Name: "Thesle LTDA",
+      Document: "45781858000179",
+      Description: "Soluções premium para telemetria",
     },
   });
 
@@ -26,15 +26,15 @@ async function main() {
 
   await prismaClient.user.upsert({
     where: {
-      Email: 'suporte@thesle.com.br',
+      Email: "suporte@thesle.com.br",
     },
     update: {
       IsSystemRoot: true,
     },
     create: {
       CompanyId: rootCompany.Id,
-      Name: 'Thesle LTDA | Suporte',
-      Email: 'suporte@thesle.com.br',
+      Name: "Thesle LTDA | Suporte",
+      Email: "suporte@thesle.com.br",
       Password: rootUserHashedPassword,
       IsFirstAccess: false,
       IsSystemRoot: true,
