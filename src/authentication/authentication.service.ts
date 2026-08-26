@@ -16,8 +16,8 @@ export class AuthenticationService {
     const user = await this.prismaService.user.findUnique({
       where: {
         Email: authenticationDto.email,
-        DeletedAt: null
-      }
+        DeletedAt: null,
+      },
     });
 
     if(!user) {
@@ -41,11 +41,11 @@ export class AuthenticationService {
 
     await this.prismaService.user.update({
       where: {
-        Id: user.Id
+        Id: user.Id,
       },
       data: {
-        HashedRefreshToken: hashedRefreshToken
-      }
+        HashedRefreshToken: hashedRefreshToken,
+      },
     });
 
     return authenticatedUserTokenPair;
@@ -54,11 +54,11 @@ export class AuthenticationService {
   async logout(userId: number): Promise<void> {
     await this.prismaService.user.update({
       where: {
-        Id: userId
+        Id: userId,
       },
       data: {
-        HashedRefreshToken: null
-      }
+        HashedRefreshToken: null,
+      },
     });
   }
 
@@ -67,8 +67,8 @@ export class AuthenticationService {
       where: {
         Id: userId,
         PasswordResetToken: null,
-        DeletedAt: null
-      }
+        DeletedAt: null,
+      },
     });
 
     if(!user) {
@@ -89,11 +89,11 @@ export class AuthenticationService {
 
     await this.prismaService.user.update({
       where: {
-        Id: user.Id
+        Id: user.Id,
       },
       data: {
-        HashedRefreshToken: hashedRefreshToken
-      }
+        HashedRefreshToken: hashedRefreshToken,
+      },
     });
 
     return authenticatedUserTokenPair;
@@ -103,8 +103,8 @@ export class AuthenticationService {
     const user = await this.prismaService.user.findUnique({
       where: {
         Email: forgotDto.email,
-        DeletedAt: null
-      }
+        DeletedAt: null,
+      },
     });
 
     if(!user) {
@@ -116,12 +116,12 @@ export class AuthenticationService {
 
     await this.prismaService.user.update({
       where: {
-        Id: user.Id
+        Id: user.Id,
       },
       data: {
         HashedRefreshToken: null,
-        PasswordResetToken: hashedPasswordResetToken
-      }
+        PasswordResetToken: hashedPasswordResetToken,
+      },
     });
 
     return generatedPasswordResetToken;
@@ -136,8 +136,8 @@ export class AuthenticationService {
     const user = await this.prismaService.user.findUnique({
       where: {
         Id: payload.sub,
-        DeletedAt: null
-      }
+        DeletedAt: null,
+      },
     });
 
     if (!user || !user.PasswordResetToken) {
@@ -154,14 +154,14 @@ export class AuthenticationService {
 
     await this.prismaService.user.update({
       where: {
-        Id: user.Id
+        Id: user.Id,
       },
       data: {
         Password: newHashedPassword,
         HashedRefreshToken: null,
         PasswordResetToken: null,
-        IsFirstAccess: false
-      }
+        IsFirstAccess: false,
+      },
     });
   }
 }
