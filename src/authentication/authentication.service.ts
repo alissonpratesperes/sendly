@@ -71,10 +71,7 @@ export class AuthenticationService {
       },
     });
 
-    if(!user) {
-      throw new NotFoundException("User not found");
-    }
-    if(!user.HashedRefreshToken) {
+    if(!user || !user.HashedRefreshToken) {
       throw new ForbiddenException("Access denied");
     }
 
