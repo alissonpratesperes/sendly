@@ -12,6 +12,7 @@ async function bootstrap() {
   SwaggerModule.setup("swagger", app, swaggerDocument, { swaggerOptions: { tagSorter: "alpha", operationSorter: "alpha" } });
 
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
+  app.enableCors();
 
   await app.listen(process.env.PORT ?? 3333);
 

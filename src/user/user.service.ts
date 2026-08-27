@@ -1,4 +1,5 @@
 import * as bcrypt from 'bcrypt';
+import { User } from '@prisma/client';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
@@ -8,11 +9,28 @@ import { GetUserResponseDto } from './dtos/getUserResponse.dto';
 import { ListUserResponseDto } from './dtos/listUserResponse.dto';
 import { CreateUserCommandDto } from './dtos/createUserCommand.dto';
 import { UpdateUserCommandDto } from './dtos/updateUserCommand.dto';
-import { toUserResponseMapper } from './mappers/toUserResponse.mapper';
 
 @Injectable()
 export class UserService {
     constructor(private readonly prismaService: PrismaService) {}
+
+    private toUserResponse(user: User): GetUserResponseDto {
+        return new GetUserResponseDto(
+            user.Id,
+            user.CompanyId,
+
+            user.Name,
+            user.Email,
+
+
+
+            user.IsFirstAccess,
+            user.IsSystemRoot,
+
+            user.CreatedAt,
+            user.UpdatedAt,
+        );
+    }
 
     private buildUserListWhere(query: ListUserQueryDto) {
         return {
@@ -46,12 +64,9 @@ export class UserService {
                 Email: command.email,
                 Password: await bcrypt.hash(command.password, 12),
             },
-            include: {
-                Company: true
-            }
         });
 
-        return toUserResponseMapper(createdUser);
+        return this.toUserResponse(createdUser);
     }
 
     async read(params: GetUserParamDto): Promise<GetUserResponseDto> {
@@ -60,16 +75,13 @@ export class UserService {
                 Id: params.id,
                 DeletedAt: null,
             },
-            include: {
-                Company: true
-            }
         });
 
         if(!user) {
             throw new NotFoundException("User not found");
         }
 
-        return toUserResponseMapper(user);
+        return this.toUserResponse(user);
     }
 
     async list(query: ListUserQueryDto): Promise<ListUserResponseDto> {
@@ -87,16 +99,13 @@ export class UserService {
                 orderBy: {
                     CreatedAt: "desc",
                 },
-                include: {
-                    Company: true,
-                },
             }),
         ]);
 
         const totalPages = Math.ceil(total / query.limit);
         const hasNextPage = query.page < totalPages;
         const hasPreviousPage = query.page > 1;
-        const data = users.map((user) => toUserResponseMapper(user));
+        const data = users.map((user) => this.toUserResponse(user));
 
         return new ListUserResponseDto(
             query.page,
@@ -144,12 +153,9 @@ export class UserService {
                     Password: await bcrypt.hash(command.password, 12),
                 }),
             },
-            include: {
-                Company: true,
-            },
         });
 
-        return toUserResponseMapper(updatedUser);
+        return this.toUserResponse(updatedUser);
     }
 
     async delete(params: GetUserParamDto): Promise<void> {

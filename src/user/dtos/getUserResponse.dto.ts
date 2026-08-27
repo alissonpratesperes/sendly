@@ -1,10 +1,7 @@
-import { GetCompanyResponseDto } from '../../company/dtos/getCompanyResponse.dto';
-
 export class GetUserResponseDto {
     constructor(
         public id: number,
-
-        public company: GetCompanyResponseDto,
+        public companyId: number,
 
         public name: string,
         public email: string,

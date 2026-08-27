@@ -42,15 +42,10 @@ export class AuthenticationController {
     return this.authenticationService.forgot(command);
   }
 
-
-
-
-
-
   @IsPublic()
-  @Patch("reset/:passwordResetToken")
+  @Patch("reset")
   @HttpCode(HttpStatus.NO_CONTENT)
-  async reset(@Param("passwordResetToken") param: string, @Body() command: ResetCommandDto): Promise<void> {
-    return this.authenticationService.reset(param, command);
+  async reset(@Body() command: ResetCommandDto): Promise<void> {
+    return this.authenticationService.reset(command);
   }
 }

@@ -124,12 +124,12 @@ export class AuthenticationService {
     return generatedPasswordResetToken;
   }
 
-  async reset(passwordResetToken: string, command: ResetCommandDto): Promise<void> {
+  async reset(command: ResetCommandDto): Promise<void> {
     if (command.newPassword !== command.confirmPassword) {
       throw new BadRequestException("Passwords do not match");
     }
 
-    const payload = await this.tokenService.verifyPasswordResetToken(passwordResetToken);
+    const payload = await this.tokenService.verifyPasswordResetToken(command.passwordResetToken);
     const user = await this.prismaService.user.findUnique({
       where: {
         Id: payload.sub,
@@ -141,7 +141,7 @@ export class AuthenticationService {
       throw new UnauthorizedException("Invalid password reset token");
     }
 
-    const tokenMatches = await this.tokenService.comparePasswordResetToken(passwordResetToken, user.PasswordResetToken);
+    const tokenMatches = await this.tokenService.comparePasswordResetToken(command.passwordResetToken, user.PasswordResetToken);
 
     if (!tokenMatches) {
       throw new UnauthorizedException("Invalid password reset token");
