@@ -1,14 +1,13 @@
-import { Company } from '@prisma/client';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 
-import { formatCnpj } from 'src/utils/formatCnpj.util';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { GetCompanyParamDto } from './dtos/getCompanyParam.dto';
 import { ListCompanyQueryDto } from './dtos/listCompanyQuery.dto';
 import { GetCompanyResponseDto } from './dtos/getCompanyResponse.dto';
 import { ListCompanyResponseDto } from './dtos/listCompanyResponse.dto';
 import { CreateCompanyCommandDto } from './dtos/createCompanyCommand.dto';
 import { UpdateCompanyCommandDto } from './dtos/updateCompanyCommand.dto';
+import { toCompanyResponseMapper } from './mappers/toCompanyResponse.mapper';
 
 @Injectable()
 export class CompanyService {
@@ -26,18 +25,6 @@ export class CompanyService {
                 }
             : {}),
         };
-    }
-
-    private toCompanyResponse(company: Company): GetCompanyResponseDto {
-        return new GetCompanyResponseDto(
-            company.Id,
-            company.Name,
-            formatCnpj(company.Document),
-            company.Description,
-
-            company.CreatedAt,
-            company.UpdatedAt,
-        );
     }
 
     async create(command: CreateCompanyCommandDto): Promise<GetCompanyResponseDto> {
@@ -59,7 +46,7 @@ export class CompanyService {
             },
         });
 
-        return this.toCompanyResponse(createdCompany);
+        return toCompanyResponseMapper(createdCompany);
     }
 
     async read(params: GetCompanyParamDto): Promise<GetCompanyResponseDto> {
@@ -74,7 +61,7 @@ export class CompanyService {
             throw new NotFoundException("Company not found");
         }
 
-        return this.toCompanyResponse(company);
+        return toCompanyResponseMapper(company);
     }
 
     async list(query: ListCompanyQueryDto): Promise<ListCompanyResponseDto> {
@@ -98,7 +85,7 @@ export class CompanyService {
         const totalPages = Math.ceil(total / query.limit);
         const hasNextPage = query.page < totalPages;
         const hasPreviousPage = query.page > 1;
-        const data = companies.map((company) => this.toCompanyResponse(company));
+        const data = companies.map((company) => toCompanyResponseMapper(company));
 
         return new ListCompanyResponseDto(
             query.page,
@@ -132,7 +119,7 @@ export class CompanyService {
             },
         });
 
-        return this.toCompanyResponse(updatedCompany);
+        return toCompanyResponseMapper(updatedCompany);
     }
 
     async delete(params: GetCompanyParamDto): Promise<void> {

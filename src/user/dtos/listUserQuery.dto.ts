@@ -1,8 +1,8 @@
-import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IsInt, IsOptional, IsString, Max, Min } from 'class-validator';
 
-export class ListCompanyQueryDto {
+export class ListUserQueryDto {
     @Min(1)
     @IsInt()
     @IsOptional()
@@ -21,6 +21,6 @@ export class ListCompanyQueryDto {
     @IsString()
     @IsOptional()
     @Transform(({ value }) => value?.trim())
-    @ApiPropertyOptional({ example: "Company xyz 1" })
+    @ApiPropertyOptional({ example: "John Doe" })
     search?: string;
 }
