@@ -1,21 +1,21 @@
 import * as bcrypt from 'bcrypt';
 import { Injectable, NotFoundException, ForbiddenException, BadRequestException, UnprocessableEntityException, UnauthorizedException } from '@nestjs/common';
 
-import { ResetDto } from './dtos/reset.dto';
-import { ForgotDto } from './dtos/forgot.dto';
 import { TokenService } from './token.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { AuthenticationDto } from './dtos/authentication.dto';
+import { LoginCommandDto } from './dtos/loginCommand.dto';
+import { ResetCommandDto } from './dtos/resetCommand.dto';
+import { ForgotCommandDto } from './dtos/forgotCommand.dto';
 import { AuthenticationTokenPair } from './types/AuthenticationTokenPair.type';
 
 @Injectable()
 export class AuthenticationService {
   constructor(private readonly tokenService: TokenService, private readonly prismaService: PrismaService) {}
 
-  async login(authenticationDto: AuthenticationDto): Promise<AuthenticationTokenPair> {
+  async login(command: LoginCommandDto): Promise<AuthenticationTokenPair> {
     const user = await this.prismaService.user.findUnique({
       where: {
-        Email: authenticationDto.email,
+        Email: command.email,
         DeletedAt: null,
       },
     });
@@ -30,7 +30,7 @@ export class AuthenticationService {
       throw new BadRequestException("It's necessary to redefine the first password");
     }
 
-    const passwordMatches = await bcrypt.compare(authenticationDto.password, user.Password);
+    const passwordMatches = await bcrypt.compare(command.password, user.Password);
 
     if(!passwordMatches) {
       throw new ForbiddenException("Access denied");
@@ -96,10 +96,10 @@ export class AuthenticationService {
     return authenticatedUserTokenPair;
   }
 
-  async forgot(forgotDto: ForgotDto): Promise<string> {
+  async forgot(command: ForgotCommandDto): Promise<string> {
     const user = await this.prismaService.user.findUnique({
       where: {
-        Email: forgotDto.email,
+        Email: command.email,
         DeletedAt: null,
       },
     });
@@ -124,8 +124,8 @@ export class AuthenticationService {
     return generatedPasswordResetToken;
   }
 
-  async reset(passwordResetToken: string, resetDto: ResetDto): Promise<void> {
-    if (resetDto.newPassword !== resetDto.confirmPassword) {
+  async reset(passwordResetToken: string, command: ResetCommandDto): Promise<void> {
+    if (command.newPassword !== command.confirmPassword) {
       throw new BadRequestException("Passwords do not match");
     }
 
@@ -147,7 +147,7 @@ export class AuthenticationService {
       throw new UnauthorizedException("Invalid password reset token");
     }
 
-    const newHashedPassword = await bcrypt.hash(resetDto.newPassword, 12);
+    const newHashedPassword = await bcrypt.hash(command.newPassword, 12);
 
     await this.prismaService.user.update({
       where: {
