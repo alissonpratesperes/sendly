@@ -11,7 +11,9 @@ import { UpdateCompanyCommandDto } from './dtos/updateCompanyCommand.dto';
 
 @Injectable()
 export class CompanyService {
-    constructor(private readonly prismaService: PrismaService) {}
+    constructor(
+        private readonly prismaService: PrismaService
+    ) {}
 
     private formatCompanyDocument(value: string): string {
         const digits = value.replace(/\D/g, "");

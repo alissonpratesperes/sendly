@@ -5,6 +5,7 @@ import { ConflictException, Injectable, NotFoundException } from '@nestjs/common
 import { PrismaService } from '../prisma/prisma.service';
 import { GetUserParamDto } from './dtos/getUserParam.dto';
 import { ListUserQueryDto } from './dtos/listUserQuery.dto';
+import { CompanyService } from 'src/company/company.service';
 import { GetUserResponseDto } from './dtos/getUserResponse.dto';
 import { ListUserResponseDto } from './dtos/listUserResponse.dto';
 import { CreateUserCommandDto } from './dtos/createUserCommand.dto';
@@ -12,7 +13,10 @@ import { UpdateUserCommandDto } from './dtos/updateUserCommand.dto';
 
 @Injectable()
 export class UserService {
-    constructor(private readonly prismaService: PrismaService) {}
+    constructor(
+        private readonly prismaService: PrismaService,
+        private readonly companyService: CompanyService
+    ) {}
 
     private toUserResponse(user: User): GetUserResponseDto {
         return new GetUserResponseDto(
@@ -47,6 +51,8 @@ export class UserService {
     }
 
     async create(command: CreateUserCommandDto): Promise<GetUserResponseDto> {
+        await this.companyService.read({ id: command.companyId, });
+
         const emailAlreadyUsed = await this.prismaService.user.findUnique({
             where: {
                 Email: command.email,
@@ -123,6 +129,9 @@ export class UserService {
     async update(params: GetUserParamDto, command: UpdateUserCommandDto): Promise<GetUserResponseDto> {
         const user = await this.read(params);
 
+        if (command.companyId !== undefined) {
+            await this.companyService.read({ id: command.companyId, });
+        }
         if (command.email !== undefined && command.email !== user.email) {
             const emailAlreadyUsed = await this.prismaService.user.findUnique({
                 where: {

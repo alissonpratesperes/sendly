@@ -6,11 +6,6 @@ CREATE TABLE `Contact` (
     `Name` VARCHAR(150) NOT NULL,
     `Phone` VARCHAR(20) NOT NULL,
 
-    `AllowedAt` DATETIME(3) NULL,
-    `DisallowedAt` DATETIME(3) NULL,
-    `PermissionRequestToken` VARCHAR(255) NULL,
-    `PermissionRequestTokenExpiresAt` DATETIME(3) NULL,
-
     `CreatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `UpdatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
     `DeletedAt` DATETIME(3) NULL,
