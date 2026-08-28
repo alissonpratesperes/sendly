@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common';
-import { ContactController } from './contact.controller';
+
 import { ContactService } from './contact.service';
+import { ListService } from 'src/list/list.service';
+import { ContactController } from './contact.controller';
+import { CompanyService } from '../company/company.service';
 
 @Module({
   controllers: [ContactController],
-  providers: [ContactService]
+  providers: [ContactService, ListService, CompanyService]
 })
 export class ContactModule {}

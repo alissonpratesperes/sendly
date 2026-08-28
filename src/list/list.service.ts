@@ -4,7 +4,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { GetListParamDto } from './dtos/getListParam.dto';
 import { ListListQueryDto } from './dtos/listListQuery.dto';
-import { CompanyService } from 'src/company/company.service';
+import { CompanyService } from '../company/company.service';
 import { GetListResponseDto } from './dtos/getListResponse.dto';
 import { ListListResponseDto } from './dtos/listListResponse.dto';
 import { CreateListCommandDto } from './dtos/createListCommand.dto';
@@ -14,7 +14,7 @@ import { UpdateListCommandDto } from './dtos/updateListCommand.dto';
 export class ListService {
     constructor(
         private readonly prismaService: PrismaService,
-        private readonly companyService: CompanyService
+        private readonly companyService: CompanyService,
     ) {}
 
     private toListResponse(list: List): GetListResponseDto {
@@ -53,7 +53,7 @@ export class ListService {
                 CompanyId: command.companyId,
                 Name: command.name,
                 Subject: command.subject,
-                Color: command.color
+                Color: command.color,
             },
         });
 
@@ -120,7 +120,7 @@ export class ListService {
 
         const updatedList = await this.prismaService.list.update({
             where: {
-                Id: list.id
+                Id: list.id,
             },
             data: {
                 ...(command.companyId !== undefined && {
@@ -146,7 +146,7 @@ export class ListService {
 
         await this.prismaService.list.update({
             where: {
-                Id: list.id
+                Id: list.id,
             },
             data: {
                 DeletedAt: new Date(),

@@ -12,7 +12,7 @@ import { UpdateCompanyCommandDto } from './dtos/updateCompanyCommand.dto';
 @Injectable()
 export class CompanyService {
     constructor(
-        private readonly prismaService: PrismaService
+        private readonly prismaService: PrismaService,
     ) {}
 
     private formatCompanyDocument(value: string): string {
@@ -125,7 +125,7 @@ export class CompanyService {
         const company = await this.read(params);
         const updatedCompany = await this.prismaService.company.update({
             where: {
-                Id: company.id
+                Id: company.id,
             },
             data: {
                 ...(command.name !== undefined && {
@@ -148,7 +148,7 @@ export class CompanyService {
 
         await this.prismaService.company.update({
             where: {
-                Id: company.id
+                Id: company.id,
             },
             data: {
                 DeletedAt: new Date(),

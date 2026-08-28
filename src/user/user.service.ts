@@ -15,7 +15,7 @@ import { UpdateUserCommandDto } from './dtos/updateUserCommand.dto';
 export class UserService {
     constructor(
         private readonly prismaService: PrismaService,
-        private readonly companyService: CompanyService
+        private readonly companyService: CompanyService,
     ) {}
 
     private toUserResponse(user: User): GetUserResponseDto {
@@ -146,7 +146,7 @@ export class UserService {
 
         const updatedUser = await this.prismaService.user.update({
             where: {
-                Id: user.id
+                Id: user.id,
             },
             data: {
                 ...(command.companyId !== undefined && {
@@ -172,7 +172,7 @@ export class UserService {
 
         await this.prismaService.user.update({
             where: {
-                Id: user.id
+                Id: user.id,
             },
             data: {
                 DeletedAt: new Date(),
