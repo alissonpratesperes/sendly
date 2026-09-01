@@ -3,6 +3,7 @@ import { APP_GUARD } from '@nestjs/core';
 
 import { UserModule } from './user/user.module';
 import { ListModule } from './list/list.module';
+import { NoteModule } from './note/note.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { CompanyModule } from './company/company.module';
 import { ContactModule } from './contact/contact.module';
@@ -14,14 +15,15 @@ import { AuthenticationModule } from './authentication/authentication.module';
   imports: [
     UserModule,
     ListModule,
+    NoteModule,
     PrismaModule,
     CompanyModule,
     ContactModule,
     AuthenticationModule,
     ],
   providers: [
-    { provide: APP_GUARD, useClass: AccessTokenGuard },
-    { provide: APP_GUARD, useClass: SystemRootGuard }
+    { provide: APP_GUARD, useClass: SystemRootGuard },
+    { provide: APP_GUARD, useClass: AccessTokenGuard }
   ]
 })
 export class AppModule {}

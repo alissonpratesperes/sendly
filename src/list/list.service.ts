@@ -61,7 +61,7 @@ export class ListService {
     }
 
     async read(params: GetListParamDto): Promise<GetListResponseDto> {
-        const list = await this.prismaService.list.findUnique({
+        const list = await this.prismaService.list.findFirst({
             where: {
                 Id: params.id,
                 DeletedAt: null,

@@ -68,22 +68,18 @@ model Company {
 }
 
 model Contact {
-  Id                              Int         @id @default(autoincrement()) @db.UnsignedInt
-  CompanyId                       Int         @db.UnsignedInt
-  ListId                          Int         @db.UnsignedInt
-  Name                            String      @db.VarChar(150)
-  Phone                           String      @unique(map: "UK_Contact_Phone") @db.VarChar(20)
-  AllowedAt                       DateTime?
-  DisallowedAt                    DateTime?
-  PermissionRequestToken          String?     @db.VarChar(255)
-  PermissionRequestTokenExpiresAt DateTime?
-  CreatedAt                       DateTime    @default(now())
-  UpdatedAt                       DateTime    @default(now())
-  DeletedAt                       DateTime?
-  BatchSend                       BatchSend[]
-  Company                         Company     @relation(fields: [CompanyId], references: [Id], map: "FK_Contact_CompanyId")
-  List                            List        @relation(fields: [ListId], references: [Id], map: "FK_Contact_ListId")
-  Note                            Note[]
+  Id        Int         @id @default(autoincrement()) @db.UnsignedInt
+  CompanyId Int         @db.UnsignedInt
+  ListId    Int         @db.UnsignedInt
+  Name      String      @db.VarChar(150)
+  Phone     String      @unique(map: "UK_Contact_Phone") @db.VarChar(20)
+  CreatedAt DateTime    @default(now())
+  UpdatedAt DateTime    @default(now())
+  DeletedAt DateTime?
+  BatchSend BatchSend[]
+  Company   Company     @relation(fields: [CompanyId], references: [Id], map: "FK_Contact_CompanyId")
+  List      List        @relation(fields: [ListId], references: [Id], map: "FK_Contact_ListId")
+  Note      Note[]
 
   @@index([CompanyId], map: "FK_Contact_CompanyId")
   @@index([ListId], map: "FK_Contact_ListId")

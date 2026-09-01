@@ -76,7 +76,7 @@ export class UserService {
     }
 
     async read(params: GetUserParamDto): Promise<GetUserResponseDto> {
-        const user = await this.prismaService.user.findUnique({
+        const user = await this.prismaService.user.findFirst({
             where: {
                 Id: params.id,
                 DeletedAt: null,

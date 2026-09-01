@@ -9,7 +9,7 @@ async function bootstrap() {
   const swaggerDocumentation = new DocumentBuilder().setTitle("Sendly").setDescription("API Endpoints Documentation").setVersion("1.0").addBearerAuth().build();
   const swaggerDocument = SwaggerModule.createDocument(app, swaggerDocumentation);
 
-  SwaggerModule.setup("swagger", app, swaggerDocument, { swaggerOptions: { tagSorter: "alpha", operationSorter: "alpha" } });
+  SwaggerModule.setup("swagger", app, swaggerDocument, { swaggerOptions: { tagsSorter: "alpha", operationsSorter: "alpha" } });
 
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
   app.enableCors();

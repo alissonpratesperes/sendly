@@ -71,7 +71,7 @@ export class CompanyService {
     }
 
     async read(params: GetCompanyParamDto): Promise<GetCompanyResponseDto> {
-        const company = await this.prismaService.company.findUnique({
+        const company = await this.prismaService.company.findFirst({
             where: {
                 Id: params.id,
                 DeletedAt: null,

@@ -3,7 +3,7 @@ import type { CountryCode } from 'libphonenumber-js';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 
-import { ListService } from 'src/list/list.service';
+import { ListService } from '../list/list.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { CompanyService } from '../company/company.service';
 import { GetContactParamDto } from './dtos/getContactParam.dto';
@@ -79,7 +79,7 @@ export class ContactService {
     }
 
     async read(params: GetContactParamDto): Promise<GetContactResponseDto> {
-        const contact = await this.prismaService.contact.findUnique({
+        const contact = await this.prismaService.contact.findFirst({
             where: {
                 Id: params.id,
                 DeletedAt: null,
