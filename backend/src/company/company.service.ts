@@ -2,12 +2,10 @@ import { Company } from '@prisma/client';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
-import { GetCompanyParamDto } from './dtos/getCompanyParam.dto';
-import { ListCompanyQueryDto } from './dtos/listCompanyQuery.dto';
 import { GetCompanyResponseDto } from './dtos/getCompanyResponse.dto';
-import { ListCompanyResponseDto } from './dtos/listCompanyResponse.dto';
-import { CreateCompanyCommandDto } from './dtos/createCompanyCommand.dto';
 import { UpdateCompanyCommandDto } from './dtos/updateCompanyCommand.dto';
+import { PaginatedResponseDto } from 'src/common/dtos/paginatedResponse.dto';
+import { formatCompanyDocument } from 'src/common/formatters/companyDocument.formatter';
 
 @Injectable()
 export class CompanyService {
@@ -15,18 +13,12 @@ export class CompanyService {
         private readonly prismaService: PrismaService,
     ) {}
 
-    private formatCompanyDocument(value: string): string {
-        const digits = value.replace(/\D/g, "");
-
-        return digits.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, "$1.$2.$3/$4-$5");
-    }
-
     private toCompanyResponse(company: Company): GetCompanyResponseDto {
         return new GetCompanyResponseDto(
             company.Id,
 
             company.Name,
-            this.formatCompanyDocument(company.Document),
+            formatCompanyDocument(company.Document),
             company.Description,
 
             company.CreatedAt,
@@ -34,24 +26,24 @@ export class CompanyService {
         );
     }
 
-    private buildCompanyListWhere(query: ListCompanyQueryDto) {
+    private buildCompanyListWhere(search?: string) {
         return {
             DeletedAt: null,
-            ...(query.search
+            ...(search
                 ? {
                     OR: [
-                        { Name: { contains: query.search } },
-                        { Document: { contains: query.search } },
+                        { Name: { contains: search } },
+                        { Document: { contains: search } },
                     ],
                 }
             : {}),
         };
     }
 
-    async create(command: CreateCompanyCommandDto): Promise<GetCompanyResponseDto> {
+    async create(name: string, document: string, description: string | null): Promise<GetCompanyResponseDto> {
         const documentAlreadyUsed = await this.prismaService.company.findUnique({
             where: {
-                Document: command.document,
+                Document: document,
             },
         });
 
@@ -61,19 +53,19 @@ export class CompanyService {
 
         const createdCompany = await this.prismaService.company.create({
             data: {
-                Name: command.name,
-                Document: command.document,
-                Description: command.description,
+                Name: name,
+                Document: document,
+                Description: description,
             },
         });
 
         return this.toCompanyResponse(createdCompany);
     }
 
-    async read(params: GetCompanyParamDto): Promise<GetCompanyResponseDto> {
+    async read(id: number): Promise<GetCompanyResponseDto> {
         const company = await this.prismaService.company.findFirst({
             where: {
-                Id: params.id,
+                Id: id,
                 DeletedAt: null,
             },
         });
@@ -85,43 +77,41 @@ export class CompanyService {
         return this.toCompanyResponse(company);
     }
 
-    async list(query: ListCompanyQueryDto): Promise<ListCompanyResponseDto> {
-        const skip = (query.page - 1) * query.limit;
-        const where = this.buildCompanyListWhere(query);
-
+    async list(page: number = 1, limit: number = 10, search?: string): Promise<PaginatedResponseDto<GetCompanyResponseDto>> {
+        const where = this.buildCompanyListWhere(search);
         const [total, companies] = await Promise.all([
             this.prismaService.company.count({
                 where,
             }),
             this.prismaService.company.findMany({
                 where,
-                skip,
-                take: query.limit,
+                skip: (page - 1) * limit,
+                take: limit,
                 orderBy: {
                     CreatedAt: "desc",
                 },
             }),
         ]);
 
-        const totalPages = Math.ceil(total / query.limit);
-        const hasNextPage = query.page < totalPages;
-        const hasPreviousPage = query.page > 1;
-        const data = companies.map((company) => this.toCompanyResponse(company));
-
-        return new ListCompanyResponseDto(
-            query.page,
-            query.limit,
+        return new PaginatedResponseDto(
+            page,
+            limit,
             total,
 
-            totalPages,
-            hasNextPage,
-            hasPreviousPage,
-
-            data,
+            companies.map((company: Company) => this.toCompanyResponse(company)),
         );
     }
 
-    async update(params: GetCompanyParamDto, command: UpdateCompanyCommandDto): Promise<GetCompanyResponseDto> {
+    async update(id: number, command: UpdateCompanyCommandDto): Promise<GetCompanyResponseDto> {
+
+
+
+
+
+
+
+
+
         const company = await this.read(params);
         const updatedCompany = await this.prismaService.company.update({
             where: {
@@ -143,7 +133,7 @@ export class CompanyService {
         return this.toCompanyResponse(updatedCompany);
     }
 
-    async delete(params: GetCompanyParamDto): Promise<void> {
+    async delete(params: IdParamDto): Promise<void> {
         const company = await this.read(params);
 
         await this.prismaService.company.update({

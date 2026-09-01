@@ -8,7 +8,9 @@ import { AuthenticationTokenPair } from './types/AuthenticationTokenPair.type';
 
 @Injectable()
 export class TokenService {
-    constructor(private readonly jwtService: JwtService) {}
+    constructor(
+        private readonly jwtService: JwtService,
+    ) {}
 
     private readonly accessTokenConfig: JwtSignOptions = {
         secret: this.requireEnvironmentVariable("ACCESS_TOKEN_SECRET"),

@@ -2,7 +2,7 @@ import { Type } from 'class-transformer';
 import { IsInt, Min } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class GetCompanyParamDto {
+export class IdParamDto {
     @Min(1)
     @IsInt()
     @Type(() => Number)

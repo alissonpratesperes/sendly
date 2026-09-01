@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
 
-import { IsValidCnpj } from '../validators/isValidCnpj.validator';
+import { IsValidCnpj } from '../../common/validators/isValidCnpj.validator';
 
 export class CreateCompanyCommandDto {
     @IsString()
