@@ -6,8 +6,8 @@ import { IsPublic } from './decorators/isPublic.decorator';
 import { ForgotCommandDto } from './dtos/forgotCommand.dto';
 import { RefreshTokenGuard } from './guards/refreshToken.guard';
 import { AuthenticationService } from './authentication.service';
+import { CurrentUser } from './interfaces/currentUser.interface';
 import { GetCurrentUser } from './decorators/getCurrentUser.decorator';
-import { GetCurrentUserId } from './decorators/getCurrentUserId.decorator';
 import { AuthenticationTokenPair } from './types/AuthenticationTokenPair.type';
 
 @Controller("authentication")
@@ -23,16 +23,15 @@ export class AuthenticationController {
 
   @Post("logout")
   @HttpCode(HttpStatus.OK)
-  async logout(@GetCurrentUserId() userId: number): Promise<void> {
-    return this.authenticationService.logout(userId);
+  async logout(@GetCurrentUser(["id"]) id: number): Promise<void> {
+    return this.authenticationService.logout(id);
   }
 
-  @IsPublic()
   @Post("refresh")
   @HttpCode(HttpStatus.OK)
   @UseGuards(RefreshTokenGuard)
-  async refresh(@GetCurrentUserId() userId: number, @GetCurrentUser("refreshToken") refreshToken: string): Promise<AuthenticationTokenPair> {
-    return this.authenticationService.refresh(userId, refreshToken);
+  async refresh(@GetCurrentUser(["email", "refreshToken"]) user: Pick<CurrentUser, "email" | "refreshToken">): Promise<AuthenticationTokenPair> {
+    return this.authenticationService.refresh(user.email, user.refreshToken);
   }
 
   @IsPublic()

@@ -13,15 +13,15 @@ export class TokenService {
     private readonly accessTokenConfig: JwtSignOptions = {
         secret: this.requireEnvironmentVariable("ACCESS_TOKEN_SECRET"),
         expiresIn: this.getExpiresIn(this.requireEnvironmentVariable("ACCESS_TOKEN_EXPIRATION")),
-    };
+    }
     private readonly refreshTokenConfig: JwtSignOptions = {
         secret: this.requireEnvironmentVariable("REFRESH_TOKEN_SECRET"),
         expiresIn: this.getExpiresIn(this.requireEnvironmentVariable("REFRESH_TOKEN_EXPIRATION")),
-    };
+    }
     private readonly forgotTokenConfig: JwtSignOptions = {
         secret: this.requireEnvironmentVariable("FORGOT_TOKEN_SECRET"),
         expiresIn: this.getExpiresIn(this.requireEnvironmentVariable("FORGOT_TOKEN_EXPIRATION")),
-    };
+    }
 
     private requireEnvironmentVariable(variable: string): string {
         const value = process.env[variable];
@@ -51,7 +51,10 @@ export class TokenService {
             this.jwtService.signAsync({ sub: userId, email }, this.refreshTokenConfig)
         ]);
 
-        return { accessToken, refreshToken };
+        return {
+            accessToken,
+            refreshToken
+        };
     }
 
     generateRefreshTokenHash(refreshToken: string): Promise<string> {

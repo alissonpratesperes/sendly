@@ -90,6 +90,24 @@ export class UserService {
         return this.toUserResponse(user);
     }
 
+    async readByEmail(email: string, requireNoPasswordReset: boolean): Promise<User> {
+        const user = await this.prismaService.user.findFirst({
+            where: {
+                Email: email,
+                ...(requireNoPasswordReset && {
+                    PasswordResetToken: null,
+                }),
+                DeletedAt: null,
+            },
+        });
+
+        if(!user) {
+            throw new NotFoundException("User not found");
+        }
+
+        return user;
+    }
+
     async list(query: ListUserQueryDto): Promise<ListUserResponseDto> {
         const skip = (query.page - 1) * query.limit;
         const where = this.buildUserListWhere(query);
@@ -165,6 +183,49 @@ export class UserService {
         });
 
         return this.toUserResponse(updatedUser);
+    }
+
+    async updateUserRefreshToken(id: number, hashedRefreshToken: string | null): Promise<void> {
+        const user = await this.read({ id });
+
+        await this.prismaService.user.update({
+            where: {
+                Id: user.id,
+            },
+            data: {
+                HashedRefreshToken: hashedRefreshToken,
+            },
+        });
+    }
+
+    async startPasswordReset(id: number, hashedPasswordResetToken: string): Promise<void> {
+        const user = await this.read({ id });
+
+        await this.prismaService.user.update({
+            where: {
+                Id: user.id,
+            },
+            data: {
+                HashedRefreshToken: null,
+                PasswordResetToken: hashedPasswordResetToken,
+            },
+        });
+    }
+
+    async completePasswordReset(id: number, hashedPassword: string): Promise<void> {
+        const user = await this.read({ id });
+
+        await this.prismaService.user.update({
+            where: {
+                Id: user.id,
+            },
+            data: {
+                Password: hashedPassword,
+                HashedRefreshToken: null,
+                PasswordResetToken: null,
+                IsFirstAccess: false,
+            },
+        });
     }
 
     async delete(params: GetUserParamDto): Promise<void> {

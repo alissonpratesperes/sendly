@@ -1,8 +1,8 @@
 import * as bcrypt from 'bcrypt';
-import { Injectable, NotFoundException, ForbiddenException, BadRequestException, UnprocessableEntityException, UnauthorizedException } from '@nestjs/common';
+import { Injectable, ForbiddenException, BadRequestException, UnauthorizedException } from '@nestjs/common';
 
 import { TokenService } from './token.service';
-import { PrismaService } from '../prisma/prisma.service';
+import { UserService } from 'src/user/user.service';
 import { LoginCommandDto } from './dtos/loginCommand.dto';
 import { ResetCommandDto } from './dtos/resetCommand.dto';
 import { ForgotCommandDto } from './dtos/forgotCommand.dto';
@@ -10,116 +10,54 @@ import { AuthenticationTokenPair } from './types/AuthenticationTokenPair.type';
 
 @Injectable()
 export class AuthenticationService {
-  constructor(private readonly tokenService: TokenService, private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly tokenService: TokenService,
+  ) {}
 
   async login(command: LoginCommandDto): Promise<AuthenticationTokenPair> {
-    const user = await this.prismaService.user.findUnique({
-      where: {
-        Email: command.email,
-        DeletedAt: null,
-      },
-    });
+    const user = await this.userService.readByEmail(command.email, true);
 
-    if(!user) {
-      throw new NotFoundException("User not found");
-    }
-    if(user.PasswordResetToken) {
-      throw new UnprocessableEntityException("It's not possible to login when redefining password");
-    }
     if(user.IsFirstAccess) {
       throw new BadRequestException("It's necessary to redefine the first password");
     }
-
-    const passwordMatches = await bcrypt.compare(command.password, user.Password);
-
-    if(!passwordMatches) {
+    if(!await bcrypt.compare(command.password, user.Password)) {
       throw new ForbiddenException("Access denied");
     }
 
     const authenticatedUserTokenPair = await this.tokenService.generateAuthenticationTokenPair(user.Id, user.Email);
     const hashedRefreshToken = await this.tokenService.generateRefreshTokenHash(authenticatedUserTokenPair.refreshToken);
 
-    await this.prismaService.user.update({
-      where: {
-        Id: user.Id,
-      },
-      data: {
-        HashedRefreshToken: hashedRefreshToken,
-      },
-    });
+    await this.userService.updateUserRefreshToken(user.id, hashedRefreshToken);
 
     return authenticatedUserTokenPair;
   }
 
-  async logout(userId: number): Promise<void> {
-    await this.prismaService.user.update({
-      where: {
-        Id: userId,
-      },
-      data: {
-        HashedRefreshToken: null,
-      },
-    });
+  async logout(id: number): Promise<void> {
+    await this.userService.updateUserRefreshToken(id, null);
   }
 
-  async refresh(userId: number, refreshToken: string): Promise<AuthenticationTokenPair> {
-    const user = await this.prismaService.user.findUnique({
-      where: {
-        Id: userId,
-        PasswordResetToken: null,
-        DeletedAt: null,
-      },
-    });
+  async refresh(email: string, refreshToken: string): Promise<AuthenticationTokenPair> {
+    const user = await this.userService.readByEmail(email, true);
 
-    if(!user || !user.HashedRefreshToken) {
-      throw new ForbiddenException("Access denied");
-    }
-
-    const refreshTokenMatches = await this.tokenService.compareRefreshToken(refreshToken, user.HashedRefreshToken);
-
-    if(!refreshTokenMatches) {
+    if(!user.HashedRefreshToken || !await this.tokenService.compareRefreshToken(refreshToken, user.HashedRefreshToken)) {
       throw new ForbiddenException("Access denied");
     }
 
     const authenticatedUserTokenPair = await this.tokenService.generateAuthenticationTokenPair(user.Id, user.Email);
     const hashedRefreshToken = await this.tokenService.generateRefreshTokenHash(authenticatedUserTokenPair.refreshToken);
 
-    await this.prismaService.user.update({
-      where: {
-        Id: user.Id,
-      },
-      data: {
-        HashedRefreshToken: hashedRefreshToken,
-      },
-    });
+    await this.userService.updateUserRefreshToken(user.id, hashedRefreshToken);
 
     return authenticatedUserTokenPair;
   }
 
   async forgot(command: ForgotCommandDto): Promise<string> {
-    const user = await this.prismaService.user.findUnique({
-      where: {
-        Email: command.email,
-        DeletedAt: null,
-      },
-    });
-
-    if(!user) {
-      throw new NotFoundException("User not found");
-    }
-
+    const user = await this.userService.readByEmail(command.email, false);
     const generatedPasswordResetToken = await this.tokenService.generatePasswordResetToken(user.Id, user.Email);
     const hashedPasswordResetToken = await this.tokenService.generatePasswordResetTokenHash(generatedPasswordResetToken);
 
-    await this.prismaService.user.update({
-      where: {
-        Id: user.Id,
-      },
-      data: {
-        HashedRefreshToken: null,
-        PasswordResetToken: hashedPasswordResetToken,
-      },
-    });
+    await this.userService.startPasswordReset(user.id, hashedPasswordResetToken);
 
     return generatedPasswordResetToken;
   }
@@ -130,35 +68,17 @@ export class AuthenticationService {
     }
 
     const payload = await this.tokenService.verifyPasswordResetToken(command.passwordResetToken);
-    const user = await this.prismaService.user.findUnique({
-      where: {
-        Id: payload.sub,
-        DeletedAt: null,
-      },
-    });
+    const user = await this.userService.readByEmail(payload.email, false);
 
-    if (!user || !user.PasswordResetToken) {
+    if (!user.PasswordResetToken) {
       throw new UnauthorizedException("Invalid password reset token");
     }
-
-    const tokenMatches = await this.tokenService.comparePasswordResetToken(command.passwordResetToken, user.PasswordResetToken);
-
-    if (!tokenMatches) {
+    if (!await this.tokenService.comparePasswordResetToken(command.passwordResetToken, user.PasswordResetToken)) {
       throw new UnauthorizedException("Invalid password reset token");
     }
 
     const newHashedPassword = await bcrypt.hash(command.newPassword, 12);
 
-    await this.prismaService.user.update({
-      where: {
-        Id: user.Id,
-      },
-      data: {
-        Password: newHashedPassword,
-        HashedRefreshToken: null,
-        PasswordResetToken: null,
-        IsFirstAccess: false,
-      },
-    });
+    await this.userService.completePasswordReset(user.id, newHashedPassword);
   }
 }
