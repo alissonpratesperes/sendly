@@ -3,39 +3,48 @@ import { PrismaClient } from '@prisma/client';
 
 const prismaClient = new PrismaClient();
 
+function requireEnvironmentVariable(variable: string): string {
+  const value = process.env[variable];
+
+  return !value ? (() => { throw new Error(`'${variable}' is not defined`); })() : value;
+}
+
 async function main() {
-  const rootCompany = await prismaClient.company.upsert({
+  const seedCompany = {
+    name: requireEnvironmentVariable("SEED_COMPANY_NAME"),
+    document: requireEnvironmentVariable("SEED_COMPANY_DOCUMENT"),
+    description: requireEnvironmentVariable("SEED_COMPANY_DESCRIPTION"),
+  };
+  const seedUser = {
+    name: requireEnvironmentVariable("SEED_USER_NAME"),
+    email: requireEnvironmentVariable("SEED_USER_EMAIL"),
+    password: requireEnvironmentVariable("SEED_USER_PASSWORD"),
+  };
+
+  const seededCompany = await prismaClient.company.upsert({
     where: {
-      Document: "45781858000179",
+      Document: seedCompany.document,
     },
     update: {},
     create: {
-      Name: "Thesle LTDA",
-      Document: "45781858000179",
-      Description: "Soluções premium para telemetria",
+      Name: seedCompany.name,
+      Document: seedCompany.document,
+      Description: seedCompany.description,
     },
   });
 
-  const isRootUserPasswordDefined = process.env.ROOT_USER_PASSWORD;
-
-  if (!isRootUserPasswordDefined) {
-    throw new Error("'ROOT_USER_PASSWORD' is not defined");
-  }
-
-  const rootUserHashedPassword = await bcrypt.hash(isRootUserPasswordDefined, 12);
-
   await prismaClient.user.upsert({
     where: {
-      Email: "suporte@thesle.com.br",
+      Email: seedUser.email,
     },
     update: {
       IsSystemRoot: true,
     },
     create: {
-      CompanyId: rootCompany.Id,
-      Name: "Thesle LTDA | Suporte",
-      Email: "suporte@thesle.com.br",
-      Password: rootUserHashedPassword,
+      CompanyId: seededCompany.Id,
+      Name: seedUser.name,
+      Email: seedUser.email,
+      Password: await bcrypt.hash(seedUser.password, 12),
       IsFirstAccess: false,
       IsSystemRoot: true,
     },
