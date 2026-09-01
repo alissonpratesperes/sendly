@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, HttpStatus, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Patch, Post, UseGuards } from '@nestjs/common';
 
 import { LoginCommandDto } from './dtos/loginCommand.dto';
 import { ResetCommandDto } from './dtos/resetCommand.dto';

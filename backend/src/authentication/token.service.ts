@@ -1,7 +1,7 @@
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
 import { JwtService, JwtSignOptions } from '@nestjs/jwt';
-import { Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 
 import { JwtTokenPayload } from './interfaces/jwtTokenPayload.interface';
 import { AuthenticationTokenPair } from './types/AuthenticationTokenPair.type';
@@ -10,12 +10,27 @@ import { AuthenticationTokenPair } from './types/AuthenticationTokenPair.type';
 export class TokenService {
     constructor(private readonly jwtService: JwtService) {}
 
-    private getExpiresIn(expiresInValueFromEnv: string | undefined): JwtSignOptions["expiresIn"] {
-        if (!expiresInValueFromEnv) {
-            throw new InternalServerErrorException("Environment variable not defined");
-        }
+    private readonly accessTokenConfig: JwtSignOptions = {
+        secret: this.requireEnvironmentVariable("ACCESS_TOKEN_SECRET"),
+        expiresIn: this.getExpiresIn(this.requireEnvironmentVariable("ACCESS_TOKEN_EXPIRATION")),
+    };
+    private readonly refreshTokenConfig: JwtSignOptions = {
+        secret: this.requireEnvironmentVariable("REFRESH_TOKEN_SECRET"),
+        expiresIn: this.getExpiresIn(this.requireEnvironmentVariable("REFRESH_TOKEN_EXPIRATION")),
+    };
+    private readonly forgotTokenConfig: JwtSignOptions = {
+        secret: this.requireEnvironmentVariable("FORGOT_TOKEN_SECRET"),
+        expiresIn: this.getExpiresIn(this.requireEnvironmentVariable("FORGOT_TOKEN_EXPIRATION")),
+    };
 
-        return expiresInValueFromEnv as JwtSignOptions["expiresIn"];
+    private requireEnvironmentVariable(variable: string): string {
+        const value = process.env[variable];
+
+        return !value ? (() => { throw new Error(`'${variable}' is not defined`); })() : value;
+    }
+
+    private getExpiresIn(value: string): JwtSignOptions["expiresIn"] {
+        return value as JwtSignOptions["expiresIn"];
     }
 
     private hashToken(token: string): string {
@@ -32,14 +47,8 @@ export class TokenService {
 
     async generateAuthenticationTokenPair(userId: number, email: string): Promise<AuthenticationTokenPair> {
         const [accessToken, refreshToken] = await Promise.all([
-            this.jwtService.signAsync(
-                { sub: userId, email },
-                { secret: process.env.ACCESS_TOKEN_SECRET, expiresIn: this.getExpiresIn(process.env.ACCESS_TOKEN_EXPIRATION) }
-            ),
-            this.jwtService.signAsync(
-                { sub: userId, email },
-                { secret: process.env.REFRESH_TOKEN_SECRET, expiresIn: this.getExpiresIn(process.env.REFRESH_TOKEN_EXPIRATION) }
-            )
+            this.jwtService.signAsync({ sub: userId, email }, this.accessTokenConfig),
+            this.jwtService.signAsync({ sub: userId, email }, this.refreshTokenConfig)
         ]);
 
         return { accessToken, refreshToken };
@@ -50,15 +59,12 @@ export class TokenService {
     }
 
     async generatePasswordResetToken(userId: number, email: string): Promise<string> {
-        return this.jwtService.signAsync(
-            { sub: userId, email },
-            { secret: process.env.FORGOT_TOKEN_SECRET, expiresIn: this.getExpiresIn(process.env.FORGOT_TOKEN_EXPIRATION) },
-        );
+        return this.jwtService.signAsync({ sub: userId, email }, this.forgotTokenConfig);
     }
 
     async verifyPasswordResetToken(token: string): Promise<JwtTokenPayload> {
         try {
-            return await this.jwtService.verifyAsync<JwtTokenPayload>(token, { secret: process.env.FORGOT_TOKEN_SECRET });
+            return await this.jwtService.verifyAsync<JwtTokenPayload>(token, { secret: this.forgotTokenConfig.secret });
         } catch {
             throw new UnauthorizedException("Invalid or expired password reset token");
         }
