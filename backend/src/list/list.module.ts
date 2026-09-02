@@ -5,9 +5,17 @@ import { ListController } from './list.controller';
 import { CompanyModule } from '../company/company.module';
 
 @Module({
-  imports: [CompanyModule],
-  providers: [ListService],
-  controllers: [ListController],
-  exports: [ListService],
+  imports: [
+    CompanyModule,
+  ],
+  providers: [
+    ListService,
+  ],
+  controllers: [
+    ListController,
+  ],
+  exports: [
+    ListService,
+  ],
 })
 export class ListModule {}

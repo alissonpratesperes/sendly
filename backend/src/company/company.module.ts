@@ -4,8 +4,14 @@ import { CompanyService } from './company.service';
 import { CompanyController } from './company.controller';
 
 @Module({
-  providers: [CompanyService],
-  controllers: [CompanyController],
-  exports: [CompanyService],
+  providers: [
+    CompanyService,
+  ],
+  controllers: [
+    CompanyController,
+  ],
+  exports: [
+    CompanyService,
+  ],
 })
 export class CompanyModule {}

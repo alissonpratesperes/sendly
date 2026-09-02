@@ -6,9 +6,18 @@ import {CompanyModule} from '../company/company.module';
 import { ContactController } from './contact.controller';
 
 @Module({
-  imports: [ListModule, CompanyModule],
-  controllers: [ContactController],
-  providers: [ContactService],
-  exports: [ContactService],
+  imports: [
+    ListModule,
+    CompanyModule,
+  ],
+  controllers: [
+    ContactController,
+  ],
+  providers: [
+    ContactService,
+  ],
+  exports: [
+    ContactService,
+  ],
 })
 export class ContactModule {}

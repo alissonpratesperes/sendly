@@ -20,7 +20,7 @@ import { AuthenticationModule } from './authentication/authentication.module';
     CompanyModule,
     ContactModule,
     AuthenticationModule,
-    ],
+  ],
   providers: [
     { provide: APP_GUARD, useClass: SystemRootGuard },
     { provide: APP_GUARD, useClass: AccessTokenGuard }
