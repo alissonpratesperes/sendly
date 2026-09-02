@@ -2,13 +2,9 @@ import { List } from '@prisma/client';
 import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
-import { GetListParamDto } from './dtos/getListParam.dto';
-import { ListListQueryDto } from './dtos/listListQuery.dto';
 import { CompanyService } from '../company/company.service';
 import { GetListResponseDto } from './dtos/getListResponse.dto';
-import { ListListResponseDto } from './dtos/listListResponse.dto';
-import { CreateListCommandDto } from './dtos/createListCommand.dto';
-import { UpdateListCommandDto } from './dtos/updateListCommand.dto';
+import { PaginatedResponseDto } from '../common/dtos/paginatedResponse.dto';
 
 @Injectable()
 export class ListService {
@@ -31,39 +27,39 @@ export class ListService {
         );
     }
 
-    private buildListListWhere(query: ListListQueryDto) {
+    private buildListListWhere(search?: string) {
         return {
             DeletedAt: null,
-            ...(query.search
+            ...(search
                 ? {
                     OR: [
-                        { Name: { contains: query.search } },
-                        { Subject: { contains: query.search } },
+                        { Name: { contains: search } },
+                        { Subject: { contains: search } },
                     ],
                 }
             : {}),
         };
     }
 
-    async create(command: CreateListCommandDto): Promise<GetListResponseDto> {
-        await this.companyService.read(command.companyId);
+    async create(companyId: number, name: string, subject: string, color: string): Promise<GetListResponseDto> {
+        await this.companyService.read(companyId);
 
         const createdList = await this.prismaService.list.create({
             data: {
-                CompanyId: command.companyId,
-                Name: command.name,
-                Subject: command.subject,
-                Color: command.color,
+                CompanyId: companyId,
+                Name: name,
+                Subject: subject,
+                Color: color,
             },
         });
 
         return this.toListResponse(createdList);
     }
 
-    async read(params: GetListParamDto): Promise<GetListResponseDto> {
+    async read(id: number): Promise<GetListResponseDto> {
         const list = await this.prismaService.list.findFirst({
             where: {
-                Id: params.id,
+                Id: id,
                 DeletedAt: null,
             },
         });
@@ -75,47 +71,36 @@ export class ListService {
         return this.toListResponse(list);
     }
 
-    async list(query: ListListQueryDto): Promise<ListListResponseDto> {
-        const skip = (query.page - 1) * query.limit;
-        const where = this.buildListListWhere(query);
-
+    async list(page: number = 1, limit: number = 10, search?: string): Promise<PaginatedResponseDto<GetListResponseDto>> {
+        const where = this.buildListListWhere(search);
         const [total, lists] = await Promise.all([
             this.prismaService.list.count({
                 where,
             }),
             this.prismaService.list.findMany({
                 where,
-                skip,
-                take: query.limit,
+                skip: (page - 1) * limit,
+                take: limit,
                 orderBy: {
                     CreatedAt: "desc",
                 },
             }),
         ]);
 
-        const totalPages = Math.ceil(total / query.limit);
-        const hasNextPage = query.page < totalPages;
-        const hasPreviousPage = query.page > 1;
-        const data = lists.map((list) => this.toListResponse(list));
-
-        return new ListListResponseDto(
-            query.page,
-            query.limit,
+        return new PaginatedResponseDto(
+            page,
+            limit,
             total,
 
-            totalPages,
-            hasNextPage,
-            hasPreviousPage,
-
-            data,
+            lists.map((list: List) => this.toListResponse(list)),
         );
     }
 
-    async update(params: GetListParamDto, command: UpdateListCommandDto): Promise<GetListResponseDto> {
-        const list = await this.read(params);
+    async update(id: number, companyId?: number, name?: string, subject?: string, color?: string): Promise<GetListResponseDto> {
+        const list = await this.read(id);
 
-        if (command.companyId !== undefined) {
-            await this.companyService.read(command.companyId);
+        if (companyId !== undefined) {
+            await this.companyService.read(companyId);
         }
 
         const updatedList = await this.prismaService.list.update({
@@ -123,26 +108,18 @@ export class ListService {
                 Id: list.id,
             },
             data: {
-                ...(command.companyId !== undefined && {
-                    CompanyId: command.companyId,
-                }),
-                ...(command.name !== undefined && {
-                    Name: command.name,
-                }),
-                ...(command.subject !== undefined && {
-                    Subject: command.subject,
-                }),
-                ...(command.color !== undefined && {
-                    Color: command.color,
-                }),
+                ...(companyId !== undefined && { CompanyId: companyId, }),
+                ...(name !== undefined && { Name: name, }),
+                ...(subject !== undefined && { Subject: subject, }),
+                ...(color !== undefined && { Color: color, }),
             },
         });
 
         return this.toListResponse(updatedList);
     }
 
-    async delete(params: GetListParamDto): Promise<void> {
-        const list = await this.read(params);
+    async delete(id: number): Promise<void> {
+        const list = await this.read(id);
 
         await this.prismaService.list.update({
             where: {

@@ -17,7 +17,7 @@ export class AccessTokenStrategy extends PassportStrategy(Strategy, Authenticati
     }
 
     async validate(payload: JwtTokenPayload): Promise<AuthenticatedUser> {
-        const user = await this.userService.read({ id: payload.sub });
+        const user = await this.userService.read(payload.sub);
 
         if (!user) {
             throw new UnauthorizedException("Access denied");

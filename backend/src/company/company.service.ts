@@ -3,8 +3,8 @@ import { ConflictException, Injectable, NotFoundException } from '@nestjs/common
 
 import { PrismaService } from '../prisma/prisma.service';
 import { GetCompanyResponseDto } from './dtos/getCompanyResponse.dto';
-import { PaginatedResponseDto } from 'src/common/dtos/paginatedResponse.dto';
-import { formatCompanyDocument } from 'src/common/formatters/companyDocument.formatter';
+import { PaginatedResponseDto } from '../common/dtos/paginatedResponse.dto';
+import { formatCompanyDocument } from '../common/formatters/companyDocument.formatter';
 
 @Injectable()
 export class CompanyService {
