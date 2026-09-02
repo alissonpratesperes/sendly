@@ -71,6 +71,22 @@ export class ListService {
         return this.toListResponse(list);
     }
 
+    private async findByCompany(id: number, companyId: number): Promise<List | null> {
+        return this.prismaService.list.findFirst({
+            where: {
+                Id: id,
+                CompanyId: companyId,
+                DeletedAt: null,
+            },
+        });
+    }
+
+    async validateBelongsToCompany(id: number, companyId: number): Promise<void> {
+        if (!await this.findByCompany(id, companyId)) {
+            throw new NotFoundException("List not found");
+        }
+    }
+
     async list(page: number = 1, limit: number = 10, search?: string): Promise<PaginatedResponseDto<GetListResponseDto>> {
         const where = this.buildListListWhere(search);
         const [total, lists] = await Promise.all([

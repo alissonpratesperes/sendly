@@ -1,17 +1,13 @@
 import { Contact } from '@prisma/client';
 import type { CountryCode } from 'libphonenumber-js';
-import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 
 import { ListService } from '../list/list.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { CompanyService } from '../company/company.service';
-import { GetContactParamDto } from './dtos/getContactParam.dto';
-import { ListContactQueryDto } from './dtos/listContactQuery.dto';
 import { GetContactResponseDto } from './dtos/getContactResponse.dto';
-import { ListContactResponseDto } from './dtos/listContactResponse.dto';
-import { CreateContactCommandDto } from './dtos/createContactCommand.dto';
-import { UpdateContactCommandDto } from './dtos/updateContactCommand.dto';
+import { PaginatedResponseDto } from '../common/dtos/paginatedResponse.dto';
+import { formatContactPhoneNumber } from '../common/formatters/contactPhoneNumber.formatter';
 
 @Injectable()
 export class ContactService {
@@ -20,19 +16,6 @@ export class ContactService {
         private readonly prismaService: PrismaService,
         private readonly companyService: CompanyService,
     ) {}
-
-    private normalizePhone(phone: string, country: CountryCode): string {
-        const phoneNumber = parsePhoneNumberFromString(phone, {
-            defaultCountry: country,
-            extract: false,
-        });
-
-        if (!phoneNumber || !phoneNumber.isValid()) {
-            throw new BadRequestException("Invalid phone number");
-        }
-
-        return phoneNumber.number;
-    }
 
     private toContactResponse(contact: Contact): GetContactResponseDto {
         return new GetContactResponseDto(
@@ -48,40 +31,40 @@ export class ContactService {
         );
     }
 
-    private buildContactListWhere(query: ListContactQueryDto) {
+    private buildContactListWhere(search?: string) {
         return {
             DeletedAt: null,
-            ...(query.search
+            ...(search
                 ? {
                     OR: [
-                        { Name: { contains: query.search } },
-                        { Phone: { contains: query.search } },
+                        { Name: { contains: search } },
+                        { Phone: { contains: search } },
                     ],
                 }
             : {}),
         };
     }
 
-    async create(command: CreateContactCommandDto): Promise<GetContactResponseDto> {
-        await this.companyService.read(command.companyId);
-        await this.listService.read({ id: command.listId, });
+    async create(companyId: number, listId: number, name: string, phone: string, country: string): Promise<GetContactResponseDto> {
+        await this.companyService.read(companyId);
+        await this.listService.validateBelongsToCompany(listId, companyId);
 
         const createdContact = await this.prismaService.contact.create({
             data: {
-                CompanyId: command.companyId,
-                ListId: command.listId,
-                Name: command.name,
-                Phone: this.normalizePhone(command.phone, command.country as CountryCode),
+                CompanyId: companyId,
+                ListId: listId,
+                Name: name,
+                Phone: formatContactPhoneNumber(phone, country as CountryCode),
             },
         });
 
         return this.toContactResponse(createdContact);
     }
 
-    async read(params: GetContactParamDto): Promise<GetContactResponseDto> {
+    async read(id: number): Promise<GetContactResponseDto> {
         const contact = await this.prismaService.contact.findFirst({
             where: {
-                Id: params.id,
+                Id: id,
                 DeletedAt: null,
             },
         });
@@ -93,59 +76,50 @@ export class ContactService {
         return this.toContactResponse(contact);
     }
 
-    async list(query: ListContactQueryDto): Promise<ListContactResponseDto> {
-        const skip = (query.page - 1) * query.limit;
-        const where = this.buildContactListWhere(query);
-
+    async list(page: number = 1, limit: number = 10, search?: string): Promise<PaginatedResponseDto<GetContactResponseDto>> {
+        const where = this.buildContactListWhere(search);
         const [total, contacts] = await Promise.all([
             this.prismaService.contact.count({
                 where,
             }),
             this.prismaService.contact.findMany({
                 where,
-                skip,
-                take: query.limit,
+                skip: (page - 1) * limit,
+                take: limit,
                 orderBy: {
                     CreatedAt: "desc",
                 },
             }),
         ]);
 
-        const totalPages = Math.ceil(total / query.limit);
-        const hasNextPage = query.page < totalPages;
-        const hasPreviousPage = query.page > 1;
-        const data = contacts.map((contact) => this.toContactResponse(contact));
-
-        return new ListContactResponseDto(
-            query.page,
-            query.limit,
+        return new PaginatedResponseDto(
+            page,
+            limit,
             total,
 
-            totalPages,
-            hasNextPage,
-            hasPreviousPage,
-
-            data,
+            contacts.map((contact: Contact) => this.toContactResponse(contact)),
         );
     }
 
-    async update(params: GetContactParamDto, command: UpdateContactCommandDto): Promise<GetContactResponseDto> {
-        const contact = await this.read(params);
+    async update(id: number, companyId?: number, listId?: number, name?: string, phone?: string, country?: string): Promise<GetContactResponseDto> {
+        const contact = await this.read(id);
+        const targetCompanyId = companyId ?? contact.companyId;
+        const targetListId = listId ?? contact.listId;
 
         let normalizedPhone: string | undefined;
 
-        if (command.companyId !== undefined) {
-            await this.companyService.read(command.companyId);
+        if (companyId !== undefined) {
+            await this.companyService.read(companyId);
         }
-        if (command.listId !== undefined) {
-            await this.listService.read({ id: command.listId, });
-        }
-        if (command.phone !== undefined) {
-            if (command.country === undefined) {
+
+        await this.listService.validateBelongsToCompany(targetListId, targetCompanyId);
+
+        if (phone !== undefined) {
+            if (country === undefined) {
                 throw new BadRequestException("Country is required when updating phone");
             }
 
-            normalizedPhone = this.normalizePhone(command.phone, command.country as CountryCode);
+            normalizedPhone = formatContactPhoneNumber(phone, country as CountryCode);
         }
 
         const updatedContact = await this.prismaService.contact.update({
@@ -153,26 +127,18 @@ export class ContactService {
                 Id: contact.id,
             },
             data: {
-                ...(command.companyId !== undefined && {
-                    CompanyId: command.companyId,
-                }),
-                ...(command.listId !== undefined && {
-                    ListId: command.listId,
-                }),
-                ...(command.name !== undefined && {
-                    Name: command.name,
-                }),
-                ...(normalizedPhone !== undefined && {
-                    Phone: normalizedPhone,
-                }),
+                ...(companyId !== undefined && { CompanyId: companyId, }),
+                ...(listId !== undefined && { ListId: listId, }),
+                ...(name !== undefined && { Name: name, }),
+                ...(normalizedPhone !== undefined && { Phone: normalizedPhone, }),
             },
         });
 
         return this.toContactResponse(updatedContact);
     }
 
-    async delete(params: GetContactParamDto): Promise<void> {
-        const contact = await this.read(params);
+    async delete(id: number): Promise<void> {
+        const contact = await this.read(id);
 
         await this.prismaService.contact.update({
             where: {

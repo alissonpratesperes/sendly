@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import type { CountryCode } from 'libphonenumber-js';
 import { IsInt, IsISO31661Alpha2, IsNotEmpty, IsString, MaxLength, Min } from 'class-validator';
 
 export class CreateContactCommandDto {
