@@ -12,7 +12,9 @@ import { AuthenticationTokenPair } from './types/AuthenticationTokenPair.type';
 
 @Controller("authentication")
 export class AuthenticationController {
-  constructor(private readonly authenticationService: AuthenticationService) {}
+  constructor(
+    private readonly authenticationService: AuthenticationService,
+  ) {}
 
   @IsPublic()
   @Post("login")

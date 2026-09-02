@@ -3,7 +3,6 @@ import { ConflictException, Injectable, NotFoundException } from '@nestjs/common
 
 import { PrismaService } from '../prisma/prisma.service';
 import { GetCompanyResponseDto } from './dtos/getCompanyResponse.dto';
-import { UpdateCompanyCommandDto } from './dtos/updateCompanyCommand.dto';
 import { PaginatedResponseDto } from 'src/common/dtos/paginatedResponse.dto';
 import { formatCompanyDocument } from 'src/common/formatters/companyDocument.formatter';
 
@@ -102,39 +101,24 @@ export class CompanyService {
         );
     }
 
-    async update(id: number, command: UpdateCompanyCommandDto): Promise<GetCompanyResponseDto> {
-
-
-
-
-
-
-
-
-
-        const company = await this.read(params);
+    async update(id: number, name?: string, document?: string, description?: string | null): Promise<GetCompanyResponseDto> {
+        const company = await this.read(id);
         const updatedCompany = await this.prismaService.company.update({
             where: {
                 Id: company.id,
             },
             data: {
-                ...(command.name !== undefined && {
-                    Name: command.name,
-                }),
-                ...(command.document !== undefined && {
-                    Document: command.document,
-                }),
-                ...(command.description !== undefined && {
-                    Description: command.description,
-                }),
+                ...(name !== undefined && { Name: name }),
+                ...(document !== undefined && { Document: document }),
+                ...(description !== undefined && { Description: description }),
             },
         });
 
         return this.toCompanyResponse(updatedCompany);
     }
 
-    async delete(params: IdParamDto): Promise<void> {
-        const company = await this.read(params);
+    async delete(id: number): Promise<void> {
+        const company = await this.read(id);
 
         await this.prismaService.company.update({
             where: {

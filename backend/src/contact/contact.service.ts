@@ -63,7 +63,7 @@ export class ContactService {
     }
 
     async create(command: CreateContactCommandDto): Promise<GetContactResponseDto> {
-        await this.companyService.read({ id: command.companyId, });
+        await this.companyService.read(command.companyId);
         await this.listService.read({ id: command.listId, });
 
         const createdContact = await this.prismaService.contact.create({
@@ -135,7 +135,7 @@ export class ContactService {
         let normalizedPhone: string | undefined;
 
         if (command.companyId !== undefined) {
-            await this.companyService.read({ id: command.companyId, });
+            await this.companyService.read(command.companyId);
         }
         if (command.listId !== undefined) {
             await this.listService.read({ id: command.listId, });

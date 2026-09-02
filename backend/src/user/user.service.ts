@@ -51,7 +51,7 @@ export class UserService {
     }
 
     async create(command: CreateUserCommandDto): Promise<GetUserResponseDto> {
-        await this.companyService.read({ id: command.companyId, });
+        await this.companyService.read(command.companyId);
 
         const emailAlreadyUsed = await this.prismaService.user.findUnique({
             where: {
@@ -148,7 +148,7 @@ export class UserService {
         const user = await this.read(params);
 
         if (command.companyId !== undefined) {
-            await this.companyService.read({ id: command.companyId, });
+            await this.companyService.read(command.companyId);
         }
         if (command.email !== undefined && command.email !== user.email) {
             const emailAlreadyUsed = await this.prismaService.user.findUnique({

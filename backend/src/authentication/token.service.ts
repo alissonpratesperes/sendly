@@ -50,12 +50,12 @@ export class TokenService {
     async generateAuthenticationTokenPair(userId: number, email: string): Promise<AuthenticationTokenPair> {
         const [accessToken, refreshToken] = await Promise.all([
             this.jwtService.signAsync({ sub: userId, email }, this.accessTokenConfig),
-            this.jwtService.signAsync({ sub: userId, email }, this.refreshTokenConfig)
+            this.jwtService.signAsync({ sub: userId, email }, this.refreshTokenConfig),
         ]);
 
         return {
             accessToken,
-            refreshToken
+            refreshToken,
         };
     }
 

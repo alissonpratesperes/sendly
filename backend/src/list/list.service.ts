@@ -46,7 +46,7 @@ export class ListService {
     }
 
     async create(command: CreateListCommandDto): Promise<GetListResponseDto> {
-        await this.companyService.read({ id: command.companyId, });
+        await this.companyService.read(command.companyId);
 
         const createdList = await this.prismaService.list.create({
             data: {
@@ -115,7 +115,7 @@ export class ListService {
         const list = await this.read(params);
 
         if (command.companyId !== undefined) {
-            await this.companyService.read({ id: command.companyId, });
+            await this.companyService.read(command.companyId);
         }
 
         const updatedList = await this.prismaService.list.update({

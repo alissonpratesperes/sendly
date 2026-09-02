@@ -28,7 +28,7 @@ export class AuthenticationService {
     const authenticatedUserTokenPair = await this.tokenService.generateAuthenticationTokenPair(user.Id, user.Email);
     const hashedRefreshToken = await this.tokenService.generateRefreshTokenHash(authenticatedUserTokenPair.refreshToken);
 
-    await this.userService.updateUserRefreshToken(user.id, hashedRefreshToken);
+    await this.userService.updateUserRefreshToken(user.Id, hashedRefreshToken);
 
     return authenticatedUserTokenPair;
   }
@@ -47,7 +47,7 @@ export class AuthenticationService {
     const authenticatedUserTokenPair = await this.tokenService.generateAuthenticationTokenPair(user.Id, user.Email);
     const hashedRefreshToken = await this.tokenService.generateRefreshTokenHash(authenticatedUserTokenPair.refreshToken);
 
-    await this.userService.updateUserRefreshToken(user.id, hashedRefreshToken);
+    await this.userService.updateUserRefreshToken(user.Id, hashedRefreshToken);
 
     return authenticatedUserTokenPair;
   }
@@ -57,7 +57,7 @@ export class AuthenticationService {
     const generatedPasswordResetToken = await this.tokenService.generatePasswordResetToken(user.Id, user.Email);
     const hashedPasswordResetToken = await this.tokenService.generatePasswordResetTokenHash(generatedPasswordResetToken);
 
-    await this.userService.startPasswordReset(user.id, hashedPasswordResetToken);
+    await this.userService.startPasswordReset(user.Id, hashedPasswordResetToken);
 
     return generatedPasswordResetToken;
   }
@@ -79,6 +79,6 @@ export class AuthenticationService {
 
     const newHashedPassword = await bcrypt.hash(command.newPassword, 12);
 
-    await this.userService.completePasswordReset(user.id, newHashedPassword);
+    await this.userService.completePasswordReset(user.Id, newHashedPassword);
   }
 }

@@ -11,13 +11,15 @@ import { IsSystemRoot } from '../authentication/decorators/isSystemRoot.decorato
 
 @Controller("company")
 export class CompanyController {
-    constructor(private readonly companyService: CompanyService) {}
+    constructor(
+        private readonly companyService: CompanyService,
+    ) {}
 
     @Post()
     @IsSystemRoot()
     @HttpCode(HttpStatus.CREATED)
     async create(@Body() command: CreateCompanyCommandDto): Promise<GetCompanyResponseDto> {
-        return this.companyService.create(command);
+        return this.companyService.create(command.name, command.document, command.description ?? null);
     }
 
     @Get(":id")
@@ -36,13 +38,13 @@ export class CompanyController {
     @IsSystemRoot()
     @HttpCode(HttpStatus.OK)
     async update(@Param() param: IdParamDto, @Body() command: UpdateCompanyCommandDto): Promise<GetCompanyResponseDto> {
-        return this.companyService.update(param.id, command);
+        return this.companyService.update(param.id, command.name, command.document, command.description);
     }
 
     @Delete(":id")
     @IsSystemRoot()
     @HttpCode(HttpStatus.NO_CONTENT)
-    async delete(@Param() params: IdParamDto): Promise<void> {
-        return this.companyService.delete(params);
+    async delete(@Param() param: IdParamDto): Promise<void> {
+        return this.companyService.delete(param.id);
     }
 }
