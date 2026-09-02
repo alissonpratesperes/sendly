@@ -23,7 +23,7 @@ import { AuthenticationModule } from './authentication/authentication.module';
   ],
   providers: [
     { provide: APP_GUARD, useClass: SystemRootGuard },
-    { provide: APP_GUARD, useClass: AccessTokenGuard }
+    { provide: APP_GUARD, useClass: AccessTokenGuard },
   ]
 })
 export class AppModule {}
