@@ -5,6 +5,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 
 import { JwtTokenPayload } from './interfaces/jwtTokenPayload.interface';
 import { AuthenticationTokenPair } from './types/AuthenticationTokenPair.type';
+import { requireEnvironmentVariable } from '../common/utils/requireEnvironmentVariable.util';
 
 @Injectable()
 export class TokenService {
@@ -12,39 +13,19 @@ export class TokenService {
         private readonly jwtService: JwtService,
     ) {}
 
-    private readonly accessTokenConfig: JwtSignOptions = {
-        secret: this.requireEnvironmentVariable("ACCESS_TOKEN_SECRET"),
-        expiresIn: this.getExpiresIn(this.requireEnvironmentVariable("ACCESS_TOKEN_EXPIRATION")),
-    }
-    private readonly refreshTokenConfig: JwtSignOptions = {
-        secret: this.requireEnvironmentVariable("REFRESH_TOKEN_SECRET"),
-        expiresIn: this.getExpiresIn(this.requireEnvironmentVariable("REFRESH_TOKEN_EXPIRATION")),
-    }
-    private readonly forgotTokenConfig: JwtSignOptions = {
-        secret: this.requireEnvironmentVariable("FORGOT_TOKEN_SECRET"),
-        expiresIn: this.getExpiresIn(this.requireEnvironmentVariable("FORGOT_TOKEN_EXPIRATION")),
-    }
+    private readonly accessTokenConfig = this.createTokenConfig("ACCESS_TOKEN_SECRET", "ACCESS_TOKEN_EXPIRATION");
+    private readonly refreshTokenConfig = this.createTokenConfig("REFRESH_TOKEN_SECRET", "REFRESH_TOKEN_EXPIRATION");
+    private readonly forgotTokenConfig = this.createTokenConfig("FORGOT_TOKEN_SECRET", "FORGOT_TOKEN_EXPIRATION");
 
-    private requireEnvironmentVariable(variable: string): string {
-        const value = process.env[variable];
-
-        return !value ? (() => { throw new Error(`'${variable}' is not defined`); })() : value;
-    }
-
-    private getExpiresIn(value: string): JwtSignOptions["expiresIn"] {
-        return value as JwtSignOptions["expiresIn"];
+    private createTokenConfig(secretVariable: string, expirationVariable: string): JwtSignOptions {
+        return {
+            secret: requireEnvironmentVariable(secretVariable),
+            expiresIn: requireEnvironmentVariable(expirationVariable) as JwtSignOptions["expiresIn"],
+        };
     }
 
     private hashToken(token: string): string {
         return crypto.createHash("sha256").update(token).digest("hex");
-    }
-
-    private hashWithBcrypt(token: string): Promise<string> {
-        return bcrypt.hash(token, 12);
-    }
-
-    private compareWithBcrypt(value: string, hash: string): Promise<boolean> {
-        return bcrypt.compare(value, hash);
     }
 
     async generateAuthenticationTokenPair(userId: number, email: string): Promise<AuthenticationTokenPair> {
@@ -60,7 +41,7 @@ export class TokenService {
     }
 
     generateRefreshTokenHash(refreshToken: string): Promise<string> {
-        return this.hashWithBcrypt(refreshToken);
+        return bcrypt.hash(refreshToken, 12);
     }
 
     async generatePasswordResetToken(userId: number, email: string): Promise<string> {
@@ -76,14 +57,14 @@ export class TokenService {
     }
 
     compareRefreshToken(refreshToken: string, hashedRefreshToken: string): Promise<boolean> {
-        return this.compareWithBcrypt(refreshToken, hashedRefreshToken);
+        return bcrypt.compare(refreshToken, hashedRefreshToken);
     }
 
     generatePasswordResetTokenHash(passwordResetToken: string): Promise<string> {
-        return this.hashWithBcrypt(this.hashToken(passwordResetToken));
+        return bcrypt.hash(this.hashToken(passwordResetToken), 12);
     }
 
     comparePasswordResetToken(token: string, hashedToken: string): Promise<boolean> {
-        return this.compareWithBcrypt(this.hashToken(token), hashedToken);
+        return bcrypt.compare(this.hashToken(token), hashedToken);
     }
 }

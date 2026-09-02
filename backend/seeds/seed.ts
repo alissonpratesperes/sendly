@@ -1,13 +1,9 @@
 import * as bcrypt from 'bcrypt';
 import { PrismaClient } from '@prisma/client';
 
+import { requireEnvironmentVariable } from '../src/common/utils/requireEnvironmentVariable.util';
+
 const prismaClient = new PrismaClient();
-
-function requireEnvironmentVariable(variable: string): string {
-  const value = process.env[variable];
-
-  return !value ? (() => { throw new Error(`'${variable}' is not defined`); })() : value;
-}
 
 async function main() {
   const seedCompany = {
