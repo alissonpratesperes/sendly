@@ -1,14 +1,10 @@
 import { Note } from '@prisma/client';
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
-import { GetNoteParamDto } from './dtos/getNoteParam.dto';
-import { ListNoteQueryDto } from './dtos/listNoteQuery.dto';
 import { ContactService } from 'src/contact/contact.service';
 import { GetNoteResponseDto } from './dtos/getNoteResponse.dto';
-import { ListNoteResponseDto } from './dtos/listNoteResponse.dto';
-import { CreateNoteCommandDto } from './dtos/createNoteCommand.dto';
-import { UpdateNoteCommandDto } from './dtos/updateNoteCommand.dto';
+import { PaginatedResponseDto } from '../common/dtos/paginatedResponse.dto';
 
 @Injectable()
 export class NoteService {
@@ -29,36 +25,36 @@ export class NoteService {
         );
     }
 
-    private buildNoteListWhere(query: ListNoteQueryDto) {
+    private buildNoteListWhere(search?: string) {
         return {
             DeletedAt: null,
-            ...(query.search
+            ...(search
                 ? {
                     OR: [
-                        { Content: { contains: query.search } },
+                        { Content: { contains: search } },
                     ],
                 }
             : {}),
         };
     }
 
-    async create(command: CreateNoteCommandDto): Promise<GetNoteResponseDto> {
-        await this.contactService.read({ id: command.contactId });
+    async create(contactId: number, content: string): Promise<GetNoteResponseDto> {
+        await this.contactService.read(contactId);
 
         const createdNote = await this.prismaService.note.create({
             data: {
-                ContactId: command.contactId,
-                Content: command.content,
+                ContactId: contactId,
+                Content: content,
             },
         });
 
         return this.toNoteResponse(createdNote);
     }
 
-    async read(params: GetNoteParamDto): Promise<GetNoteResponseDto> {
+    async read(id: number): Promise<GetNoteResponseDto> {
         const note = await this.prismaService.note.findFirst({
             where: {
-                Id: params.id,
+                Id: id,
                 DeletedAt: null,
             },
         });
@@ -70,49 +66,36 @@ export class NoteService {
         return this.toNoteResponse(note);
     }
 
-    async list(query: ListNoteQueryDto): Promise<ListNoteResponseDto> {
-        const skip = (query.page - 1) * query.limit;
-        const where = this.buildNoteListWhere(query);
-
+    async list(page: number = 1, limit: number = 10, search?: string): Promise<PaginatedResponseDto<GetNoteResponseDto>> {
+        const where = this.buildNoteListWhere(search);
         const [total, notes] = await Promise.all([
             this.prismaService.note.count({
                 where,
             }),
             this.prismaService.note.findMany({
                 where,
-                skip,
-                take: query.limit,
+                skip: (page - 1) * limit,
+                take: limit,
                 orderBy: {
                     CreatedAt: "desc",
                 },
             }),
         ]);
 
-        const totalPages = Math.ceil(total / query.limit);
-        const hasNextPage = query.page < totalPages;
-        const hasPreviousPage = query.page > 1;
-        const data = notes.map((note) => this.toNoteResponse(note));
-
-        return new ListNoteResponseDto(
-            query.page,
-            query.limit,
+        return new PaginatedResponseDto(
+            page,
+            limit,
             total,
 
-            totalPages,
-            hasNextPage,
-            hasPreviousPage,
-
-            data,
+            notes.map((note: Note) => this.toNoteResponse(note)),
         );
     }
 
-    async update(params: GetNoteParamDto, command: UpdateNoteCommandDto): Promise<GetNoteResponseDto> {
-        const note = await this.read(params);
+    async update(id: number, contactId?: number, content?: string): Promise<GetNoteResponseDto> {
+        const note = await this.read(id);
 
-        if (command.contactId !== undefined) {
-            await this.contactService.read({
-                id: command.contactId,
-            });
+        if (contactId !== undefined) {
+            await this.contactService.read(contactId);
         }
 
         const updatedNote = await this.prismaService.note.update({
@@ -120,20 +103,16 @@ export class NoteService {
                 Id: note.id,
             },
             data: {
-                ...(command.contactId !== undefined && {
-                    ContactId: command.contactId,
-                }),
-                ...(command.content !== undefined && {
-                    Content: command.content,
-                }),
+                ...(contactId !== undefined && { ContactId: contactId, }),
+                ...(content !== undefined && { Content: content, }),
             },
         });
 
         return this.toNoteResponse(updatedNote);
     }
 
-    async delete(params: GetNoteParamDto): Promise<void> {
-        const note = await this.read(params);
+    async delete(id: number): Promise<void> {
+        const note = await this.read(id);
 
         await this.prismaService.note.update({
             where: {

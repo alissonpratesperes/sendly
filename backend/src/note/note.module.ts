@@ -5,8 +5,14 @@ import { NoteController } from './note.controller';
 import { NoteService } from './note.service';
 
 @Module({
-  imports: [ContactModule],
-  controllers: [NoteController],
-  providers: [NoteService]
+  imports: [
+    ContactModule,
+  ],
+  controllers: [
+    NoteController,
+  ],
+  providers: [
+    NoteService,
+  ]
 })
 export class NoteModule {}
