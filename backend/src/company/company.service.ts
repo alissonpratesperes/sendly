@@ -108,9 +108,9 @@ export class CompanyService {
                 Id: company.id,
             },
             data: {
-                ...(name !== undefined && { Name: name }),
-                ...(document !== undefined && { Document: document }),
-                ...(description !== undefined && { Description: description }),
+                ...(name !== undefined && { Name: name, }),
+                ...(document !== undefined && { Document: document, }),
+                ...(description !== undefined && { Description: description, }),
             },
         });
 

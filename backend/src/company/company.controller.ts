@@ -3,10 +3,10 @@ import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post
 import { CompanyService } from './company.service';
 import { IdParamDto } from '../common/dtos/idParam.dto';
 import { GetCompanyResponseDto } from './dtos/getCompanyResponse.dto';
-import { PaginationQueryDto } from 'src/common/dtos/paginationQuery.dto';
+import { PaginationQueryDto } from '../common/dtos/paginationQuery.dto';
 import { CreateCompanyCommandDto } from './dtos/createCompanyCommand.dto';
 import { UpdateCompanyCommandDto } from './dtos/updateCompanyCommand.dto';
-import { PaginatedResponseDto } from 'src/common/dtos/paginatedResponse.dto';
+import { PaginatedResponseDto } from '../common/dtos/paginatedResponse.dto';
 import { IsSystemRoot } from '../authentication/decorators/isSystemRoot.decorator';
 
 @Controller("company")

@@ -5,6 +5,7 @@ import { CompanyController } from './company.controller';
 
 @Module({
   providers: [CompanyService],
-  controllers: [CompanyController]
+  controllers: [CompanyController],
+  exports: [CompanyService],
 })
 export class CompanyModule {}

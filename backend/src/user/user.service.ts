@@ -3,13 +3,9 @@ import { User } from '@prisma/client';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
-import { GetUserParamDto } from './dtos/getUserParam.dto';
-import { ListUserQueryDto } from './dtos/listUserQuery.dto';
 import { CompanyService } from 'src/company/company.service';
 import { GetUserResponseDto } from './dtos/getUserResponse.dto';
-import { ListUserResponseDto } from './dtos/listUserResponse.dto';
-import { CreateUserCommandDto } from './dtos/createUserCommand.dto';
-import { UpdateUserCommandDto } from './dtos/updateUserCommand.dto';
+import { PaginatedResponseDto } from 'src/common/dtos/paginatedResponse.dto';
 
 @Injectable()
 export class UserService {
@@ -36,49 +32,51 @@ export class UserService {
         );
     }
 
-    private buildUserListWhere(query: ListUserQueryDto) {
+    private buildUserListWhere(search?: string) {
         return {
             DeletedAt: null,
-            ...(query.search
+            ...(search
                 ? {
                     OR: [
-                        { Name: { contains: query.search } },
-                        { Email: { contains: query.search } },
+                        { Name: { contains: search } },
+                        { Email: { contains: search } },
                     ],
                 }
             : {}),
         };
     }
 
-    async create(command: CreateUserCommandDto): Promise<GetUserResponseDto> {
-        await this.companyService.read(command.companyId);
-
-        const emailAlreadyUsed = await this.prismaService.user.findUnique({
+    private async findByEmail(email: string): Promise<User | null> {
+        return this.prismaService.user.findUnique({
             where: {
-                Email: command.email,
+                Email: email,
             },
         });
+    }
 
-        if(emailAlreadyUsed) {
+    async create(companyId: number, name: string, email: string, password: string): Promise<GetUserResponseDto> {
+        await this.companyService.read(companyId);
+
+        if(await this.findByEmail(email)) {
             throw new ConflictException("A user with this e-mail is already registered");
         }
 
         const createdUser = await this.prismaService.user.create({
             data: {
-                CompanyId: command.companyId,
-                Name: command.name,
-                Email: command.email,
-                Password: await bcrypt.hash(command.password, 12),
+                CompanyId: companyId,
+                Name: name,
+                Email: email,
+                Password: await bcrypt.hash(password, 12),
             },
         });
 
         return this.toUserResponse(createdUser);
     }
 
-    async read(params: GetUserParamDto): Promise<GetUserResponseDto> {
+    async read(id: number): Promise<GetUserResponseDto> {
         const user = await this.prismaService.user.findFirst({
             where: {
-                Id: params.id,
+                Id: id,
                 DeletedAt: null,
             },
         });
@@ -108,56 +106,39 @@ export class UserService {
         return user;
     }
 
-    async list(query: ListUserQueryDto): Promise<ListUserResponseDto> {
-        const skip = (query.page - 1) * query.limit;
-        const where = this.buildUserListWhere(query);
-
+    async list(page: number = 1, limit: number = 10, search?: string): Promise<PaginatedResponseDto<GetUserResponseDto>> {
+        const where = this.buildUserListWhere(search);
         const [total, users] = await Promise.all([
             this.prismaService.user.count({
                 where,
             }),
             this.prismaService.user.findMany({
                 where,
-                skip,
-                take: query.limit,
+                skip: (page - 1) * limit,
+                take: limit,
                 orderBy: {
                     CreatedAt: "desc",
                 },
             }),
         ]);
 
-        const totalPages = Math.ceil(total / query.limit);
-        const hasNextPage = query.page < totalPages;
-        const hasPreviousPage = query.page > 1;
-        const data = users.map((user) => this.toUserResponse(user));
-
-        return new ListUserResponseDto(
-            query.page,
-            query.limit,
+        return new PaginatedResponseDto(
+            page,
+            limit,
             total,
 
-            totalPages,
-            hasNextPage,
-            hasPreviousPage,
-
-            data,
+            users.map((user: User) => this.toUserResponse(user)),
         );
     }
 
-    async update(params: GetUserParamDto, command: UpdateUserCommandDto): Promise<GetUserResponseDto> {
-        const user = await this.read(params);
+    async update(id: number, companyId?: number, name?: string, email?: string, password?: string): Promise<GetUserResponseDto> {
+        const user = await this.read(id);
 
-        if (command.companyId !== undefined) {
-            await this.companyService.read(command.companyId);
+        if (companyId !== undefined) {
+            await this.companyService.read(companyId);
         }
-        if (command.email !== undefined && command.email !== user.email) {
-            const emailAlreadyUsed = await this.prismaService.user.findUnique({
-                where: {
-                    Email: command.email,
-                },
-            });
-
-            if (emailAlreadyUsed) {
+        if (email !== undefined && email !== user.email) {
+            if (await this.findByEmail(email)) {
                 throw new ConflictException("A user with this e-mail is already registered");
             }
         }
@@ -167,18 +148,10 @@ export class UserService {
                 Id: user.id,
             },
             data: {
-                ...(command.companyId !== undefined && {
-                    CompanyId: command.companyId,
-                }),
-                ...(command.name !== undefined && {
-                    Name: command.name,
-                }),
-                ...(command.email !== undefined && {
-                    Email: command.email,
-                }),
-                ...(command.password !== undefined && {
-                    Password: await bcrypt.hash(command.password, 12),
-                }),
+                ...(companyId !== undefined && { CompanyId: companyId, }),
+                ...(name !== undefined && { Name: name, }),
+                ...(email !== undefined && { Email: email, }),
+                ...(password !== undefined && { Password: await bcrypt.hash(password, 12), }),
             },
         });
 
@@ -186,7 +159,7 @@ export class UserService {
     }
 
     async updateUserRefreshToken(id: number, hashedRefreshToken: string | null): Promise<void> {
-        const user = await this.read({ id });
+        const user = await this.read(id);
 
         await this.prismaService.user.update({
             where: {
@@ -199,7 +172,7 @@ export class UserService {
     }
 
     async startPasswordReset(id: number, hashedPasswordResetToken: string): Promise<void> {
-        const user = await this.read({ id });
+        const user = await this.read(id);
 
         await this.prismaService.user.update({
             where: {
@@ -213,7 +186,7 @@ export class UserService {
     }
 
     async completePasswordReset(id: number, hashedPassword: string): Promise<void> {
-        const user = await this.read({ id });
+        const user = await this.read(id);
 
         await this.prismaService.user.update({
             where: {
@@ -228,8 +201,8 @@ export class UserService {
         });
     }
 
-    async delete(params: GetUserParamDto): Promise<void> {
-        const user = await this.read(params);
+    async delete(id: number): Promise<void> {
+        const user = await this.read(id);
 
         await this.prismaService.user.update({
             where: {

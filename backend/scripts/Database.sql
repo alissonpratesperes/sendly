@@ -1,3 +1,4 @@
+-- DONE
 CREATE TABLE `Company` (
     `Id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
 
@@ -13,6 +14,7 @@ CREATE TABLE `Company` (
     CONSTRAINT `UK_Company_Document` UNIQUE (`Document`)
 );
 
+-- DONE
 CREATE TABLE `User` (
     `Id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `CompanyId` INT UNSIGNED NOT NULL,
