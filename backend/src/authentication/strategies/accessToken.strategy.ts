@@ -8,7 +8,7 @@ import { AuthenticationStrategy } from '../enums/authenticationStrategy.enum';
 import { AuthenticatedUser } from '../interfaces/authenticatedUser.interface';
 
 @Injectable()
-export class AccessTokenStrategy extends PassportStrategy(Strategy, AuthenticationStrategy.AccessToken) {
+export class AccessTokenStrategy extends PassportStrategy(Strategy, AuthenticationStrategy.ACCESS_TOKEN) {
     constructor(private readonly userService: UserService) {
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),

@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 
+import { MailModule } from './mail/mail.module';
 import { UserModule } from './user/user.module';
 import { ListModule } from './list/list.module';
 import { NoteModule } from './note/note.module';
@@ -14,6 +15,7 @@ import { AuthenticationModule } from './authentication/authentication.module';
 
 @Module({
   imports: [
+    MailModule,
     UserModule,
     ListModule,
     NoteModule,
@@ -26,6 +28,6 @@ import { AuthenticationModule } from './authentication/authentication.module';
   providers: [
     { provide: APP_GUARD, useClass: SystemRootGuard },
     { provide: APP_GUARD, useClass: AccessTokenGuard },
-  ]
+  ],
 })
 export class AppModule {}

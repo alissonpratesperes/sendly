@@ -7,7 +7,7 @@ import { JwtTokenPayload } from '../interfaces/jwtTokenPayload.interface';
 import { AuthenticationStrategy } from '../enums/authenticationStrategy.enum';
 
 @Injectable()
-export class RefreshTokenStrategy extends PassportStrategy(Strategy, AuthenticationStrategy.RefreshToken) {
+export class RefreshTokenStrategy extends PassportStrategy(Strategy, AuthenticationStrategy.REFRESH_TOKEN) {
     constructor() {
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),

@@ -6,7 +6,7 @@ import { IS_PUBLIC_KEY } from '../decorators/isPublic.decorator';
 import { AuthenticationStrategy } from '../enums/authenticationStrategy.enum';
 
 @Injectable()
-export class AccessTokenGuard extends AuthGuard(AuthenticationStrategy.AccessToken) {
+export class AccessTokenGuard extends AuthGuard(AuthenticationStrategy.ACCESS_TOKEN) {
     constructor(private readonly reflector: Reflector) {
         super();
     }

@@ -20,7 +20,7 @@ async function bootstrap() {
         .setTitle("Sendly")
         .setDescription("API Endpoints Documentation")
         .setVersion("1.0")
-        .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT', }, AuthenticationStrategy.AccessToken)
+        .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT', }, AuthenticationStrategy.ACCESS_TOKEN)
         .build(),
     ), {
       swaggerOptions: {

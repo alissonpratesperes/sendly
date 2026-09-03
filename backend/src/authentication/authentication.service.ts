@@ -1,5 +1,5 @@
 import * as bcrypt from 'bcrypt';
-import { Injectable, ForbiddenException, BadRequestException, UnauthorizedException } from '@nestjs/common';
+import { Injectable, BadRequestException, UnauthorizedException } from '@nestjs/common';
 
 import { TokenService } from './token.service';
 import { UserService } from 'src/user/user.service';
@@ -22,7 +22,7 @@ export class AuthenticationService {
       throw new BadRequestException("It's necessary to redefine the first password");
     }
     if(!await bcrypt.compare(command.password, user.Password)) {
-      throw new ForbiddenException("Access denied");
+      throw new UnauthorizedException("Invalid credentials");
     }
 
     const authenticatedUserTokenPair = await this.tokenService.generateAuthenticationTokenPair(user.Id, user.Email);
@@ -41,7 +41,7 @@ export class AuthenticationService {
     const user = await this.userService.readByEmail(email, true);
 
     if(!user.HashedRefreshToken || !await this.tokenService.compareRefreshToken(refreshToken, user.HashedRefreshToken)) {
-      throw new ForbiddenException("Access denied");
+      throw new UnauthorizedException("Invalid credentials");
     }
 
     const authenticatedUserTokenPair = await this.tokenService.generateAuthenticationTokenPair(user.Id, user.Email);
@@ -80,5 +80,6 @@ export class AuthenticationService {
     const newHashedPassword = await bcrypt.hash(command.newPassword, 12);
 
     await this.userService.completePasswordReset(user.Id, newHashedPassword);
+    await this.userService.updateUserRefreshToken(user.Id, null);
   }
 }

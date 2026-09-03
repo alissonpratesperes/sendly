@@ -1,4 +1,4 @@
 export enum AuthenticationStrategy {
-  AccessToken = "jwt-access",
-  RefreshToken = "jwt-refresh",
+  ACCESS_TOKEN = "jwt-access",
+  REFRESH_TOKEN = "jwt-refresh",
 }
