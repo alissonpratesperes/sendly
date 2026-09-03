@@ -1,5 +1,5 @@
 import * as bcrypt from 'bcrypt';
-import { User } from '@prisma/client';
+import { Prisma, User } from '@prisma/client';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
@@ -32,7 +32,7 @@ export class UserService {
         );
     }
 
-    private buildUserListWhere(search?: string) {
+    private buildUserListWhere(search?: string): Prisma.UserWhereInput {
         return {
             DeletedAt: null,
             ...(search

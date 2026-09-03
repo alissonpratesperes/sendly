@@ -7,6 +7,7 @@ import { NoteModule } from './note/note.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { CompanyModule } from './company/company.module';
 import { ContactModule } from './contact/contact.module';
+import { TemplateModule } from './template/template.module';
 import { SystemRootGuard } from './authentication/guards/systemRoot.guard';
 import { AccessTokenGuard } from './authentication/guards/accessToken.guard';
 import { AuthenticationModule } from './authentication/authentication.module';
@@ -19,6 +20,7 @@ import { AuthenticationModule } from './authentication/authentication.module';
     PrismaModule,
     CompanyModule,
     ContactModule,
+    TemplateModule,
     AuthenticationModule,
   ],
   providers: [

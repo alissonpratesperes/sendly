@@ -1,4 +1,4 @@
-import { List } from '@prisma/client';
+import { List, Prisma } from '@prisma/client';
 import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
@@ -27,7 +27,7 @@ export class ListService {
         );
     }
 
-    private buildListListWhere(search?: string) {
+    private buildListListWhere(search?: string): Prisma.ListWhereInput {
         return {
             DeletedAt: null,
             ...(search

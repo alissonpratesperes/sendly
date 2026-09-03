@@ -1,4 +1,4 @@
-import { Note } from '@prisma/client';
+import { Note, Prisma } from '@prisma/client';
 import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
@@ -25,7 +25,7 @@ export class NoteService {
         );
     }
 
-    private buildNoteListWhere(search?: string) {
+    private buildNoteListWhere(search?: string): Prisma.NoteWhereInput {
         return {
             DeletedAt: null,
             ...(search

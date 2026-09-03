@@ -1,4 +1,4 @@
-import { Contact } from '@prisma/client';
+import { Contact, Prisma } from '@prisma/client';
 import type { CountryCode } from 'libphonenumber-js';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 
@@ -31,7 +31,7 @@ export class ContactService {
         );
     }
 
-    private buildContactListWhere(search?: string) {
+    private buildContactListWhere(search?: string): Prisma.ContactWhereInput {
         return {
             DeletedAt: null,
             ...(search
@@ -78,7 +78,7 @@ export class ContactService {
                 Id: id,
                 DeletedAt: null,
 
-                 Company: {
+                Company: {
                     DeletedAt: null,
                 },
                 List: {

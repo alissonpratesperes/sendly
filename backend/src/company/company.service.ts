@@ -1,4 +1,4 @@
-import { Company } from '@prisma/client';
+import { Company, Prisma } from '@prisma/client';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
@@ -25,7 +25,7 @@ export class CompanyService {
         );
     }
 
-    private buildCompanyListWhere(search?: string) {
+    private buildCompanyListWhere(search?: string): Prisma.CompanyWhereInput {
         return {
             DeletedAt: null,
             ...(search
