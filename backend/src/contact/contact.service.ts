@@ -42,6 +42,17 @@ export class ContactService {
                     ],
                 }
             : {}),
+
+            Company: {
+                DeletedAt: null,
+            },
+            List: {
+                DeletedAt: null,
+
+                Company: {
+                    DeletedAt: null,
+                },
+            },
         };
     }
 
@@ -66,6 +77,17 @@ export class ContactService {
             where: {
                 Id: id,
                 DeletedAt: null,
+
+                 Company: {
+                    DeletedAt: null,
+                },
+                List: {
+                    DeletedAt: null,
+
+                    Company: {
+                        DeletedAt: null,
+                    },
+                },
             },
         });
 

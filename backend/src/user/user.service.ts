@@ -43,6 +43,10 @@ export class UserService {
                     ],
                 }
             : {}),
+
+            Company: {
+                DeletedAt: null,
+            },
         };
     }
 
@@ -78,6 +82,10 @@ export class UserService {
             where: {
                 Id: id,
                 DeletedAt: null,
+
+                Company: {
+                    DeletedAt: null,
+                },
             },
         });
 
@@ -96,6 +104,10 @@ export class UserService {
                     PasswordResetToken: null,
                 }),
                 DeletedAt: null,
+
+                Company: {
+                    DeletedAt: null,
+                },
             },
         });
 

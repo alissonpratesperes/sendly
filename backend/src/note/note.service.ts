@@ -35,6 +35,21 @@ export class NoteService {
                     ],
                 }
             : {}),
+
+            Contact: {
+                DeletedAt: null,
+
+                Company: {
+                    DeletedAt: null,
+                },
+                List: {
+                    DeletedAt: null,
+
+                    Company: {
+                        DeletedAt: null,
+                    },
+                },
+            },
         };
     }
 
@@ -56,6 +71,21 @@ export class NoteService {
             where: {
                 Id: id,
                 DeletedAt: null,
+
+                Contact: {
+                    DeletedAt: null,
+
+                    Company: {
+                        DeletedAt: null,
+                    },
+                    List: {
+                        DeletedAt: null,
+
+                        Company: {
+                            DeletedAt: null,
+                        },
+                    },
+                },
             },
         });
 

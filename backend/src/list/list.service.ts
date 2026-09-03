@@ -38,6 +38,10 @@ export class ListService {
                     ],
                 }
             : {}),
+
+            Company: {
+                DeletedAt: null,
+            },
         };
     }
 
@@ -61,6 +65,10 @@ export class ListService {
             where: {
                 Id: id,
                 DeletedAt: null,
+
+                Company: {
+                    DeletedAt: null,
+                },
             },
         });
 
@@ -77,6 +85,10 @@ export class ListService {
                 Id: id,
                 CompanyId: companyId,
                 DeletedAt: null,
+
+                Company: {
+                    DeletedAt: null,
+                },
             },
         });
     }
