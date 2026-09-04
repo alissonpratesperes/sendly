@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, HttpStatus, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Patch, Post, Query, UseGuards } from '@nestjs/common';
 
 import { LoginCommandDto } from './dtos/loginCommand.dto';
 import { ResetCommandDto } from './dtos/resetCommand.dto';
@@ -46,7 +46,7 @@ export class AuthenticationController {
   @IsPublic()
   @Patch("reset")
   @HttpCode(HttpStatus.NO_CONTENT)
-  async reset(@Body() command: ResetCommandDto): Promise<void> {
-    return this.authenticationService.reset(command);
+  async reset(@Query('passwordResetToken') query: string, @Body() command: ResetCommandDto): Promise<void> {
+    return this.authenticationService.reset(query, command);
   }
 }

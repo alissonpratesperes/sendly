@@ -62,18 +62,15 @@ export class AuthenticationService {
     return generatedPasswordResetToken;
   }
 
-  async reset(command: ResetCommandDto): Promise<void> {
+  async reset(query: string, command: ResetCommandDto): Promise<void> {
     if (command.newPassword !== command.confirmPassword) {
       throw new BadRequestException("Passwords do not match");
     }
 
-    const payload = await this.tokenService.verifyPasswordResetToken(command.passwordResetToken);
+    const payload = await this.tokenService.verifyPasswordResetToken(query);
     const user = await this.userService.readByEmail(payload.email, false);
 
-    if (!user.PasswordResetToken) {
-      throw new UnauthorizedException("Invalid password reset token");
-    }
-    if (!await this.tokenService.comparePasswordResetToken(command.passwordResetToken, user.PasswordResetToken)) {
+    if (!user.PasswordResetToken || !await this.tokenService.comparePasswordResetToken(query, user.PasswordResetToken)) {
       throw new UnauthorizedException("Invalid password reset token");
     }
 

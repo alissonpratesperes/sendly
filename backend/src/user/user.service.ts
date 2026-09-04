@@ -80,7 +80,7 @@ export class UserService {
             createdUser.Email,
             {
                 name: createdUser.Name,
-                url: "", //TODO: This will be made as Front-End evolutes (also create an .env);
+                url: ``, //TODO: This will be made as Front-End evolutes (also create an .env);
             },
         );
 
@@ -195,21 +195,21 @@ export class UserService {
 
     async startPasswordReset(id: number, hashedPasswordResetToken: string): Promise<void> {
         const user = await this.read(id);
-
-        await this.prismaService.user.update({
+        const updatedUser = await this.prismaService.user.update({
             where: {
                 Id: user.id,
             },
             data: {
                 HashedRefreshToken: null,
-                PasswordResetToken: hashedPasswordResetToken, //TODO: return the token to concatenate in the URL;
+                PasswordResetToken: hashedPasswordResetToken,
             },
         });
+
         await this.mailService.sendForgotPasswordEmail(
             user.Email,
             {
                 name: user.Name,
-                url: "", //TODO: This will be made as Front-End evolutes (also create an .env);
+                url: ``, //TODO: This will be made as Front-End evolutes (also create an .env);
             },
         );
     }
