@@ -1,11 +1,12 @@
 import * as path from 'path';
 import * as fs from 'fs/promises';
-import * as Handlebars from 'handlebars';
 import * as nodemailer from 'nodemailer';
+import * as Handlebars from 'handlebars';
 import { Injectable, OnModuleInit } from '@nestjs/common';
 
 import { MailTemplate } from './enums/mailTemplate.enum';
 import { MailTemplateContext } from './types/mailTemplateContext.type';
+import { requireEnvironmentVariable } from '../../src/common/utils/requireEnvironmentVariable.util';
 
 @Injectable()
 export class MailService implements OnModuleInit {
@@ -37,10 +38,10 @@ export class MailService implements OnModuleInit {
                     "utf-8",
                 )
             )(
-                context
+                context,
             );
         } catch (error) {
-            throw new Error(`Failed to render e-mail template`, { cause: error });
+            throw new Error("Failed to render e-mail template", { cause: error });
         }
     }
 
@@ -49,19 +50,25 @@ export class MailService implements OnModuleInit {
 
         try {
             await this.transporter.sendMail({
-                from: "'Thesle' <no-reply@thesle.com.br>", //TODO: move to .env and load here
+                from: requireEnvironmentVariable("SMTP_FROM"),
                 to,
                 subject,
-                html ,
+                html,
             });
         } catch(error) {
-            throw new Error(`Failed to send email`, { cause: error });
+            throw new Error("Failed to send email", { cause: error });
         }
     }
 
-    async sendFirstAccessEmail(to: string, subject: string, context: MailTemplateContext[MailTemplate.FIRST_ACCESS]) {}
+    async sendFirstAccessEmail(to: string, subject: string, context: MailTemplateContext[MailTemplate.FIRST_ACCESS]): Promise<void> {
+        return this.sendEmail(to, subject, MailTemplate.FIRST_ACCESS, context);
+    }
 
-    async sendForgotPasswordEmail(to: string, subject: string, context: MailTemplateContext[MailTemplate.FORGOT_PASSWORD]) {}
+    async sendForgotPasswordEmail(to: string, subject: string, context: MailTemplateContext[MailTemplate.FORGOT_PASSWORD]): Promise<void> {
+        return this.sendEmail(to, subject, MailTemplate.FORGOT_PASSWORD, context);
+    }
 
-    async sendResetPasswordEmail(to: string, subject: string, context: MailTemplateContext[MailTemplate.RESET_PASSWORD]) {}
+    async sendResetPasswordEmail(to: string, subject: string, context: MailTemplateContext[MailTemplate.RESET_PASSWORD]): Promise<void> {
+        return this.sendEmail(to, subject, MailTemplate.RESET_PASSWORD, context);
+    }
 }
