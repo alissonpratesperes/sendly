@@ -4,12 +4,16 @@
     <head>
         <meta charset="utf-8">
 
-        <title> Primeiro acesso </title>
+        <title> Meu primeiro acesso </title>
     </head>
 
     <body>
-        <h1> Hello, World! </h1>
+        <h1> Olá, <strong>{{ name }}</strong> </h1>
 
-        <p> Este será o template de primeiro acesso. </p>
+        <p> Você foi registrado com sucesso na nossa plataforma. </p>
+
+        <span> Para começar a usá-la, deverá definir a sua senha. </span>
+
+        <a href="{{ url }}" target="_blank" rel="noopener noreferrer"> Definir minha senha </a>
     </body>
 </html>

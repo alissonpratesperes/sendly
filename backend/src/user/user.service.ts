@@ -2,6 +2,7 @@ import * as bcrypt from 'bcrypt';
 import { Prisma, User } from '@prisma/client';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 
+import { MailService } from 'src/mail/mail.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { CompanyService } from 'src/company/company.service';
 import { GetUserResponseDto } from './dtos/getUserResponse.dto';
@@ -10,6 +11,7 @@ import { PaginatedResponseDto } from 'src/common/dtos/paginatedResponse.dto';
 @Injectable()
 export class UserService {
     constructor(
+        private readonly mailService: MailService,
         private readonly prismaService: PrismaService,
         private readonly companyService: CompanyService,
     ) {}
@@ -73,6 +75,14 @@ export class UserService {
                 Password: await bcrypt.hash(password, 12),
             },
         });
+
+        await this.mailService.sendFirstAccessEmail(
+            createdUser.Email,
+            {
+                name: createdUser.Name,
+                url: "", //TODO: This will be made as Front-End evolutes (also create an .env);
+            },
+        );
 
         return this.toUserResponse(createdUser);
     }
@@ -192,9 +202,16 @@ export class UserService {
             },
             data: {
                 HashedRefreshToken: null,
-                PasswordResetToken: hashedPasswordResetToken,
+                PasswordResetToken: hashedPasswordResetToken, //TODO: return the token to concatenate in the URL;
             },
         });
+        await this.mailService.sendForgotPasswordEmail(
+            user.Email,
+            {
+                name: user.Name,
+                url: "", //TODO: This will be made as Front-End evolutes (also create an .env);
+            },
+        );
     }
 
     async completePasswordReset(id: number, hashedPassword: string): Promise<void> {
