@@ -5,6 +5,7 @@ import { MailModule } from './mail/mail.module';
 import { UserModule } from './user/user.module';
 import { ListModule } from './list/list.module';
 import { NoteModule } from './note/note.module';
+import { BatchModule } from './batch/batch.module';
 import { TokenModule } from './token/token.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { CompanyModule } from './company/company.module';
@@ -20,6 +21,7 @@ import { AuthenticationModule } from './authentication/authentication.module';
     UserModule,
     ListModule,
     NoteModule,
+    BatchModule,
     TokenModule,
     PrismaModule,
     CompanyModule,

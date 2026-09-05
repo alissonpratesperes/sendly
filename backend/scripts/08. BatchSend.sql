@@ -1,6 +1,5 @@
 CREATE TABLE `BatchSend` (
     `Id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `CompanyId` INT UNSIGNED NOT NULL,
     `BatchId` INT UNSIGNED NOT NULL,
     `ContactId` INT UNSIGNED NOT NULL,
     `TemplateId` INT UNSIGNED NOT NULL,
@@ -14,8 +13,8 @@ CREATE TABLE `BatchSend` (
     `ErrorMessage` VARCHAR(1000) NULL,
 
     `ScheduledAt` DATETIME(3) NULL,
-    `StartedAt` DATETIME(3) NULL,
-    `FinishedAt` DATETIME(3) NULL,
+    `StartedAt`   DATETIME(3) NULL,
+    `CompletedAt`  DATETIME(3) NULL,
 
     `MessageId` VARCHAR(255) NULL,
 
@@ -23,9 +22,8 @@ CREATE TABLE `BatchSend` (
     `UpdatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
 
     CONSTRAINT `PK_BatchSend` PRIMARY KEY (`Id`),
-    CONSTRAINT `UK_BatchSend_Batch_Contact_Template` UNIQUE (`BatchId`, `ContactId`, `TemplateId`),
+    CONSTRAINT `UK_BatchSend_Batch_Contact` UNIQUE (`BatchId`, `ContactId`),
 
-    CONSTRAINT `FK_BatchSend_CompanyId` FOREIGN KEY (`CompanyId`) REFERENCES `Company` (`Id`) ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT `FK_BatchSend_BatchId` FOREIGN KEY (`BatchId`) REFERENCES `Batch` (`Id`) ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT `FK_BatchSend_ContactId` FOREIGN KEY (`ContactId`) REFERENCES `Contact` (`Id`) ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT `FK_BatchSend_TemplateId` FOREIGN KEY (`TemplateId`) REFERENCES `Template` (`Id`) ON DELETE RESTRICT ON UPDATE CASCADE
