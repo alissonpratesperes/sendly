@@ -1,17 +1,21 @@
 import * as bcrypt from 'bcrypt';
+import * as crypto from 'crypto';
 import { Prisma, User } from '@prisma/client';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 
-import { MailService } from 'src/mail/mail.service';
+import { MailService } from '../mail/mail.service';
+import { TokenService } from '../token/token.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { CompanyService } from 'src/company/company.service';
+import { CompanyService } from '../company/company.service';
 import { GetUserResponseDto } from './dtos/getUserResponse.dto';
-import { PaginatedResponseDto } from 'src/common/dtos/paginatedResponse.dto';
+import { PaginatedResponseDto } from '../common/dtos/paginatedResponse.dto';
+import { requireEnvironmentVariable } from '../common/utils/requireEnvironmentVariable.util';
 
 @Injectable()
 export class UserService {
     constructor(
         private readonly mailService: MailService,
+        private readonly tokenService: TokenService,
         private readonly prismaService: PrismaService,
         private readonly companyService: CompanyService,
     ) {}
@@ -60,7 +64,7 @@ export class UserService {
         });
     }
 
-    async create(companyId: number, name: string, email: string, password: string): Promise<GetUserResponseDto> {
+    async create(companyId: number, name: string, email: string): Promise<GetUserResponseDto> {
         await this.companyService.read(companyId);
 
         if(await this.findByEmail(email)) {
@@ -72,7 +76,20 @@ export class UserService {
                 CompanyId: companyId,
                 Name: name,
                 Email: email,
-                Password: await bcrypt.hash(password, 12),
+                Password: await bcrypt.hash(crypto.randomBytes(32).toString("hex"), 12),
+                IsFirstAccess: true,
+            },
+        });
+
+        const generatedPasswordResetToken = await this.tokenService.generatePasswordResetToken(createdUser.Id, createdUser.Email);
+        const hashedPasswordResetToken = await this.tokenService.generatePasswordResetTokenHash(generatedPasswordResetToken);
+
+        await this.prismaService.user.update({
+            where: {
+                Id: createdUser.Id,
+            },
+            data: {
+                PasswordResetToken: hashedPasswordResetToken,
             },
         });
 
@@ -80,7 +97,7 @@ export class UserService {
             createdUser.Email,
             {
                 name: createdUser.Name,
-                url: ``, //TODO: This will be made as Front-End evolutes (also create an .env);
+                url: `${requireEnvironmentVariable("BASE_URL")}/authentication/reset?passwordResetToken=${generatedPasswordResetToken}`,
             },
         );
 
@@ -153,7 +170,7 @@ export class UserService {
         );
     }
 
-    async update(id: number, companyId?: number, name?: string, email?: string, password?: string): Promise<GetUserResponseDto> {
+    async update(id: number, companyId?: number, name?: string, email?: string): Promise<GetUserResponseDto> {
         const user = await this.read(id);
 
         if (companyId !== undefined) {
@@ -173,7 +190,6 @@ export class UserService {
                 ...(companyId !== undefined && { CompanyId: companyId, }),
                 ...(name !== undefined && { Name: name, }),
                 ...(email !== undefined && { Email: email, }),
-                ...(password !== undefined && { Password: await bcrypt.hash(password, 12), }),
             },
         });
 
@@ -193,9 +209,10 @@ export class UserService {
         });
     }
 
-    async startPasswordReset(id: number, hashedPasswordResetToken: string): Promise<void> {
+    async startPasswordReset(id: number, generatedPasswordResetToken: string, hashedPasswordResetToken: string): Promise<void> {
         const user = await this.read(id);
-        const updatedUser = await this.prismaService.user.update({
+
+        await this.prismaService.user.update({
             where: {
                 Id: user.id,
             },
@@ -204,12 +221,11 @@ export class UserService {
                 PasswordResetToken: hashedPasswordResetToken,
             },
         });
-
         await this.mailService.sendForgotPasswordEmail(
-            user.Email,
+            user.email,
             {
-                name: user.Name,
-                url: ``, //TODO: This will be made as Front-End evolutes (also create an .env);
+                name: user.name,
+                url: `${requireEnvironmentVariable("BASE_URL")}/authentication/reset?passwordResetToken=${generatedPasswordResetToken}`,
             },
         );
     }

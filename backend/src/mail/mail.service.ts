@@ -4,6 +4,7 @@ import * as nodemailer from 'nodemailer';
 import * as Handlebars from 'handlebars';
 import { Injectable, OnModuleInit } from '@nestjs/common';
 
+import { MailSubject } from './enums/mailSubject.enum';
 import { MailTemplate } from './enums/mailTemplate.enum';
 import { MailTemplateContext } from './types/mailTemplateContext.type';
 import { requireEnvironmentVariable } from '../../src/common/utils/requireEnvironmentVariable.util';
@@ -61,10 +62,10 @@ export class MailService implements OnModuleInit {
     }
 
     async sendFirstAccessEmail(to: string, context: MailTemplateContext[MailTemplate.FIRST_ACCESS]): Promise<void> {
-        return this.sendEmail(to, "Seja bem-vindo ao Sendly!", MailTemplate.FIRST_ACCESS, context);
+        return this.sendEmail(to, MailSubject.FIRST_ACCESS, MailTemplate.FIRST_ACCESS, context);
     }
 
     async sendForgotPasswordEmail(to: string, context: MailTemplateContext[MailTemplate.FORGOT_PASSWORD]): Promise<void> {
-        return this.sendEmail(to, "Redefinição de senha solicitada!", MailTemplate.FORGOT_PASSWORD, context);
+        return this.sendEmail(to, MailSubject.FORGOT_PASSWORD, MailTemplate.FORGOT_PASSWORD, context);
     }
 }

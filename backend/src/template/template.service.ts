@@ -4,7 +4,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CompanyService } from '../company/company.service';
 import { GetTemplateResponseDto } from './dtos/getTemplateResponse.dto';
-import { PaginatedResponseDto } from 'src/common/dtos/paginatedResponse.dto';
+import { PaginatedResponseDto } from '../common/dtos/paginatedResponse.dto';
 
 @Injectable()
 export class TemplateService {

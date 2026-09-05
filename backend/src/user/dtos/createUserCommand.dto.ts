@@ -18,11 +18,4 @@ export class CreateUserCommandDto {
     @MaxLength(255)
     @ApiProperty({ example: "john.doe@mail.com" })
     email!: string;
-
-    @IsString()
-    @IsNotEmpty()
-    @MinLength(8)
-    @MaxLength(255)
-    @ApiProperty({ example: "mYpAsSwOrD@123" })
-    password!: string;
 }

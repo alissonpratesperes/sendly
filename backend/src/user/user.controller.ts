@@ -19,7 +19,7 @@ export class UserController {
     @IsSystemRoot()
     @HttpCode(HttpStatus.CREATED)
     async create(@Body() command: CreateUserCommandDto): Promise<GetUserResponseDto> {
-        return this.userService.create(command.companyId, command.name, command.email, command.password);
+        return this.userService.create(command.companyId, command.name, command.email);
     }
 
     @Get(":id")
@@ -38,7 +38,7 @@ export class UserController {
     @IsSystemRoot()
     @HttpCode(HttpStatus.OK)
     async update(@Param() param: IdParamDto, @Body() command: UpdateUserCommandDto): Promise<GetUserResponseDto> {
-        return this.userService.update(param.id, command.companyId, command.name, command.email, command.password);
+        return this.userService.update(param.id, command.companyId, command.name, command.email);
     }
 
     @Delete(":id")

@@ -39,7 +39,7 @@ export class AuthenticationController {
   @IsPublic()
   @Post("forgot")
   @HttpCode(HttpStatus.OK)
-  async forgot(@Body() command: ForgotCommandDto): Promise<string> {
+  async forgot(@Body() command: ForgotCommandDto): Promise<void> {
     return this.authenticationService.forgot(command);
   }
 

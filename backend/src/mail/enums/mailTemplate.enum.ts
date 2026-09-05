@@ -1,4 +1,4 @@
 export enum MailTemplate {
-    FIRST_ACCESS = 'first-access',
-    FORGOT_PASSWORD = 'forgot-password',
+    FIRST_ACCESS = "first-access",
+    FORGOT_PASSWORD = "forgot-password",
 }

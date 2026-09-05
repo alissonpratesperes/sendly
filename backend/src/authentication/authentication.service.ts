@@ -1,8 +1,8 @@
 import * as bcrypt from 'bcrypt';
 import { Injectable, BadRequestException, UnauthorizedException } from '@nestjs/common';
 
-import { TokenService } from './token.service';
-import { UserService } from 'src/user/user.service';
+import { UserService } from '../user/user.service';
+import { TokenService } from '../token/token.service';
 import { LoginCommandDto } from './dtos/loginCommand.dto';
 import { ResetCommandDto } from './dtos/resetCommand.dto';
 import { ForgotCommandDto } from './dtos/forgotCommand.dto';
@@ -52,14 +52,12 @@ export class AuthenticationService {
     return authenticatedUserTokenPair;
   }
 
-  async forgot(command: ForgotCommandDto): Promise<string> {
+  async forgot(command: ForgotCommandDto): Promise<void> {
     const user = await this.userService.readByEmail(command.email, false);
     const generatedPasswordResetToken = await this.tokenService.generatePasswordResetToken(user.Id, user.Email);
     const hashedPasswordResetToken = await this.tokenService.generatePasswordResetTokenHash(generatedPasswordResetToken);
 
-    await this.userService.startPasswordReset(user.Id, hashedPasswordResetToken);
-
-    return generatedPasswordResetToken;
+    await this.userService.startPasswordReset(user.Id, generatedPasswordResetToken, hashedPasswordResetToken);
   }
 
   async reset(query: string, command: ResetCommandDto): Promise<void> {

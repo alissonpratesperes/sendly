@@ -1,8 +1,7 @@
 import { Module } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
 
-import { TokenService } from './token.service';
-import { UserModule } from 'src/user/user.module';
+import { UserModule } from '../user/user.module';
+import { TokenModule } from '../token/token.module';
 import { AuthenticationService } from './authentication.service';
 import { AuthenticationController } from './authentication.controller';
 import { AccessTokenStrategy } from './strategies/accessToken.strategy';
@@ -10,14 +9,13 @@ import { RefreshTokenStrategy } from './strategies/refreshToken.strategy';
 
 @Module({
   imports: [
-    JwtModule.register({}),
     UserModule,
+    TokenModule,
   ],
   controllers: [
     AuthenticationController,
   ],
   providers: [
-    TokenService,
     AuthenticationService,
     AccessTokenStrategy,
     RefreshTokenStrategy,

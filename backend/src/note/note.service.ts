@@ -2,7 +2,7 @@ import { Note, Prisma } from '@prisma/client';
 import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
-import { ContactService } from 'src/contact/contact.service';
+import { ContactService } from '../contact/contact.service';
 import { GetNoteResponseDto } from './dtos/getNoteResponse.dto';
 import { PaginatedResponseDto } from '../common/dtos/paginatedResponse.dto';
 
