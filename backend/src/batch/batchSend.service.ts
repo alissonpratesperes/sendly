@@ -1,4 +1,4 @@
-import { BatchSend, BatchSend_Status, Prisma } from '@prisma/client';
+import { BatchSend_Status, Prisma } from '@prisma/client';
 import { BadRequestException, Injectable } from '@nestjs/common';
 
 import { ContactService } from '../contact/contact.service';
@@ -35,7 +35,7 @@ export class BatchSendService {
         };
     }
 
-    async create(tx: Prisma.TransactionClient, companyId: number, batchId: number, templateId: number, contactIds: number[]): Promise<void> {
+    async create(tx: Prisma.TransactionClient, companyId: number, batchId: number, templateId: number, contactIds: number[]): Promise<number[]> {
         const templateSnapshot = await this.validateAndBuildTemplateSnapshot(companyId, templateId, contactIds);
 
         await tx.batchSend.createMany({
@@ -47,6 +47,17 @@ export class BatchSendService {
                 Status: BatchSend_Status.WAITING,
             })),
         });
+
+        const batchSends = await tx.batchSend.findMany({
+            where: {
+                BatchId: batchId,
+            },
+            select: {
+                Id: true,
+            },
+        });
+
+        return batchSends.map((batchSend) => batchSend.Id);
     }
 
     async readByBatchId(tx: Prisma.TransactionClient, batchId: number): Promise<{ currentTemplateId: number; currentContactIds: number[]; }> {
@@ -70,7 +81,7 @@ export class BatchSendService {
         };
     }
 
-    async update(tx: Prisma.TransactionClient, companyId: number, batchId: number, templateId: number, contactIds: number[]): Promise<void> {
+    async update(tx: Prisma.TransactionClient, companyId: number, batchId: number, templateId: number, contactIds: number[]): Promise<number[]> {
         const templateSnapshot = await this.validateAndBuildTemplateSnapshot(companyId, templateId, contactIds);
 
         await tx.batchSend.deleteMany({
@@ -87,5 +98,16 @@ export class BatchSendService {
                 Status: BatchSend_Status.WAITING,
             })),
         });
+
+        const batchSends = await tx.batchSend.findMany({
+            where: {
+                BatchId: batchId,
+            },
+            select: {
+                Id: true,
+            },
+        });
+
+        return batchSends.map((batchSend) => batchSend.Id);
     }
 }

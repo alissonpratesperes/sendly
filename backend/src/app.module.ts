@@ -7,6 +7,7 @@ import { ListModule } from './list/list.module';
 import { NoteModule } from './note/note.module';
 import { BatchModule } from './batch/batch.module';
 import { TokenModule } from './token/token.module';
+import { QueueModule } from './queue/queue.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { CompanyModule } from './company/company.module';
 import { ContactModule } from './contact/contact.module';
@@ -23,6 +24,7 @@ import { AuthenticationModule } from './authentication/authentication.module';
     NoteModule,
     BatchModule,
     TokenModule,
+    QueueModule,
     PrismaModule,
     CompanyModule,
     ContactModule,

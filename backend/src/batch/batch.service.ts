@@ -1,12 +1,14 @@
+import { Queue } from 'bullmq';
+import { InjectQueue } from '@nestjs/bullmq';
 import { Batch, Batch_Status, Prisma } from '@prisma/client';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 
 import { BatchSendService } from './batchSend.service';
-import { BatchStatus } from './enums/batchStatus.enum';
 import { PrismaService } from '../prisma/prisma.service';
 import { CompanyService } from '../company/company.service';
 import { GetBatchResponseDto } from './dtos/getBatchResponse.dto';
 import { PaginatedResponseDto } from '../common/dtos/paginatedResponse.dto';
+import { requireEnvironmentVariable } from 'src/common/utils/requireEnvironmentVariable.util';
 
 @Injectable()
 export class BatchService {
@@ -14,6 +16,9 @@ export class BatchService {
         private readonly prismaService: PrismaService,
         private readonly companyService: CompanyService,
         private readonly batchSendService: BatchSendService,
+
+        @InjectQueue(requireEnvironmentVariable("REDIS_QUEUE_NAME"))
+        private readonly batchSendQueue: Queue,
     ) {}
 
     private toBatchResponse(batch: Batch): GetBatchResponseDto {
@@ -52,15 +57,14 @@ export class BatchService {
     async create(companyId: number, name: string, templateId: number, contactIds: number[]): Promise<GetBatchResponseDto> {
         await this.companyService.read(companyId);
 
-        const createdBatch = await this.prismaService.$transaction(async (tx) => {
+        const { batch, batchSendIds } = await this.prismaService.$transaction(async (tx) => {
             const batch = await tx.batch.create({
                 data: {
                     CompanyId: companyId,
                     Name: name,
                 },
             });
-
-            await this.batchSendService.create(
+            const batchSendIds = await this.batchSendService.create(
                 tx,
 
                 batch.CompanyId,
@@ -69,10 +73,22 @@ export class BatchService {
                 contactIds,
             );
 
-            return batch;
+            return {
+                batch,
+                batchSendIds,
+            };
         });
 
-        return this.toBatchResponse(createdBatch);
+        await this.batchSendQueue.addBulk(
+            batchSendIds.map((batchSendId) => ({
+                name: 'send',
+                data: {
+                    batchSendId,
+                },
+            })),
+        );
+
+        return this.toBatchResponse(batch);
     }
 
     async read(id: number): Promise<GetBatchResponseDto> {
@@ -120,7 +136,7 @@ export class BatchService {
     }
 
     async update(id: number, name?: string, templateId?: number, contactIds?: number[]): Promise<GetBatchResponseDto> {
-        const updatedBatch = await this.prismaService.$transaction(async (tx) => {
+        const { batch, batchSendIds } = await this.prismaService.$transaction(async (tx) => {
             const foundBatch = await tx.batch.findFirst({
                 where: {
                     Id: id,
@@ -161,7 +177,7 @@ export class BatchService {
                 },
             });
 
-            await this.batchSendService.update(
+            const batchSendIds = await this.batchSendService.update(
                 tx,
 
                 batch.CompanyId,
@@ -170,10 +186,22 @@ export class BatchService {
                 contactIds ?? currentBatchSend.currentContactIds,
             );
 
-            return batch;
+            return {
+                batch,
+                batchSendIds,
+            };
         });
 
-        return this.toBatchResponse(updatedBatch);
+        await this.batchSendQueue.addBulk(
+            batchSendIds.map((batchSendId) => ({
+                name: 'send',
+                data: {
+                    batchSendId,
+                },
+            })),
+        );
+
+        return this.toBatchResponse(batch);
     }
 
     async delete(id: number): Promise<void> {
