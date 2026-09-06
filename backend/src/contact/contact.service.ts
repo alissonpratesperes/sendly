@@ -123,6 +123,18 @@ export class ContactService {
         );
     }
 
+    async findByIds(companyId: number, contactIds: number[]): Promise<Contact[]> {
+        return this.prismaService.contact.findMany({
+            where: {
+                Id: {
+                    in: contactIds,
+                },
+                CompanyId: companyId,
+                DeletedAt: null,
+            },
+        });
+    }
+
     async update(id: number, companyId?: number, listId?: number, name?: string, phone?: string, country?: string): Promise<GetContactResponseDto> {
         const contact = await this.read(id);
         const targetCompanyId = companyId ?? contact.companyId;

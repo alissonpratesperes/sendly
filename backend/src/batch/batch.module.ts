@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 
-import { CompanyModule } from '../company/company.module';
-import { BatchController } from './batch.controller';
 import { BatchService } from './batch.service';
+import { BatchController } from './batch.controller';
+import { BatchSendService } from './batchSend.service';
+import { CompanyModule } from '../company/company.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { BatchService } from './batch.service';
   ],
   providers: [
     BatchService,
+    BatchSendService,
   ],
 })
 export class BatchModule {}

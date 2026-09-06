@@ -18,6 +18,7 @@ model Batch {
   UpdatedAt DateTime     @default(now())
   DeletedAt DateTime?
   Company   Company      @relation(fields: [CompanyId], references: [Id], map: "FK_Batch_CompanyId")
+  BatchSend BatchSend[]
 
   @@index([CompanyId], map: "FK_Batch_CompanyId")
 }
@@ -38,16 +39,17 @@ model Company {
 }
 
 model Contact {
-  Id        Int       @id @default(autoincrement()) @db.UnsignedInt
-  CompanyId Int       @db.UnsignedInt
-  ListId    Int       @db.UnsignedInt
-  Name      String    @db.VarChar(150)
-  Phone     String    @unique(map: "UK_Contact_Phone") @db.VarChar(20)
-  CreatedAt DateTime  @default(now())
-  UpdatedAt DateTime  @default(now())
+  Id        Int         @id @default(autoincrement()) @db.UnsignedInt
+  CompanyId Int         @db.UnsignedInt
+  ListId    Int         @db.UnsignedInt
+  Name      String      @db.VarChar(150)
+  Phone     String      @unique(map: "UK_Contact_Phone") @db.VarChar(20)
+  CreatedAt DateTime    @default(now())
+  UpdatedAt DateTime    @default(now())
   DeletedAt DateTime?
-  Company   Company   @relation(fields: [CompanyId], references: [Id], map: "FK_Contact_CompanyId")
-  List      List      @relation(fields: [ListId], references: [Id], map: "FK_Contact_ListId")
+  BatchSend BatchSend[]
+  Company   Company     @relation(fields: [CompanyId], references: [Id], map: "FK_Contact_CompanyId")
+  List      List        @relation(fields: [ListId], references: [Id], map: "FK_Contact_ListId")
   Note      Note[]
 
   @@index([CompanyId], map: "FK_Contact_CompanyId")
@@ -82,14 +84,15 @@ model Note {
 }
 
 model Template {
-  Id        Int       @id @default(autoincrement()) @db.UnsignedInt
-  CompanyId Int       @db.UnsignedInt
-  Name      String    @db.VarChar(150)
+  Id        Int         @id @default(autoincrement()) @db.UnsignedInt
+  CompanyId Int         @db.UnsignedInt
+  Name      String      @db.VarChar(150)
   Content   Json
-  CreatedAt DateTime  @default(now())
-  UpdatedAt DateTime  @default(now())
+  CreatedAt DateTime    @default(now())
+  UpdatedAt DateTime    @default(now())
   DeletedAt DateTime?
-  Company   Company   @relation(fields: [CompanyId], references: [Id], map: "FK_Template_CompanyId")
+  BatchSend BatchSend[]
+  Company   Company     @relation(fields: [CompanyId], references: [Id], map: "FK_Template_CompanyId")
 
   @@index([CompanyId], map: "FK_Template_CompanyId")
 }
@@ -112,10 +115,44 @@ model User {
   @@index([CompanyId], map: "FK_User_CompanyId")
 }
 
+model BatchSend {
+  Id               Int              @id @default(autoincrement()) @db.UnsignedInt
+  BatchId          Int              @db.UnsignedInt
+  ContactId        Int              @db.UnsignedInt
+  TemplateId       Int              @db.UnsignedInt
+  TemplateSnapshot Json
+  Status           BatchSend_Status @default(WAITING)
+  Attempts         Int              @default(0) @db.UnsignedInt
+  ErrorCode        String?          @db.VarChar(100)
+  ErrorMessage     String?          @db.VarChar(1000)
+  ScheduledAt      DateTime?
+  StartedAt        DateTime?
+  CompletedAt      DateTime?
+  MessageId        String?          @db.VarChar(255)
+  CreatedAt        DateTime         @default(now())
+  UpdatedAt        DateTime         @default(now())
+  Batch            Batch            @relation(fields: [BatchId], references: [Id], map: "FK_BatchSend_BatchId")
+  Contact          Contact          @relation(fields: [ContactId], references: [Id], map: "FK_BatchSend_ContactId")
+  Template         Template         @relation(fields: [TemplateId], references: [Id], map: "FK_BatchSend_TemplateId")
+
+  @@unique([BatchId, ContactId], map: "UK_BatchSend_Batch_Contact")
+  @@index([ContactId], map: "FK_BatchSend_ContactId")
+  @@index([TemplateId], map: "FK_BatchSend_TemplateId")
+}
+
 enum Batch_Status {
   PENDING
   RUNNING
   CANCELLED
   FINISHED
+  FAILED
+}
+
+enum BatchSend_Status {
+  WAITING
+  PROCESSING
+  SENT
+  DELIVERED
+  READ
   FAILED
 }
