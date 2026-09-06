@@ -19,7 +19,7 @@ export class TemplateService {
             template.CompanyId,
 
             template.Name,
-            template.Content as Record<string, unknown>,
+            template.Content as Prisma.JsonValue,
 
             template.CreatedAt,
             template.UpdatedAt,

@@ -1,8 +1,8 @@
 import { BatchSend, BatchSend_Status, Prisma } from '@prisma/client';
 import { BadRequestException, Injectable } from '@nestjs/common';
 
-import { ContactService } from 'src/contact/contact.service';
-import { TemplateService } from 'src/template/template.service';
+import { ContactService } from '../contact/contact.service';
+import { TemplateService } from '../template/template.service';
 import { TemplateSnapshot } from './types/templateSnapshot.type';
 
 @Injectable()
