@@ -53,11 +53,12 @@ export class NoteService {
         };
     }
 
-    async create(contactId: number, content: string): Promise<GetNoteResponseDto> {
+    async create(companyId: number, contactId: number, content: string): Promise<GetNoteResponseDto> {
         await this.contactService.read(contactId);
 
-        const createdNote = await this.prismaService.note.create({
+        const createdNote = await this.prismaService.client.note.create({
             data: {
+                CompanyId: companyId,
                 ContactId: contactId,
                 Content: content,
             },
@@ -67,7 +68,7 @@ export class NoteService {
     }
 
     async read(id: number): Promise<GetNoteResponseDto> {
-        const note = await this.prismaService.note.findFirst({
+        const note = await this.prismaService.client.note.findFirst({
             where: {
                 Id: id,
                 DeletedAt: null,
@@ -99,10 +100,10 @@ export class NoteService {
     async list(page: number = 1, limit: number = 10, search?: string): Promise<PaginatedResponseDto<GetNoteResponseDto>> {
         const where = this.buildNoteListWhere(search);
         const [total, notes] = await Promise.all([
-            this.prismaService.note.count({
+            this.prismaService.client.note.count({
                 where,
             }),
-            this.prismaService.note.findMany({
+            this.prismaService.client.note.findMany({
                 where,
                 skip: (page - 1) * limit,
                 take: limit,
@@ -121,18 +122,19 @@ export class NoteService {
         );
     }
 
-    async update(id: number, contactId?: number, content?: string): Promise<GetNoteResponseDto> {
+    async update(id: number, companyId?: number, contactId?: number, content?: string): Promise<GetNoteResponseDto> {
         const note = await this.read(id);
 
         if (contactId !== undefined) {
             await this.contactService.read(contactId);
         }
 
-        const updatedNote = await this.prismaService.note.update({
+        const updatedNote = await this.prismaService.client.note.update({
             where: {
                 Id: note.id,
             },
             data: {
+                ...(companyId !== undefined && { CompanyId: companyId, }),
                 ...(contactId !== undefined && { ContactId: contactId, }),
                 ...(content !== undefined && { Content: content, }),
             },
@@ -144,7 +146,7 @@ export class NoteService {
     async delete(id: number): Promise<void> {
         const note = await this.read(id);
 
-        await this.prismaService.note.update({
+        await this.prismaService.client.note.update({
             where: {
                 Id: note.id,
             },

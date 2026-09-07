@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsInt, IsNotEmpty, IsString, MaxLength, Min, MinLength } from 'class-validator';
+import { IsEmail, IsInt, IsNotEmpty, IsString, MaxLength, Min } from 'class-validator';
 
 export class CreateUserCommandDto {
     @Min(1)

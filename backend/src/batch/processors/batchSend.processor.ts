@@ -1,4 +1,5 @@
 import { Job } from 'bullmq';
+import { ClsService } from 'nestjs-cls';
 import { Processor, WorkerHost } from '@nestjs/bullmq';
 
 import { BatchService } from '../batch.service';
@@ -9,6 +10,7 @@ import { requireEnvironmentVariable } from '../../common/utils/requireEnvironmen
 @Processor(requireEnvironmentVariable("REDIS_QUEUE_NAME"))
 export class BatchSendProcessor extends WorkerHost {
     constructor(
+        private readonly clsService: ClsService,
         private readonly batchService: BatchService,
         private readonly baileysService: BaileysService,
         private readonly batchSendService: BatchSendService,
@@ -17,58 +19,62 @@ export class BatchSendProcessor extends WorkerHost {
     }
 
     async process(job: Job<{ batchSendId: number }>): Promise<void> {
-        const { batchSendId } = job.data;
-        const started = await this.batchSendService.startProcessing(batchSendId);
+        return this.clsService.run(async () => {
+            this.clsService.set("isSystemOperation", true);
 
-        if (!started) {
-            return;
-        }
+            const { batchSendId } = job.data;
+            const started = await this.batchSendService.startProcessing(batchSendId);
 
-        const batchSend = await this.batchSendService.readForProcessing(batchSendId);
+            if (!started) {
+                return;
+            }
 
-        if (!batchSend) {
-            return;
-        }
+            const batchSend = await this.batchSendService.readForProcessing(batchSendId);
 
-        const content = (batchSend.TemplateSnapshot as any)?.content;
+            if (!batchSend) {
+                return;
+            }
 
-        let messageText = "";
+            const content = (batchSend.TemplateSnapshot as any)?.content;
 
-        if (typeof content === "string") {
-            messageText = content;
-        } else if (content && typeof content === "object") {
-            const parts = [
-                content.header ? `*${content.header}*` : null,
-                content.body || null,
-                content.footer ? `_${content.footer}_` : null,
-            ].filter(Boolean);
+            let messageText = "";
 
-            messageText = parts.join("\n\n");
-        }
-        if (!messageText.trim()) {
-            messageText = "Message with no content";
-        }
+            if (typeof content === "string") {
+                messageText = content;
+            } else if (content && typeof content === "object") {
+                const parts = [
+                    content.header ? `*${content.header}*` : null,
+                    content.body || null,
+                    content.footer ? `_${content.footer}_` : null,
+                ].filter(Boolean);
 
-        try {
-            const response = await this.baileysService.sendMessage(
-                batchSend.Batch.CompanyId,
-                batchSend.Contact.Phone,
-                messageText,
-            );
-            const messageId = response.key?.id ?? `FALLBACK_ID_${Date.now()}`;
+                messageText = parts.join("\n\n");
+            }
+            if (!messageText.trim()) {
+                messageText = "Message with no content";
+            }
 
-            await this.batchSendService.markAsSent(batchSendId, messageId);
-            await this.batchService.finishIfCompleted(batchSend.BatchId);
-        } catch (error) {
-            console.error(`[Processor] Error to send BatchSend: "${batchSendId}"`, error);
+            try {
+                const response = await this.baileysService.sendMessage(
+                    batchSend.Batch.CompanyId,
+                    batchSend.Contact.Phone,
+                    messageText,
+                );
+                const messageId = response.key?.id ?? `FALLBACK_ID_${Date.now()}`;
 
-            await this.batchSendService.markAsFailed(
-                batchSendId,
-                "BAILEYS_ERROR",
-                error instanceof Error ? error.message : "Unknown 'Baileys' error",
-            );
+                await this.batchSendService.markAsSent(batchSendId, messageId);
+                await this.batchService.finishIfCompleted(batchSend.BatchId);
+            } catch (error) {
+                console.error(`[Processor] Error to send BatchSend: "${batchSendId}"`, error);
 
-            await this.batchService.finishIfCompleted(batchSend.BatchId);
-        }
+                await this.batchSendService.markAsFailed(
+                    batchSendId,
+                    "BAILEYS_ERROR",
+                    error instanceof Error ? error.message : "Unknown 'Baileys' error",
+                );
+
+                await this.batchService.finishIfCompleted(batchSend.BatchId);
+            }
+        });
     }
 }

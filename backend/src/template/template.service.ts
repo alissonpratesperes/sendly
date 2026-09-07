@@ -46,7 +46,7 @@ export class TemplateService {
     async create(companyId: number, name: string, content: Prisma.InputJsonValue): Promise<GetTemplateResponseDto> {
         await this.companyService.read(companyId);
 
-        const createdTemplate = await this.prismaService.template.create({
+        const createdTemplate = await this.prismaService.client.template.create({
             data: {
                 CompanyId: companyId,
                 Name: name,
@@ -58,7 +58,7 @@ export class TemplateService {
     }
 
     async read(id: number): Promise<GetTemplateResponseDto> {
-        const template = await this.prismaService.template.findFirst({
+        const template = await this.prismaService.client.template.findFirst({
             where: {
                 Id: id,
                 DeletedAt: null,
@@ -79,10 +79,10 @@ export class TemplateService {
     async list(page: number = 1, limit: number = 10, search?: string): Promise<PaginatedResponseDto<GetTemplateResponseDto>> {
         const where = this.buildTemplateListWhere(search);
         const [total, templates] = await Promise.all([
-            this.prismaService.template.count({
+            this.prismaService.client.template.count({
                 where,
             }),
-            this.prismaService.template.findMany({
+            this.prismaService.client.template.findMany({
                 where,
                 skip: (page - 1) * limit,
                 take: limit,
@@ -108,7 +108,7 @@ export class TemplateService {
             await this.companyService.read(companyId);
         }
 
-        const updatedTemplate = await this.prismaService.template.update({
+        const updatedTemplate = await this.prismaService.client.template.update({
             where: {
                 Id: template.id,
             },
@@ -125,7 +125,7 @@ export class TemplateService {
     async delete(id: number): Promise<void> {
         const template = await this.read(id);
 
-        await this.prismaService.template.update({
+        await this.prismaService.client.template.update({
             where: {
                 Id: template.id,
             },

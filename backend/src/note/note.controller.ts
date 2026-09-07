@@ -17,7 +17,7 @@ export class NoteController {
     @Post()
     @HttpCode(HttpStatus.CREATED)
     async create(@Body() command: CreateNoteCommandDto): Promise<GetNoteResponseDto> {
-        return this.noteService.create(command.contactId, command.content);
+        return this.noteService.create(command.companyId, command.contactId, command.content);
     }
 
     @Get(":id")
@@ -35,7 +35,7 @@ export class NoteController {
     @Patch(":id")
     @HttpCode(HttpStatus.OK)
     async update(@Param() param: IdParamDto, @Body() command: UpdateNoteCommandDto): Promise<GetNoteResponseDto> {
-        return this.noteService.update(param.id, command.contactId, command.content);
+        return this.noteService.update(param.id, command.companyId, command.contactId, command.content);
     }
 
     @Delete(":id")

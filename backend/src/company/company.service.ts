@@ -1,3 +1,4 @@
+import { ClsService } from 'nestjs-cls';
 import { Company, Prisma } from '@prisma/client';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 
@@ -9,6 +10,7 @@ import { formatCompanyDocument } from '../common/formatters/companyDocument.form
 @Injectable()
 export class CompanyService {
     constructor(
+        private readonly clsService: ClsService,
         private readonly prismaService: PrismaService,
     ) {}
 
@@ -40,7 +42,9 @@ export class CompanyService {
     }
 
     async create(name: string, document: string, description: string | null): Promise<GetCompanyResponseDto> {
-        const documentAlreadyUsed = await this.prismaService.company.findUnique({
+        this.clsService.set("isSystemOperation", true);
+
+        const documentAlreadyUsed = await this.prismaService.client.company.findUnique({
             where: {
                 Document: document,
             },
@@ -50,7 +54,7 @@ export class CompanyService {
             throw new ConflictException("A company with this CNPJ is already registered");
         }
 
-        const createdCompany = await this.prismaService.company.create({
+        const createdCompany = await this.prismaService.client.company.create({
             data: {
                 Name: name,
                 Document: document,
@@ -62,7 +66,7 @@ export class CompanyService {
     }
 
     async read(id: number): Promise<GetCompanyResponseDto> {
-        const company = await this.prismaService.company.findFirst({
+        const company = await this.prismaService.client.company.findFirst({
             where: {
                 Id: id,
                 DeletedAt: null,
@@ -79,10 +83,10 @@ export class CompanyService {
     async list(page: number = 1, limit: number = 10, search?: string): Promise<PaginatedResponseDto<GetCompanyResponseDto>> {
         const where = this.buildCompanyListWhere(search);
         const [total, companies] = await Promise.all([
-            this.prismaService.company.count({
+            this.prismaService.client.company.count({
                 where,
             }),
-            this.prismaService.company.findMany({
+            this.prismaService.client.company.findMany({
                 where,
                 skip: (page - 1) * limit,
                 take: limit,
@@ -103,7 +107,7 @@ export class CompanyService {
 
     async update(id: number, name?: string, document?: string, description?: string | null): Promise<GetCompanyResponseDto> {
         const company = await this.read(id);
-        const updatedCompany = await this.prismaService.company.update({
+        const updatedCompany = await this.prismaService.client.company.update({
             where: {
                 Id: company.id,
             },
@@ -120,7 +124,7 @@ export class CompanyService {
     async delete(id: number): Promise<void> {
         const company = await this.read(id);
 
-        await this.prismaService.company.update({
+        await this.prismaService.client.company.update({
             where: {
                 Id: company.id,
             },

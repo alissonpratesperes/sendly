@@ -1,3 +1,4 @@
+import { ClsService } from 'nestjs-cls';
 import { Batch, Batch_Status, BatchSend_Status, Prisma } from '@prisma/client';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 
@@ -11,6 +12,7 @@ import { PaginatedResponseDto } from '../common/dtos/paginatedResponse.dto';
 @Injectable()
 export class BatchService {
     constructor(
+        private readonly clsService: ClsService,
         private readonly queueService: QueueService,
         private readonly prismaService: PrismaService,
         private readonly companyService: CompanyService,
@@ -53,7 +55,7 @@ export class BatchService {
     async create(companyId: number, name: string, templateId: number, contactIds: number[]): Promise<GetBatchResponseDto> {
         await this.companyService.read(companyId);
 
-        const { batch, batchSendIds } = await this.prismaService.$transaction(async (tx) => {
+        const { batch, batchSendIds } = await this.prismaService.client.$transaction(async (tx) => {
             const batch = await tx.batch.create({
                 data: {
                     CompanyId: companyId,
@@ -82,7 +84,7 @@ export class BatchService {
     }
 
     async read(id: number): Promise<GetBatchResponseDto> {
-        const batch = await this.prismaService.batch.findFirst({
+        const batch = await this.prismaService.client.batch.findFirst({
             where: {
                 Id: id,
                 DeletedAt: null,
@@ -103,10 +105,10 @@ export class BatchService {
     async list(page: number = 1, limit: number = 10, search?: string): Promise<PaginatedResponseDto<GetBatchResponseDto>> {
         const where = this.buildBatchListWhere(search);
         const [total, batches] = await Promise.all([
-            this.prismaService.batch.count({
+            this.prismaService.client.batch.count({
                 where,
             }),
-            this.prismaService.batch.findMany({
+            this.prismaService.client.batch.findMany({
                 where,
                 skip: (page - 1) * limit,
                 take: limit,
@@ -126,7 +128,7 @@ export class BatchService {
     }
 
     async update(id: number, name?: string, templateId?: number, contactIds?: number[]): Promise<GetBatchResponseDto> {
-        const { batch, batchSendIds } = await this.prismaService.$transaction(async (tx) => {
+        const { batch, batchSendIds } = await this.prismaService.client.$transaction(async (tx) => {
             const foundBatch = await tx.batch.findFirst({
                 where: {
                     Id: id,
@@ -161,9 +163,10 @@ export class BatchService {
                 throw new BadRequestException("Batch is no longer pending");
             }
 
-            const batch = await tx.batch.findUniqueOrThrow({
+            const batch = await tx.batch.findFirstOrThrow({
                 where: {
                     Id: id,
+                    DeletedAt: null,
                 },
             });
             const batchSendIds = await this.batchSendService.update(
@@ -189,7 +192,9 @@ export class BatchService {
     }
 
     async markAsRunning(id: number): Promise<void> {
-        const runningBatch = await this.prismaService.batch.updateMany({
+        this.clsService.set("isSystemOperation", true);
+
+        const runningBatch = await this.prismaService.client.batch.updateMany({
             where: {
                 Id: id,
                 Status: Batch_Status.PENDING,
@@ -211,7 +216,9 @@ export class BatchService {
     }
 
     async markAsPartial(id: number): Promise<void> {
-        const partialBatch = await this.prismaService.batch.updateMany({
+        this.clsService.set("isSystemOperation", true);
+
+        const partialBatch = await this.prismaService.client.batch.updateMany({
             where: {
                 Id: id,
                 Status: Batch_Status.RUNNING,
@@ -233,7 +240,9 @@ export class BatchService {
     }
 
     async markAsFailed(id: number): Promise<void> {
-        const failedBatch = await this.prismaService.batch.updateMany({
+        this.clsService.set("isSystemOperation", true);
+
+        const failedBatch = await this.prismaService.client.batch.updateMany({
             where: {
                 Id: id,
                 Status: Batch_Status.RUNNING,
@@ -255,7 +264,9 @@ export class BatchService {
     }
 
     async markAsCompleted(id: number): Promise<void> {
-        const completedBatch = await this.prismaService.batch.updateMany({
+        this.clsService.set("isSystemOperation", true);
+
+        const completedBatch = await this.prismaService.client.batch.updateMany({
             where: {
                 Id: id,
                 Status: Batch_Status.RUNNING,
@@ -277,6 +288,8 @@ export class BatchService {
     }
 
     async finishIfCompleted(id: number): Promise<void> {
+        this.clsService.set("isSystemOperation", true);
+
         const pendingCount = await this.batchSendService.countByStatus(id, [
             BatchSend_Status.WAITING,
             BatchSend_Status.PROCESSING,
@@ -311,7 +324,7 @@ export class BatchService {
             throw new BadRequestException("Only pending batches can be deleted");
         }
 
-        const result = await this.prismaService.batch.updateMany({
+        const result = await this.prismaService.client.batch.updateMany({
             where: {
                 Id: batch.id,
                 Status: Batch_Status.PENDING,

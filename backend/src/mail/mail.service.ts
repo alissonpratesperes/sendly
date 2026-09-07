@@ -33,7 +33,7 @@ export class MailService implements OnModuleInit {
                 await fs.readFile(
                     path.join(
                         __dirname,
-                        "templates",
+                        "layouts",
                         `${template}.hbs`,
                     ),
                     "utf-8",
@@ -50,12 +50,20 @@ export class MailService implements OnModuleInit {
         const html = await this.renderTemplate(template, context);
 
         try {
-            await this.transporter.sendMail({
+            const info = await this.transporter.sendMail({
                 from: requireEnvironmentVariable("SMTP_FROM"),
                 to,
                 subject,
                 html,
             });
+
+            const previewUrl = nodemailer.getTestMessageUrl(info);
+
+            if (previewUrl) {
+                console.log(`\n==================================================`);
+                console.log(`📧 E-mail preview (Ethereal): ${previewUrl}`);
+                console.log(`==================================================\n`);
+            }
         } catch(error) {
             throw new Error("Failed to send email", { cause: error });
         }

@@ -1,3 +1,4 @@
+import { ClsService } from 'nestjs-cls';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, ExtractJwt } from 'passport-jwt';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
@@ -9,7 +10,10 @@ import { JwtTokenPayload } from '../../token/interfaces/jwtTokenPayload.interfac
 
 @Injectable()
 export class AccessTokenStrategy extends PassportStrategy(Strategy, AuthenticationStrategy.ACCESS_TOKEN) {
-    constructor(private readonly userService: UserService) {
+    constructor(
+        private readonly clsService: ClsService,
+        private readonly userService: UserService,
+    ) {
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
             secretOrKey: process.env.ACCESS_TOKEN_SECRET ?? "",
@@ -17,17 +21,19 @@ export class AccessTokenStrategy extends PassportStrategy(Strategy, Authenticati
     }
 
     async validate(payload: JwtTokenPayload): Promise<AuthenticatedUser> {
-        const user = await this.userService.read(payload.sub);
+        const user = await this.userService.readByEmail(payload.email, true);
 
         if (!user) {
             throw new UnauthorizedException("Access denied");
         }
 
+        this.clsService.set("companyId", user.CompanyId);
+
         return {
-            id: user.id,
-            email: user.email,
-            companyId: user.companyId,
-            isSystemRoot: user.isSystemRoot
+            id: user.Id,
+            companyId: user.CompanyId,
+            email: user.Email,
+            isSystemRoot: user.IsSystemRoot
         };
     }
 }

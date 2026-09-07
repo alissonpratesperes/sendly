@@ -5,8 +5,8 @@
   "compilerOptions": {
     "assets": [
       {
-        "include": "**/*.hbs",
-        "watchAssets": true
+        "include": "mail/layouts/**/*.hbs",
+        "outDir": "dist/src"
       }
     ]
   }

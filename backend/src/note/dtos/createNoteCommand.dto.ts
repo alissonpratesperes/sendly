@@ -5,6 +5,11 @@ export class CreateNoteCommandDto {
     @Min(1)
     @IsInt()
     @ApiProperty({ example: 1 })
+    companyId!: number;
+
+    @Min(1)
+    @IsInt()
+    @ApiProperty({ example: 1 })
     contactId!: number;
 
     @IsString()

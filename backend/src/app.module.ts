@@ -39,8 +39,8 @@ import { CompanyContextInterceptor } from './common/interceptors/companyContext.
     AuthenticationModule,
   ],
   providers: [
-    { provide: APP_GUARD, useClass: SystemRootGuard, },
     { provide: APP_GUARD, useClass: AccessTokenGuard, },
+    { provide: APP_GUARD, useClass: SystemRootGuard, },
     { provide: APP_INTERCEPTOR, useClass: CompanyContextInterceptor, },
   ],
 })

@@ -1,4 +1,5 @@
 import * as bcrypt from 'bcrypt';
+import { ClsService } from 'nestjs-cls';
 import { Injectable, BadRequestException, UnauthorizedException } from '@nestjs/common';
 
 import { UserService } from '../user/user.service';
@@ -11,11 +12,14 @@ import { AuthenticationTokenPair } from './types/AuthenticationTokenPair.type';
 @Injectable()
 export class AuthenticationService {
   constructor(
+    private readonly clsService: ClsService,
     private readonly userService: UserService,
     private readonly tokenService: TokenService,
   ) {}
 
   async login(command: LoginCommandDto): Promise<AuthenticationTokenPair> {
+    this.clsService.set("isSystemOperation", true);
+
     const user = await this.userService.readByEmail(command.email, true);
 
     if(user.IsFirstAccess) {
@@ -53,6 +57,8 @@ export class AuthenticationService {
   }
 
   async forgot(command: ForgotCommandDto): Promise<void> {
+    this.clsService.set("isSystemOperation", true);
+
     const user = await this.userService.readByEmail(command.email, false);
     const generatedPasswordResetToken = await this.tokenService.generatePasswordResetToken(user.Id, user.Email);
     const hashedPasswordResetToken = await this.tokenService.generatePasswordResetTokenHash(generatedPasswordResetToken);
@@ -61,6 +67,8 @@ export class AuthenticationService {
   }
 
   async reset(query: string, command: ResetCommandDto): Promise<void> {
+    this.clsService.set("isSystemOperation", true);
+
     if (command.newPassword !== command.confirmPassword) {
       throw new BadRequestException("Passwords do not match");
     }

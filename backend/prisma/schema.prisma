@@ -24,16 +24,18 @@ model Batch {
 }
 
 model Company {
-  Id          Int        @id @default(autoincrement()) @db.UnsignedInt
-  Name        String     @db.VarChar(150)
-  Document    String     @unique(map: "UK_Company_Document") @db.VarChar(14)
-  Description String?    @db.Text
-  CreatedAt   DateTime   @default(now())
-  UpdatedAt   DateTime   @default(now())
+  Id          Int         @id @default(autoincrement()) @db.UnsignedInt
+  Name        String      @db.VarChar(150)
+  Document    String      @unique(map: "UK_Company_Document") @db.VarChar(14)
+  Description String?     @db.Text
+  CreatedAt   DateTime    @default(now())
+  UpdatedAt   DateTime    @default(now())
   DeletedAt   DateTime?
   Batch       Batch[]
+  BatchSend   BatchSend[]
   Contact     Contact[]
   List        List[]
+  Note        Note[]
   Template    Template[]
   User        User[]
 }
@@ -73,14 +75,17 @@ model List {
 
 model Note {
   Id        Int       @id @default(autoincrement()) @db.UnsignedInt
+  CompanyId Int       @db.UnsignedInt
   ContactId Int       @db.UnsignedInt
   Content   String    @db.Text
   CreatedAt DateTime  @default(now())
   UpdatedAt DateTime  @default(now())
   DeletedAt DateTime?
+  Company   Company   @relation(fields: [CompanyId], references: [Id], map: "FK_Note_CompanyId")
   Contact   Contact   @relation(fields: [ContactId], references: [Id], map: "FK_Note_ContactId")
 
   @@index([ContactId], map: "FK_Note_ContactId")
+  @@index([CompanyId], map: "FK_Note_CompanyId")
 }
 
 model Template {
@@ -117,6 +122,7 @@ model User {
 
 model BatchSend {
   Id               Int              @id @default(autoincrement()) @db.UnsignedInt
+  CompanyId        Int              @db.UnsignedInt
   BatchId          Int              @db.UnsignedInt
   ContactId        Int              @db.UnsignedInt
   TemplateId       Int              @db.UnsignedInt
@@ -132,12 +138,14 @@ model BatchSend {
   CreatedAt        DateTime         @default(now())
   UpdatedAt        DateTime         @default(now())
   Batch            Batch            @relation(fields: [BatchId], references: [Id], map: "FK_BatchSend_BatchId")
+  Company          Company          @relation(fields: [CompanyId], references: [Id], map: "FK_BatchSend_CompanyId")
   Contact          Contact          @relation(fields: [ContactId], references: [Id], map: "FK_BatchSend_ContactId")
   Template         Template         @relation(fields: [TemplateId], references: [Id], map: "FK_BatchSend_TemplateId")
 
   @@unique([BatchId, ContactId], map: "UK_BatchSend_Batch_Contact")
   @@index([ContactId], map: "FK_BatchSend_ContactId")
   @@index([TemplateId], map: "FK_BatchSend_TemplateId")
+  @@index([CompanyId], map: "FK_BatchSend_CompanyId")
 }
 
 enum BatchSend_Status {

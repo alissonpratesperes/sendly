@@ -60,7 +60,7 @@ export class ContactService {
         await this.companyService.read(companyId);
         await this.listService.validateBelongsToCompany(listId, companyId);
 
-        const createdContact = await this.prismaService.contact.create({
+        const createdContact = await this.prismaService.client.contact.create({
             data: {
                 CompanyId: companyId,
                 ListId: listId,
@@ -73,7 +73,7 @@ export class ContactService {
     }
 
     async read(id: number): Promise<GetContactResponseDto> {
-        const contact = await this.prismaService.contact.findFirst({
+        const contact = await this.prismaService.client.contact.findFirst({
             where: {
                 Id: id,
                 DeletedAt: null,
@@ -99,7 +99,7 @@ export class ContactService {
     }
 
     async findByIds(companyId: number, contactIds: number[]): Promise<Contact[]> {
-        return this.prismaService.contact.findMany({
+        return this.prismaService.client.contact.findMany({
             where: {
                 Id: {
                     in: contactIds,
@@ -124,10 +124,10 @@ export class ContactService {
     async list(page: number = 1, limit: number = 10, search?: string): Promise<PaginatedResponseDto<GetContactResponseDto>> {
         const where = this.buildContactListWhere(search);
         const [total, contacts] = await Promise.all([
-            this.prismaService.contact.count({
+            this.prismaService.client.contact.count({
                 where,
             }),
-            this.prismaService.contact.findMany({
+            this.prismaService.client.contact.findMany({
                 where,
                 skip: (page - 1) * limit,
                 take: limit,
@@ -167,7 +167,7 @@ export class ContactService {
             normalizedPhone = formatContactPhoneNumber(phone, country as CountryCode);
         }
 
-        const updatedContact = await this.prismaService.contact.update({
+        const updatedContact = await this.prismaService.client.contact.update({
             where: {
                 Id: contact.id,
             },
@@ -185,7 +185,7 @@ export class ContactService {
     async delete(id: number): Promise<void> {
         const contact = await this.read(id);
 
-        await this.prismaService.contact.update({
+        await this.prismaService.client.contact.update({
             where: {
                 Id: contact.id,
             },

@@ -1,3 +1,4 @@
+import { ClsService } from 'nestjs-cls';
 import { BatchSend, BatchSend_Status, Prisma } from '@prisma/client';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 
@@ -9,6 +10,7 @@ import { TemplateSnapshot } from './types/templateSnapshot.type';
 @Injectable()
 export class BatchSendService {
     constructor(
+        private readonly clsService: ClsService,
         private readonly prismaService: PrismaService,
         private readonly contactService: ContactService,
         private readonly templateService: TemplateService,
@@ -42,6 +44,7 @@ export class BatchSendService {
 
         await tx.batchSend.createMany({
             data: contactIds.map((contactId) => ({
+                CompanyId: companyId,
                 BatchId: batchId,
                 ContactId: contactId,
                 TemplateId: templateId,
@@ -54,6 +57,10 @@ export class BatchSendService {
         const batchSends = await tx.batchSend.findMany({
             where: {
                 BatchId: batchId,
+
+                Batch: {
+                    DeletedAt: null,
+                },
             },
             select: {
                 Id: true,
@@ -64,12 +71,16 @@ export class BatchSendService {
     }
 
     async read(id: number): Promise<BatchSend> {
-        const batchSend = await this.prismaService.batchSend.findFirst({
+        const batchSend = await this.prismaService.client.batchSend.findFirst({
             where: {
                 Id: id,
 
                 Batch: {
                     DeletedAt: null,
+
+                    Company: {
+                        DeletedAt: null,
+                    },
                 },
             },
         });
@@ -85,6 +96,10 @@ export class BatchSendService {
         const batchSends = await tx.batchSend.findMany({
             where: {
                 BatchId: batchId,
+
+                Batch: {
+                    DeletedAt: null,
+                },
             },
             select: {
                 ContactId: true,
@@ -103,7 +118,7 @@ export class BatchSendService {
     }
 
     async readForProcessing(id: number): Promise<Prisma.BatchSendGetPayload<{ include: { Batch: true; Contact: true; }; }>> {
-        const batchSendForProcessing = await this.prismaService.batchSend.findFirst({
+        const batchSendForProcessing = await this.prismaService.client.batchSend.findFirst({
             where: {
                 Id: id,
 
@@ -143,11 +158,15 @@ export class BatchSendService {
     }
 
     async countByStatus(batchId: number, statuses: BatchSend_Status[]): Promise<number> {
-        return this.prismaService.batchSend.count({
+        return this.prismaService.client.batchSend.count({
             where: {
                 BatchId: batchId,
                 Status: {
                     in: statuses,
+                },
+
+                Batch: {
+                    DeletedAt: null,
                 },
             },
         });
@@ -159,10 +178,15 @@ export class BatchSendService {
         await tx.batchSend.deleteMany({
             where: {
                 BatchId: batchId,
+
+                Batch: {
+                    DeletedAt: null,
+                },
             },
         });
         await tx.batchSend.createMany({
             data: contactIds.map((contactId) => ({
+                CompanyId: companyId,
                 BatchId: batchId,
                 ContactId: contactId,
                 TemplateId: templateId,
@@ -174,6 +198,10 @@ export class BatchSendService {
         const batchSends = await tx.batchSend.findMany({
             where: {
                 BatchId: batchId,
+
+                Batch: {
+                    DeletedAt: null,
+                },
             },
             select: {
                 Id: true,
@@ -184,10 +212,16 @@ export class BatchSendService {
     }
 
     async startProcessing(id: number): Promise<boolean> {
-        const updatedBatchSend = await this.prismaService.batchSend.updateMany({
+        this.clsService.set("isSystemOperation", true);
+
+        const updatedBatchSend = await this.prismaService.client.batchSend.updateMany({
             where: {
                 Id: id,
                 Status: BatchSend_Status.WAITING,
+
+                Batch: {
+                    DeletedAt: null,
+                },
             },
             data: {
                 Status: BatchSend_Status.PROCESSING,
@@ -202,16 +236,22 @@ export class BatchSendService {
         return updatedBatchSend.count > 0;
     }
 
-    async markAsSent(id: number, messageId: string): Promise<void> {
-        const updatedBatchSend = await this.prismaService.batchSend.updateMany({
+    async markAsFailed(id: number, errorCode: string, errorMessage: string): Promise<void> {
+        this.clsService.set("isSystemOperation", true);
+
+        const updatedBatchSend = await this.prismaService.client.batchSend.updateMany({
             where: {
                 Id: id,
                 Status: BatchSend_Status.PROCESSING,
+
+                Batch: {
+                    DeletedAt: null,
+                },
             },
             data: {
-                Status: BatchSend_Status.SENT,
-                CompletedAt: new Date(),
-                MessageId: messageId,
+                Status: BatchSend_Status.FAILED,
+                ErrorCode: errorCode,
+                ErrorMessage: errorMessage,
             },
         });
 
@@ -220,16 +260,22 @@ export class BatchSendService {
         }
     }
 
-    async markAsFailed(id: number, errorCode: string, errorMessage: string): Promise<void> {
-        const updatedBatchSend = await this.prismaService.batchSend.updateMany({
+    async markAsSent(id: number, messageId: string): Promise<void> {
+        this.clsService.set("isSystemOperation", true);
+
+        const updatedBatchSend = await this.prismaService.client.batchSend.updateMany({
             where: {
                 Id: id,
                 Status: BatchSend_Status.PROCESSING,
+
+                Batch: {
+                    DeletedAt: null,
+                },
             },
             data: {
-                Status: BatchSend_Status.FAILED,
-                ErrorCode: errorCode,
-                ErrorMessage: errorMessage,
+                Status: BatchSend_Status.SENT,
+                CompletedAt: new Date(),
+                MessageId: messageId,
             },
         });
 

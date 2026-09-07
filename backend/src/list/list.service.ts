@@ -48,7 +48,7 @@ export class ListService {
     async create(companyId: number, name: string, subject: string, color: string): Promise<GetListResponseDto> {
         await this.companyService.read(companyId);
 
-        const createdList = await this.prismaService.list.create({
+        const createdList = await this.prismaService.client.list.create({
             data: {
                 CompanyId: companyId,
                 Name: name,
@@ -61,7 +61,7 @@ export class ListService {
     }
 
     async read(id: number): Promise<GetListResponseDto> {
-        const list = await this.prismaService.list.findFirst({
+        const list = await this.prismaService.client.list.findFirst({
             where: {
                 Id: id,
                 DeletedAt: null,
@@ -80,7 +80,7 @@ export class ListService {
     }
 
     private async findByCompany(id: number, companyId: number): Promise<List | null> {
-        return this.prismaService.list.findFirst({
+        return this.prismaService.client.list.findFirst({
             where: {
                 Id: id,
                 CompanyId: companyId,
@@ -102,10 +102,10 @@ export class ListService {
     async list(page: number = 1, limit: number = 10, search?: string): Promise<PaginatedResponseDto<GetListResponseDto>> {
         const where = this.buildListListWhere(search);
         const [total, lists] = await Promise.all([
-            this.prismaService.list.count({
+            this.prismaService.client.list.count({
                 where,
             }),
-            this.prismaService.list.findMany({
+            this.prismaService.client.list.findMany({
                 where,
                 skip: (page - 1) * limit,
                 take: limit,
@@ -131,7 +131,7 @@ export class ListService {
             await this.companyService.read(companyId);
         }
 
-        const updatedList = await this.prismaService.list.update({
+        const updatedList = await this.prismaService.client.list.update({
             where: {
                 Id: list.id,
             },
@@ -149,7 +149,7 @@ export class ListService {
     async delete(id: number): Promise<void> {
         const list = await this.read(id);
 
-        await this.prismaService.list.update({
+        await this.prismaService.client.list.update({
             where: {
                 Id: list.id,
             },

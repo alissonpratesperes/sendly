@@ -1,5 +1,6 @@
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
+import { ClsService } from 'nestjs-cls';
 import { Prisma, User } from '@prisma/client';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 
@@ -14,6 +15,7 @@ import { requireEnvironmentVariable } from '../common/utils/requireEnvironmentVa
 @Injectable()
 export class UserService {
     constructor(
+        private readonly clsService: ClsService,
         private readonly mailService: MailService,
         private readonly tokenService: TokenService,
         private readonly prismaService: PrismaService,
@@ -56,14 +58,6 @@ export class UserService {
         };
     }
 
-    private async findByEmail(email: string): Promise<User | null> {
-        return this.prismaService.user.findUnique({
-            where: {
-                Email: email,
-            },
-        });
-    }
-
     async create(companyId: number, name: string, email: string): Promise<GetUserResponseDto> {
         await this.companyService.read(companyId);
 
@@ -71,7 +65,7 @@ export class UserService {
             throw new ConflictException("A user with this e-mail is already registered");
         }
 
-        const createdUser = await this.prismaService.user.create({
+        const createdUser = await this.prismaService.client.user.create({
             data: {
                 CompanyId: companyId,
                 Name: name,
@@ -84,7 +78,7 @@ export class UserService {
         const generatedPasswordResetToken = await this.tokenService.generatePasswordResetToken(createdUser.Id, createdUser.Email);
         const hashedPasswordResetToken = await this.tokenService.generatePasswordResetTokenHash(generatedPasswordResetToken);
 
-        await this.prismaService.user.update({
+        await this.prismaService.client.user.update({
             where: {
                 Id: createdUser.Id,
             },
@@ -105,7 +99,7 @@ export class UserService {
     }
 
     async read(id: number): Promise<GetUserResponseDto> {
-        const user = await this.prismaService.user.findFirst({
+        const user = await this.prismaService.client.user.findFirst({
             where: {
                 Id: id,
                 DeletedAt: null,
@@ -123,8 +117,18 @@ export class UserService {
         return this.toUserResponse(user);
     }
 
+    private async findByEmail(email: string): Promise<User | null> {
+        return this.prismaService.client.user.findUnique({
+            where: {
+                Email: email,
+            },
+        });
+    }
+
     async readByEmail(email: string, requireNoPasswordReset: boolean): Promise<User> {
-        const user = await this.prismaService.user.findFirst({
+        this.clsService.set("isSystemOperation", true);
+
+        const user = await this.prismaService.client.user.findFirst({
             where: {
                 Email: email,
                 ...(requireNoPasswordReset && {
@@ -148,10 +152,10 @@ export class UserService {
     async list(page: number = 1, limit: number = 10, search?: string): Promise<PaginatedResponseDto<GetUserResponseDto>> {
         const where = this.buildUserListWhere(search);
         const [total, users] = await Promise.all([
-            this.prismaService.user.count({
+            this.prismaService.client.user.count({
                 where,
             }),
-            this.prismaService.user.findMany({
+            this.prismaService.client.user.findMany({
                 where,
                 skip: (page - 1) * limit,
                 take: limit,
@@ -182,7 +186,7 @@ export class UserService {
             }
         }
 
-        const updatedUser = await this.prismaService.user.update({
+        const updatedUser = await this.prismaService.client.user.update({
             where: {
                 Id: user.id,
             },
@@ -199,7 +203,7 @@ export class UserService {
     async updateUserRefreshToken(id: number, hashedRefreshToken: string | null): Promise<void> {
         const user = await this.read(id);
 
-        await this.prismaService.user.update({
+        await this.prismaService.client.user.update({
             where: {
                 Id: user.id,
             },
@@ -210,9 +214,11 @@ export class UserService {
     }
 
     async startPasswordReset(id: number, generatedPasswordResetToken: string, hashedPasswordResetToken: string): Promise<void> {
+        this.clsService.set("isSystemOperation", true);
+
         const user = await this.read(id);
 
-        await this.prismaService.user.update({
+        await this.prismaService.client.user.update({
             where: {
                 Id: user.id,
             },
@@ -231,9 +237,11 @@ export class UserService {
     }
 
     async completePasswordReset(id: number, hashedPassword: string): Promise<void> {
+        this.clsService.set("isSystemOperation", true);
+
         const user = await this.read(id);
 
-        await this.prismaService.user.update({
+        await this.prismaService.client.user.update({
             where: {
                 Id: user.id,
             },
@@ -249,7 +257,7 @@ export class UserService {
     async delete(id: number): Promise<void> {
         const user = await this.read(id);
 
-        await this.prismaService.user.update({
+        await this.prismaService.client.user.update({
             where: {
                 Id: user.id,
             },
