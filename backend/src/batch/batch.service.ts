@@ -1,6 +1,6 @@
 import { Queue } from 'bullmq';
 import { InjectQueue } from '@nestjs/bullmq';
-import { Batch, Batch_Status, Prisma } from '@prisma/client';
+import { Batch, Batch_Status, BatchSend_Status, Prisma } from '@prisma/client';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 
 import { BatchSendService } from './batchSend.service';
@@ -79,6 +79,7 @@ export class BatchService {
             };
         });
 
+        await this.markAsRunning(batch.Id);
         await this.batchSendQueue.addBulk(
             batchSendIds.map((batchSendId) => ({
                 name: 'send',
@@ -176,7 +177,6 @@ export class BatchService {
                     Id: id,
                 },
             });
-
             const batchSendIds = await this.batchSendService.update(
                 tx,
 
@@ -202,6 +202,122 @@ export class BatchService {
         );
 
         return this.toBatchResponse(batch);
+    }
+
+    async markAsRunning(id: number): Promise<void> {
+        const runningBatch = await this.prismaService.batch.updateMany({
+            where: {
+                Id: id,
+                Status: Batch_Status.PENDING,
+                DeletedAt: null,
+
+                Company: {
+                    DeletedAt: null,
+                },
+            },
+            data: {
+                Status: Batch_Status.RUNNING,
+                StartedAt: new Date(),
+            },
+        });
+
+        if (runningBatch.count === 0) {
+            throw new BadRequestException("Batch is no longer pending");
+        }
+    }
+
+    async markAsPartial(id: number): Promise<void> {
+        const partialBatch = await this.prismaService.batch.updateMany({
+            where: {
+                Id: id,
+                Status: Batch_Status.RUNNING,
+                DeletedAt: null,
+
+                Company: {
+                    DeletedAt: null,
+                },
+            },
+            data: {
+                Status: Batch_Status.PARTIAL,
+                EndedAt: new Date(),
+            },
+        });
+
+        if (partialBatch.count === 0) {
+            return;
+        }
+    }
+
+    async markAsFailed(id: number): Promise<void> {
+        const failedBatch = await this.prismaService.batch.updateMany({
+            where: {
+                Id: id,
+                Status: Batch_Status.RUNNING,
+                DeletedAt: null,
+
+                Company: {
+                    DeletedAt: null,
+                },
+            },
+            data: {
+                Status: Batch_Status.FAILED,
+                EndedAt: new Date(),
+            },
+        });
+
+        if (failedBatch.count === 0) {
+            return;
+        }
+    }
+
+    async markAsCompleted(id: number): Promise<void> {
+        const completedBatch = await this.prismaService.batch.updateMany({
+            where: {
+                Id: id,
+                Status: Batch_Status.RUNNING,
+                DeletedAt: null,
+
+                Company: {
+                    DeletedAt: null,
+                },
+            },
+            data: {
+                Status: Batch_Status.FINISHED,
+                EndedAt: new Date(),
+            },
+        });
+
+        if (completedBatch.count === 0) {
+            return;
+        }
+    }
+
+    async finishIfCompleted(id: number): Promise<void> {
+        const pendingCount = await this.batchSendService.countByStatus(id, [
+            BatchSend_Status.WAITING,
+            BatchSend_Status.PROCESSING,
+        ]);
+
+        if (pendingCount > 0) {
+            return;
+        }
+
+        const failedCount = await this.batchSendService.countByStatus(id, [
+            BatchSend_Status.FAILED,
+        ]);
+        const successCount = await this.batchSendService.countByStatus(id, [
+            BatchSend_Status.SENT,
+            BatchSend_Status.DELIVERED,
+            BatchSend_Status.READ,
+        ]);
+
+        if (failedCount > 0 && successCount === 0) {
+            await this.markAsFailed(id);
+        } else if (failedCount > 0 && successCount > 0) {
+            await this.markAsPartial(id);
+        } else {
+            await this.markAsCompleted(id);
+        }
     }
 
     async delete(id: number): Promise<void> {

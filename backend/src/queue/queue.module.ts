@@ -15,7 +15,6 @@ import { requireEnvironmentVariable } from '../common/utils/requireEnvironmentVa
                 password: requireEnvironmentVariable("REDIS_PASSWORD"),
             },
         }),
-
         BullModule.registerQueue({
             name: requireEnvironmentVariable("REDIS_QUEUE_NAME"),
         }),

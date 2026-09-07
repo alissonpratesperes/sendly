@@ -98,6 +98,29 @@ export class ContactService {
         return this.toContactResponse(contact);
     }
 
+    async findByIds(companyId: number, contactIds: number[]): Promise<Contact[]> {
+        return this.prismaService.contact.findMany({
+            where: {
+                Id: {
+                    in: contactIds,
+                },
+                CompanyId: companyId,
+                DeletedAt: null,
+
+                Company: {
+                    DeletedAt: null,
+                },
+                List: {
+                    DeletedAt: null,
+
+                    Company: {
+                        DeletedAt: null,
+                    },
+                },
+            },
+        });
+    }
+
     async list(page: number = 1, limit: number = 10, search?: string): Promise<PaginatedResponseDto<GetContactResponseDto>> {
         const where = this.buildContactListWhere(search);
         const [total, contacts] = await Promise.all([
@@ -121,18 +144,6 @@ export class ContactService {
 
             contacts.map((contact: Contact) => this.toContactResponse(contact)),
         );
-    }
-
-    async findByIds(companyId: number, contactIds: number[]): Promise<Contact[]> {
-        return this.prismaService.contact.findMany({
-            where: {
-                Id: {
-                    in: contactIds,
-                },
-                CompanyId: companyId,
-                DeletedAt: null,
-            },
-        });
     }
 
     async update(id: number, companyId?: number, listId?: number, name?: string, phone?: string, country?: string): Promise<GetContactResponseDto> {
