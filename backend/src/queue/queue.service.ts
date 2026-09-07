@@ -17,13 +17,13 @@ export class QueueService {
             name: requireEnvironmentVariable("REDIS_QUEUE_NAME"),
             data: { batchSendId },
             opts: {
-                delay: generateIntervalInMilliseconds(),
+                // delay: generateIntervalInMilliseconds(),
                 removeOnComplete: true,
                 attempts: 3,
-                backoff: {
-                    type: "exponential",
-                    delay: 5000,
-                },
+                // backoff: {
+                //     type: "exponential",
+                //     delay: 5000,
+                // },
             },
         }));
 
