@@ -102,7 +102,7 @@ export class BatchSendService {
         };
     }
 
-    async readForProcessing(id: number): Promise<BatchSend> {
+    async readForProcessing(id: number): Promise<Prisma.BatchSendGetPayload<{ include: { Batch: true; Contact: true; }; }>> {
         const batchSendForProcessing = await this.prismaService.batchSend.findFirst({
             where: {
                 Id: id,

@@ -11,6 +11,7 @@ import { QueueModule } from './queue/queue.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { CompanyModule } from './company/company.module';
 import { ContactModule } from './contact/contact.module';
+import { BaileysModule } from './baileys/baileys.module';
 import { TemplateModule } from './template/template.module';
 import { SystemRootGuard } from './authentication/guards/systemRoot.guard';
 import { AccessTokenGuard } from './authentication/guards/accessToken.guard';
@@ -28,6 +29,7 @@ import { AuthenticationModule } from './authentication/authentication.module';
     PrismaModule,
     CompanyModule,
     ContactModule,
+    BaileysModule,
     TemplateModule,
     AuthenticationModule,
   ],

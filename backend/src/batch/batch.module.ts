@@ -6,6 +6,7 @@ import { BatchController } from './batch.controller';
 import { BatchSendService } from './batchSend.service';
 import { CompanyModule } from '../company/company.module';
 import { ContactModule } from '../contact/contact.module';
+import { BaileysModule } from 'src/baileys/baileys.module';
 import { TemplateModule } from '../template/template.module';
 import { BatchSendProcessor } from './processors/batchSend.processor';
 
@@ -14,6 +15,7 @@ import { BatchSendProcessor } from './processors/batchSend.processor';
     QueueModule,
     CompanyModule,
     ContactModule,
+    BaileysModule,
     TemplateModule,
   ],
   controllers: [
