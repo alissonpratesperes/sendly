@@ -26,6 +26,7 @@ export class AccessTokenStrategy extends PassportStrategy(Strategy, Authenticati
         return {
             id: user.id,
             email: user.email,
+            companyId: user.companyId,
             isSystemRoot: user.isSystemRoot
         };
     }

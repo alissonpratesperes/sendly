@@ -65,14 +65,17 @@ CREATE TABLE `Contact` (
     `DeletedAt` DATETIME(3) NULL,
 
     CONSTRAINT `PK_Contact` PRIMARY KEY (`Id`),
-    CONSTRAINT `UK_Contact_Phone` UNIQUE (`Phone`),
+    CONSTRAINT `UK_Contact_Company_Phone` UNIQUE (`CompanyId`, `Phone`),
 
     CONSTRAINT `FK_Contact_CompanyId` FOREIGN KEY (`CompanyId`) REFERENCES `Company` (`Id`) ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT `FK_Contact_ListId` FOREIGN KEY (`ListId`) REFERENCES `List` (`Id`) ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT `FK_Contact_ListId` FOREIGN KEY (`ListId`) REFERENCES `List` (`Id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+
+    INDEX `IX_Contact_Company_List` (`CompanyId`, `ListId`)
 );
 
 CREATE TABLE `Note` (
     `Id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `CompanyId` INT UNSIGNED NOT NULL,
     `ContactId` INT UNSIGNED NOT NULL,
 
     `Content` TEXT NOT NULL,
@@ -83,7 +86,10 @@ CREATE TABLE `Note` (
 
     CONSTRAINT `PK_Note` PRIMARY KEY (`Id`),
 
-    CONSTRAINT `FK_Note_ContactId` FOREIGN KEY (`ContactId`) REFERENCES `Contact` (`Id`) ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT `FK_Note_CompanyId` FOREIGN KEY (`CompanyId`) REFERENCES `Company` (`Id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT `FK_Note_ContactId` FOREIGN KEY (`ContactId`) REFERENCES `Contact` (`Id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+
+    INDEX `IX_Note_Company_Contact` (`CompanyId`, `ContactId`)
 );
 
 CREATE TABLE `Template` (
@@ -123,6 +129,7 @@ CREATE TABLE `Batch` (
 
 CREATE TABLE `BatchSend` (
     `Id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `CompanyId` INT UNSIGNED NOT NULL,
     `BatchId` INT UNSIGNED NOT NULL,
     `ContactId` INT UNSIGNED NOT NULL,
     `TemplateId` INT UNSIGNED NOT NULL,
@@ -148,6 +155,9 @@ CREATE TABLE `BatchSend` (
     CONSTRAINT `UK_BatchSend_Batch_Contact` UNIQUE (`BatchId`, `ContactId`),
 
     CONSTRAINT `FK_BatchSend_BatchId` FOREIGN KEY (`BatchId`) REFERENCES `Batch` (`Id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT `FK_BatchSend_CompanyId` FOREIGN KEY (`CompanyId`) REFERENCES `Company` (`Id`) ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT `FK_BatchSend_ContactId` FOREIGN KEY (`ContactId`) REFERENCES `Contact` (`Id`) ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT `FK_BatchSend_TemplateId` FOREIGN KEY (`TemplateId`) REFERENCES `Template` (`Id`) ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT `FK_BatchSend_TemplateId` FOREIGN KEY (`TemplateId`) REFERENCES `Template` (`Id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+
+    INDEX `IX_BatchSend_Company_Status` (`CompanyId`, `Status`)
 );

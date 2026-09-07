@@ -40,12 +40,11 @@
     "handlebars": "^4.7.9",
     "ioredis": "^6.0.0",
     "libphonenumber-js": "^1.13.12",
+    "nestjs-cls": "^6.3.0",
     "nodemailer": "^9.1.1",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "pino": "^10.3.1",
-    "qrcode": "^1.5.4",
-    "qrcode-terminal": "^0.12.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
     "swagger-ui-express": "^5.0.1"
