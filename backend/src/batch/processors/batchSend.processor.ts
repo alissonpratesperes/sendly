@@ -4,7 +4,7 @@ import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { BatchService } from '../batch.service';
 import { BatchSendService } from '../batchSend.service';
 import { BaileysService } from '../../baileys/baileys.service';
-import { requireEnvironmentVariable } from 'src/common/utils/requireEnvironmentVariable.util';
+import { requireEnvironmentVariable } from '../../common/utils/requireEnvironmentVariable.util';
 
 @Processor(requireEnvironmentVariable("REDIS_QUEUE_NAME"))
 export class BatchSendProcessor extends WorkerHost {

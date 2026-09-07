@@ -4,6 +4,7 @@ import { ExpressAdapter } from '@bull-board/express';
 import { BullBoardModule } from '@bull-board/nestjs';
 import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
 
+import { QueueService } from './queue.service';
 import { requireEnvironmentVariable } from '../common/utils/requireEnvironmentVariable.util';
 
 @Module({
@@ -28,8 +29,12 @@ import { requireEnvironmentVariable } from '../common/utils/requireEnvironmentVa
             adapter: BullMQAdapter,
         }),
     ],
+    providers: [
+        QueueService,
+    ],
     exports: [
         BullModule,
+        QueueService,
     ],
 })
 export class QueueModule {}

@@ -1,24 +1,20 @@
-import { Queue } from 'bullmq';
-import { InjectQueue } from '@nestjs/bullmq';
 import { Batch, Batch_Status, BatchSend_Status, Prisma } from '@prisma/client';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 
+import { QueueService } from '../queue/queue.service';
 import { BatchSendService } from './batchSend.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { CompanyService } from '../company/company.service';
 import { GetBatchResponseDto } from './dtos/getBatchResponse.dto';
 import { PaginatedResponseDto } from '../common/dtos/paginatedResponse.dto';
-import { requireEnvironmentVariable } from 'src/common/utils/requireEnvironmentVariable.util';
 
 @Injectable()
 export class BatchService {
     constructor(
+        private readonly queueService: QueueService,
         private readonly prismaService: PrismaService,
         private readonly companyService: CompanyService,
         private readonly batchSendService: BatchSendService,
-
-        @InjectQueue(requireEnvironmentVariable("REDIS_QUEUE_NAME"))
-        private readonly batchSendQueue: Queue,
     ) {}
 
     private toBatchResponse(batch: Batch): GetBatchResponseDto {
@@ -80,14 +76,7 @@ export class BatchService {
         });
 
         await this.markAsRunning(batch.Id);
-        await this.batchSendQueue.addBulk(
-            batchSendIds.map((batchSendId) => ({
-                name: 'send',
-                data: {
-                    batchSendId,
-                },
-            })),
-        );
+        await this.queueService.enqueueBatchSends(batchSendIds);
 
         return this.toBatchResponse(batch);
     }
@@ -192,14 +181,9 @@ export class BatchService {
             };
         });
 
-        await this.batchSendQueue.addBulk(
-            batchSendIds.map((batchSendId) => ({
-                name: 'send',
-                data: {
-                    batchSendId,
-                },
-            })),
-        );
+        await this.markAsRunning(batch.Id);
+
+        await this.queueService.enqueueBatchSends(batchSendIds);
 
         return this.toBatchResponse(batch);
     }

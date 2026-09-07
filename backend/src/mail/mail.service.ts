@@ -7,7 +7,7 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import { MailSubject } from './enums/mailSubject.enum';
 import { MailTemplate } from './enums/mailTemplate.enum';
 import { MailTemplateContext } from './types/mailTemplateContext.type';
-import { requireEnvironmentVariable } from '../../src/common/utils/requireEnvironmentVariable.util';
+import { requireEnvironmentVariable } from '../common/utils/requireEnvironmentVariable.util';
 
 @Injectable()
 export class MailService implements OnModuleInit {

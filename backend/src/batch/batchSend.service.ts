@@ -1,7 +1,7 @@
 import { BatchSend, BatchSend_Status, Prisma } from '@prisma/client';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { ContactService } from '../contact/contact.service';
 import { TemplateService } from '../template/template.service';
 import { TemplateSnapshot } from './types/templateSnapshot.type';
