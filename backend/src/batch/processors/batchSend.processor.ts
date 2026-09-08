@@ -35,30 +35,13 @@ export class BatchSendProcessor extends WorkerHost {
                 return;
             }
 
-            const content = (batchSend.TemplateSnapshot as any)?.content;
-
-            let messageText = "";
-
-            if (typeof content === "string") {
-                messageText = content;
-            } else if (content && typeof content === "object") {
-                const parts = [
-                    content.header ? `*${content.header}*` : null,
-                    content.body || null,
-                    content.footer ? `_${content.footer}_` : null,
-                ].filter(Boolean);
-
-                messageText = parts.join("\n\n");
-            }
-            if (!messageText.trim()) {
-                messageText = "Message with no content";
-            }
+            const content = (batchSend.TemplateSnapshot as any)?.content || batchSend.TemplateSnapshot;
 
             try {
-                const response = await this.baileysService.sendMessage(
+                const response = await this.baileysService.sendTemplateSingleMessage(
                     batchSend.Batch.CompanyId,
                     batchSend.Contact.Phone,
-                    messageText,
+                    content,
                 );
                 const messageId = response.key?.id ?? `FALLBACK_ID_${Date.now()}`;
 

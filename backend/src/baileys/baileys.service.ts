@@ -5,6 +5,8 @@ import { Boom } from '@hapi/boom';
 import { Injectable, OnModuleDestroy, Logger } from '@nestjs/common';
 import makeWASocket, { DisconnectReason, proto, useMultiFileAuthState, WASocket } from '@whiskeysockets/baileys';
 
+import { TemplateContent } from '../template/types/templateContent.type';
+
 @Injectable()
 export class BaileysService implements OnModuleDestroy {
     private sessions = new Map<number, Promise<WASocket>>();
@@ -100,7 +102,7 @@ export class BaileysService implements OnModuleDestroy {
         });
     }
 
-    async sendMessage(companyId: number, to: string, text: string): Promise<proto.IWebMessageInfo> {
+    private async getValidatedJid(companyId: number, to: string): Promise<{ socket: WASocket; jid: string }> {
         const socket = await this.getOrCreateSession(companyId, to);
 
         if (!socket.user) {
@@ -115,11 +117,87 @@ export class BaileysService implements OnModuleDestroy {
             throw new Error(`Number: "${cleanNumber}" does not have an active account in WhatsApp`);
         }
 
+        return {
+            socket,
+            jid: result.jid,
+        };
+    }
+
+    async sendMessage(companyId: number, to: string, text: string): Promise<proto.IWebMessageInfo> {
+        const { socket, jid } = await this.getValidatedJid(companyId, to);
         const safeText = String(text ?? "");
-        const response = await socket.sendMessage(result.jid, { text: safeText });
+        const response = await socket.sendMessage(jid, { text: safeText });
 
         if (!response) {
             throw new Error("Error when tryied to get a send confirmation response from Baileys");
+        }
+
+        return response;
+    }
+
+    async sendTemplateSingleMessage(companyId: number, to: string, content: TemplateContent | any): Promise<proto.IWebMessageInfo> {
+        const { socket, jid } = await this.getValidatedJid(companyId, to);
+
+        let parsed: any = content;
+
+        if (typeof parsed === "string") {
+            try {
+                parsed = JSON.parse(parsed);
+            } catch {
+                throw new Error("Invalid JSON format input");
+            }
+        }
+        if (parsed && typeof parsed === "object" && "content" in parsed && parsed.content) {
+            parsed = parsed.content;
+
+            if (typeof parsed === "string") {
+                try {
+                    parsed = JSON.parse(parsed);
+                } catch {}
+            }
+        }
+
+        const imageBlock = Array.isArray(parsed?.body) ? parsed.body.find((block: any) => block?.type === "image" && block?.url) : null;
+        const imageUrl = imageBlock?.url || parsed?.header?.image;
+        const textParts: string[] = [];
+        const headerTitle = typeof parsed?.header?.title === "string" ? parsed.header.title : parsed?.header?.title?.title;
+
+        if (headerTitle && typeof headerTitle === "string") {
+            textParts.push(`*${headerTitle}*`);
+        }
+        if (Array.isArray(parsed?.body)) {
+            for (const block of parsed.body) {
+                if (block?.type === "text" && typeof block?.text === "string") {
+                    textParts.push(block.text);
+                }
+                if (block?.type === "image" && typeof block?.caption === "string") {
+                    textParts.push(block.caption);
+                }
+            }
+        }
+
+        const footerText = typeof parsed?.footer?.text === "string" ? parsed.footer.text : parsed?.footer?.text?.text;
+
+        if (footerText && typeof footerText === "string") {
+            textParts.push(`_${footerText}_`);
+        }
+
+        const fullText = textParts.join("\n\n");
+
+        let response: proto.IWebMessageInfo | undefined;
+
+        if (imageUrl && typeof imageUrl === "string") {
+            response = await socket.sendMessage(jid, {
+                image: { url: imageUrl },
+                caption: fullText,
+            });
+        } else {
+            response = await socket.sendMessage(jid, {
+                text: fullText,
+            });
+        }
+        if (!response) {
+            throw new Error("Failed when tryied to get Baileys confirmation response");
         }
 
         return response;
