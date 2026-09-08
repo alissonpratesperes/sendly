@@ -148,4 +148,4 @@ vite.config.ts.timestamp-*
 sessions/
 
 #Image uploads for the Templates
-# /uploads
+/uploads
