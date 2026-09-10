@@ -44,6 +44,10 @@ const Forgot: React.FC = () => {
                  </Styled.InputWrapper>
 
                 <Styled.ForgotButton type="submit"> <MailCheckIcon size={20} color="#FFFFFF" /> <Styled.ForgotButtonText> Solicitar link </Styled.ForgotButtonText> </Styled.ForgotButton>
+
+                <Styled.CompanyPresentation>
+                    <Styled.CopyrightParagraph> © 2026 Sendly | Todos os direitos reservados </Styled.CopyrightParagraph>
+                </Styled.CompanyPresentation>
             </Styled.ForgotForm>
         </Styled.ForgotFormContainer>
     )

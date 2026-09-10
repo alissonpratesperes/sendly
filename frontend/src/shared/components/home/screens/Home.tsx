@@ -15,7 +15,7 @@ const Home: React.FC = () => {
                 </SharedStyles.GoBackButton>
 
                 <SharedStyles.SessionInformationWrapper>
-                    <SharedStyles.SessionTitle> Gerencie envios </SharedStyles.SessionTitle>
+                    <SharedStyles.SessionTitle> Gerenciar envios </SharedStyles.SessionTitle>
 
                     <SharedStyles.SessionSubtitle> Monitore os envios realizados, e fique por dentro da execução </SharedStyles.SessionSubtitle>
                 </SharedStyles.SessionInformationWrapper>

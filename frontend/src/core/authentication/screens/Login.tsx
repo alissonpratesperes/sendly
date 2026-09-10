@@ -69,6 +69,10 @@ const Authentication: React.FC = () => {
                 </Styled.InputWrapper>
 
                 <Styled.LoginButton type="submit"> <LogInIcon size={20} color="#FFFFFF" /> <Styled.LoginButtonText> Fazer login </Styled.LoginButtonText> </Styled.LoginButton>
+
+                <Styled.CompanyPresentation>
+                    <Styled.CopyrightParagraph> © 2026 Sendly | Todos os direitos reservados </Styled.CopyrightParagraph>
+                </Styled.CompanyPresentation>
             </Styled.LoginForm>
         </Styled.AuthFormContainer>
     );

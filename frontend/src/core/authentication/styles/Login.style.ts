@@ -22,7 +22,7 @@ export const LoginForm = styled.form`
 export const FormTitle = styled.h4`
     margin-bottom: 15px;
     align-self: flex-start;
-    font-family: "Lato";
+    font-family: "Inter";
     font-weight: 700;
     font-size: 25px;
     color: #171719;
@@ -31,7 +31,7 @@ export const FormTitle = styled.h4`
 export const FormSubtitle = styled.span`
     margin-bottom: 30px;
     align-self: flex-start;
-    font-family: "Lato";
+    font-family: "Inter";
     font-weight: 400;
     font-size: 14px;
     color: #525059;
@@ -116,7 +116,7 @@ export const LoginButton = styled.button`
     color: #FFFFFF;
     border: none;
     outline: none;
-    border-radius: 10px;
+    border-radius: 14px;
     background-color: #223463;
     cursor: pointer;
     transition: transform 0.2s ease;
@@ -128,4 +128,15 @@ export const LoginButton = styled.button`
 
 export const LoginButtonText = styled.span`
     margin-left: 7.5px;
+`;
+
+export const CompanyPresentation = styled.div`
+    margin-top: 45px;
+`;
+
+export const CopyrightParagraph = styled.p`
+    font-family: "Inter";
+    font-weight: 500;
+    font-size: 12px;
+    color: #9CA3AF;
 `;

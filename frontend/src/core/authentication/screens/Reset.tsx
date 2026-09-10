@@ -83,6 +83,10 @@ const Reset: React.FC = () => {
                 </Styled.InputWrapper>
 
                 <Styled.PasswordButton type="submit"> <UserLock size={20} color="#FFFFFF" /> <Styled.PasswordButtonText> Criar senha </Styled.PasswordButtonText> </Styled.PasswordButton>
+
+                <Styled.CompanyPresentation>
+                    <Styled.CopyrightParagraph> © 2026 Sendly | Todos os direitos reservados </Styled.CopyrightParagraph>
+                </Styled.CompanyPresentation>
             </Styled.ResetForm>
         </Styled.ResetFormContainer>
     )
