@@ -1,25 +1,22 @@
 import axios from 'axios';
 import { StatusCodes } from 'http-status-codes';
 
-import environment from '../../../environments/environment';
-import { isTokenExpiredUtil } from '../../../shared/utils/isTokenExpiredUtil.util';
+import { refresh } from '../services/authentication.service';
+const authenticatedApi = axios.create({
+    baseURL: process.env.REACT_APP_API_URL,
+    headers: {
+        "Content-Type": "application/json"
+    }
+});
 
-const axiosInstance = axios.create({ baseURL: environment.apiBaseUrl, headers: { "Content-Type": "application/json" } });
+let refreshPromise: Promise<string> | null = null;
 
-axiosInstance.interceptors.request.use(
+authenticatedApi.interceptors.request.use(
     (config) => {
-        const accessToken = localStorage.getItem("");
+        const accessToken = localStorage.getItem("accessToken");
 
         if (accessToken) {
-            if (isTokenExpiredUtil(accessToken)) {
-                localStorage.clear();
-
-                window.location.href = "/authentication";
-
-                return Promise.reject("Acesso expirado. Por favor, faça login novamente");
-            }
-
-            config.headers["Authorization"] = `Bearer ${accessToken}`;
+            config.headers.Authorization = `Bearer ${accessToken}`;
         }
 
         return config;
@@ -28,17 +25,58 @@ axiosInstance.interceptors.request.use(
         return Promise.reject(error);
     }
 );
-axiosInstance.interceptors.response.use(
-    (response) => response,
-    (error) => {
-        if (error.response && error.response.status === StatusCodes.UNAUTHORIZED) {
-            localStorage.clear();
+authenticatedApi.interceptors.response.use(
+    (response) => {
+        return response;
+    },
+    async (error) => {
+        const originalRequest = error.config;
+
+        if (error.response?.status !== StatusCodes.UNAUTHORIZED || originalRequest._retry) {
+            return Promise.reject(error);
+        }
+
+        originalRequest._retry = true;
+
+        const refreshToken = localStorage.getItem("refreshToken");
+
+        if (!refreshToken) {
+            localStorage.removeItem("accessToken");
+            localStorage.removeItem("refreshToken");
+
+            window.location.href = "/authentication";
 
             return Promise.reject(error);
-        };
+        }
 
-        return Promise.reject(error);
+        try {
+            if(!refreshPromise) {
+                refreshPromise = refresh(refreshToken).then((response) => {
+                    const { accessToken, refreshToken: newRefreshToken } = response;
+
+                    localStorage.setItem("accessToken", accessToken);
+                    localStorage.setItem("refreshToken", newRefreshToken);
+
+                    return accessToken;
+                }).finally(() => {
+                    refreshPromise = null;
+                });
+            }
+
+            const accessToken = await refreshPromise;
+
+            originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+
+            return authenticatedApi(originalRequest);
+        } catch (refreshError) {
+            localStorage.removeItem("accessToken");
+            localStorage.removeItem("refreshToken");
+
+            window.location.href = "/authentication";
+
+            return Promise.reject(refreshError);
+        }
     }
 );
 
-export default axiosInstance;
+export default authenticatedApi;

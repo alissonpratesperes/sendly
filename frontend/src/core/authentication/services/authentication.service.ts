@@ -1,11 +1,29 @@
+import api from '../../../shared/api/axios.client';
 import { LoginCommandDto } from '../dtos/loginCommand.dto';
-import axiosInstance from '../interceptors/authorization.interceptor';
+import { ResetCommandDto } from '../dtos/resetCommand.dto';
+import { ForgotCommandDto } from '../dtos/forgotCommand.dto';
 import { AuthenticationTokenPair } from '../interfaces/authenticationTokenPair.interface';
 
-const endpoint = "authentication/login";
+const BASE_ENDPOINT: string = "authentication";
 
-export const authenticate = async (command: LoginCommandDto) => {
-    const response = await axiosInstance.post<AuthenticationTokenPair>(endpoint, command);
+export const login = async (command: LoginCommandDto): Promise<AuthenticationTokenPair> => {
+    const response = await api.post<AuthenticationTokenPair>(`${BASE_ENDPOINT}/login`, command);
 
-    return response;
+    return response.data;
+}
+
+export const refresh = async (refreshToken: string): Promise<AuthenticationTokenPair> => {
+    const response = await api.post<AuthenticationTokenPair>(`${BASE_ENDPOINT}/refresh`, null, {
+        headers: { Authorization: `Bearer ${refreshToken}` }
+    });
+
+    return response.data;
+};
+
+export const forgot = async (command: ForgotCommandDto): Promise<void> => {
+    return await api.post(`${BASE_ENDPOINT}/forgot`, command);
+}
+
+export const reset = async (passwordResetToken: string, command: ResetCommandDto): Promise<void> => {
+    return await api.patch(`${BASE_ENDPOINT}/reset?passwordResetToken=${encodeURIComponent(passwordResetToken)}`, command);
 }

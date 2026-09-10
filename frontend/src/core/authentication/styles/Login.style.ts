@@ -19,10 +19,28 @@ export const LoginForm = styled.form`
     justify-content: center;
 `;
 
-export const InputWrapper = styled.div`
-    position: relative;
-    width: 100%;
+export const FormTitle = styled.h4`
+    margin-bottom: 15px;
+    align-self: flex-start;
+    font-family: "Lato";
+    font-weight: 700;
+    font-size: 25px;
+    color: #171719;
+`;
+
+export const FormSubtitle = styled.span`
     margin-bottom: 30px;
+    align-self: flex-start;
+    font-family: "Lato";
+    font-weight: 400;
+    font-size: 14px;
+    color: #525059;
+`;
+
+export const InputWrapper = styled.div`
+    margin-bottom: 30px;
+    width: 100%;
+    position: relative;
 
         &::before {
             content: "";

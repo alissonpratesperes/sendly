@@ -1,13 +1,12 @@
+import axios from 'axios';
 import { toast } from 'react-toastify';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { StatusCodes } from 'http-status-codes';
 import { EyeIcon, EyeOffIcon, LogInIcon } from 'lucide-react';
 
-import * as Styled from '../styles/Authentication.style';
-import { ReadById } from '../../user/services/User.service';
-import { authenticate } from '../services/authentication.service';
-import { decodeJWTUtil } from '../../../shared/utils/jwtDecoderUtil.util';
+import * as Styled from '../styles/Login.style';
+import { login } from '../services/authentication.service';
 import { useLoading } from '../../../shared/components/loading/contexts/LoadingContext.context';
 
 const Authentication: React.FC = () => {
@@ -27,17 +26,19 @@ const Authentication: React.FC = () => {
         try {
             showLoading();
 
-            const response = await authenticate({ email, password });
+            const response = await login({ email, password });
 
-            if (response.status === StatusCodes.OK) {
-                localStorage.setItem("accessToken", response.data.accessToken);
-                localStorage.setItem("refreshToken", response.data.refreshToken);
+            localStorage.setItem("accessToken", response.accessToken);
+            localStorage.setItem("refreshToken", response.refreshToken);
 
-                navigate("/home");
-            };
-        } catch (error: any) {
-            if (error.response?.status === StatusCodes.UNAUTHORIZED) {
-                toast.error("Usuário e/ou senha incorretos, tente novamente");
+            toast.info("Login realizado com sucesso, bem-vindo ao Sendly");
+
+            navigate("/home");
+        } catch (error: unknown) {
+            if (axios.isAxiosError(error) && error.response?.status === StatusCodes.BAD_REQUEST) {
+                toast.warn("É necessário redefinir a primeira senha, verifique seu e-mail");
+            } else if (axios.isAxiosError(error) && error.response?.status === StatusCodes.UNAUTHORIZED) {
+                toast.error("Credenciais inválidas, tente novamente");
 
                 return;
             } else {
@@ -51,6 +52,9 @@ const Authentication: React.FC = () => {
     return (
         <Styled.AuthFormContainer>
             <Styled.LoginForm onSubmit={handleSubmit}>
+                <Styled.FormTitle> Bem-vindo ao Sendly </Styled.FormTitle>
+                <Styled.FormSubtitle> Para autenticar no sistema, informe suas credenciais abaixo </Styled.FormSubtitle>
+
                 <Styled.InputWrapper>
                     <Styled.Label htmlFor="email"> E-MAIL </Styled.Label>
 

@@ -46,7 +46,7 @@ export class AuthenticationController {
   @IsPublic()
   @Patch("reset")
   @HttpCode(HttpStatus.NO_CONTENT)
-  async reset(@Query("passwordResetToken") query: string, @Body() command: Rese tCommandDto): Promise<void> {
+  async reset(@Query("passwordResetToken") query: string, @Body() command: ResetCommandDto): Promise<void> {
     return this.authenticationService.reset(query, command);
   }
 }

@@ -11,12 +11,13 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ element }) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const token = localStorage.getItem("accessToken");
+        const accessToken = localStorage.getItem("accessToken");
 
-        if (token && !isTokenExpiredUtil(token)) {
+        if (accessToken && !isTokenExpiredUtil(accessToken)) {
             setIsAuthorized(true);
         } else {
-            localStorage.clear();
+            localStorage.removeItem("accessToken");
+            localStorage.removeItem("refreshToken");
 
             setIsAuthorized(false);
         }
@@ -26,14 +27,14 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ element }) => {
             toast.error("Você precisa estar autenticado");
 
             navigate("/authentication", { replace: true });
-        }
+        };
     }, [isAuthorized, navigate]);
 
     if (isAuthorized === null) {
         return null;
-    }
+    };
 
     return isAuthorized ? element : null;
-}
+};
 
 export default PrivateRoute;
