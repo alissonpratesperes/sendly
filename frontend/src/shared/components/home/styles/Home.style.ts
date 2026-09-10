@@ -1,107 +1,133 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 
-import { ReactComponent as FooterIllustration } from '../../../../assets/footer_illustration.svg';
-
-export const PageWrapper = styled.div`
-    min-height: 100vh;
+export const IframeContainer = styled.div`
+    height: calc(100vh - 180px);
     width: 100%;
+`;
+
+export const BullBoardIframe = styled.iframe`
+    height: 100%;
+    width: 100%;
+    border: none;
+    display: block;
+    overflow: hidden;
+    border-radius: 10px;
+`;
+
+
+
+
+
+
+
+
+
+
+
+
+
+export const CustomOptionsContainer = styled.div`
+    padding: 0px 12px 0px 12px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-family: 'Lato';
+    font-weight: 700;
+    font-size: 14px;
+    color: #171719;
+`;
+
+export const CustomOptionsInput = styled.input`
+    padding: 8px 12px 8px 12px;
+    cursor: pointer;
+`;
+
+export const CustomOptionsDiv = styled.div`
+    padding: 8px 12px 8px 12px;
+`;
+
+export const CustomSelectedAllLabel = styled.label`
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-family: 'Lato';
+    font-weight: 700;
+    font-size: 14px;
+    color: #171719;
+`;
+
+export const CustomSelectedAllInput = styled.input`
+    cursor: pointer;
+`;
+
+export const FieldWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    overflow-x: hidden;
 `;
 
-export const Content = styled.div`
-    width: 664px;
-    display: grid;
-    grid-template-rows: auto auto;
-    grid-template-columns: repeat(2, 1fr);
-    row-gap: 30px;
-    column-gap: 40px;
-
-        & > a:nth-child(3) {
-            grid-column: 1 / 3;
-            justify-self: center;
-        }
+export const Label = styled.label`
+    margin-bottom: 8px;
+    font-family: 'Lato';
+    font-weight: 700;
+    font-size: 14px;
+    color: #171719;
 `;
 
-export const Card = styled(Link)`
-    height: 152px;
-    width: 312px;
-    padding: 15px 23px 15px 23px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    background-color: #FFFFFF;
-    border: 1px solid #D3D2D9;
-    border-radius: 8px;
-`;
-
-export const CardLeftContent = styled.div`
+export const HeaderWrapper = styled.header`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 15px;
-`;
-
-export const CardRightContent = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
-    color: #8E8E8E;
 `;
 
-export const IconWrapper = styled.div`
-    height: 53px;
-    width: 53px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: #00355D;
-    border-radius: 8px;
-    color: #FFFFFF;
-`;
-
-export const Title = styled.h3`
-    font-family: 'Inter';
-    font-weight: 700;
-    font-size: 16px;
-    color: #171719;
-`;
-
-export const Description = styled.span`
-    font-family: 'Inter';
-    font-weight: 400;
-    font-size: 12px;
-    color: #171719;
-`;
-
-export const Footer = styled.footer`
-    margin-top: auto;
-    width: calc(100vw - (100vw - 100%));
+export const GoBackButton = styled.button`
+    background: none;
+    cursor: pointer;
+    outline: none;
+    border: none;
     display: flex;
     flex-direction: row;
     align-items: center;
-    jutify-content:center;
-    flex-shrink: 0;
-    overflow: hidden;
+    justify-content: center;
+    color: #1C70E9;
 `;
 
-export const FooterLeftVector = styled(FooterIllustration)`
-    height: auto;
-    min-width: 0;
-    flex: 1;
-    object-fit: cover;
-    transform: scaleX(-1);
+export const GoBackButtonLabel = styled.span`
+    margin-left: 5px;
+    font-family: 'Lato';
+    font-weight: 700;
+    font-size: 16px;
 `;
 
-export const FooterRightVector = styled(FooterIllustration)` 
-    height: auto;
-    min-width: 0;
-    flex: 1;
-    object-fit: cover;
+export const SessionInformationWrapper = styled.div`
+    margin: 10px 0px 10px 0px;
+    height: 73px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
 `;
+
+export const SessionTitle = styled.h1`
+    height: 36px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Lato';
+    font-weight: 700;
+    font-size: 24px;
+    color: #171719;
+`;
+
+export const SessionSubtitle = styled.h3`
+    font-family: 'Lato';
+    font-weight: 400;
+    font-size: 14px;
+    color: #525059;
+`;
+
+export const ListWrapper = styled.div``;

@@ -23,6 +23,7 @@ import { requireEnvironmentVariable } from '../common/utils/requireEnvironmentVa
         BullBoardModule.forRoot({
             route: requireEnvironmentVariable("REDIS_BULL_BOARD_URL"),
             adapter: ExpressAdapter,
+             boardOptions: { uiConfig: { boardTitle: "Sendly - Dashboard", }, },
         }),
         BullBoardModule.forFeature({
             name: requireEnvironmentVariable("REDIS_QUEUE_NAME"),

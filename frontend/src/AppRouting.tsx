@@ -22,7 +22,7 @@ export const AppRouting: React.FC = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const shouldRenderHeader = location.pathname !== '/authentication' && location.pathname !== '/authentication/reset' && location.pathname !== '/authentication/forgot';
-    const applyPadding = location.pathname !== '/home' && location.pathname !== '/authentication' && location.pathname !== '/authentication/reset' && location.pathname !== '/authentication/forgot';
+    const applyPadding = location.pathname !== '/authentication' && location.pathname !== '/authentication/reset' && location.pathname !== '/authentication/forgot';
 
     useEffect(() => {
         const token = localStorage.getItem("accessToken");
@@ -49,6 +49,7 @@ export const AppRouting: React.FC = () => {
                     <Route path="/authentication" element={<Login />} />
                     <Route path="/authentication/reset" element={<Reset />} />
                     <Route path="/authentication/forgot" element={<Forgot />} />
+                    <Route path="/home" element={<PrivateRoute element={ <Home /> }/>} />
                     <Route path="/" element={<PrivateRoute element={ <Navigate to="/home" replace /> }/>} />
                     <Route path="*" element={localStorage.getItem("accessToken") ? (<Navigate to="/home" replace />) : (<Navigate to="/authentication" replace />)} />
 
@@ -58,7 +59,6 @@ export const AppRouting: React.FC = () => {
 
 
 
-                    <Route path="/home" element={<PrivateRoute element={ <Home /> }/>} />
                     <Route path="/registrations/*" element={<PrivateRoute element={ <Registration /> }/>} />
                     <Route path="/commercial-actions" element={<PrivateRoute element={ <Commercial /> }/>} />
                     <Route path="/commercial-actions/:id" element={<PrivateRoute element={ <CommercialDetails /> } />} />

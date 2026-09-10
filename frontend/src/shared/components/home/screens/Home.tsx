@@ -1,40 +1,35 @@
 import React from 'react';
-import { Store, ClipboardList, CircleDollarSign, ChevronRight } from 'lucide-react';
 
-import * as Styled from '../styles/Home.style';
+import * as SharedStyles from '../styles/Home.style';
+import { MoveLeft } from 'lucide-react';
 
 const Home: React.FC = () => {
-    const accessCards = [
-        { icon: <Store size={20} />, title: "Gerenciar cadastros", description: "Regional, rede, lojas, produtos, tipo ação", path: "/registrations" },
-        { icon: <ClipboardList size={20} />, title: "Ações comerciais", description: "Cadastre e visualize as ações", path: "/commercial-actions" },
-        { icon: <CircleDollarSign size={20} />, title: "Financeiro", description: "Acompanhe seu faturamento", path: "/financial" }
-    ];
-
     return (
+
         <>
-            <Styled.PageWrapper>
-                <Styled.Content>
-                    {accessCards.map((card, index) => (
-                        <Styled.Card to={card.path} key={index}>
-                            <Styled.CardLeftContent>
-                                <Styled.IconWrapper> {card.icon} </Styled.IconWrapper>
+        <SharedStyles.HeaderWrapper>
+<SharedStyles.GoBackButton  >
+                    <MoveLeft size={20} />
 
-                                <Styled.Title> {card.title} </Styled.Title>
+                    <SharedStyles.GoBackButtonLabel> Voltar </SharedStyles.GoBackButtonLabel>
+                </SharedStyles.GoBackButton>
 
-                                <Styled.Description> {card.description} </Styled.Description>
-                            </Styled.CardLeftContent>
+                <SharedStyles.SessionInformationWrapper>
+                    <SharedStyles.SessionTitle> Gerencie envios </SharedStyles.SessionTitle>
 
-                            <Styled.CardRightContent> <ChevronRight size={20} /> </Styled.CardRightContent>
-                        </Styled.Card>
-                    ))}
-                </Styled.Content>
-            </Styled.PageWrapper>
+                    <SharedStyles.SessionSubtitle> Monitore os envios realizados, e fique por dentro da execução </SharedStyles.SessionSubtitle>
+                </SharedStyles.SessionInformationWrapper>
+            </SharedStyles.HeaderWrapper>
 
-            <Styled.Footer>
-                <Styled.FooterLeftVector /> <Styled.FooterRightVector />
-            </Styled.Footer>
+        <SharedStyles.IframeContainer>
+            <SharedStyles.BullBoardIframe
+                src={ process.env.REACT_APP_BULL_BOARD_URL }
+                style={{ colorScheme: "light" }}
+                title="Sendly - Dashboard"
+            />
+        </SharedStyles.IframeContainer>
         </>
     );
-};
+}
 
 export default Home;

@@ -39,7 +39,7 @@ export const CustomSelectedAllLabel = styled.label`
 `;
 
 export const CustomSelectedAllInput = styled.input`
-    cursor: pointer; 
+    cursor: pointer;
 `;
 
 export const FieldWrapper = styled.div`
@@ -80,7 +80,7 @@ export const CustomDatePickerWrapper = styled.div`
         background: transparent !important;
     }
 
-    .react-datepicker { 
+    .react-datepicker {
         padding: 16px 16px 16px 16px;
         border: none;
         border-radius: 12px;
@@ -195,7 +195,7 @@ export const CustomDatePickerWrapper = styled.div`
         border-radius: 50%;
         display: inline-block;
     }
-     
+
     .react-datepicker__month {
         display: grid !important;
         grid-template-columns: repeat(7, 1fr);
@@ -214,7 +214,7 @@ export const CustomDatePickerWrapper = styled.div`
         border-radius: 50%;
         background-color: #FF734A;
     }
-    
+
     .react-datepicker__day--selected, .react-datepicker__day--in-range, .react-datepicker__day--in-selecting-range {
         color: #FFFFFF;
         border-radius: 50%;
@@ -419,7 +419,7 @@ export const SearchInputField = styled.input`
 `;
 
 export const AddButton = styled.button<AddButtonProps>`
-    height: 40px; 
+    height: 40px;
     border: none;
     outline: none;
     background: none;
@@ -433,7 +433,7 @@ export const AddButton = styled.button<AddButtonProps>`
     background-color: #00355D;
     border-radius: 8px;
 
-    width: ${({ $isInFinancialPage, $isInActionTypePage }) => $isInFinancialPage || $isInActionTypePage ? '225px' : '194px'}; 
+    width: ${({ $isInFinancialPage, $isInActionTypePage }) => $isInFinancialPage || $isInActionTypePage ? '225px' : '194px'};
 `;
 
 export const SearchInputSubmitText = styled.span`
@@ -497,10 +497,10 @@ export const TableListBodyRow = styled.tr`
 export const TableListBodyRowData = styled.td`
     padding: 16px 24px 16px 24px;
     vertical-align: middle;
-    
-        &:nth-last-child(1) { 
+
+        &:nth-last-child(1) {
             text-align: center;
-        
+
                 button + button {
                     margin-left: 20px;
                 }
@@ -529,7 +529,7 @@ export const NotFoundContentIllustration = styled.div<NotFoundContentContainerPr
     height: 343.34px;
     width: 290.98px;
     background-size: contain;
-    background-position: center; 
+    background-position: center;
     background-repeat: no-repeat;
 
     background-image: url(${props => props.src});

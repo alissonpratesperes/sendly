@@ -7,7 +7,7 @@ export const Container = styled.header`
   padding: 0px 47px 0px 47px;
   height: 96px;
   width: 100vw;
-  background-color: #00355D;
+  background-color: #223463;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -60,7 +60,7 @@ export const NavItem = styled(NavLink)`
         border-top-right-radius: 4px;
       }
   }
-  
+
   svg {
     stroke: currentColor;
   }
@@ -72,7 +72,7 @@ export const UserAvatarContainer = styled.div<UserAvatarContainerProps>`
   border-radius: 50%;
   background-image: url(${props => props.src});
   background-size: contain;
-  background-position: center; 
+  background-position: center;
   background-repeat: no-repeat;
 `;
 
@@ -84,17 +84,17 @@ export const LogoutClickableContainer = styled.div`
 export const Dropdown = styled.div`
     padding: 0px 16px 0px 16px;
     position: absolute;
-    top: 45px; 
+    top: 45px;
     right: 0px;
     background-color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    z-index: 1000; 
+    z-index: 1000;
 `;
 
 export const DropdownItem = styled.div`
     height: 64px;
-    width: 145px; 
+    width: 145px;
     display: flex;
     flex-direction: row;
     align-items: center;
