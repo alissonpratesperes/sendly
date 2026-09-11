@@ -1,25 +1,21 @@
 import React, { Fragment } from 'react';
 
-import * as SharedStyles from '../styles/Home.style';
+import * as Styled from '../styles/Home.style';
 
 const Home: React.FC = () => {
     return (
         <Fragment>
-            <SharedStyles.HeaderWrapper>
-                <SharedStyles.SessionInformationWrapper>
-                    <SharedStyles.SessionTitle> Gerenciar envios </SharedStyles.SessionTitle>
+            <Styled.HeaderWrapper>
+                <Styled.SessionInformationWrapper>
+                    <Styled.SessionTitle> Gerenciar envios </Styled.SessionTitle>
 
-                    <SharedStyles.SessionSubtitle> Monitore os envios realizados, e fique por dentro da execução </SharedStyles.SessionSubtitle>
-                </SharedStyles.SessionInformationWrapper>
-            </SharedStyles.HeaderWrapper>
+                    <Styled.SessionSubtitle> Monitore os envios realizados, e fique por dentro da execução </Styled.SessionSubtitle>
+                </Styled.SessionInformationWrapper>
+            </Styled.HeaderWrapper>
 
-        <SharedStyles.IframeContainer>
-            <SharedStyles.BullBoardIframe
-                src={ process.env.REACT_APP_BULL_BOARD_URL }
-                style={{ colorScheme: "light" }}
-                title="Sendly - Dashboard"
-            />
-        </SharedStyles.IframeContainer>
+            <Styled.IframeContainer>
+                <Styled.BullBoardIframe src={ process.env.REACT_APP_BULL_BOARD_URL } style={{ colorScheme: "light" }} title="Sendly - Dashboard"/>
+            </Styled.IframeContainer>
         </Fragment>
     );
 }

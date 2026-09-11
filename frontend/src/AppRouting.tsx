@@ -39,7 +39,6 @@ export const AppRouting: React.FC = () => {
                     links={[
                         { label: 'Home', path: '/home' },
                         { label: 'Cadastros', path: '/registrations' },
-                        { label: 'Ações comerciais', path: '/commercial-actions' },
                     ]}
                 />
             )}

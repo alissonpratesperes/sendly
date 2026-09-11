@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { NavLink, Link as RouterLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 export const Container = styled.header`
   padding: 35px 70px 0px 70px;
@@ -16,7 +16,8 @@ export const MenuContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content:space-between;
+  justify-content: flex-start;
+  column-gap: 30px;
 `;
 
 export const NavItem = styled(NavLink)`

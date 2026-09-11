@@ -8,7 +8,6 @@ import { HeaderMenuLinksProps } from '../interfaces/HeaderMenuLinksProps.interfa
 const menuLinksIconsMapping: Record<string, JSX.Element> = {
     home: <Rocket size={25} />,
     registrations: <DatabaseZapIcon size={25} />,
-    'commercial-actions': <Send size={25} />,
 };
 const Header: React.FC<HeaderMenuLinksProps> = ({ links }) => {
     const navigate = useNavigate();
