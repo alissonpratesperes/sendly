@@ -1,112 +1,151 @@
 import styled from 'styled-components';
 import { NavLink, Link as RouterLink } from 'react-router-dom';
 
-import { UserAvatarContainerProps } from '../interfaces/UserAvatarContainerProps.interface';
-
 export const Container = styled.header`
-  padding: 0px 47px 0px 47px;
-  height: 96px;
+  padding: 35px 70px 0px 70px;
+  height: 100px;
   width: 100vw;
-  background-color: #223463;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
 `;
 
-export const CompanyLogotype = styled.img`
-    height: 80px;
-    width: 125px;
-    object-fit: contain;
-`;
-
 export const MenuContainer = styled.div`
-  width: 539px;
+  width: 500px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content:space-between;
 `;
 
-export const Link = styled(RouterLink)`
-  font-family: 'Inter';
-  font-weight: 400;
-  font-size: 16px;
-  color: #FFFFFF;
-`;
-
 export const NavItem = styled(NavLink)`
-  padding-bottom: 6px;
-  height: 64px;
-  position: relative;
+  padding: 15px;
+  height: 100%;
+  width: 120px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  row-gap: 6px;
-  color: #FFFFFF;
+  row-gap: 7.5px;
+  font-family: "Inter";
+  font-weight: 400;
+  font-size: 16px;
+  color: #223463;
+  border-radius: 14px;
+  transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
 
-  &.active {
-    color: #FFFFFF;
+    &:not(.active):hover {
+      font-weight: 700;
+      color: #FFFFFF;
+      background-color: #223463;
+      animation: menuEffect 0.6s ease-in-out;
+    }
 
-      &::after {
-        content: '';
-        height: 4px;
-        width: 100%;
-        position: absolute;
-        bottom: 0;
-        background-color: #FFFFFF;
-        border-top-left-radius: 4px;
-        border-top-right-radius: 4px;
+    &.active {
+      font-weight: 700;
+      color: #FFFFFF;
+      background-color: #223463;
+    }
+
+      svg {
+        stroke: currentColor;
       }
-  }
 
-  svg {
-    stroke: currentColor;
-  }
+        @keyframes menuEffect {
+          0% {
+            transform: scale(1.08);
+          }
+
+          50% {
+            transform: scale(0.95);
+          }
+
+          100% {
+            transform: scale(1);
+          }
+        }
 `;
 
-export const UserAvatarContainer = styled.div<UserAvatarContainerProps>`
-  height: 56px;
-  width: 56px;
+export const UserContainer = styled.div`
+  padding-right: 15px;
+  height: 80px;
+  width: 350px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 15px;
+  background-color: #D9DCE3;
+  border-radius: 50px;
+`;
+
+export const UserInformation = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+`;
+
+export const UserName = styled.h1`
+  font-family: "Inter";
+  font-weight: 700;
+  font-size: 18px;
+  color: #000000;
+`;
+
+export const UserCompany = styled.h1`
+  margin-top: 7.5px;
+  font-family: "Inter";
+  font-weight: 500;
+  font-size: 14px;
+  color: #223463;
+`;
+
+export const UserActionContainer = styled.div`
+  width: 55px;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
   border-radius: 50%;
-  background-image: url(${props => props.src});
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
 `;
 
-export const LogoutClickableContainer = styled.div`
-  position: relative;
+export const LogOutButton = styled.button`
+  width: 55px;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background-color: #FFFFFF;
+  color: #223463;
   cursor: pointer;
-`;
+  transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
 
-export const Dropdown = styled.div`
-    padding: 0px 16px 0px 16px;
-    position: absolute;
-    top: 45px;
-    right: 0px;
-    background-color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    z-index: 1000;
-`;
+    &:hover {
+      color: #FFFFFF;
+      background-color: #223463;
+      animation: logOutButtonEffect 0.6s ease-in-out;
+    }
 
-export const DropdownItem = styled.div`
-    height: 64px;
-    width: 145px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    font-family: 'Lato';
-    font-weight: 700;
-    font-size: 16px;
-    color: #171719;
-    cursor: pointer;
-    border-radius: 8px;
-`;
+      svg {
+        stroke: currentColor;
+      }
 
-export const DropdownText = styled.span`
-  margin-left: 8px;
+        @keyframes logOutButtonEffect {
+          0% {
+            transform: scale(1.08);
+          }
+
+          50% {
+            transform: scale(0.95);
+          }
+
+          100% {
+            transform: scale(1);
+          }
+        }
 `;

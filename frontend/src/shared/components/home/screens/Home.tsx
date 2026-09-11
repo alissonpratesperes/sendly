@@ -1,19 +1,11 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
 import * as SharedStyles from '../styles/Home.style';
-import { MoveLeft } from 'lucide-react';
 
 const Home: React.FC = () => {
     return (
-
-        <>
-        <SharedStyles.HeaderWrapper>
-<SharedStyles.GoBackButton  >
-                    <MoveLeft size={20} />
-
-                    <SharedStyles.GoBackButtonLabel> Voltar </SharedStyles.GoBackButtonLabel>
-                </SharedStyles.GoBackButton>
-
+        <Fragment>
+            <SharedStyles.HeaderWrapper>
                 <SharedStyles.SessionInformationWrapper>
                     <SharedStyles.SessionTitle> Gerenciar envios </SharedStyles.SessionTitle>
 
@@ -28,7 +20,7 @@ const Home: React.FC = () => {
                 title="Sendly - Dashboard"
             />
         </SharedStyles.IframeContainer>
-        </>
+        </Fragment>
     );
 }
 
