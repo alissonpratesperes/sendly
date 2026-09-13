@@ -21,7 +21,6 @@ import Uploader from '../../../shared/components/uploader/screens/Uploader';
 import { Read as ReadCategories } from '../../category/services/Category.service';
 import { CommercialFormProps } from '../interfaces/CommercialFormProps.interface';
 import * as Styled from '../../../shared/components/drawer/styles/genericDrawer.style';
-import { useLoading } from '../../../shared/components/loading/contexts/LoadingContext.context';
 import { CommercialFormData, CommercialFormSchema } from '../schemas/CommercialFormSchema.schema';
 import { UploaderItemType } from '../../../shared/components/uploader/types/UploaderItemType.type';
 import { PaginatedRequestDTO } from '../../../shared/components/pagination/dtos/PaginatedRequestDTO.dto';
@@ -43,7 +42,6 @@ export const CommercialForm: React.FC<CommercialFormProps> = ({ initialValues, o
     imagens: [] as UploaderItemType[]
   });
 
-  const { showLoading, hideLoading } = useLoading();
 
   const chainOptions = chains.filter(chain => chain.ativo).map((chain) => ({ value: chain.id, label: chain.nome }));
   const actionOptions = actions.filter(action => action.ativo).map((action) => ({ value: action.id, label: action.nome }));
@@ -70,7 +68,6 @@ export const CommercialForm: React.FC<CommercialFormProps> = ({ initialValues, o
     formEvent.preventDefault();
 
     try {
-      showLoading();
 
       const validatedFormData = CommercialFormSchema.parse(formData);
       const formDataToSend = new FormData();
@@ -115,7 +112,6 @@ export const CommercialForm: React.FC<CommercialFormProps> = ({ initialValues, o
         initialValues?.id ? toast.error(`Erro ao atualizar Ação Comercial: ${error}`) : toast.error(`Erro ao criar Ação Comercial: ${error}`);
       };
     } finally {
-      hideLoading();
     };
   };
 

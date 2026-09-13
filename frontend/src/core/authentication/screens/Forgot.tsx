@@ -2,32 +2,38 @@ import { toast } from 'react-toastify';
 import React, { useState } from 'react';
 import { MailCheckIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { PropagateLoader } from 'react-spinners';
 
 import * as Styled from '../styles/forgot.style';
 import { forgot } from '../services/authentication.service';
-import { useLoading } from '../../../shared/components/loading/contexts/LoadingContext.context';
 
 const Forgot: React.FC = () => {
     const [email, setEmail] = useState("");
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const navigate = useNavigate();
-    const { showLoading, hideLoading } = useLoading();
 
     const handleSubmit = async (formEvent: React.FormEvent) => {
         formEvent.preventDefault();
 
         try {
-            showLoading();
+            setIsLoading(true);
 
             await forgot({ email });
 
             toast.success("Solicitação realizada com sucesso, verifique seu e-mail");
 
+            setIsLoading(false);
+
             navigate("/authentication", { replace: true });
         } catch {
             toast.error("Não é possível prosseguir com a solicitação");
+
+            setIsLoading(false);
+
+            return;
         } finally {
-            hideLoading();
+            setIsLoading(false);
         }
     }
 
@@ -41,13 +47,19 @@ const Forgot: React.FC = () => {
                     <Styled.Label htmlFor="email"> E-MAIL </Styled.Label>
 
                     <Styled.Input type="email" id="email" placeholder="Digite seu email" value={email} onChange={(inputEvent) => setEmail(inputEvent.target.value)} required />
-                 </Styled.InputWrapper>
+                </Styled.InputWrapper>
 
-                <Styled.ForgotButton type="submit">
-                    <MailCheckIcon size={25} color="#FFFFFF" />
+                { isLoading ? (
+                    <Styled.LoadingContainer>
+                        <PropagateLoader size={ 25 } color="#1C70E9" />
+                    </Styled.LoadingContainer>
+                ) : (
+                    <Styled.ForgotButton type="submit">
+                        <MailCheckIcon size={ 25 } color="#FFFFFF" />
 
-                    <Styled.ForgotButtonText> Solicitar link </Styled.ForgotButtonText>
-                </Styled.ForgotButton>
+                        <Styled.ForgotButtonText> Solicitar link </Styled.ForgotButtonText>
+                    </Styled.ForgotButton>
+                ) }
 
                 <Styled.CompanyPresentation>
                     <Styled.CopyrightParagraph> © 2026 Sendly | Todos os direitos reservados </Styled.CopyrightParagraph>

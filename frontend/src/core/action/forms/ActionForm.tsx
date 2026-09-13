@@ -10,7 +10,6 @@ import { ActionFormSchema } from '../schemas/ActionFormSchema.schema';
 import { ActionFormProps } from '../interfaces/ActionFormProps.interface';
 import * as RegistrationSharedStyled from '../../../shared/styles/Registration.style';
 import * as Styled from '../../../shared/components/drawer/styles/genericDrawer.style';
-import { useLoading } from '../../../shared/components/loading/contexts/LoadingContext.context';
 
 export const ActionForm: React.FC<ActionFormProps> = ({ initialValues, onSubmit, onCancel }) => {
     const statusOptions = [{ value: true, label: 'Ativo' }, { value: false, label: 'Inativo' }];
@@ -20,13 +19,10 @@ export const ActionForm: React.FC<ActionFormProps> = ({ initialValues, onSubmit,
         ativo: true
     });
 
-    const { showLoading, hideLoading } = useLoading();
-
     const handleSubmit = async (formEvent: React.FormEvent) => {
         formEvent.preventDefault();
 
         try {
-            showLoading();
 
             const validatedFormData = ActionFormSchema.parse(formData);
 
@@ -40,7 +36,6 @@ export const ActionForm: React.FC<ActionFormProps> = ({ initialValues, onSubmit,
                 console.error(error);
             };
         } finally {
-            hideLoading();
         };
     };
     const handleChange = (changeEvent: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {

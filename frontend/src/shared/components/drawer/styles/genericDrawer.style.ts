@@ -185,7 +185,7 @@ export const Input = styled.input`
 
 export const Footer = styled.div`
     margin-top: auto;
-    padding: 15px 30px 15px 30px;
+    padding: 15px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -196,7 +196,7 @@ export const Footer = styled.div`
         &:has(.secondary:hover) {
             .primary {
                 font-weight: 400;
-                color: #223463;
+                color: #1C70E9;
                 background-color: transparent;
             }
         }
@@ -220,20 +220,20 @@ export const FooterButton = styled.button<{ $variant?: "primary" | "secondary"; 
 
     font-weight: ${({ $variant }) => $variant === "primary" ? "700" : "400" };
     color: ${({ $variant }) => $variant === "primary" ? "#FFFFFF" : "#223463" };
-    background-color: ${({ $variant }) => $variant === "primary" ? "#223463" : "transparent" };
+    background-color: ${({ $variant }) => $variant === "primary" ? "#1C70E9" : "transparent" };
 
         &.secondary:hover {
             font-weight: 700;
             color: #FFFFFF;
             background-color: #223463;
-            animation: logOutButtonEffect 0.6s ease-in-out;
+            animation: buttonEffect 0.6s ease-in-out;
         }
 
             svg {
                 stroke: currentColor;
             }
 
-                @keyframes logOutButtonEffect {
+                @keyframes buttonEffect {
                     0% {
                         transform: scale(1.08);
                     }

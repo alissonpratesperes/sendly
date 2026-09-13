@@ -9,7 +9,7 @@ export const Container = styled.header`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  background-color: #D9DCE3;
+  background-color: #E6E7EC;
   border-bottom-left-radius: 14px;
   border-bottom-right-radius: 14px;
 `;
@@ -32,7 +32,7 @@ export const NavItem = styled(NavLink)`
   align-items: center;
   justify-content: center;
   row-gap: 7.5px;
-  font-family: "Inter";
+  font-family: "Lato";
   font-weight: 400;
   font-size: 16px;
   color: #223463;
@@ -122,13 +122,13 @@ export const LogOutButton = styled.button`
   border: none;
   background: none;
   border-radius: 14px;
-  color: #223463;
+  color: #1C70E9;
   cursor: pointer;
   transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
 
     &:hover {
       color: #FFFFFF;
-      background-color: #223463;
+      background-color: #1C70E9;
       animation: logOutButtonEffect 0.6s ease-in-out;
     }
 

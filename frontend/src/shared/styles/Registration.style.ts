@@ -4,6 +4,16 @@ import { ArrowDown } from 'lucide-react';
 import { SortListingActionProps } from '../interfaces/SortListingActionProps.interface';
 import { NotFoundContentContainerProps } from '../interfaces/NotFoundContentContainerProps.interface';
 
+export const LoadingContainer = styled.div`
+    height: 55px;
+    width: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: center;
+    background: transparent;
+`;
+
 export const ListWrapper = styled.div``;
 
 export const SearchInputWrapper = styled.div`
@@ -17,12 +27,13 @@ export const SearchInputWrapper = styled.div`
     justify-content: center;
     column-gap: 30px;
     border-radius: 14px;
-    background-color: #D9DCE3;
+    border-top-left-radius: 0px;
+    background-color: #E6E7EC;
 `;
 
 export const SearchInputContainer = styled.div`
     padding: 0px 15px;
-    height: 60px;
+    height: auto;
     width: 100%;
     position: relative;
     flex: 1;
@@ -52,7 +63,7 @@ export const SearchInputContainer = styled.div`
 
 export const SearchInputField = styled.input`
     margin-left: 15px;
-    height: 60px;
+    height: 55px;
     width: 100%;
     font-family: "Lato";
     font-weight: 400;
@@ -79,7 +90,7 @@ export const AddButton = styled.button`
     font-family: "Lato";
     font-weight: 400;
     font-size: 16px;
-    color: #223463;
+    color: #1C70E9;
     border: none;
     outline: none;
     border-radius: 14px;
@@ -90,7 +101,7 @@ export const AddButton = styled.button`
         &:hover {
             font-weight: 700;
             color: #FFFFFF;
-            background-color: #223463;
+            background-color: #1C70E9;
             animation: logOutButtonEffect 0.6s ease-in-out;
         }
 
@@ -182,12 +193,29 @@ export const TableListBodyRowDataActions = styled.div`
     justify-content: center;
 `;
 
-
 export const TableListBodyRowDataActionButton = styled.button`
     border: none;
     outline: none;
     background: none;
     cursor: pointer;
+
+        &:hover {
+            animation: tableButtonEffect 0.6s ease-in-out;
+        }
+
+            @keyframes tableButtonEffect {
+                0% {
+                    transform: scale(1.30);
+                }
+
+                50% {
+                    transform: scale(0.80);
+                }
+
+                100% {
+                    transform: scale(1);
+                }
+            }
 `;
 
 

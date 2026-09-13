@@ -10,7 +10,6 @@ import { ChainFormSchema } from '../schemas/ChainFormSchema.schema';
 import { ChainFormProps } from '../interfaces/ChainFormProps.interface';
 import * as RegistrationSharedStyled from '../../../shared/styles/Registration.style';
 import * as Styled from '../../../shared/components/drawer/styles/genericDrawer.style';
-import { useLoading } from '../../../shared/components/loading/contexts/LoadingContext.context';
 
 export const ChainForm: React.FC<ChainFormProps> = ({ initialValues, onSubmit, onCancel }) => {
     const statusOptions = [{ value: true, label: 'Ativo' }, { value: false, label: 'Inativo' }];
@@ -20,14 +19,11 @@ export const ChainForm: React.FC<ChainFormProps> = ({ initialValues, onSubmit, o
         ativo: true
     });
 
-    const { showLoading, hideLoading } = useLoading();
 
     const handleSubmit = async (formEvent: React.FormEvent) => {
         formEvent.preventDefault();
 
         try {
-            showLoading();
-
             const validatedFormData = ChainFormSchema.parse(formData);
 
             initialValues?.id ? await Update(initialValues.id, validatedFormData) : await Create(validatedFormData);
@@ -40,7 +36,6 @@ export const ChainForm: React.FC<ChainFormProps> = ({ initialValues, onSubmit, o
                 console.error(error);
             };
         } finally {
-            hideLoading();
         };
     };
     const handleChange = (changeEvent: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {

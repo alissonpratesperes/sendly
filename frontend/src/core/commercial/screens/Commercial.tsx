@@ -25,7 +25,6 @@ import { ReadById as ReadAction } from '../../action/services/Action.service';
 import { Read as ReadCategories } from '../../category/services/Category.service';
 import Pagination from '../../../shared/components/pagination/screens/Pagination';
 import { GenericDrawer } from '../../../shared/components/drawer/screens/GenericDrawer';
-import { useLoading } from '../../../shared/components/loading/contexts/LoadingContext.context';
 import { PaginatedRequestDTO } from '../../../shared/components/pagination/dtos/PaginatedRequestDTO.dto';
 
 const Commercial = () => {
@@ -45,7 +44,6 @@ const Commercial = () => {
     const [actionNames, setActionNames] = useState<Record<number, string>>({});
     const actionNamesRef = useRef(actionNames);
 
-    const { showLoading, hideLoading } = useLoading();
 
     const optionsForActions = actions.filter(action => action.id !== undefined && action.id !== null && action.ativo).map(action => ({ value: Number(action.id), label: action.nome }));
     const optionsForChains = chains.filter(chain => chain.id !== undefined && chain.id !== null && chain.ativo).map(chain => ({ value: Number(chain.id), label: chain.nome })).sort((a, b) => a.label.localeCompare(b.label));
@@ -99,7 +97,6 @@ const Commercial = () => {
     };
     const handleRead = useCallback(async () => {
         try {
-            showLoading();
 
             let startOfDayUTC: Date | undefined;
             let endOfDayUTC: Date | undefined;
@@ -148,9 +145,8 @@ const Commercial = () => {
         } catch (error) {
             toast.error(`Erro ao listar as Ações Comerciais: ${error}`);
         } finally {
-            hideLoading();
         };
-    }, [page, pageSize, search, appliedFilters, showLoading, hideLoading]);
+    }, [page, pageSize, search, appliedFilters ]);
     const handleDateChange = (date: [Date | null, Date | null]) => {
         const [start, end] = date;
 

@@ -16,7 +16,6 @@ import { ReadById, Delete } from '../services/Commercial.service';
 import Modal from '../../../shared/components/modal/screens/Modal';
 import { ReadById as ReadAction } from '../../action/services/Action.service';
 import { GenericDrawer } from '../../../shared/components/drawer/screens/GenericDrawer';
-import { useLoading } from '../../../shared/components/loading/contexts/LoadingContext.context';
 import { UploaderItemType } from '../../../shared/components/uploader/types/UploaderItemType.type';
 import { formatImagesWithBase64ToUploaderUtil } from '../../../shared/utils/formatImagesWithBase64ToUploaderUtil.util';
 
@@ -31,7 +30,6 @@ const CommercialDetails = () => {
     const [commercial, setCommercial] = useState<CommercialDTO | null>(null);
     const [selectedActionId, setSelectedActionId] = useState<number | null>(null);
 
-    const { showLoading, hideLoading } = useLoading();
 
     const formattedImages: UploaderItemType[] = formatImagesWithBase64ToUploaderUtil(commercial?.imagens ?? []);
     const imageUrls = commercial?.imagens?.filter(img => typeof img !== 'string' && 'urlDownload' in img).map(img => (img as any).urlDownload).filter(Boolean) ?? [];
@@ -40,7 +38,6 @@ const CommercialDetails = () => {
 
     const handleReadById = useCallback(async () => {
         try {
-            showLoading();
 
             if (!id) {
                 toast.error(`Ação Comercial não encontrada`);
@@ -56,9 +53,8 @@ const CommercialDetails = () => {
         } catch (error) {
             toast.error(`Erro ao acessar os detalhes da Ação Comercial: ${error}`);
         } finally {
-            hideLoading();
         };
-    }, [id, showLoading, hideLoading]);
+    }, [id ]);
     const openImageModal = (index: number) => {
         const maxIndex = (imageUrls.length - 1);
 

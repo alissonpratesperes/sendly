@@ -8,7 +8,6 @@ import { UserFormSchema } from '../schemas/userFormSchema.schema';
 import Toast from '../../../shared/components/toast/screens/Toast';
 import { UserFormProps } from '../interfaces/userFormProps.interface';
 import * as Styled from '../../../shared/components/drawer/styles/genericDrawer.style';
-import { useLoading } from '../../../shared/components/loading/contexts/LoadingContext.context';
 
 export const UserForm: React.FC<UserFormProps> = ({ initialValues, onSubmit, onCancel }) => {
     const [formData, setFormData] = useState<UserFormData>({
@@ -16,13 +15,10 @@ export const UserForm: React.FC<UserFormProps> = ({ initialValues, onSubmit, onC
         email: "",
     })
 
-    const { showLoading, hideLoading } = useLoading();
-
     const handleSubmit = async (formEvent: React.FormEvent) => {
         formEvent.preventDefault();
 
         try {
-            showLoading();
 
             const isCreatingNewUser = !initialValues?.id;
             const validatedFormData = UserFormSchema.parse(formData);
@@ -41,7 +37,6 @@ export const UserForm: React.FC<UserFormProps> = ({ initialValues, onSubmit, onC
                 console.error(error);
             }
         } finally {
-            hideLoading();
         }
     }
     const handleChange = (changeEvent: React.ChangeEvent<HTMLInputElement>) => {

@@ -15,7 +15,6 @@ import { cnpjFormatterUtil } from '../../../shared/utils/cnpjFormatterUtil.util'
 import Pagination from '../../../shared/components/pagination/screens/Pagination';
 import ToggleSwitch from '../../../shared/elements/toggleSwitch/screens/ToggleSwitch';
 import { GenericDrawer } from '../../../shared/components/drawer/screens/GenericDrawer';
-import { useLoading } from '../../../shared/components/loading/contexts/LoadingContext.context';
 import { PaginatedRequestDTO } from '../../../shared/components/pagination/dtos/PaginatedRequestDTO.dto';
 
 const Store = () => {
@@ -33,8 +32,6 @@ const Store = () => {
     const chainNamesRef = useRef(chainNames);
     const userRole = localStorage.getItem('userRole');
 
-    const { showLoading, hideLoading } = useLoading();
-
     const handleSort = () => {
         const isAscending = sort === 0;
 
@@ -47,7 +44,6 @@ const Store = () => {
     };
     const handleRead = useCallback(async () => {
         try {
-            showLoading();
 
             const params: PaginatedRequestDTO = { page, pageSize, sortBy: 'razaoSocial', sortDir: sort ? 'desc' : 'asc', search };
             const response = await Read(params);
@@ -74,9 +70,8 @@ const Store = () => {
         } catch (error) {
             toast.error(`Erro ao listar Lojas: ${error}`);
         } finally {
-            hideLoading();
         };
-    }, [page, pageSize, sort, search, showLoading, hideLoading]);
+    }, [page, pageSize, sort, search ]);
     const handleUpdate = (id: number) => {
         const clicked = stores.find(store => store.id === id);
 

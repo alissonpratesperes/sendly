@@ -1,21 +1,21 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { StatusCodes } from 'http-status-codes';
+import { PropagateLoader } from 'react-spinners';
+import React, { useState, Fragment } from 'react';
 import { EyeIcon, EyeOffIcon, LogInIcon, LockKeyhole } from 'lucide-react';
 
 import * as Styled from '../styles/login.style';
 import { login } from '../services/authentication.service';
-import { useLoading } from '../../../shared/components/loading/contexts/LoadingContext.context';
 
 const Authentication: React.FC = () => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [showPassword, setShowPassword] = useState(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const navigate = useNavigate();
-    const { showLoading, hideLoading } = useLoading();
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -24,7 +24,7 @@ const Authentication: React.FC = () => {
         formEvent.preventDefault();
 
         try {
-            showLoading();
+            setIsLoading(true);
 
             const response = await login({ email, password });
 
@@ -33,19 +33,31 @@ const Authentication: React.FC = () => {
 
             toast.info("Login realizado com sucesso");
 
+            setIsLoading(false);
+
             navigate("/home");
         } catch (error: unknown) {
             if (axios.isAxiosError(error) && error.response?.status === StatusCodes.BAD_REQUEST) {
                 toast.warn("É necessário redefinir a primeira senha, verifique seu e-mail");
+
+                setIsLoading(false);
+
+                return;
             } else if (axios.isAxiosError(error) && error.response?.status === StatusCodes.UNAUTHORIZED) {
                 toast.error("Credenciais inválidas, tente novamente");
+
+                setIsLoading(false);
 
                 return;
             } else {
                 toast.error("Não é possível realizar a autenticação");
+
+                setIsLoading(false);
+
+                return;
             }
         } finally {
-            hideLoading();
+            setIsLoading(false);
         }
     }
 
@@ -65,20 +77,28 @@ const Authentication: React.FC = () => {
 
                     <Styled.Input type={showPassword ? "text" : "password"} id="password" placeholder="Digite sua senha" value={password} onChange={(inputEvent) => setPassword(inputEvent.target.value)} required />
 
-                   <Styled.EyeButton type="button" onClick={togglePasswordVisibility}> {showPassword ? ( <EyeIcon size={25} color="#223463" /> ) : ( <EyeOffIcon size={25} color="#223463" /> )} </Styled.EyeButton>
+                   <Styled.EyeButton type="button" onClick={togglePasswordVisibility}> {showPassword ? ( <EyeIcon size={ 25 } color="#1C70E9" /> ) : ( <EyeOffIcon size={ 25 } color="#1C70E9" /> )} </Styled.EyeButton>
                 </Styled.InputWrapper>
 
                 <Styled.LoginButtonsContainer>
-                    <Styled.ForgotButton to="/authentication/forgot">
-                        <LockKeyhole size={25} color="#FFFFFF" />
+                    { isLoading ? (
+                        <Styled.LoadingContainer>
+                            <PropagateLoader size={ 25 } color="#1C70E9" />
+                        </Styled.LoadingContainer>
+                    ) : (
+                        <Fragment>
+                            <Styled.ForgotButton to="/authentication/forgot">
+                                <LockKeyhole size={ 25 } color="#FFFFFF" />
 
-                        <Styled.ForgotButtonText> Recuperar senha </Styled.ForgotButtonText>
-                    </Styled.ForgotButton>
-                    <Styled.LoginButton type="submit">
-                        <LogInIcon size={25} />
+                                <Styled.ForgotButtonText> Recuperar senha </Styled.ForgotButtonText>
+                            </Styled.ForgotButton>
+                            <Styled.LoginButton type="submit">
+                                <LogInIcon size={ 25 } />
 
-                        <Styled.LoginButtonText> Fazer login </Styled.LoginButtonText>
-                    </Styled.LoginButton>
+                                <Styled.LoginButtonText> Fazer login </Styled.LoginButtonText>
+                            </Styled.LoginButton>
+                        </Fragment>
+                    ) }
                 </Styled.LoginButtonsContainer>
 
                 <Styled.CompanyPresentation>

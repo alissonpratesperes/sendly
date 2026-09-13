@@ -13,7 +13,6 @@ import { StoreFormProps } from '../interfaces/StoreFormProps.interface';
 import { cnpjFormatterUtil } from '../../../shared/utils/cnpjFormatterUtil.util';
 import * as RegistrationSharedStyled from '../../../shared/styles/Registration.style';
 import * as Styled from '../../../shared/components/drawer/styles/genericDrawer.style';
-import { useLoading } from '../../../shared/components/loading/contexts/LoadingContext.context';
 
 export const StoreForm: React.FC<StoreFormProps> = ({ initialValues, onSubmit, onCancel }) => {
     const [chains, setChains] = useState<ChainDTO[]>([]);
@@ -21,13 +20,12 @@ export const StoreForm: React.FC<StoreFormProps> = ({ initialValues, onSubmit, o
     const optionsForChains = chains.filter(chain => chain.id !== undefined && chain.id !== null && chain.ativo).map(chain => ({ value: Number(chain.id), label: chain.nome })).sort((a, b) => a.label.localeCompare(b.label));
     const [formData, setFormData] = useState<StoreFormData>({ id: undefined, codigo: "", razaoSocial: "", apelido: "", cnpj: "", redeId: 0, endereco: "", bairro: "", ativo: true });
 
-    const { showLoading, hideLoading } = useLoading();
+
 
     const handleSubmit = async (formEvent: React.FormEvent) => {
         formEvent.preventDefault();
 
         try {
-            showLoading();
 
             const validatedFormData = StoreFormSchema.parse(formData);
 
@@ -41,7 +39,6 @@ export const StoreForm: React.FC<StoreFormProps> = ({ initialValues, onSubmit, o
                 console.error(error);
             };
         } finally {
-            hideLoading();
         };
     };
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

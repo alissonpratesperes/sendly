@@ -13,7 +13,6 @@ import EmptyStateVector from '../../../assets/emptystate_vector.svg';
 import Pagination from '../../../shared/components/pagination/screens/Pagination';
 import ToggleSwitch from '../../../shared/elements/toggleSwitch/screens/ToggleSwitch';
 import { GenericDrawer } from '../../../shared/components/drawer/screens/GenericDrawer';
-import { useLoading } from '../../../shared/components/loading/contexts/LoadingContext.context';
 import { PaginatedRequestDTO } from '../../../shared/components/pagination/dtos/PaginatedRequestDTO.dto';
 
 const Action = () => {
@@ -29,7 +28,6 @@ const Action = () => {
     const [selectedActionId, setSelectedActionId] = useState<number | null>(null);
     const userRole = localStorage.getItem('userRole');
 
-    const { showLoading, hideLoading } = useLoading();
 
     const handleSort = () => {
         const isAscending = sort === 0;
@@ -43,8 +41,6 @@ const Action = () => {
     };
     const handleRead = useCallback(async () => {
         try {
-            showLoading();
-
             const params: PaginatedRequestDTO = { page, pageSize, sortBy: 'nome', sortDir: sort ? 'desc' : 'asc', search };
             const response = await Read(params);
             const itemsWithBoolean = response.items.map(item => ({ ...item, ativo: String(item.ativo).toLowerCase() === 'true' }));
@@ -54,9 +50,8 @@ const Action = () => {
         } catch (error) {
             toast.error(`Erro ao listar Tipos de Ação: ${error}`);
         } finally {
-            hideLoading();
         };
-    }, [page, pageSize, sort, search, showLoading, hideLoading]);
+    }, [page, pageSize, sort, search ]);
     const handleUpdate = (id: number) => {
         const clicked = actions.find(action => action.id === id);
 

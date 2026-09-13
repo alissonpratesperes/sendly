@@ -13,7 +13,6 @@ import { RegionalFormData } from '../schemas/RegionalFormSchema.schema';
 import Pagination from '../../../shared/components/pagination/screens/Pagination';
 import ToggleSwitch from '../../../shared/elements/toggleSwitch/screens/ToggleSwitch';
 import { GenericDrawer } from '../../../shared/components/drawer/screens/GenericDrawer';
-import { useLoading } from '../../../shared/components/loading/contexts/LoadingContext.context';
 import { PaginatedRequestDTO } from '../../../shared/components/pagination/dtos/PaginatedRequestDTO.dto';
 
 const Regional = () => {
@@ -29,8 +28,6 @@ const Regional = () => {
     const [selectedRegionalId, setSelectedRegionalId] = useState<number | null>(null);
     const userRole = localStorage.getItem('userRole');
 
-    const { showLoading, hideLoading } = useLoading();
-
     const handleSort = () => {
         const isAscending = sort === 0;
 
@@ -43,7 +40,6 @@ const Regional = () => {
     };
     const handleRead = useCallback(async () => {
         try {
-            showLoading();
 
             const params: PaginatedRequestDTO = { page, pageSize, sortBy: 'nome', sortDir: sort ? 'desc' : 'asc', search };
             const response = await Read(params);
@@ -54,9 +50,8 @@ const Regional = () => {
         } catch (error) {
             toast.error(`Erro ao listar Regionais: ${error}`);
         } finally {
-            hideLoading();
         };
-    }, [page, pageSize, sort, search, showLoading, hideLoading]);
+    }, [page, pageSize, sort, search ]);
     const handleUpdate = (id: number) => {
         const clicked = regionals.find(regional => regional.id === id);
 

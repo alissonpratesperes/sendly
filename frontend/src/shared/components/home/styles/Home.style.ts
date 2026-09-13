@@ -38,6 +38,7 @@ export const IframeContainer = styled.div`
 `;
 
 export const BullBoardIframe = styled.iframe`
+    margin-top: 15px;
     height: 100%;
     width: 100%;
     border: none;

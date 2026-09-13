@@ -1,23 +1,23 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { StatusCodes } from 'http-status-codes';
+import { PropagateLoader } from 'react-spinners';
 import React, { useEffect, useState } from 'react';
 import { EyeIcon, EyeOffIcon, UserLock } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import * as Styled from '../styles/reset.style';
 import { reset } from '../services/authentication.service';
-import { useLoading } from '../../../shared/components/loading/contexts/LoadingContext.context';
 
 const Reset: React.FC = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [newPassword, setNewPassword] = useState<string>("");
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [confirmPassword, setConfirmPassword] = useState<string>("");
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-    const { showLoading, hideLoading } = useLoading();
 
     const passwordResetToken = searchParams.get("passwordResetToken");
 
@@ -39,25 +39,37 @@ const Reset: React.FC = () => {
         }
 
         try {
-            showLoading();
+            setIsLoading(true);
 
             await reset(passwordResetToken, { newPassword, confirmPassword });
 
             toast.success("Nova senha definida com sucesso");
+
+            setIsLoading(false);
 
             navigate("/authentication", { replace: true });
         } catch (error: unknown) {
             if (axios.isAxiosError(error) && error.response?.status === StatusCodes.BAD_REQUEST) {
                 toast.error("As senhas não coincidem");
 
+                setIsLoading(false);
+
                 return;
             } else if(axios.isAxiosError(error) && error.response?.status === StatusCodes.UNAUTHORIZED)  {
                 toast.error("Token de redefinição de senha inválido");
+
+                setIsLoading(false);
+
+                return;
             } else {
                 toast.error("Não é possível definir a nova senha");
+
+                setIsLoading(false);
+
+                return;
             }
         } finally {
-            hideLoading();
+            setIsLoading(false);
         }
     }
 
@@ -72,21 +84,27 @@ const Reset: React.FC = () => {
 
                     <Styled.Input type={showPassword ? "text" : "password"} id="newPassword" placeholder="Digite sua nova senha" value={newPassword} onChange={(inputEvent) => setNewPassword(inputEvent.target.value)} required />
 
-                    <Styled.EyeButton type="button" onClick={() => setShowPassword(!showPassword)}> {showPassword ? ( <EyeIcon size={25} color="#223463" /> ) : ( <EyeOffIcon size={25} color="#223463" /> )} </Styled.EyeButton>
+                    <Styled.EyeButton type="button" onClick={() => setShowPassword(!showPassword)}> {showPassword ? ( <EyeIcon size={25} color="#1C70E9" /> ) : ( <EyeOffIcon size={25} color="#1C70E9" /> )} </Styled.EyeButton>
                 </Styled.InputWrapper>
                 <Styled.InputWrapper>
                     <Styled.Label htmlFor="confirmPassword"> CONFIRMAR NOVA SENHA </Styled.Label>
 
                     <Styled.Input type={showConfirmPassword ? "text" : "password"} id="confirmPassword" placeholder="Confirme sua nova senha" value={confirmPassword} onChange={(inputEvent) => setConfirmPassword(inputEvent.target.value)} required />
 
-                    <Styled.EyeButton type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)}> {showConfirmPassword ? ( <EyeIcon size={25} color="#223463" /> ) : ( <EyeOffIcon size={25} color="#223463" /> )} </Styled.EyeButton>
+                    <Styled.EyeButton type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)}> {showConfirmPassword ? ( <EyeIcon size={25} color="#1C70E9" /> ) : ( <EyeOffIcon size={25} color="#1C70E9" /> )} </Styled.EyeButton>
                 </Styled.InputWrapper>
 
-                <Styled.PasswordButton type="submit">
-                    <UserLock size={25} color="#FFFFFF" />
+                { isLoading ? (
+                    <Styled.ResetFormContainer>
+                        <PropagateLoader size={ 25 } color="#1C70E9" />
+                    </Styled.ResetFormContainer>
+                ) : (
+                    <Styled.PasswordButton type="submit">
+                        <UserLock size={ 25 } color="#FFFFFF" />
 
-                    <Styled.PasswordButtonText> Criar senha </Styled.PasswordButtonText>
-                </Styled.PasswordButton>
+                        <Styled.PasswordButtonText> Criar senha </Styled.PasswordButtonText>
+                    </Styled.PasswordButton>
+                ) }
 
                 <Styled.CompanyPresentation>
                     <Styled.CopyrightParagraph> © 2026 Sendly | Todos os direitos reservados </Styled.CopyrightParagraph>

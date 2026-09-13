@@ -1,5 +1,15 @@
 import styled from 'styled-components';
 
+export const LoadingContainer = styled.div`
+    height: 55px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+`;
+
 export const ForgotFormContainer = styled.div`
     height: 100vh;
     width: 100vw;

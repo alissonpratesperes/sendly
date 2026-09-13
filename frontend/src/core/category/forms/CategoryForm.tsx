@@ -10,7 +10,6 @@ import { CategoryFormSchema } from '../schemas/CategoryFormSchema.schema';
 import { CategoryFormProps } from '../interfaces/CategoryFormProps.interface';
 import * as RegistrationSharedStyled from '../../../shared/styles/Registration.style';
 import * as Styled from '../../../shared/components/drawer/styles/genericDrawer.style';
-import { useLoading } from '../../../shared/components/loading/contexts/LoadingContext.context';
 
 export const CategoryForm: React.FC<CategoryFormProps> = ({ initialValues, onSubmit, onCancel }) => {
     const statusOptions = [{ value: true, label: 'Ativo' }, { value: false, label: 'Inativo' }]
@@ -20,13 +19,10 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialValues, onSub
         ativo: true
     });
 
-    const { showLoading, hideLoading } = useLoading();
-
     const handleSubmit = async (formEvent: React.FormEvent) => {
         formEvent.preventDefault();
 
         try {
-            showLoading();
 
             const validatedFormData = CategoryFormSchema.parse(formData);
 
@@ -40,7 +36,6 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialValues, onSub
                 console.error(error);
             };
         } finally {
-            hideLoading();
         };
     };
     const handleChange = (changeEvent: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
