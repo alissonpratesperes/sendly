@@ -10,6 +10,7 @@ import { UserFormData } from '../schemas/userFormSchema.schema';
 import Modal from '../../../shared/components/modal/screens/Modal';
 import * as SharedStyled from '../../../shared/styles/Registration.style';
 import { formatDateUtil } from '../../../shared/utils/formatDateUtil.util';
+import Paginate from '../../../shared/components/paginate/screens/Paginate';
 import UserBadge from '../../../shared/elements/userBadge/screens/UserBadge';
 import { Create, Read, List, Update, Delete } from '../services/user.service';
 import { GenericDrawer } from '../../../shared/components/drawer/screens/GenericDrawer';
@@ -17,6 +18,7 @@ import { PaginatedQueryDto } from '../../../shared/components/pagination/dtos/Pa
 
 const User = () => {
     const [page, setPage] = useState<number>(1);
+    const [total, setTotal] = useState<number>(1);
     const [limit, setLimit] = useState<number>(5);
     const [search, setSearch] = useState<string>("");
     const [users, setUsers] = useState<UserResponseDto[]>([]);
@@ -37,11 +39,12 @@ const User = () => {
             const params: PaginatedQueryDto = { page, limit, search };
             const response = await List(params);
 
-            setTimeout(() => {setUsers(response.data);}, 10000)
+            setUsers(response.data);
+            setTotal(response.total);
         } catch (error) {
             toast.error(`Erro ao listar Usuários: ${error}`);
         } finally {
-            setTimeout(() => {setIsLoading(false);}, 10000)
+            setIsLoading(false);
         }
     }, [ page, limit, search, setIsLoading ]);
     const handleUpdate = (id: number) => {
@@ -148,11 +151,23 @@ const User = () => {
                                         </SharedStyled.TableListBodyRowData>
                                     </SharedStyled.TableListBodyRow>
                                 )) }
-
-                                <SharedStyled.TableListBodyRow>
-                                    <SharedStyled.TableListBodyRowData colSpan={ 8 }> </SharedStyled.TableListBodyRowData>
-                                </SharedStyled.TableListBodyRow>
                             </tbody>
+
+                            <tfoot>
+                                 <SharedStyled.TableListBodyRow>
+                                    <SharedStyled.TableListBodyRowData colSpan={ 8 }> <Paginate
+    page={page}
+    total={total}
+    limit={limit}
+    onPageChange={setPage}
+    onLimitChange={(newLimit) => {
+        setLimit(newLimit);
+        setPage(1);
+    }}
+/>
+</SharedStyled.TableListBodyRowData>
+                                </SharedStyled.TableListBodyRow>
+                            </tfoot>
                         </SharedStyled.TableListWrapper>
                     </SharedStyled.TableWrapper>
                 ) : !isLoading ? (

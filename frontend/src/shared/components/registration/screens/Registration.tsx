@@ -2,9 +2,10 @@ import { Fragment } from 'react/jsx-runtime';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { Building2, Contact, ListCheck, MessageSquare, NotebookPen, Users } from 'lucide-react';
 
-import * as Styled from '../styles/Registration.style';
-
 import User from '../../../../core/user/screens/User';
+import * as Styled from '../styles/Registration.style';
+import PrivateRoute from '../../private/components/PrivateRoute.component';
+
 
 
 
@@ -15,7 +16,6 @@ import Store from '../../../../core/store/screens/Store';
 import Action from '../../../../core/action/screens/Action';
 import Category from '../../../../core/category/screens/Category';
 import Regional from '../../../../core/regional/screens/Regional';
-import PrivateRoute from '../../private/components/PrivateRoute.component';
 
 const navigationTabs = [
     { icon: <Building2 size={25}/>, label: "Empresas", path: "regional" },
@@ -43,7 +43,7 @@ const Registration: React.FC = () => {
 
                         return (
                             <Styled.NavigationTabButtons key={ tab.path } onClick={ () => navigate(`/registrations/${tab.path}`) } $active={ isActive }>
-                                {tab.icon}
+                                { tab.icon }
 
                                 <Styled.NavigationTabButtonText $active={ isActive }> { tab.label } </Styled.NavigationTabButtonText>
                             </Styled.NavigationTabButtons>
@@ -54,13 +54,13 @@ const Registration: React.FC = () => {
 
             <Routes>
                 <Route path="/" element={<Navigate to="user" replace />} />
+                <Route path="/user" element={ <PrivateRoute element={ <User /> }/> } />
 
 
 
 
 
 
-                <Route path="/user" element={<User />} />
                 <Route path="/chains" element={<Chain />} />
                 <Route path="/stores" element={<Store />} />
                 <Route path="action-type" element={<Action />} />
