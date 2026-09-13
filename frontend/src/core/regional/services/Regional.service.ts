@@ -3,7 +3,7 @@ import axiosInstance from '../../authentication/interceptors/authorization.inter
 import { PaginatedRequestDTO } from '../../../shared/components/pagination/dtos/PaginatedRequestDTO.dto';
 import { PaginatedResponseDTO } from '../../../shared/components/pagination/dtos/PaginatedResponseDTO.dto';
 
-const endpoint = "regional";
+const endpoint = "user";
 
 export const Create = async (regional: RegionalDTO) => {
     await axiosInstance.post<RegionalDTO>(endpoint, regional);

@@ -2,38 +2,82 @@ import styled from 'styled-components';
 
 import { NavigationTabProps } from '../interfaces/NavigationTabProps.interface';
 
+export const HeaderWrapper = styled.header`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+`;
+
+export const SessionInformationWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+`;
+
+export const SessionTitle = styled.h1`
+    margin-bottom: 7.5px;
+    align-self: flex-start;
+    font-family: "Inter";
+    font-weight: 700;
+    font-size: 25px;
+    color: #171719;
+`;
+
+export const SessionSubtitle = styled.span`
+    margin-bottom: 15px;
+    align-self: flex-start;
+    font-family: "Inter";
+    font-weight: 400;
+    font-size: 14px;
+    color: #525059;
+`;
+
 export const NavigationTabs = styled.nav`
-    margin-bottom: 16px;
-    height: 66px;
-    width: 100%;
+    padding: 15px 0px 0px 0px;
+    height: auto;
+    width: auto;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
-    border-bottom: 1px solid #D3D2D9;
+    column-gap: 30px;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
 `;
 
 export const NavigationTabButtons = styled.button<NavigationTabProps>`
-    padding: 0px 14.75px 0px 14.75px;
-    height: 66px;
-    position: relative;
-    background: none;
+    padding: 15px 15px;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     outline: none;
     border: none;
-    
-        &::after {
-            content: '';
-            height: 2px;
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: 1px;
-            background-color: ${({ $active }) => ($active ? '#1C70E9' : 'transparent')};
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+    background-color: transparent;
+    transition: color 0.3s ease, font-weight 0.3s, background-color 0.3s ease;
+
+    font-weight: ${({ $active }) => $active ? 700 : 400};
+    color: ${({ $active }) => $active ? "#223463" : "#223463"};
+    background-color: ${({ $active }) => $active ? "#D9DCE3" : "transparent"};
+
+        &:hover {
+            ${({ $active }) => !$active && `
+                font-weight: 700;
+                color: #223463;
+                background-color: #D9DCE3;
+            `}
         }
 `;
 
 export const NavigationTabButtonText = styled.span<NavigationTabProps>`
-    font-family: 'Lato';
+    margin-left: 7.5px;
+    font-family: "Inter";
+    font-weight: inherit;
     font-size: 16px;
-    font-weight: ${({ $active }) => $active ? '700' : '400'};
+    color: inherit;
 `;

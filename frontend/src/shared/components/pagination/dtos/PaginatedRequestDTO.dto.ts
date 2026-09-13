@@ -11,3 +11,9 @@ export interface PaginatedRequestDTO {
         produtosIds?: number[];
     };
 };
+
+export interface PaginatedQueryDto {
+    page: number;
+    limit: number;
+    search?: string;
+}

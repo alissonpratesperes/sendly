@@ -9,7 +9,7 @@ import { RegionalFormData } from '../schemas/RegionalFormSchema.schema';
 import { RegionalFormSchema } from '../schemas/RegionalFormSchema.schema';
 import { RegionalFormProps } from '../interfaces/RegionalFormProps.interface';
 import * as RegistrationSharedStyled from '../../../shared/styles/Registration.style';
-import * as Styled from '../../../shared/components/drawer/styles/GenericDrawer.style';
+import * as Styled from '../../../shared/components/drawer/styles/genericDrawer.style';
 import { useLoading } from '../../../shared/components/loading/contexts/LoadingContext.context';
 
 export const RegionalForm: React.FC<RegionalFormProps> = ({ initialValues, onSubmit, onCancel }) => {

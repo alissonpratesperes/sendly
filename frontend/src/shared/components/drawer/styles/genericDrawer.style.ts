@@ -1,0 +1,253 @@
+import { styled } from 'styled-components';
+
+import { GenericDrawerOverlayProps } from '../interfaces/genericDrawerOverlayProps.interface';
+
+export const DrawerOverlay = styled.div<GenericDrawerOverlayProps>`
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(7px);
+    z-index: 999;
+    transition: opacity 0.6s ease-in-out, visibility 0.6s ease-in-out;
+
+    opacity: ${({ $open }) => ($open ? 1 : 0)};
+    visibility: ${({ $open }) => ($open ? "visible" : "hidden")};
+`;
+
+export const GenericDrawer = styled.div<{ $open: boolean; }>`
+    width: 500px;
+    max-width: calc(100% - 60px);
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 14px;
+    background-color: #F0F0F5;
+    z-index: 1000;
+
+    animation: ${({ $open }) => $open ? "drawerOpen 0.6s ease-in-out forwards" : "drawerClose 0.6s ease-in-out forwards" };
+
+        @keyframes drawerOpen {
+            0% {
+                transform: translateX(calc(100% + 30px));
+            }
+
+            70% {
+                transform: translateX(-15px);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
+        }
+        @keyframes drawerClose {
+            0% {
+                transform: translateX(0);
+            }
+
+            30% {
+                transform: translateX(-15px);
+            }
+
+            100% {
+                transform: translateX(calc(100% + 30px));
+            }
+        }
+`;
+
+export const Header = styled.div`
+    padding: 15px;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px solid #E9EAEB;
+`;
+
+export const Title = styled.h2`
+    font-family: "Inter";
+    font-weight: 700;
+    font-size: 18px;
+    color: #171719;
+`;
+
+export const CloseButton = styled.button`
+    height: 55px;
+    width: 55px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    color: #224463;
+    background: none;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
+
+        &:hover {
+            color: #FFFFFF;
+            background-color: #223463;
+            animation: closeButtonEffect 0.6s ease-in-out;
+        }
+
+            svg {
+                stroke: currentColor;
+            }
+
+                @keyframes closeButtonEffect {
+                    0% {
+                        transform: scale(1.08);
+                    }
+
+                    50% {
+                        transform: scale(0.95);
+                    }
+
+                    100% {
+                        transform: scale(1);
+                    }
+                }
+`;
+
+export const Content = styled.div`
+    padding: 0px 30px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 30px;
+    overflow-y: visible;
+    box-sizing: border-box;
+`;
+
+export const Form = styled.form`
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 30px;
+    overflow-y: visible;
+`;
+
+export const FieldWrapper = styled.div`
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: -6px;
+            border-radius: 18px;
+            border: 2px solid #223463;
+            opacity: 0;
+            transform: scale(1.08);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            pointer-events: none;
+        }
+        &:focus-within::before {
+            opacity: 1;
+            transform: scale(1);
+        }
+`;
+
+export const Label = styled.label`
+    position: absolute;
+    left: 15px;
+    top: 7.5px;
+    text-transform: uppercase;
+    font-family: "Lato";
+    font-weight: 700;
+    font-size: 12px;
+    color: #223463;
+    pointer-events: none;
+`;
+
+export const Input = styled.input`
+    padding: 15px 15px 0px 15px;
+    height: 60px;
+    width: 100%;
+    font-family: "Lato";
+    font-weight: 400;
+    font-size: 16px;
+    color: #212121;
+    border: none;
+    outline: none;
+    background-color: #FFFFFF;
+    border-radius: 14px;
+    z-index: 1;
+
+        &::placeholder {
+            color: #BDBDBD;
+        }
+`;
+
+export const Footer = styled.div`
+    margin-top: auto;
+    padding: 15px 30px 15px 30px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    column-gap: 30px;
+    border-top: 2px solid #E9EAEB;
+
+        &:has(.secondary:hover) {
+            .primary {
+                font-weight: 400;
+                color: #223463;
+                background-color: transparent;
+            }
+        }
+`;
+
+export const FooterButton = styled.button<{ $variant?: "primary" | "secondary"; $formType?: "default" | "action"; }>`
+    padding: 15px;
+    height: 55px;
+    width: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    font-family: "Inter";
+    font-weight: 400;
+    font-size: 16px;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
+
+    font-weight: ${({ $variant }) => $variant === "primary" ? "700" : "400" };
+    color: ${({ $variant }) => $variant === "primary" ? "#FFFFFF" : "#223463" };
+    background-color: ${({ $variant }) => $variant === "primary" ? "#223463" : "transparent" };
+
+        &.secondary:hover {
+            font-weight: 700;
+            color: #FFFFFF;
+            background-color: #223463;
+            animation: logOutButtonEffect 0.6s ease-in-out;
+        }
+
+            svg {
+                stroke: currentColor;
+            }
+
+                @keyframes logOutButtonEffect {
+                    0% {
+                        transform: scale(1.08);
+                    }
+
+                    50% {
+                        transform: scale(0.95);
+                    }
+
+                    100% {
+                        transform: scale(1);
+                    }
+                }
+`;
+
+export const FooterButtonText = styled.span`
+    margin-left: 7.5px;
+`;

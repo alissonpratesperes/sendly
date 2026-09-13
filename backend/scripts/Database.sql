@@ -18,7 +18,7 @@ CREATE TABLE `User` (
     `CompanyId` INT UNSIGNED NOT NULL,
 
     `Name` VARCHAR(150) NOT NULL,
-    `Email` VARCHAR(255) NOT NULL,
+    `Email` VARCHAR(50) NOT NULL,
     `Password` VARCHAR(255) NOT NULL,
     `HashedRefreshToken` VARCHAR(255) NULL,
     `PasswordResetToken` VARCHAR(255) NULL,

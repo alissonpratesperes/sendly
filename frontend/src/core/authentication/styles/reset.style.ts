@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const AuthFormContainer = styled.div`
+export const ResetFormContainer = styled.div`
     height: 100vh;
     width: 100vw;
     display: flex;
@@ -10,7 +10,7 @@ export const AuthFormContainer = styled.div`
     background-color: #F0F0F5;
 `;
 
-export const LoginForm = styled.form`
+export const ResetForm = styled.form`
     height: auto;
     width: 500px;
     display: flex;
@@ -46,7 +46,7 @@ export const InputWrapper = styled.div`
             content: "";
             position: absolute;
             inset: -6px;
-            border-radius: 14px;
+            border-radius: 18px;
             border: 2px solid #223463;
             opacity: 0;
             transform: scale(1.08);
@@ -68,7 +68,6 @@ export const Label = styled.label`
     font-size: 12px;
     color: #223463;
     pointer-events: none;
-    transition: all 0.3s ease;
 `;
 
 export const Input = styled.input`
@@ -81,7 +80,8 @@ export const Input = styled.input`
     color: #212121;
     border: none;
     outline: none;
-    border-radius: 10px;
+    background-color: #FFFFFF;
+    border-radius: 14px;
     z-index: 1;
 
         &::placeholder {
@@ -104,29 +104,51 @@ export const EyeButton = styled.button`
     z-index: 2;
 `;
 
-export const LoginButton = styled.button`
-    height: 45px;
+export const PasswordButton = styled.button`
+    padding: 15px;
+    height: auto;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: "Lato";
-    font-weight: 700;
+    font-weight: 400;
     font-size: 16px;
-    color: #FFFFFF;
+    color: #223463;
     border: none;
     outline: none;
     border-radius: 14px;
-    background-color: #223463;
+    background-color: transparent;
     cursor: pointer;
-    transition: transform 0.2s ease;
+    transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
 
         &:hover {
-            transform: scale(0.95);
+            font-weight: 700;
+            color: #FFFFFF;
+            background-color: #223463;
+            animation: logOutButtonEffect 0.6s ease-in-out;
         }
+
+            svg {
+                stroke: currentColor;
+            }
+
+                @keyframes logOutButtonEffect {
+                    0% {
+                        transform: scale(1.08);
+                    }
+
+                    50% {
+                        transform: scale(0.95);
+                    }
+
+                    100% {
+                        transform: scale(1);
+                    }
+                }
 `;
 
-export const LoginButtonText = styled.span`
+export const PasswordButtonText = styled.span`
     margin-left: 7.5px;
 `;
 

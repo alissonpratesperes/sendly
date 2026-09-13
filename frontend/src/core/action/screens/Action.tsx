@@ -130,7 +130,7 @@ const Action = () => {
                         <Styled.SearchInputField type="text" placeholder="Pesquisar tipo" value={search} onChange={(inputEvent) => { setSearch(inputEvent.target.value); setPage(1); }} />
                     </Styled.SearchInputContainer>
 
-                    <Styled.AddButton onClick={handleCreate} $isInActionTypePage>
+                    <Styled.AddButton onClick={handleCreate}>
                         <Plus size={20} />
 
                         <Styled.SearchInputSubmitText> Cadastrar Tipo de Ação </Styled.SearchInputSubmitText>

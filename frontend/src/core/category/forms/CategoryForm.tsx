@@ -9,7 +9,7 @@ import { CategoryFormData } from '../schemas/CategoryFormSchema.schema';
 import { CategoryFormSchema } from '../schemas/CategoryFormSchema.schema';
 import { CategoryFormProps } from '../interfaces/CategoryFormProps.interface';
 import * as RegistrationSharedStyled from '../../../shared/styles/Registration.style';
-import * as Styled from '../../../shared/components/drawer/styles/GenericDrawer.style';
+import * as Styled from '../../../shared/components/drawer/styles/genericDrawer.style';
 import { useLoading } from '../../../shared/components/loading/contexts/LoadingContext.context';
 
 export const CategoryForm: React.FC<CategoryFormProps> = ({ initialValues, onSubmit, onCancel }) => {

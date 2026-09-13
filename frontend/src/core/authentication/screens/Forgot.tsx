@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { MailCheckIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-import * as Styled from '../styles/Forgot.style';
+import * as Styled from '../styles/forgot.style';
 import { forgot } from '../services/authentication.service';
 import { useLoading } from '../../../shared/components/loading/contexts/LoadingContext.context';
 
@@ -43,7 +43,11 @@ const Forgot: React.FC = () => {
                     <Styled.Input type="email" id="email" placeholder="Digite seu email" value={email} onChange={(inputEvent) => setEmail(inputEvent.target.value)} required />
                  </Styled.InputWrapper>
 
-                <Styled.ForgotButton type="submit"> <MailCheckIcon size={20} color="#FFFFFF" /> <Styled.ForgotButtonText> Solicitar link </Styled.ForgotButtonText> </Styled.ForgotButton>
+                <Styled.ForgotButton type="submit">
+                    <MailCheckIcon size={25} color="#FFFFFF" />
+
+                    <Styled.ForgotButtonText> Solicitar link </Styled.ForgotButtonText>
+                </Styled.ForgotButton>
 
                 <Styled.CompanyPresentation>
                     <Styled.CopyrightParagraph> © 2026 Sendly | Todos os direitos reservados </Styled.CopyrightParagraph>

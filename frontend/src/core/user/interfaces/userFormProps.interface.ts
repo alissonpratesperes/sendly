@@ -1,8 +1,8 @@
-import { UserFormData } from '../schemas/UserFormSchema.schema';
+import { UserFormData } from '../schemas/userFormSchema.schema';
 
 export interface UserFormProps {
     initialValues?: UserFormData;
 
     onCancel: () => void;
     onSubmit: () => void;
-};
+}

@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { EyeIcon, EyeOffIcon, UserLock } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import * as Styled from '../styles/Reset.style';
+import * as Styled from '../styles/reset.style';
 import { reset } from '../services/authentication.service';
 import { useLoading } from '../../../shared/components/loading/contexts/LoadingContext.context';
 
@@ -72,17 +72,21 @@ const Reset: React.FC = () => {
 
                     <Styled.Input type={showPassword ? "text" : "password"} id="newPassword" placeholder="Digite sua nova senha" value={newPassword} onChange={(inputEvent) => setNewPassword(inputEvent.target.value)} required />
 
-                    <Styled.EyeButton type="button" onClick={() => setShowPassword(!showPassword)}> {showPassword ? ( <EyeIcon size={20} color="#223463" /> ) : ( <EyeOffIcon size={20} color="#223463" /> )} </Styled.EyeButton>
+                    <Styled.EyeButton type="button" onClick={() => setShowPassword(!showPassword)}> {showPassword ? ( <EyeIcon size={25} color="#223463" /> ) : ( <EyeOffIcon size={25} color="#223463" /> )} </Styled.EyeButton>
                 </Styled.InputWrapper>
                 <Styled.InputWrapper>
                     <Styled.Label htmlFor="confirmPassword"> CONFIRMAR NOVA SENHA </Styled.Label>
 
                     <Styled.Input type={showConfirmPassword ? "text" : "password"} id="confirmPassword" placeholder="Confirme sua nova senha" value={confirmPassword} onChange={(inputEvent) => setConfirmPassword(inputEvent.target.value)} required />
 
-                    <Styled.EyeButton type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)}> {showConfirmPassword ? ( <EyeIcon size={20} color="#223463" /> ) : ( <EyeOffIcon size={20} color="#223463" /> )} </Styled.EyeButton>
+                    <Styled.EyeButton type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)}> {showConfirmPassword ? ( <EyeIcon size={25} color="#223463" /> ) : ( <EyeOffIcon size={25} color="#223463" /> )} </Styled.EyeButton>
                 </Styled.InputWrapper>
 
-                <Styled.PasswordButton type="submit"> <UserLock size={20} color="#FFFFFF" /> <Styled.PasswordButtonText> Criar senha </Styled.PasswordButtonText> </Styled.PasswordButton>
+                <Styled.PasswordButton type="submit">
+                    <UserLock size={25} color="#FFFFFF" />
+
+                    <Styled.PasswordButtonText> Criar senha </Styled.PasswordButtonText>
+                </Styled.PasswordButton>
 
                 <Styled.CompanyPresentation>
                     <Styled.CopyrightParagraph> © 2026 Sendly | Todos os direitos reservados </Styled.CopyrightParagraph>

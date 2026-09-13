@@ -3,4 +3,4 @@ export interface HeaderMenuLinksProps {
         label: string;
         path: string;
     }[];
-};
+}

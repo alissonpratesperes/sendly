@@ -27,14 +27,14 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ element }) => {
             toast.error("Você precisa estar autenticado");
 
             navigate("/authentication", { replace: true });
-        };
+        }
     }, [isAuthorized, navigate]);
 
     if (isAuthorized === null) {
         return null;
-    };
+    }
 
     return isAuthorized ? element : null;
-};
+}
 
 export default PrivateRoute;

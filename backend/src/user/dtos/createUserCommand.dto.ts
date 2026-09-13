@@ -15,7 +15,7 @@ export class CreateUserCommandDto {
 
     @IsEmail()
     @IsNotEmpty()
-    @MaxLength(255)
+    @MaxLength(50)
     @ApiProperty({ example: "john.doe@mail.com" })
     email!: string;
 }

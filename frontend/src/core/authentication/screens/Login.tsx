@@ -3,9 +3,9 @@ import { toast } from 'react-toastify';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { StatusCodes } from 'http-status-codes';
-import { EyeIcon, EyeOffIcon, LogInIcon } from 'lucide-react';
+import { EyeIcon, EyeOffIcon, LogInIcon, LockKeyhole } from 'lucide-react';
 
-import * as Styled from '../styles/Login.style';
+import * as Styled from '../styles/login.style';
 import { login } from '../services/authentication.service';
 import { useLoading } from '../../../shared/components/loading/contexts/LoadingContext.context';
 
@@ -31,7 +31,7 @@ const Authentication: React.FC = () => {
             localStorage.setItem("accessToken", response.accessToken);
             localStorage.setItem("refreshToken", response.refreshToken);
 
-            toast.info("Login realizado com sucesso, bem-vindo ao Sendly");
+            toast.info("Login realizado com sucesso");
 
             navigate("/home");
         } catch (error: unknown) {
@@ -65,10 +65,21 @@ const Authentication: React.FC = () => {
 
                     <Styled.Input type={showPassword ? "text" : "password"} id="password" placeholder="Digite sua senha" value={password} onChange={(inputEvent) => setPassword(inputEvent.target.value)} required />
 
-                   <Styled.EyeButton type="button" onClick={togglePasswordVisibility}> {showPassword ? ( <EyeIcon size={20} color="#223463" /> ) : ( <EyeOffIcon size={20} color="#223463" /> )} </Styled.EyeButton>
+                   <Styled.EyeButton type="button" onClick={togglePasswordVisibility}> {showPassword ? ( <EyeIcon size={25} color="#223463" /> ) : ( <EyeOffIcon size={25} color="#223463" /> )} </Styled.EyeButton>
                 </Styled.InputWrapper>
 
-                <Styled.LoginButton type="submit"> <LogInIcon size={20} color="#FFFFFF" /> <Styled.LoginButtonText> Fazer login </Styled.LoginButtonText> </Styled.LoginButton>
+                <Styled.LoginButtonsContainer>
+                    <Styled.ForgotButton to="/authentication/forgot">
+                        <LockKeyhole size={25} color="#FFFFFF" />
+
+                        <Styled.ForgotButtonText> Recuperar senha </Styled.ForgotButtonText>
+                    </Styled.ForgotButton>
+                    <Styled.LoginButton type="submit">
+                        <LogInIcon size={25} />
+
+                        <Styled.LoginButtonText> Fazer login </Styled.LoginButtonText>
+                    </Styled.LoginButton>
+                </Styled.LoginButtonsContainer>
 
                 <Styled.CompanyPresentation>
                     <Styled.CopyrightParagraph> © 2026 Sendly | Todos os direitos reservados </Styled.CopyrightParagraph>

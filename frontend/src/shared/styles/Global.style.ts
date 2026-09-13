@@ -21,5 +21,5 @@ export const GlobalStyle = createGlobalStyle`
 `;
 
 export const Main = styled("main").withConfig({ shouldForwardProp: (prop) => isPropValid(prop) && prop !== "applyPadding" }) <{ applyPadding?: boolean; }>`
-    ${({ applyPadding }) => applyPadding && css` padding: 40px 70px 40px 70px; `}
+    ${({ applyPadding }) => applyPadding && css` padding: 40px 30px 40px 30px; `}
 `;

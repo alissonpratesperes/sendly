@@ -9,7 +9,7 @@ import Toast from '../../../shared/components/toast/screens/Toast';
 import { ChainFormSchema } from '../schemas/ChainFormSchema.schema';
 import { ChainFormProps } from '../interfaces/ChainFormProps.interface';
 import * as RegistrationSharedStyled from '../../../shared/styles/Registration.style';
-import * as Styled from '../../../shared/components/drawer/styles/GenericDrawer.style';
+import * as Styled from '../../../shared/components/drawer/styles/genericDrawer.style';
 import { useLoading } from '../../../shared/components/loading/contexts/LoadingContext.context';
 
 export const ChainForm: React.FC<ChainFormProps> = ({ initialValues, onSubmit, onCancel }) => {

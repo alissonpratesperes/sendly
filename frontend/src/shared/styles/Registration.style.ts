@@ -1,9 +1,256 @@
 import styled from 'styled-components';
 import { ArrowDown } from 'lucide-react';
 
-import { AddButtonProps } from '../interfaces/AddButtonProps.interface';
 import { SortListingActionProps } from '../interfaces/SortListingActionProps.interface';
 import { NotFoundContentContainerProps } from '../interfaces/NotFoundContentContainerProps.interface';
+
+export const ListWrapper = styled.div``;
+
+export const SearchInputWrapper = styled.div`
+    margin-bottom: 30px;
+    padding: 20px;
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    column-gap: 30px;
+    border-radius: 14px;
+    background-color: #D9DCE3;
+`;
+
+export const SearchInputContainer = styled.div`
+    padding: 0px 15px;
+    height: 60px;
+    width: 100%;
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    border-radius: 14px;
+    background-color: #FFFFFF;
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: -6px;
+            border-radius: 18px;
+            border: 2px solid #223463;
+            opacity: 0;
+            transform: scale(1.08);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            pointer-events: none;
+        }
+        &:focus-within::before {
+            opacity: 1;
+            transform: scale(1);
+        }
+`;
+
+export const SearchInputField = styled.input`
+    margin-left: 15px;
+    height: 60px;
+    width: 100%;
+    font-family: "Lato";
+    font-weight: 400;
+    font-size: 16px;
+    color: #212121;
+    border: none;
+    outline: none;
+    background-color: #FFFFFF;
+    border-radius: 14px;
+    z-index: 1;
+
+        &::placeholder {
+            color: #BDBDBD;
+        }
+`;
+
+export const AddButton = styled.button`
+    padding: 15px;
+    height: auto;
+    width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Lato";
+    font-weight: 400;
+    font-size: 16px;
+    color: #223463;
+    border: none;
+    outline: none;
+    border-radius: 14px;
+    background-color: transparent;
+    cursor: pointer;
+    transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
+
+        &:hover {
+            font-weight: 700;
+            color: #FFFFFF;
+            background-color: #223463;
+            animation: logOutButtonEffect 0.6s ease-in-out;
+        }
+
+            svg {
+                stroke: currentColor;
+            }
+
+                @keyframes logOutButtonEffect {
+                    0% {
+                        transform: scale(1.08);
+                    }
+
+                    50% {
+                        transform: scale(0.95);
+                    }
+
+                    100% {
+                        transform: scale(1);
+                    }
+                }
+`;
+
+export const SearchInputSubmitText = styled.span`
+    margin-left: 7.5px;
+`;
+
+export const TableWrapper = styled.div`
+    border-radius: 14px;
+    border: 2px solid #E9EAEB;
+    overflow: hidden;
+`;
+
+export const TableListWrapper = styled.table`
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+`;
+
+export const TableListHeaderRow = styled.tr`
+    height: auto;
+    background-color: #F9FAFB;
+`;
+
+export const TableListHeaderRowColumn = styled.th`
+    padding: 15px 25px 15px 25px;
+    text-align: left;
+    text-transform: uppercase;
+    font-family: "Inter";
+    font-weight: 700;
+    font-size: 13px;
+    color: #535862;
+    border-bottom: 2px solid #E9EAEB;
+
+        &:nth-last-child(2) {
+            width: 137px;
+            text-align: start;
+            vertical-align: middle;
+            cursor: pointer;
+        }
+        &:nth-last-child(1) {
+            width: 116px;
+        }
+`;
+
+export const TableListBodyRow = styled.tr`
+    padding: 15px 25px 15px 25px;
+    height: 75px;
+    background-color: #FFFFFF;
+    border-bottom: 2px solid #E9EAEB;
+`;
+
+export const TableListBodyRowData = styled.td`
+    padding: 15px 25px 15px 25px;
+    vertical-align: middle;
+
+        &:nth-last-child(1) {
+            text-align: center;
+
+                button + button {
+                    margin-left: 20px;
+                }
+        }
+`;
+
+export const TableListBodyRowDataActions = styled.div`
+   text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
+
+
+export const TableListBodyRowDataActionButton = styled.button`
+    border: none;
+    outline: none;
+    background: none;
+    cursor: pointer;
+`;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export const NotFoundContentContainer = styled.div`
+border: 1px solid black;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+`;
 
 export const CustomOptionsContainer = styled.div`
     padding: 0px 12px 0px 12px;
@@ -267,219 +514,14 @@ export const SelectCommonStyles = {
     })
 };
 
-export const FinancialSelectCommonStyles = {
-    control: (base: any) => ({
-        ...base,
-        width: '107px',
-        height: '40px',
-        minHeight: '40px',
-    }),
 
-    menuPortal: (base: any) => ({
-        ...base,
-        zIndex: 9999,
-        width: '225px'
-    }),
 
-    menu: (base: any) => ({
-        ...base,
-        maxHeight: 'auto',
-        width: '225px',
-        borderRadius: 8,
-        overflow: 'hidden',
-    }),
 
-    menuList: (base: any) => ({
-        ...base,
-        maxHeight: 'auto',
-        overflowY: 'auto',
-        padding: 0
-    }),
 
-    option: (base: any) => ({
-        ...base,
-        paddingLeft: '12px',
-        paddingRight: '12px',
-        height: '45px',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '8px',
-        fontFamily: 'Lato',
-        fontWeight: 700,
-        fontSize: '14px',
-        color: '#171719',
-        cursor: 'pointer'
-    })
-};
 
-export const FinancialSelectPlaceHolderStyle = styled.div`
-    font-family: 'Lato';
-    font-weight: 400;
-    font-size: 16px;
-    color: #767380;
-`;
 
-export const HeaderWrapper = styled.header`
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-`;
 
-export const GoBackButton = styled.button`
-    background: none;
-    cursor: pointer;
-    outline: none;
-    border: none;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    color: #1C70E9;
-`;
 
-export const GoBackButtonLabel = styled.span`
-    margin-left: 5px;
-    font-family: 'Lato';
-    font-weight: 700;
-    font-size: 16px;
-`;
-
-export const SessionInformationWrapper = styled.div`
-    margin: 10px 0px 10px 0px;
-    height: 73px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-`;
-
-export const SessionTitle = styled.h1`
-    height: 36px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Lato';
-    font-weight: 700;
-    font-size: 24px;
-    color: #171719;
-`;
-
-export const SessionSubtitle = styled.h3`
-    font-family: 'Lato';
-    font-weight: 400;
-    font-size: 14px;
-    color: #525059;
-`;
-
-export const ListWrapper = styled.div``;
-
-export const SearchInputWrapper = styled.div`
-    margin-bottom: 30px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    column-gap: 8px;
-`;
-
-export const SearchInputContainer = styled.div`
-    padding: 0px 10px 0px 10px;
-    height: 40px;
-    width: 100%;
-    flex: 1;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    background-color: #FFFFFF;
-    border: 1px solid #D3D2D9;
-    border-radius: 8px;
-`;
-
-export const SearchInputField = styled.input`
-    margin-left: 5px;
-    height: 100%;
-    width: 100%;
-    border: none;
-    outline: none;
-    font-family: 'Lato';
-    font-weight: 400;
-    font-size: 16px;
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
-
-        &::placeholder {
-            font-family: 'Lato';
-            font-weight: 400;
-            font-size: 16px;
-            color: #767380;
-        }
-`;
-
-export const AddButton = styled.button<AddButtonProps>`
-    height: 40px;
-    border: none;
-    outline: none;
-    background: none;
-    cursor: pointer;
-    display: flex;
-    flex-shrink: 0;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    color: #FFFFFF;
-    background-color: #00355D;
-    border-radius: 8px;
-
-    width: ${({ $isInFinancialPage, $isInActionTypePage }) => $isInFinancialPage || $isInActionTypePage ? '225px' : '194px'};
-`;
-
-export const SearchInputSubmitText = styled.span`
-    margin-left: 5px;
-    font-family: 'Lato';
-    font-weight: 700;
-    font-size: 16px;
-`;
-
-export const TableWrapper = styled.div`
-    border-radius: 10px;
-    overflow: hidden;
-    border: 1px solid #E9EAEB;
-`;
-
-export const TableListWrapper = styled.table`
-    width: 100%;
-    table-layout: fixed;
-    border-collapse: collapse;
-`;
-
-export const TableListHeaderRow = styled.tr`
-    height: 44px;
-    background-color: #F9FAFB;
-`;
-
-export const TableListHeaderRowColumn = styled.th`
-    padding: 12px 24px 12px 24px;
-    text-align: left;
-    font-family: 'Inter';
-    font-weight: 600;
-    font-size: 12px;
-    color: #535862;
-    text-align: left;
-    border-bottom: 1px solid #E9EAEB;
-
-        &:nth-last-child(2) {
-            width: 137px;
-            vertical-align: middle;
-            text-align: start;
-            cursor: pointer;
-        }
-        &:nth-last-child(1) {
-            width: 116px;
-        }
-`;
 
 export const SortArrow = styled(ArrowDown) <SortListingActionProps>`
     margin-left: 5px;
@@ -487,43 +529,9 @@ export const SortArrow = styled(ArrowDown) <SortListingActionProps>`
     transform: ${({ $isAsc }) => ($isAsc ? 'rotate(0deg)' : 'rotate(180deg)')};
 `;
 
-export const TableListBodyRow = styled.tr`
-    padding: 16px 24px 16px 24px;
-    height: 72px;
-    background-color: #FFFFFF;
-    border-bottom: 1px solid #E9EAEB;
-`;
 
-export const TableListBodyRowData = styled.td`
-    padding: 16px 24px 16px 24px;
-    vertical-align: middle;
 
-        &:nth-last-child(1) {
-            text-align: center;
 
-                button + button {
-                    margin-left: 20px;
-                }
-        }
-`;
-
-export const TableListBodyRowDataActionButton = styled.button`
-    border: none;
-    outline: none;
-    background: none;
-    cursor: pointer;
-    color: #535862;
-`;
-
-export const NotFoundContentContainer = styled.div`
-    margin-top: 100px;
-    height: 100%;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-`;
 
 export const NotFoundContentIllustration = styled.div<NotFoundContentContainerProps>`
     height: 343.34px;

@@ -12,7 +12,7 @@ import { IsSystemRoot } from '../authentication/decorators/isSystemRoot.decorato
 @Controller("user")
 export class UserController {
     constructor(
-        private readonly userService: UserService
+        private readonly userService: UserService,
     ) {}
 
     @Post()

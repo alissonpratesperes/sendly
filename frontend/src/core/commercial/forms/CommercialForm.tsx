@@ -20,7 +20,7 @@ import { Read as ReadActions } from '../../action/services/Action.service';
 import Uploader from '../../../shared/components/uploader/screens/Uploader';
 import { Read as ReadCategories } from '../../category/services/Category.service';
 import { CommercialFormProps } from '../interfaces/CommercialFormProps.interface';
-import * as Styled from '../../../shared/components/drawer/styles/GenericDrawer.style';
+import * as Styled from '../../../shared/components/drawer/styles/genericDrawer.style';
 import { useLoading } from '../../../shared/components/loading/contexts/LoadingContext.context';
 import { CommercialFormData, CommercialFormSchema } from '../schemas/CommercialFormSchema.schema';
 import { UploaderItemType } from '../../../shared/components/uploader/types/UploaderItemType.type';
@@ -171,7 +171,7 @@ export const CommercialForm: React.FC<CommercialFormProps> = ({ initialValues, o
   return (
     <Styled.Form onSubmit={handleSubmit}>
       <Styled.FieldWrapper>
-        <Styled.RequiredLabel htmlFor="tipoAcaoId" required> Tipo da ação </Styled.RequiredLabel>
+        {/* <Styled.RequiredLabel htmlFor="tipoAcaoId" required> Tipo da ação </Styled.RequiredLabel> */}
 
         <Select
           isClearable={true}
@@ -186,7 +186,7 @@ export const CommercialForm: React.FC<CommercialFormProps> = ({ initialValues, o
       </Styled.FieldWrapper>
 
       <Styled.FieldWrapper>
-        <Styled.RequiredLabel htmlFor="data" required> Selecione a data da ação </Styled.RequiredLabel>
+        {/* <Styled.RequiredLabel htmlFor="data" required> Selecione a data da ação </Styled.RequiredLabel> */}
 
         <SharedStyled.CustomDatePickerWrapper>
           <DatePicker
@@ -246,7 +246,7 @@ export const CommercialForm: React.FC<CommercialFormProps> = ({ initialValues, o
       </Styled.FieldWrapper>
 
       <Styled.FieldWrapper>
-        <Styled.RequiredLabel htmlFor="categoriaProdutoId" required> Categoria de produto </Styled.RequiredLabel>
+        {/* <Styled.RequiredLabel htmlFor="categoriaProdutoId" required> Categoria de produto </Styled.RequiredLabel> */}
 
         <Select
           isClearable={true}

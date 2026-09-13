@@ -8,7 +8,6 @@ export const HeaderWrapper = styled.header`
 `;
 
 export const SessionInformationWrapper = styled.div`
-    margin: 30px 0px 15px 0px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;

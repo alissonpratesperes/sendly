@@ -2,13 +2,16 @@ import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 
 export const Container = styled.header`
-  padding: 35px 70px 0px 70px;
-  height: 100px;
-  width: 100vw;
+  margin: 0px 30px 0px 30px;
+  padding: 20px 20px 20px 20px;
+  width: auto;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  background-color: #D9DCE3;
+  border-bottom-left-radius: 14px;
+  border-bottom-right-radius: 14px;
 `;
 
 export const MenuContainer = styled.div`
@@ -69,15 +72,13 @@ export const NavItem = styled(NavLink)`
 `;
 
 export const UserContainer = styled.div`
-  padding-right: 15px;
   height: 80px;
   width: 350px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 15px;
-  background-color: #D9DCE3;
-  border-radius: 50px;
+  border-radius: 14px;
 `;
 
 export const UserInformation = styled.div`
@@ -100,7 +101,7 @@ export const UserCompany = styled.h1`
   font-family: "Inter";
   font-weight: 500;
   font-size: 14px;
-  color: #223463;
+  color: #000000;
 `;
 
 export const UserActionContainer = styled.div`
@@ -110,7 +111,6 @@ export const UserActionContainer = styled.div`
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  border-radius: 50%;
 `;
 
 export const LogOutButton = styled.button`
@@ -120,8 +120,8 @@ export const LogOutButton = styled.button`
   align-items: center;
   justify-content: center;
   border: none;
-  border-radius: 50%;
-  background-color: #FFFFFF;
+  background: none;
+  border-radius: 14px;
   color: #223463;
   cursor: pointer;
   transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
