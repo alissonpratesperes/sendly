@@ -89,7 +89,7 @@ const User = () => {
     useEffect(() => {
         const timeout = setTimeout(() => {
             handleRead();
-        }, 300);
+        }, 500);
 
         return () => clearTimeout(timeout);
     }, [ handleRead ]);
@@ -155,17 +155,9 @@ const User = () => {
 
                             <tfoot>
                                  <SharedStyled.TableListBodyRow>
-                                    <SharedStyled.TableListBodyRowData colSpan={ 8 }> <Paginate
-    page={page}
-    total={total}
-    limit={limit}
-    onPageChange={setPage}
-    onLimitChange={(newLimit) => {
-        setLimit(newLimit);
-        setPage(1);
-    }}
-/>
-</SharedStyled.TableListBodyRowData>
+                                    <SharedStyled.TableListBodyRowData colSpan={ 8 }>
+                                        <Paginate page={ page } total={ total } limit={ limit } onPageChange={ setPage } onLimitChange={ (newLimit) => { setLimit(newLimit); setPage(1); } } />
+                                    </SharedStyled.TableListBodyRowData>
                                 </SharedStyled.TableListBodyRow>
                             </tfoot>
                         </SharedStyled.TableListWrapper>
