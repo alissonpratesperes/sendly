@@ -19,7 +19,7 @@ import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/pagi
 const User = () => {
     const [page, setPage] = useState<number>(1);
     const [total, setTotal] = useState<number>(1);
-    const [limit, setLimit] = useState<number>(5);
+    const [limit, setLimit] = useState<number>(15);
     const [search, setSearch] = useState<string>("");
     const [users, setUsers] = useState<UserResponseDto[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);

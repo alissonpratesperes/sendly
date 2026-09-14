@@ -1,14 +1,14 @@
 import { StoreDTO } from '../dtos/StoreDTO.dto';
 import axiosInstance from '../../authentication/interceptors/authorization.interceptor';
-import { PaginatedRequestDTO } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
-import { PaginatedResponseDTO } from '../../../shared/components/paginate/dtos/paginatedResponse.dto';
 
+import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
+import { PaginatedResponseDto } from '../../../shared/components/paginate/dtos/paginatedResponse.dto';
 const endpoint = "loja";
 
 export const Create = async (store: StoreDTO) => {
     await axiosInstance.post<StoreDTO>(endpoint, store);
 };
-export const Read = async (paginatedRequest: PaginatedRequestDTO): Promise<PaginatedResponseDTO<StoreDTO>> => {
+export const Read = async (paginatedRequest: PaginatedQueryDto): Promise<PaginatedResponseDto<StoreDTO>> => {
     const response = await axiosInstance.get(endpoint, { params: paginatedRequest });
 
     return response.data;

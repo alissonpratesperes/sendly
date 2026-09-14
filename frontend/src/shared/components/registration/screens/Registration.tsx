@@ -5,7 +5,7 @@ import User from '../../../../core/user/screens/User';
 import * as Styled from '../styles/registration.style';
 import { NavigationTab } from '../types/navigationTab.type';
 import PrivateRoute from '../../private/screens/PrivateRoute';
-import { navigationTabs } from '../constants/navigationtabs.constant';
+import { navigationTabs } from '../constants/navigationTabs.constant';
 
 
 

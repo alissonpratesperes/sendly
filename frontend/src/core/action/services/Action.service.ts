@@ -1,15 +1,15 @@
 import { ActionDTO } from '../dtos/ActionDTO.dto';
 import axiosInstance from '../../authentication/interceptors/authorization.interceptor';
-import { PaginatedRequestDTO } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
-import { PaginatedResponseDTO } from '../../../shared/components/paginate/dtos/paginatedResponse.dto';
 
+import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
+import { PaginatedResponseDto } from '../../../shared/components/paginate/dtos/paginatedResponse.dto';
 const endpoint = "tipoAcao";
 
 export const Create = async (action: ActionDTO) => {
     await axiosInstance.post<ActionDTO>(endpoint, action);
 };
-export const Read = async (paginatedRequest: PaginatedRequestDTO): Promise<PaginatedResponseDTO<ActionDTO>> => {
-    const response = await axiosInstance.get(endpoint, { params: paginatedRequest });
+export const Read = async (request: PaginatedQueryDto): Promise<PaginatedResponseDto<ActionDTO>> => {
+    const response = await axiosInstance.get(endpoint, { params: request });
 
     return response.data;
 };

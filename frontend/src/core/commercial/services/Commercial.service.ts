@@ -1,16 +1,16 @@
 import { CommercialDTO } from '../dtos/CommercialDTO.dto';
 import axiosInstance from '../../authentication/interceptors/authorization.interceptor';
-import { PaginatedRequestDTO } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
-import { PaginatedResponseDTO } from '../../../shared/components/paginate/dtos/paginatedResponse.dto';
+import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
+import { PaginatedResponseDto } from '../../../shared/components/paginate/dtos/paginatedResponse.dto';
 
 const endpoint = "acao";
 
 export const Create = (commercial: FormData) => {
     return axiosInstance.post(endpoint, commercial, { headers: { 'Content-Type': 'multipart/form-data' } });
 };
-export const Read = async (paginatedRequest: PaginatedRequestDTO): Promise<PaginatedResponseDTO<CommercialDTO>> => {
-    const { page, pageSize, sortBy, sortDir, search, ...filtersBody } = paginatedRequest;
-    const response = await axiosInstance.post(`${endpoint}/All`, filtersBody, { params: { page, pageSize, sortBy, sortDir, search } });
+export const Read = async (paginatedRequest: PaginatedQueryDto): Promise<PaginatedResponseDto<CommercialDTO>> => {
+    const { page, limit: pageSize, search } = paginatedRequest;
+    const response = await axiosInstance.post(`${endpoint}/All`, { params: { page, pageSize, search } });
 
     return response.data;
 };

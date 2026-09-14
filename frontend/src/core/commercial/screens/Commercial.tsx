@@ -20,9 +20,7 @@ import { Read as ReadStores } from '../../store/services/Store.service';
 import * as SharedStyled from '../../../shared/styles/Registration.style';
 import { Read as ReadActions } from '../../action/services/Action.service';
 import { ReadById as ReadAction } from '../../action/services/Action.service';
-// import Pagination from '../../../shared/components/pagination/screens/Pagination';
 import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
-import { PaginatedRequestDTO } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
 
 const Commercial = () => {
     const navigate = useNavigate();
@@ -54,7 +52,7 @@ const Commercial = () => {
     const isAllChainsSelected = formFilterData.chainsIds.length === optionsForChains.length;
     const isAllStoresSelected = formFilterData.storesIds.length === optionsForStores.length;
     const isAllActionsSelected = formFilterData.actionsIds.length === optionsForActions.length;
-    const isAllCategoriesSelected = formFilterData.categoriesIds.length === optionsForCategories.length;
+    // const isAllCategoriesSelected = formFilterData.categoriesIds.length === optionsForCategories.length;
 
     const toggleSelectAllChains = () => { setFormFilterData(previousValue => ({ ...previousValue, chainsIds: isAllChainsSelected ? [] : optionsForChains.map(chain => Number(chain.value)) })); };
     const toggleSelectAllStores = () => { setFormFilterData(previousValue => ({ ...previousValue, storesIds: isAllStoresSelected ? [] : optionsForStores.map(store => Number(store.value)) })); };
@@ -104,7 +102,7 @@ const Commercial = () => {
                 endOfDayUTC = new Date(Date.UTC(appliedFilters.dates[1].getFullYear(), appliedFilters.dates[1].getMonth(), appliedFilters.dates[1].getDate(), 23, 59, 59, 999));
             };
 
-            const params: PaginatedRequestDTO & { dataInicial?: string; dataFinal?: string; tiposAcaoIds?: number[]; redesIds?: number[]; lojasIds?: number[]; categoriasProdutosIds?: number[]; produtosIds?: number[]; } = {
+            const params: any & { dataInicial?: string; dataFinal?: string; tiposAcaoIds?: number[]; redesIds?: number[]; lojasIds?: number[]; categoriasProdutosIds?: number[]; produtosIds?: number[]; } = {
                 page,
                 pageSize,
                 sortBy: 'id',
@@ -120,24 +118,24 @@ const Commercial = () => {
             };
             const response = await Read(params);
 
-            setCommercials(response.items);
+            // setCommercials(response.items);
             setTotalPages(response.totalPages);
 
-            const uniqueActionIds = Array.from(new Set(response.items.map(commercial => commercial.tipoAcaoId).filter(Boolean)));
-            const missingActionIds = uniqueActionIds.filter(id => !actionNamesRef.current[id]);
+            // const uniqueActionIds = Array.from(new Set(response.items.map(commercial => commercial.tipoAcaoId).filter(Boolean)));
+            // const missingActionIds = uniqueActionIds.filter(id => !actionNamesRef.current[id]);
 
-            if (missingActionIds.length > 0) {
-                const responses = await Promise.all(missingActionIds.map(id => ReadAction(id).then(response => ({ id, nome: response.nome })).catch(() => null)));
-                const newActions: Record<number, string> = {};
+            // if (missingActionIds.length > 0) {
+            //     const responses = await Promise.all(missingActionIds.map(id => ReadAction(id).then(response => ({ id, nome: response.nome })).catch(() => null)));
+            //     const newActions: Record<number, string> = {};
 
-                for (const response of responses) {
-                    if (response) {
-                        newActions[response.id] = response.nome;
-                    };
-                };
+            //     for (const response of responses) {
+            //         if (response) {
+            //             // newActions[response.id] = response.nome;
+            //         };
+            //     };
 
-                setActionNames(previousActionNames => ({ ...previousActionNames, ...newActions }));
-            };
+            //     setActionNames(previousActionNames => ({ ...previousActionNames, ...newActions }));
+            // };
         } catch (error) {
             toast.error(`Erro ao listar as Ações Comerciais: ${error}`);
         } finally {
@@ -172,9 +170,9 @@ const Commercial = () => {
                     let allActions: ActionDTO[] = [];
 
                     do {
-                        const response = await ReadActions({ page, pageSize: 100, sortBy: 'id', sortDir: 'desc', search: '' });
+                        const response = await ReadActions({ page, limit: pageSize, search });
 
-                        allActions = [...allActions, ...response.items];
+                        allActions = [...allActions, ...response.data];
                         totalPages = response.totalPages;
                         page++;
                     } while (page <= totalPages);
@@ -187,9 +185,9 @@ const Commercial = () => {
                     let allChains: ChainDTO[] = [];
 
                     do {
-                        const response = await ReadChains({ page, pageSize: 100, sortBy: 'id', sortDir: 'desc', search: '' });
+                        const response = await ReadChains({ page, limit: pageSize, search });
 
-                        allChains = [...allChains, ...response.items];
+                        allChains = [...allChains, ...response.data];
                         totalPages = response.totalPages;
                         page++;
                     } while (page <= totalPages);
@@ -202,9 +200,9 @@ const Commercial = () => {
                     let allStores: StoreDTO[] = [];
 
                     do {
-                        const response = await ReadStores({ page, pageSize: 100, sortBy: 'id', sortDir: 'desc', search: '' });
+                        const response = await ReadStores({ page, limit: pageSize, search });
 
-                        allStores = [...allStores, ...response.items];
+                        allStores = [...allStores, ...response.data];
                         totalPages = response.totalPages;
                         page++;
                     } while (page <= totalPages);

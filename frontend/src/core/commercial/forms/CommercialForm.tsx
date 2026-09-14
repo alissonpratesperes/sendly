@@ -21,7 +21,6 @@ import { CommercialFormProps } from '../interfaces/CommercialFormProps.interface
 import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
 import { CommercialFormData, CommercialFormSchema } from '../schemas/CommercialFormSchema.schema';
 import { UploaderItemType } from '../../../shared/components/uploader/types/UploaderItemType.type';
-import { PaginatedRequestDTO } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
 
 export const CommercialForm: React.FC<CommercialFormProps> = ({ initialValues, onSubmit, onCancel }) => {
   const [stores, setStores] = useState<StoreDTO[]>([]);
@@ -124,12 +123,12 @@ export const CommercialForm: React.FC<CommercialFormProps> = ({ initialValues, o
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const params: PaginatedRequestDTO = { page: 1, pageSize: 100, sortBy: 'id', sortDir: 'desc', search: '' };
-        const [actionsResponse, chainsResponse, categoriesResponse] = await Promise.all([ReadActions(params), ReadChains(params), ReadCategories(params)]);
+        const params = { page: 1, pageSize: 100, sortBy: 'id', sortDir: 'desc', search: '' };
+        // const [actionsResponse, chainsResponse, categoriesResponse] = await Promise.all([ReadActions(params), ReadChains(params), ReadCategories(params)]);
 
-        setActions(actionsResponse.items);
-        setChains(chainsResponse.items);
-        setCategories(categoriesResponse.items);
+        // setActions(actionsResponse.items);
+        // setChains(chainsResponse.items);
+        // setCategories(categoriesResponse.items);
 
         const fetchAllStores = async () => {
           let page = 1;
@@ -137,9 +136,9 @@ export const CommercialForm: React.FC<CommercialFormProps> = ({ initialValues, o
           let allStores: StoreDTO[] = [];
 
           do {
-            const response = await ReadStores({ page, pageSize: 100, sortBy: 'id', sortDir: 'desc', search: '' });
+            const response = await ReadStores({ page, limit: 100, search: '' });
 
-            allStores = [...allStores, ...response.items];
+            allStores = [...allStores, ...response.data];
             totalPages = response.totalPages;
             page++;
           } while (page <= totalPages);

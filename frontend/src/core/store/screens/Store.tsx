@@ -43,9 +43,9 @@ const Store = () => {
     const handleRead = useCallback(async () => {
         try {
 
-            const params  = { page, pageSize, sortBy: 'razaoSocial', sortDir: sort ? 'desc' : 'asc', search };
+            const params  = { page, limit: pageSize, search };
             const response = await Read(params);
-            const itemsWithBoolean = response.items.map(item => ({ ...item, ativo: String(item.ativo).toLowerCase() === 'true' }));
+            const itemsWithBoolean = response.data.map(item => ({ ...item, ativo: String(item.ativo).toLowerCase() === 'true' }));
 
             setStores(itemsWithBoolean);
             setTotalPages(response.totalPages);

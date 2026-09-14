@@ -61,9 +61,9 @@ export const StoreForm: React.FC<StoreFormProps> = ({ initialValues, onSubmit, o
                     let allChains: ChainDTO[] = [];
 
                     do {
-                        const response = await Read({ page, pageSize: 100, sortBy: 'id', sortDir: 'desc', search: '' });
+                        const response = await Read({ page, limit: 100, search: "" });
 
-                        allChains = [...allChains, ...response.items];
+                        allChains = [...allChains, ...response.data];
                         totalPages = response.totalPages;
                         page++;
                     } while (page <= totalPages);
