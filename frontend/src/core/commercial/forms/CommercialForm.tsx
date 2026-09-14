@@ -11,14 +11,12 @@ import { ChainDTO } from '../../chain/dtos/ChainDTO.dto';
 import { StoreDTO } from '../../store/dtos/StoreDTO.dto';
 import { ActionDTO } from '../../action/dtos/ActionDTO.dto';
 import * as CommercialStyled from '../styles/Commercial.style';
-import { CategoryDTO } from '../../category/dtos/CategoryDTO.dto';
 import Toast from '../../../shared/components/toast/screens/Toast';
 import { Read as ReadChains } from '../../chain/services/Chain.service';
 import { Read as ReadStores } from '../../store/services/Store.service';
 import * as SharedStyled from '../../../shared/styles/Registration.style';
 import { Read as ReadActions } from '../../action/services/Action.service';
 import Uploader from '../../../shared/components/uploader/screens/Uploader';
-import { Read as ReadCategories } from '../../category/services/Category.service';
 import { CommercialFormProps } from '../interfaces/CommercialFormProps.interface';
 import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
 import { CommercialFormData, CommercialFormSchema } from '../schemas/CommercialFormSchema.schema';
@@ -29,7 +27,6 @@ export const CommercialForm: React.FC<CommercialFormProps> = ({ initialValues, o
   const [stores, setStores] = useState<StoreDTO[]>([]);
   const [chains, setChains] = useState<ChainDTO[]>([]);
   const [actions, setActions] = useState<ActionDTO[]>([]);
-  const [categories, setCategories] = useState<CategoryDTO[]>([]);
   const [formData, setFormData] = useState<CommercialFormData>({
     id: undefined,
     tipoAcaoId: 0,
@@ -49,7 +46,7 @@ export const CommercialForm: React.FC<CommercialFormProps> = ({ initialValues, o
   const filteredStores = formData.redeId ? stores.filter(store => store.redeId === formData.redeId && store.ativo) : stores.filter(store => store.ativo);
   const optionsForStores = filteredStores.filter(store => store.redeId != null).map(store => ({ value: store.id, label: store.apelido })).sort((a, b) => a.label.localeCompare(b.label));
 
-  const categoryOptions = categories.filter(category => category.ativo).map((category) => ({ value: category.id, label: category.nome })).sort((a, b) => a.label.localeCompare(b.label));
+  // const categoryOptions = categories.filter(category => category.ativo).map((category) => ({ value: category.id, label: category.nome })).sort((a, b) => a.label.localeCompare(b.label));
   const CustomDateInput = React.forwardRef<HTMLInputElement, any>(({ value, onClick }, ref) => (<SharedStyled.DateInput readOnly onClick={onClick} ref={ref} value={value} placeholder="DD/MM/AAAA" />));
 
   function base64ToFile(base64: string, filename: string, mimeType: string): File {
@@ -241,10 +238,10 @@ export const CommercialForm: React.FC<CommercialFormProps> = ({ initialValues, o
         <Styled.Input id="local" name="local" placeholder="Digite o nome do local" value={formData.local ?? ""} onChange={handleChange} />
       </Styled.FieldWrapper>
 
-      <Styled.FieldWrapper>
+      {/* <Styled.FieldWrapper> */}
         {/* <Styled.RequiredLabel htmlFor="categoriaProdutoId" required> Categoria de produto </Styled.RequiredLabel> */}
 
-        <Select
+        {/* <Select
           isClearable={true}
           options={categoryOptions}
           inputId="categoriaProdutoId"
@@ -253,8 +250,8 @@ export const CommercialForm: React.FC<CommercialFormProps> = ({ initialValues, o
           components={{ IndicatorSeparator: () => null }}
           value={categoryOptions.find((option) => option.value === formData.categoriaProdutoId) || undefined}
           onChange={(option) => { setFormData(prev => ({ ...prev, categoriaProdutoId: option?.value || 0, produtoId: undefined })); }}
-        />
-      </Styled.FieldWrapper>
+        /> */}
+      {/* </Styled.FieldWrapper> */}
 
       <Styled.FieldWrapper>
         <Styled.Label> Fotos </Styled.Label>

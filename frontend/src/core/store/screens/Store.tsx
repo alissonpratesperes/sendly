@@ -10,7 +10,6 @@ import { Read, Update, Delete } from '../services/Store.service';
 import { StoreFormData } from '../schemas/StoreFormSchema.schema';
 import Modal from '../../../shared/components/modal/screens/Modal';
 import * as Styled from '../../../shared/styles/Registration.style';
-import { cnpjFormatterUtil } from '../../../shared/utils/cnpjFormatterUtil.util';
 import Pagination from '../../../shared/components/pagination/screens/Pagination';
 import ToggleSwitch from '../../../shared/elements/toggleSwitch/screens/ToggleSwitch';
 import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
@@ -171,7 +170,7 @@ const Store = () => {
                                 {stores.map(store => (
                                     <Styled.TableListBodyRow key={store.id}>
                                         <Styled.TableListBodyRowData> {store.razaoSocial} </Styled.TableListBodyRowData>
-                                        <Styled.TableListBodyRowData> {cnpjFormatterUtil(store.cnpj)} </Styled.TableListBodyRowData>
+                                        <Styled.TableListBodyRowData>   </Styled.TableListBodyRowData>
                                         <Styled.TableListBodyRowData> {chainNames[store.redeId]} </Styled.TableListBodyRowData>
                                         <Styled.TableListBodyRowData> {store.endereco} </Styled.TableListBodyRowData>
                                         <Styled.TableListBodyRowData> <ToggleSwitch label={store.ativo ? 'Ativo' : 'Inativo'} checked={store.ativo} onChange={(e) => handleStatus(store.id!, e.target.checked)} /> </Styled.TableListBodyRowData>

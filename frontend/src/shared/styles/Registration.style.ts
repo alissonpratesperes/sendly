@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { ArrowDown } from 'lucide-react';
 
 export const LoadingContainer = styled.div`
     height: 55px;

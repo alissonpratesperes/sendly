@@ -15,8 +15,6 @@ import { navigationTabs } from '../constants/navigationtabs.constant';
 import Chain from '../../../../core/chain/screens/Chain';
 import Store from '../../../../core/store/screens/Store';
 import Action from '../../../../core/action/screens/Action';
-import Category from '../../../../core/category/screens/Category';
-import Regional from '../../../../core/regional/screens/Regional';
 
 const Registration: React.FC = () => {
     const navigate = useNavigate();
@@ -59,8 +57,6 @@ const Registration: React.FC = () => {
                 <Route path="/chains" element={<Chain />} />
                 <Route path="/stores" element={<Store />} />
                 <Route path="action-type" element={<Action />} />
-                <Route path="/regional" element={<Regional />} />
-                <Route path="/product-categories" element={<Category />} />
             </Routes>
         </Fragment>
     );

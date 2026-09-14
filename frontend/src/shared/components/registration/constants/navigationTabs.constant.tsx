@@ -6,26 +6,26 @@ export const navigationTabs = [
     {
         icon: <Building2 size={ 25 }/>,
         label: "Empresas",
-        path: "regional"
+        path: "user",
     },
     {
         icon: <Users size={ 25 }/>,
         label: "Usuários",
-        path: "user"
+        path: "user",
     },
     {
         icon: <ListCheck size={ 25 }/>,
         label: "Listas",
-        path: "stores"
+        path: "stores",
     },
     {
         icon: <Contact size={ 25 }/>,
         label: "Contatos",
-        path: "users"
+        path: "users",
     },
     {
         icon: <MessageSquare size={ 25 }/>,
         label: "Templates",
-        path: "action-type"
+        path: "action-type",
     },
 ] satisfies NavigationTab[];

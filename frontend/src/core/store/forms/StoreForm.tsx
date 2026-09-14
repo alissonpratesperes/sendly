@@ -10,7 +10,6 @@ import { StoreFormData } from '../schemas/StoreFormSchema.schema';
 import Toast from '../../../shared/components/toast/screens/Toast';
 import { StoreFormSchema } from '../schemas/StoreFormSchema.schema';
 import { StoreFormProps } from '../interfaces/StoreFormProps.interface';
-import { cnpjFormatterUtil } from '../../../shared/utils/cnpjFormatterUtil.util';
 import * as RegistrationSharedStyled from '../../../shared/styles/Registration.style';
 import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
 
@@ -102,11 +101,6 @@ export const StoreForm: React.FC<StoreFormProps> = ({ initialValues, onSubmit, o
                 <Styled.Label htmlFor="apelido"> Apelido loja </Styled.Label>
 
                 <Styled.Input id="apelido" name="apelido" placeholder="Digite o apelido da loja" value={formData.apelido} onChange={handleChange} />
-            </Styled.FieldWrapper>
-            <Styled.FieldWrapper>
-                <Styled.Label htmlFor="cnpj"> CNPJ </Styled.Label>
-
-                <Styled.Input id="cnpj" name="cnpj" placeholder="Digite o CNPJ" value={cnpjFormatterUtil(formData.cnpj)} onChange={handleChange} />
             </Styled.FieldWrapper>
 
             <Styled.FieldWrapper>

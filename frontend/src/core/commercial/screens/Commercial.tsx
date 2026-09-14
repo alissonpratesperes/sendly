@@ -13,7 +13,6 @@ import { StoreDTO } from '../../store/dtos/StoreDTO.dto';
 import { CommercialDTO } from '../dtos/CommercialDTO.dto';
 import { ActionDTO } from '../../action/dtos/ActionDTO.dto';
 import * as CommercialStyled from '../styles/Commercial.style';
-import { CategoryDTO } from '../../category/dtos/CategoryDTO.dto';
 import Toast from '../../../shared/components/toast/screens/Toast';
 import Card from '../../../shared/components/commercial/screens/Card';
 import { Read as ReadChains } from '../../chain/services/Chain.service';
@@ -21,7 +20,6 @@ import { Read as ReadStores } from '../../store/services/Store.service';
 import * as SharedStyled from '../../../shared/styles/Registration.style';
 import { Read as ReadActions } from '../../action/services/Action.service';
 import { ReadById as ReadAction } from '../../action/services/Action.service';
-import { Read as ReadCategories } from '../../category/services/Category.service';
 import Pagination from '../../../shared/components/pagination/screens/Pagination';
 import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
 import { PaginatedRequestDTO } from '../../../shared/components/pagination/dtos/PaginatedRequestDTO.dto';
@@ -36,7 +34,6 @@ const Commercial = () => {
     const [actions, setActions] = useState<ActionDTO[]>([]);
     const [totalPages, setTotalPages] = useState<number>(0);
     const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
-    const [categories, setCategories] = useState<CategoryDTO[]>([]);
     const [commercials, setCommercials] = useState<CommercialDTO[]>([]);
     const [formFilterData, setFormFilterData] = useState<{ dates: [Date | null, Date | null]; actionsIds: number[]; chainsIds: number[]; storesIds: number[]; categoriesIds: number[]; productsIds: number[]; }>({ dates: [null, null], actionsIds: [], chainsIds: [], storesIds: [], categoriesIds: [], productsIds: [] });
     const [appliedFilters, setAppliedFilters] = useState(formFilterData);
@@ -50,7 +47,7 @@ const Commercial = () => {
     const filteredStores = formFilterData.chainsIds.length > 0 ? stores.filter(store => formFilterData.chainsIds.includes(store.redeId ?? -1)) : stores;
     const optionsForStores = filteredStores.filter(store => store.id !== undefined && store.id !== null && store.ativo).map(store => ({ value: Number(store.id), label: store.apelido })).sort((a, b) => a.label.localeCompare(b.label));
 
-    const optionsForCategories = categories.filter(category => category.id !== undefined && category.id !== null && category.ativo).map(category => ({ value: Number(category.id), label: category.nome })).sort((a, b) => a.label.localeCompare(b.label));
+    // const optionsForCategories = categories.filter(category => category.id !== undefined && category.id !== null && category.ativo).map(category => ({ value: Number(category.id), label: category.nome })).sort((a, b) => a.label.localeCompare(b.label));
 
     const CustomDateInput = React.forwardRef<HTMLInputElement, any>(({ value, onClick }, ref) => (<SharedStyled.DateInput readOnly onClick={onClick} ref={ref} value={value} placeholder="DD/MM/AAAA - DD/MM/AAAA" />));
 
@@ -62,7 +59,7 @@ const Commercial = () => {
     const toggleSelectAllChains = () => { setFormFilterData(previousValue => ({ ...previousValue, chainsIds: isAllChainsSelected ? [] : optionsForChains.map(chain => Number(chain.value)) })); };
     const toggleSelectAllStores = () => { setFormFilterData(previousValue => ({ ...previousValue, storesIds: isAllStoresSelected ? [] : optionsForStores.map(store => Number(store.value)) })); };
     const toggleSelectAllActions = () => { setFormFilterData(previousValue => ({ ...previousValue, actionsIds: isAllActionsSelected ? [] : optionsForActions.map(action => Number(action.value)) })); };
-    const toggleSelectAllCategories = () => { setFormFilterData(previousValue => ({ ...previousValue, categoriesIds: isAllCategoriesSelected ? [] : optionsForCategories.map(category => Number(category.value)) })); };
+    // const toggleSelectAllCategories = () => { setFormFilterData(previousValue => ({ ...previousValue, categoriesIds: isAllCategoriesSelected ? [] : optionsForCategories.map(category => Number(category.value)) })); };
 
     const CustomOptionsContainer = ({ data, isSelected, innerRef, innerProps }: { data: { label: string }; isSelected: boolean; innerRef: React.Ref<HTMLDivElement>; innerProps: any; }) => (
         <SharedStyled.CustomOptionsContainer ref={innerRef} {...innerProps}>
@@ -217,17 +214,17 @@ const Commercial = () => {
                 const fetchAllCategories = async () => {
                     let page = 1;
                     let totalPages = 1;
-                    let allCategories: CategoryDTO[] = [];
+                    // let allCategories: CategoryDTO[] = [];
 
-                    do {
-                        const response = await ReadCategories({ page, pageSize: 100, sortBy: 'id', sortDir: 'desc', search: '' });
+                    // do {
+                    //     const response = await ReadCategories({ page, pageSize: 100, sortBy: 'id', sortDir: 'desc', search: '' });
 
-                        allCategories = [...allCategories, ...response.items];
-                        totalPages = response.totalPages;
-                        page++;
-                    } while (page <= totalPages);
+                    //     allCategories = [...allCategories, ...response.items];
+                    //     totalPages = response.totalPages;
+                    //     page++;
+                    // } while (page <= totalPages);
 
-                    setCategories(allCategories);
+                    // setCategories(allCategories);
                 };
 
                 await fetchAllActions();
@@ -382,7 +379,7 @@ const Commercial = () => {
                             <SharedStyled.FieldWrapper>
                                 <SharedStyled.Label htmlFor="categoriaProdutoId"> Categoria de produto </SharedStyled.Label>
 
-                                <Select
+                                {/* <Select
                                     isMulti
                                     menuPosition="fixed"
                                     closeMenuOnSelect={false}
@@ -401,7 +398,7 @@ const Commercial = () => {
 
                                         setFormFilterData(prev => ({ ...prev, categoriesIds: newCategoryIds, productsIds: [] }));
                                     }}
-                                />
+                                /> */}
                             </SharedStyled.FieldWrapper>
 
                             <CommercialStyled.ApplyButton onClick={() => { setAppliedFilters(formFilterData); setPage(1); }}> Aplicar filtros </CommercialStyled.ApplyButton>
