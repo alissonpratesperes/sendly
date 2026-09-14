@@ -5,6 +5,7 @@ import { Plus, Search, Trash, Pen } from 'lucide-react';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { UserForm } from '../forms/userForm.form';
+import { List, Delete } from '../services/user.service';
 import { UserResponseDto } from '../dtos/userResponse.dto';
 import { UserFormData } from '../schemas/userFormSchema.schema';
 import Modal from '../../../shared/components/modal/screens/Modal';
@@ -12,7 +13,6 @@ import * as SharedStyled from '../../../shared/styles/Registration.style';
 import { formatDateUtil } from '../../../shared/utils/formatDateUtil.util';
 import Paginate from '../../../shared/components/paginate/screens/Paginate';
 import UserBadge from '../../../shared/elements/userBadge/screens/UserBadge';
-import { Create, Read, List, Update, Delete } from '../services/user.service';
 import { GenericDrawer } from '../../../shared/components/drawer/screens/GenericDrawer';
 import { PaginatedQueryDto } from '../../../shared/components/pagination/dtos/PaginatedRequestDTO.dto';
 
@@ -32,7 +32,7 @@ const User = () => {
         setUpdating(null);
         setIsDrawerOpen(true);
     }
-    const handleRead = useCallback(async () => {
+    const handleReadUsers = useCallback(async () => {
         try {
             setIsLoading(true);
 
@@ -42,11 +42,11 @@ const User = () => {
             setUsers(response.data);
             setTotal(response.total);
         } catch (error) {
-            toast.error(`Erro ao listar Usuários: ${error}`);
+            toast.error(`Erro ao listar Usuários: ${ error }`);
         } finally {
             setIsLoading(false);
         }
-    }, [ page, limit, search, setIsLoading ]);
+    }, [ page, limit, search ]);
     const handleUpdate = (id: number) => {
         const clicked = users.find((user: UserResponseDto) => user.id === id);
 
@@ -59,7 +59,6 @@ const User = () => {
             name: clicked.name,
             email: clicked.email,
         });
-
         setIsDrawerOpen(true);
     }
     const handleConfirmDelete = async () => {
@@ -77,24 +76,24 @@ const User = () => {
             if (isLastItemOnLastPage) {
                 setPage(prevPage => prevPage - 1);
             } else {
-                handleRead();
+                handleReadUsers();
             }
 
             setIsDeleteModalOpen(false);
 
             toast.success("Usuário excluído com suceso");
         } catch (error: unknown) {
-            toast.error("Não é possível realizar a solicitação");
+            toast.error(`Não é possível prosseguir com a solicitação: ${ error }`);
         }
     }
 
     useEffect(() => {
         const timeout = setTimeout(() => {
-            handleRead();
+            handleReadUsers();
         }, 500);
 
         return () => clearTimeout(timeout);
-    }, [ handleRead ]);
+    }, [ handleReadUsers ]);
 
     return (
         <Fragment>
@@ -103,10 +102,10 @@ const User = () => {
                     <SharedStyled.SearchInputContainer>
                         <Search size={ 25 } color="#1C70E9" />
 
-                        <SharedStyled.SearchInputField type="text" placeholder="Pesquisar usuário" value={search} onChange={(inputEvent) => { setSearch(inputEvent.target.value); setPage(1); }} />
+                        <SharedStyled.SearchInputField type="text" placeholder="Pesquisar usuário" value={ search } onChange={ (inputEvent) => { setSearch(inputEvent.target.value); setPage(1); } } />
                     </SharedStyled.SearchInputContainer>
 
-                    <SharedStyled.AddButton onClick={handleCreate}>
+                    <SharedStyled.AddButton onClick={ handleCreate }>
                         <Plus size={ 25 } />
 
                         <SharedStyled.SearchInputSubmitText> Cadastrar usuário </SharedStyled.SearchInputSubmitText>
@@ -136,7 +135,7 @@ const User = () => {
                             </thead>
 
                             <tbody>
-                                { users.map(user => (
+                                { users.map((user: UserResponseDto) => (
                                     <SharedStyled.TableListBodyRow key={ user.id }>
                                         <SharedStyled.TableListBodyRowData> { user.name } </SharedStyled.TableListBodyRowData>
                                         <SharedStyled.TableListBodyRowData> { user.email } </SharedStyled.TableListBodyRowData>
@@ -147,8 +146,8 @@ const User = () => {
                                         <SharedStyled.TableListBodyRowData> </SharedStyled.TableListBodyRowData>
                                         <SharedStyled.TableListBodyRowData>
                                             <SharedStyled.TableListBodyRowDataActions>
-                                                <SharedStyled.TableListBodyRowDataActionButton onClick={ () => handleUpdate(user.id!) }> <Pen size={ 25 } color="#1C70E9" /> </SharedStyled.TableListBodyRowDataActionButton>
-                                                <SharedStyled.TableListBodyRowDataActionButton onClick={ () => { setSelectedUserId(user.id!); setIsDeleteModalOpen(true); } }> <Trash size={ 25 } color="#DC143C" /> </SharedStyled.TableListBodyRowDataActionButton>
+                                                <SharedStyled.TableListBodyRowDataActionButton onClick={ () => handleUpdate(user.id) }> <Pen size={ 25 } color="#1C70E9" /> </SharedStyled.TableListBodyRowDataActionButton>
+                                                <SharedStyled.TableListBodyRowDataActionButton onClick={ () => { setSelectedUserId(user.id); setIsDeleteModalOpen(true); } }> <Trash size={ 25 } color="#DC143C" /> </SharedStyled.TableListBodyRowDataActionButton>
                                             </SharedStyled.TableListBodyRowDataActions>
                                         </SharedStyled.TableListBodyRowData>
                                     </SharedStyled.TableListBodyRow>
@@ -156,7 +155,7 @@ const User = () => {
                             </tbody>
 
                             <tfoot>
-                                 <SharedStyled.TableListBodyRow>
+                                <SharedStyled.TableListBodyRow>
                                     <SharedStyled.TableListBodyRowData colSpan={ 8 }>
                                         <Paginate page={ page } total={ total } limit={ limit } onPageChange={ setPage } onLimitChange={ (newLimit) => { setLimit(newLimit); setPage(1); } } />
                                     </SharedStyled.TableListBodyRowData>
@@ -184,13 +183,13 @@ const User = () => {
                             </tbody>
                         </SharedStyled.TableListWrapper>
                     </SharedStyled.TableWrapper>
-                ) : null}
+                ) : null }
             </SharedStyled.ListWrapper>
 
             <Modal isOpen={ isDeleteModalOpen } entityName={ users.find((user: UserResponseDto) => user.id === selectedUserId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleConfirmDelete } />
 
             <GenericDrawer isOpen={ isDrawerOpen } onClose={ () => { setIsDrawerOpen(false); setUpdating(null); } } title={ updating ? "Editar usuário" : "Novo usuário" } mode={ updating ? "edit" : "create" } formId="user-form">
-                <UserForm initialValues={ updating ?? undefined } onCancel={ () => { setIsDrawerOpen(false); setUpdating(null); } } onSubmit={ async () => { setIsDrawerOpen(false); setUpdating(null); handleRead(); } } />
+                <UserForm initialValues={ updating ?? undefined } onCancel={ () => { setIsDrawerOpen(false); setUpdating(null); } } onSubmit={ () => { setIsDrawerOpen(false); setUpdating(null); handleReadUsers(); } } />
             </GenericDrawer>
         </Fragment>
     );

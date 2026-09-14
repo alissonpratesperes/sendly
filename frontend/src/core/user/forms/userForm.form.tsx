@@ -6,10 +6,12 @@ import { Create, Update } from '../services/user.service';
 import { UserFormData } from '../schemas/userFormSchema.schema';
 import { UserFormSchema } from '../schemas/userFormSchema.schema';
 import Toast from '../../../shared/components/toast/screens/Toast';
+import { CreateUserCommandDto } from '../dtos/createUserCommand.dto';
+import { UpdateUserCommandDto } from '../dtos/updateUserCommand.dto';
 import { UserFormProps } from '../interfaces/userFormProps.interface';
 import * as Styled from '../../../shared/components/drawer/styles/genericDrawer.style';
 
-export const UserForm: React.FC<UserFormProps> = ({ initialValues, onSubmit, onCancel }) => {
+export const UserForm: React.FC<UserFormProps> = ({ initialValues, onCancel, onSubmit }) => {
     const [formData, setFormData] = useState<UserFormData>({
         name: "",
         email: "",
@@ -19,16 +21,24 @@ export const UserForm: React.FC<UserFormProps> = ({ initialValues, onSubmit, onC
         formEvent.preventDefault();
 
         try {
-
-            const isCreatingNewUser = !initialValues?.id;
             const validatedFormData = UserFormSchema.parse(formData);
 
-            if (isCreatingNewUser) {
-                await Create(validatedFormData);
+            if (initialValues?.id === undefined) {
+                const command: CreateUserCommandDto = {
+                    name: validatedFormData.name,
+                    email: validatedFormData.email,
+                }
+
+                await Create(command);
 
                 toast.success("Usuário criado com sucesso");
             } else {
-                await Update({ id: initialValues.id! }, validatedFormData);
+                const command: UpdateUserCommandDto = {
+                    name: validatedFormData.name,
+                    email: validatedFormData.email,
+                }
+
+                await Update({ id: initialValues.id }, command);
 
                 toast.success("Usuário editado com sucesso");
             }
@@ -40,8 +50,7 @@ export const UserForm: React.FC<UserFormProps> = ({ initialValues, onSubmit, onC
             } else {
                 toast.error(`Não é possível prosseguir com a solicitação: ${error}`);
             }
-        } finally {
-        }
+        } finally { }
     }
     const handleChange = (changeEvent: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = changeEvent.target;
