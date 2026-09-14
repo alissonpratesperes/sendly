@@ -2,18 +2,24 @@ import axios from 'axios';
 import { StatusCodes } from 'http-status-codes';
 
 import { refresh } from '../services/authentication.service';
+import { RetryableAxiosRequestConfig } from '../types/retryableRequestAxiosConfig.type';
+import { clearAuthenticationStorage, getAuthenticationStorage, setAuthenticationStorage } from '../../../shared/utils/authenticationStorage.util';
+
 const authenticatedApi = axios.create({
     baseURL: process.env.REACT_APP_API_URL,
-    headers: {
-        "Content-Type": "application/json"
-    }
+    headers: { "Content-Type": "application/json" }
 });
+const handleLogout = () => {
+    clearAuthenticationStorage();
+
+    window.location.href = "/authentication";
+};
 
 let refreshPromise: Promise<string> | null = null;
 
 authenticatedApi.interceptors.request.use(
     (config) => {
-        const accessToken = localStorage.getItem("accessToken");
+        const { accessToken } = getAuthenticationStorage();
 
         if (accessToken) {
             config.headers.Authorization = `Bearer ${accessToken}`;
@@ -30,21 +36,18 @@ authenticatedApi.interceptors.response.use(
         return response;
     },
     async (error) => {
-        const originalRequest = error.config;
+        const originalRequest = error.config as RetryableAxiosRequestConfig | undefined;
 
-        if (error.response?.status !== StatusCodes.UNAUTHORIZED || originalRequest._retry) {
+        if (error.response?.status !== StatusCodes.UNAUTHORIZED || !originalRequest || originalRequest._retry) {
             return Promise.reject(error);
         }
 
         originalRequest._retry = true;
 
-        const refreshToken = localStorage.getItem("refreshToken");
+        const { refreshToken } = getAuthenticationStorage();
 
         if (!refreshToken) {
-            localStorage.removeItem("accessToken");
-            localStorage.removeItem("refreshToken");
-
-            window.location.href = "/authentication";
+            handleLogout();
 
             return Promise.reject(error);
         }
@@ -52,12 +55,9 @@ authenticatedApi.interceptors.response.use(
         try {
             if(!refreshPromise) {
                 refreshPromise = refresh(refreshToken).then((response) => {
-                    const { accessToken, refreshToken: newRefreshToken } = response;
+                    setAuthenticationStorage(response);
 
-                    localStorage.setItem("accessToken", accessToken);
-                    localStorage.setItem("refreshToken", newRefreshToken);
-
-                    return accessToken;
+                    return response.accessToken;
                 }).finally(() => {
                     refreshPromise = null;
                 });
@@ -69,10 +69,7 @@ authenticatedApi.interceptors.response.use(
 
             return authenticatedApi(originalRequest);
         } catch (refreshError) {
-            localStorage.removeItem("accessToken");
-            localStorage.removeItem("refreshToken");
-
-            window.location.href = "/authentication";
+            handleLogout();
 
             return Promise.reject(refreshError);
         }

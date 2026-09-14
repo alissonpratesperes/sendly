@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 
 import { verifyExpiredToken } from '../../../utils/verifyExpiredToken.util';
 import { PrivateRouteProps } from '../interfaces/privateRouteProps.interface';
+import { clearAuthenticationStorage, getAuthenticationStorage } from '../../../utils/authenticationStorage.util';
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ element }) => {
     const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
@@ -11,13 +12,12 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ element }) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const accessToken = localStorage.getItem("accessToken");
+        const { accessToken } = getAuthenticationStorage();
 
         if (accessToken && !verifyExpiredToken(accessToken)) {
             setIsAuthorized(true);
         } else {
-            localStorage.removeItem("accessToken");
-            localStorage.removeItem("refreshToken");
+            clearAuthenticationStorage();
 
             setIsAuthorized(false);
         }

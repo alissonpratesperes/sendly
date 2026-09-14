@@ -4,6 +4,7 @@ import { Rocket, DatabaseZapIcon, LogOut } from 'lucide-react';
 
 import * as Styled from '../styles/header.style';
 import { HeaderMenuLinksProps } from '../interfaces/headerMenuLinksProps.interface';
+import { clearAuthenticationStorage } from '../../../utils/authenticationStorage.util';
 
 const menuLinksIconsMapping: Record<string, JSX.Element> = {
     home: <Rocket size={ 25 } />,
@@ -13,8 +14,7 @@ const Header: React.FC<HeaderMenuLinksProps> = ({ links }) => {
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
+        clearAuthenticationStorage();
 
         navigate("/authentication");
     }

@@ -8,6 +8,7 @@ import { EyeIcon, EyeOffIcon, LogInIcon, LockKeyhole } from 'lucide-react';
 
 import * as Styled from '../styles/login.style';
 import { login } from '../services/authentication.service';
+import { setAuthenticationStorage } from '../../../shared/utils/authenticationStorage.util';
 
 const Authentication: React.FC = () => {
     const [email, setEmail] = useState<string>("");
@@ -28,31 +29,22 @@ const Authentication: React.FC = () => {
 
             const response = await login({ email, password });
 
-            localStorage.setItem("accessToken", response.accessToken);
-            localStorage.setItem("refreshToken", response.refreshToken);
+            setAuthenticationStorage(response);
 
             toast.info("Login realizado com sucesso");
-
-            setIsLoading(false);
 
             navigate("/home");
         } catch (error: unknown) {
             if (axios.isAxiosError(error) && error.response?.status === StatusCodes.BAD_REQUEST) {
                 toast.warn("É necessário redefinir a primeira senha, verifique seu e-mail");
 
-                setIsLoading(false);
-
                 return;
             } else if (axios.isAxiosError(error) && error.response?.status === StatusCodes.UNAUTHORIZED) {
                 toast.error("Credenciais inválidas, tente novamente");
 
-                setIsLoading(false);
-
                 return;
             } else {
                 toast.error("Não é possível realizar a autenticação");
-
-                setIsLoading(false);
 
                 return;
             }
@@ -63,21 +55,21 @@ const Authentication: React.FC = () => {
 
     return (
         <Styled.AuthFormContainer>
-            <Styled.LoginForm onSubmit={handleSubmit}>
+            <Styled.LoginForm onSubmit={ handleSubmit }>
                 <Styled.FormTitle> Bem-vindo ao Sendly </Styled.FormTitle>
                 <Styled.FormSubtitle> Para autenticar no sistema, informe suas credenciais abaixo </Styled.FormSubtitle>
 
                 <Styled.InputWrapper>
                     <Styled.Label htmlFor="email"> E-MAIL </Styled.Label>
 
-                    <Styled.Input type="email" id="email" placeholder="Digite seu email" value={email} onChange={(inputEvent) => setEmail(inputEvent.target.value)} required />
+                    <Styled.Input type="email" id="email" placeholder="Digite seu email" value={ email } onChange={ (inputEvent) => setEmail(inputEvent.target.value) } required />
                 </Styled.InputWrapper>
                 <Styled.InputWrapper>
                     <Styled.Label htmlFor="password"> SENHA </Styled.Label>
 
-                    <Styled.Input type={showPassword ? "text" : "password"} id="password" placeholder="Digite sua senha" value={password} onChange={(inputEvent) => setPassword(inputEvent.target.value)} required />
+                    <Styled.Input type={ showPassword ? "text" : "password" } id="password" placeholder="Digite sua senha" value={ password } onChange={ (inputEvent) => setPassword(inputEvent.target.value) } required />
 
-                   <Styled.EyeButton type="button" onClick={togglePasswordVisibility}> {showPassword ? ( <EyeIcon size={ 25 } color="#1C70E9" /> ) : ( <EyeOffIcon size={ 25 } color="#1C70E9" /> )} </Styled.EyeButton>
+                   <Styled.EyeButton type="button" onClick={ togglePasswordVisibility }> { showPassword ? ( <EyeIcon size={ 25 } color="#1C70E9" /> ) : ( <EyeOffIcon size={ 25 } color="#1C70E9" /> ) } </Styled.EyeButton>
                 </Styled.InputWrapper>
 
                 <Styled.LoginButtonsContainer>
