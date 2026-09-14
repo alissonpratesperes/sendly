@@ -4,7 +4,7 @@ import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-
 
 import User from '../../../../core/user/screens/User';
 import * as Styled from '../styles/registration.style';
-import PrivateRoute from '../../private/components/PrivateRoute.component';
+import PrivateRoute from '../../private/components/PrivateRoute';
 
 
 

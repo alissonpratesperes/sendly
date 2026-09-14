@@ -15,7 +15,7 @@ function App() {
         <BrowserRouter> <AppRouting /> </BrowserRouter>
       </div>
 
-      <ToastContainer position="top-center" autoClose={5000} hideProgressBar={false} newestOnTop={true} closeOnClick pauseOnHover draggable theme="colored" />
+      <ToastContainer position="top-center" autoClose={ 5000 } hideProgressBar={ false } newestOnTop={ true } closeOnClick pauseOnHover draggable theme="colored" />
     </Fragment>
   );
 };

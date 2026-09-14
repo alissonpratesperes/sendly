@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 
 import { isTokenExpiredUtil } from '../../../utils/isTokenExpiredUtil.util';
-import { PrivateRouteProps } from '../interfaces/PrivateRouterProps.interface';
+import { PrivateRouteProps } from '../interfaces/privateRouteProps.interface';
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ element }) => {
     const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
