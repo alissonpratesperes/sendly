@@ -9,7 +9,7 @@ import { ActionFormData } from '../schemas/ActionFormSchema.schema';
 import { ActionFormSchema } from '../schemas/ActionFormSchema.schema';
 import { ActionFormProps } from '../interfaces/ActionFormProps.interface';
 import * as RegistrationSharedStyled from '../../../shared/styles/Registration.style';
-import * as Styled from '../../../shared/components/drawer/styles/genericDrawer.style';
+import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
 
 export const ActionForm: React.FC<ActionFormProps> = ({ initialValues, onSubmit, onCancel }) => {
     const statusOptions = [{ value: true, label: 'Ativo' }, { value: false, label: 'Inativo' }];

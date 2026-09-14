@@ -12,7 +12,7 @@ import { StoreFormSchema } from '../schemas/StoreFormSchema.schema';
 import { StoreFormProps } from '../interfaces/StoreFormProps.interface';
 import { cnpjFormatterUtil } from '../../../shared/utils/cnpjFormatterUtil.util';
 import * as RegistrationSharedStyled from '../../../shared/styles/Registration.style';
-import * as Styled from '../../../shared/components/drawer/styles/genericDrawer.style';
+import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
 
 export const StoreForm: React.FC<StoreFormProps> = ({ initialValues, onSubmit, onCancel }) => {
     const [chains, setChains] = useState<ChainDTO[]>([]);

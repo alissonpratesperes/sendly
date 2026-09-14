@@ -9,7 +9,7 @@ import { CategoryFormData } from '../schemas/CategoryFormSchema.schema';
 import { CategoryFormSchema } from '../schemas/CategoryFormSchema.schema';
 import { CategoryFormProps } from '../interfaces/CategoryFormProps.interface';
 import * as RegistrationSharedStyled from '../../../shared/styles/Registration.style';
-import * as Styled from '../../../shared/components/drawer/styles/genericDrawer.style';
+import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
 
 export const CategoryForm: React.FC<CategoryFormProps> = ({ initialValues, onSubmit, onCancel }) => {
     const statusOptions = [{ value: true, label: 'Ativo' }, { value: false, label: 'Inativo' }]

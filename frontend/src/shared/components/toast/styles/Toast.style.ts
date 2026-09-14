@@ -3,28 +3,28 @@ import styled from 'styled-components';
 export const ToastWrapper = styled.div``;
 
 export const Title = styled.strong`
-    margin-bottom: 8px;
-    padding-left: 16px;
+    margin-bottom: 30px;
+    padding-left: 15px;
     display: block;
-    font-family: 'Lato';
+    font-family: "Inter";
     font-weight: 700;
-    font-size: 16px;
+    font-size: 18px;
     color: #FFFFFF;
 `;
 
 export const List = styled.ul`
     margin: 0;
-    padding-left: 16px;
+    padding-left: 15px;
     list-style: none;
 `;
 
 export const ListItem = styled.li`
-    margin-bottom: 8px;
+    margin-bottom: 15px;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content- flex-start;
-    font-family: 'Inter';
+    font-family: "Inter";
     font-weight: 400;
     font-size: 14px;
     color: #FFFFFF;

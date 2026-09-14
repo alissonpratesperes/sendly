@@ -11,7 +11,7 @@ import * as Styled from '../../../shared/styles/Registration.style';
 import { RegionalFormData } from '../schemas/RegionalFormSchema.schema';
 import Pagination from '../../../shared/components/pagination/screens/Pagination';
 import ToggleSwitch from '../../../shared/elements/toggleSwitch/screens/ToggleSwitch';
-import { GenericDrawer } from '../../../shared/components/drawer/screens/GenericDrawer';
+import { Dawer } from '../../../shared/components/drawer/screens/Drawer';
 import { PaginatedRequestDTO } from '../../../shared/components/pagination/dtos/PaginatedRequestDTO.dto';
 
 const Regional = () => {
@@ -165,9 +165,9 @@ const Regional = () => {
 
             <Modal isOpen={isDeleteModalOpen} entityName={regionals.find(regional => regional.id === selectedRegionalId)?.nome ?? " "} onClose={() => setIsDeleteModalOpen(false)} onConfirm={handleConfirmDelete} />
 
-            <GenericDrawer isOpen={drawerOpen} onClose={() => { setDrawerOpen(false); setUpdating(null); }} title={updating ? 'Editar regional' : 'Nova regional'}>
+            <Dawer isOpen={drawerOpen} onClose={() => { setDrawerOpen(false); setUpdating(null); }} title={updating ? 'Editar regional' : 'Nova regional'}>
                 <RegionalForm initialValues={updating ?? undefined} onCancel={() => { setDrawerOpen(false); setUpdating(null); }} onSubmit={() => { setDrawerOpen(false); setUpdating(null); setPage(1); handleRead(); }} />
-            </GenericDrawer>
+            </Dawer>
         </>
     );
 };

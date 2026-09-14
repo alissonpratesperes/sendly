@@ -12,7 +12,7 @@ import { ActionFormData } from '../schemas/ActionFormSchema.schema';
 import EmptyStateVector from '../../../assets/emptystate_vector.svg';
 import Pagination from '../../../shared/components/pagination/screens/Pagination';
 import ToggleSwitch from '../../../shared/elements/toggleSwitch/screens/ToggleSwitch';
-import { GenericDrawer } from '../../../shared/components/drawer/screens/GenericDrawer';
+import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
 import { PaginatedRequestDTO } from '../../../shared/components/pagination/dtos/PaginatedRequestDTO.dto';
 
 const Action = () => {
@@ -166,9 +166,9 @@ const Action = () => {
 
             <Modal isOpen={isDeleteModalOpen} entityName={actions.find(action => action.id === selectedActionId)?.nome ?? " "} onClose={() => setIsDeleteModalOpen(false)} onConfirm={handleConfirmDelete} />
 
-            <GenericDrawer isOpen={drawerOpen} onClose={() => { setDrawerOpen(false); setUpdating(null); }} title={updating ? 'Editar tipo de ação' : 'Novo tipo de ação'}>
+            <Drawer isOpen={drawerOpen} onClose={() => { setDrawerOpen(false); setUpdating(null); }} title={updating ? 'Editar tipo de ação' : 'Novo tipo de ação'}>
                 <ActionForm initialValues={updating ?? undefined} onCancel={() => { setDrawerOpen(false); setUpdating(null); }} onSubmit={async () => { setDrawerOpen(false); setUpdating(null); handleRead(); }} />
-            </GenericDrawer>
+            </Drawer>
         </>
     );
 };

@@ -13,7 +13,7 @@ import * as Styled from '../../../shared/styles/Registration.style';
 import { cnpjFormatterUtil } from '../../../shared/utils/cnpjFormatterUtil.util';
 import Pagination from '../../../shared/components/pagination/screens/Pagination';
 import ToggleSwitch from '../../../shared/elements/toggleSwitch/screens/ToggleSwitch';
-import { GenericDrawer } from '../../../shared/components/drawer/screens/GenericDrawer';
+import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
 import { PaginatedRequestDTO } from '../../../shared/components/pagination/dtos/PaginatedRequestDTO.dto';
 
 const Store = () => {
@@ -194,9 +194,9 @@ const Store = () => {
 
             <Modal isOpen={isDeleteModalOpen} entityName={stores.find(store => store.id === selectedStoreId)?.apelido ?? " "} onClose={() => setIsDeleteModalOpen(false)} onConfirm={handleConfirmDelete} />
 
-            <GenericDrawer isOpen={drawerOpen} onClose={() => { setDrawerOpen(false); setUpdating(null); }} title={updating ? 'Editar loja' : 'Nova loja'}>
+            <Drawer isOpen={drawerOpen} onClose={() => { setDrawerOpen(false); setUpdating(null); }} title={updating ? 'Editar loja' : 'Nova loja'}>
                 <StoreForm initialValues={updating ?? undefined} onCancel={() => { setDrawerOpen(false); setUpdating(null); }} onSubmit={async () => { setDrawerOpen(false); setUpdating(null); handleRead(); }} />
-            </GenericDrawer>
+            </Drawer>
         </>
     );
 };

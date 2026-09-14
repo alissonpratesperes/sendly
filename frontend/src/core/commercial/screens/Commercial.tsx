@@ -23,7 +23,7 @@ import { Read as ReadActions } from '../../action/services/Action.service';
 import { ReadById as ReadAction } from '../../action/services/Action.service';
 import { Read as ReadCategories } from '../../category/services/Category.service';
 import Pagination from '../../../shared/components/pagination/screens/Pagination';
-import { GenericDrawer } from '../../../shared/components/drawer/screens/GenericDrawer';
+import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
 import { PaginatedRequestDTO } from '../../../shared/components/pagination/dtos/PaginatedRequestDTO.dto';
 
 const Commercial = () => {
@@ -440,9 +440,9 @@ const Commercial = () => {
                     </CommercialStyled.StandalonePagination>
                 )}
 
-                <GenericDrawer isOpen={drawerOpen} onClose={() => { setDrawerOpen(false); }} title={'Cadastrar ação'}>
+                <Drawer isOpen={drawerOpen} onClose={() => { setDrawerOpen(false); }} title={'Cadastrar ação'}>
                     <CommercialForm initialValues={undefined} onCancel={() => { setDrawerOpen(false); }} onSubmit={async () => { setDrawerOpen(false); handleRead(); }} />
-                </GenericDrawer>
+                </Drawer>
             </SharedStyled.ListWrapper>
         </>
     );

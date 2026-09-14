@@ -1,4 +1,4 @@
-export interface GenericDrawerProps {
+export interface DrawerProps {
     isOpen: boolean;
     onClose: () => void;
     title: string;

@@ -1,8 +1,8 @@
 import { styled } from 'styled-components';
 
-import { GenericDrawerOverlayProps } from '../interfaces/genericDrawerOverlayProps.interface';
+import { DrawerOverlayProps } from '../interfaces/drawerOverlayProps.interface';
 
-export const DrawerOverlay = styled.div<GenericDrawerOverlayProps>`
+export const DrawerOverlay = styled.div<DrawerOverlayProps>`
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.35);
@@ -14,7 +14,7 @@ export const DrawerOverlay = styled.div<GenericDrawerOverlayProps>`
     visibility: ${({ $open }) => ($open ? "visible" : "hidden")};
 `;
 
-export const GenericDrawer = styled.div<{ $open: boolean; }>`
+export const Drawer = styled.div<{ $open: boolean; }>`
     width: 500px;
     max-width: calc(100% - 60px);
     position: fixed;

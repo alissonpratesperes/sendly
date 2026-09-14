@@ -7,8 +7,8 @@ import Reset from './core/authentication/screens/Reset';
 import Home from './shared/components/home/screens/Home';
 import Forgot from './core/authentication/screens/Forgot';
 import Header from './shared/components/header/screens/Header';
-import PublicRoute from './shared/components/public/components/PublicRoute';
-import PrivateRoute from './shared/components/private/components/PrivateRoute';
+import PublicRoute from './shared/components/public/screens/PublicRoute';
+import PrivateRoute from './shared/components/private/screens/PrivateRoute';
 import Registration from './shared/components/registration/screens/Registration';
 
 const PATHS_WITHOUT_APP_LAYOUT = [ "/authentication", "/authentication/forgot", "/authentication/reset", ];

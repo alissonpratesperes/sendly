@@ -13,7 +13,7 @@ import * as SharedStyled from '../../../shared/styles/Registration.style';
 import { formatDateUtil } from '../../../shared/utils/formatDateUtil.util';
 import Paginate from '../../../shared/components/paginate/screens/Paginate';
 import UserBadge from '../../../shared/elements/userBadge/screens/UserBadge';
-import { GenericDrawer } from '../../../shared/components/drawer/screens/GenericDrawer';
+import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
 import { PaginatedQueryDto } from '../../../shared/components/pagination/dtos/PaginatedRequestDTO.dto';
 
 const User = () => {
@@ -188,9 +188,9 @@ const User = () => {
 
             <Modal isOpen={ isDeleteModalOpen } entityName={ users.find((user: UserResponseDto) => user.id === selectedUserId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleConfirmDelete } />
 
-            <GenericDrawer isOpen={ isDrawerOpen } onClose={ () => { setIsDrawerOpen(false); setUpdating(null); } } title={ updating ? "Editar usuário" : "Novo usuário" } mode={ updating ? "edit" : "create" } formId="user-form">
+            <Drawer isOpen={ isDrawerOpen } onClose={ () => { setIsDrawerOpen(false); setUpdating(null); } } title={ updating ? "Editar usuário" : "Novo usuário" } mode={ updating ? "edit" : "create" } formId="user-form">
                 <UserForm initialValues={ updating ?? undefined } onCancel={ () => { setIsDrawerOpen(false); setUpdating(null); } } onSubmit={ () => { setIsDrawerOpen(false); setUpdating(null); handleReadUsers(); } } />
-            </GenericDrawer>
+            </Drawer>
         </Fragment>
     );
 }

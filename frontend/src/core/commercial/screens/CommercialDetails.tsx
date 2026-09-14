@@ -15,7 +15,7 @@ import * as DetailStyled from '../styles/CommercialDetails.style';
 import { ReadById, Delete } from '../services/Commercial.service';
 import Modal from '../../../shared/components/modal/screens/Modal';
 import { ReadById as ReadAction } from '../../action/services/Action.service';
-import { GenericDrawer } from '../../../shared/components/drawer/screens/GenericDrawer';
+import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
 import { UploaderItemType } from '../../../shared/components/uploader/types/UploaderItemType.type';
 import { formatImagesWithBase64ToUploaderUtil } from '../../../shared/utils/formatImagesWithBase64ToUploaderUtil.util';
 
@@ -189,7 +189,7 @@ const CommercialDetails = () => {
 
             <Modal isOpen={isDeleteModalOpen} entityName={action?.nome ?? "-"} onClose={() => setIsDeleteModalOpen(false)} onConfirm={handleConfirmDelete} />
 
-            <GenericDrawer isOpen={drawerOpen} onClose={() => setDrawerOpen(false)} title={'Editar ação'}>
+            <Drawer isOpen={drawerOpen} onClose={() => setDrawerOpen(false)} title={'Editar ação'}>
                 {commercial && (
                     <CommercialForm
                         initialValues={{
@@ -207,7 +207,7 @@ const CommercialDetails = () => {
                         onSubmit={async () => { await handleReadById(); setDrawerOpen(false); }}
                     />
                 )}
-            </GenericDrawer>
+            </Drawer>
         </>
     );
 };

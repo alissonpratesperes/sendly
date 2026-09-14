@@ -1,10 +1,10 @@
 import React, { Fragment, useState } from 'react';
 import { X, Ban, Pencil, Save } from 'lucide-react';
 
-import * as Styled from '../styles/genericDrawer.style';
-import { GenericDrawerProps } from '../interfaces/genericDrawerProps.interface';
+import * as Styled from '../styles/drawer.style';
+import { DrawerProps } from '../interfaces/drawerProps.interface';
 
-export const GenericDrawer: React.FC<GenericDrawerProps> = ({ isOpen, onClose, title, children, mode = "create", formId }) => {
+export const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, title, children, mode = "create", formId }) => {
     const [isClosing, setIsClosing] = useState(false);
 
     return (
@@ -12,7 +12,7 @@ export const GenericDrawer: React.FC<GenericDrawerProps> = ({ isOpen, onClose, t
             <Styled.DrawerOverlay $open={ isOpen && !isClosing } onClick={ () => setIsClosing(true) } />
 
                 { isOpen && (
-                    <Styled.GenericDrawer $open={ !isClosing } onAnimationEnd={ (event) => { if (event.animationName === "drawerClose") { onClose(); setIsClosing(false); } } }>
+                    <Styled.Drawer $open={ !isClosing } onAnimationEnd={ (event) => { if (event.animationName === "drawerClose") { onClose(); setIsClosing(false); } } }>
                         <Styled.Header>
                             <Styled.Title> { title } </Styled.Title>
 
@@ -33,7 +33,7 @@ export const GenericDrawer: React.FC<GenericDrawerProps> = ({ isOpen, onClose, t
                                 <Styled.FooterButtonText> { mode === "edit" ? "Atualizar" : "Cadastrar" } </Styled.FooterButtonText>
                             </Styled.FooterButton>
                         </Styled.Footer>
-                    </Styled.GenericDrawer>
+                    </Styled.Drawer>
                 ) }
         </Fragment>
     );

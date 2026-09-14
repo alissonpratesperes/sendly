@@ -20,7 +20,7 @@ import { Read as ReadActions } from '../../action/services/Action.service';
 import Uploader from '../../../shared/components/uploader/screens/Uploader';
 import { Read as ReadCategories } from '../../category/services/Category.service';
 import { CommercialFormProps } from '../interfaces/CommercialFormProps.interface';
-import * as Styled from '../../../shared/components/drawer/styles/genericDrawer.style';
+import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
 import { CommercialFormData, CommercialFormSchema } from '../schemas/CommercialFormSchema.schema';
 import { UploaderItemType } from '../../../shared/components/uploader/types/UploaderItemType.type';
 import { PaginatedRequestDTO } from '../../../shared/components/pagination/dtos/PaginatedRequestDTO.dto';

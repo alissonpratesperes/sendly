@@ -9,7 +9,7 @@ import { RegionalFormData } from '../schemas/RegionalFormSchema.schema';
 import { RegionalFormSchema } from '../schemas/RegionalFormSchema.schema';
 import { RegionalFormProps } from '../interfaces/RegionalFormProps.interface';
 import * as RegistrationSharedStyled from '../../../shared/styles/Registration.style';
-import * as Styled from '../../../shared/components/drawer/styles/genericDrawer.style';
+import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
 
 export const RegionalForm: React.FC<RegionalFormProps> = ({ initialValues, onSubmit, onCancel }) => {
     const statusOptions = [{ value: true, label: 'Ativo' }, { value: false, label: 'Inativo' }];

@@ -9,7 +9,7 @@ import Toast from '../../../shared/components/toast/screens/Toast';
 import { CreateUserCommandDto } from '../dtos/createUserCommand.dto';
 import { UpdateUserCommandDto } from '../dtos/updateUserCommand.dto';
 import { UserFormProps } from '../interfaces/userFormProps.interface';
-import * as Styled from '../../../shared/components/drawer/styles/genericDrawer.style';
+import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
 
 export const UserForm: React.FC<UserFormProps> = ({ initialValues, onCancel, onSubmit }) => {
     const [formData, setFormData] = useState<UserFormData>({
