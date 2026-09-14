@@ -8,7 +8,6 @@ import { CategoryDTO } from '../dtos/CategoryDTO.dto';
 import Modal from '../../../shared/components/modal/screens/Modal';
 import { Read, Update, Delete } from '../services/Category.service';
 import * as Styled from '../../../shared/styles/Registration.style';
-import EmptyStateVector from '../../../assets/emptystate_vector.svg';
 import { CategoryFormData } from '../schemas/CategoryFormSchema.schema';
 import Pagination from '../../../shared/components/pagination/screens/Pagination';
 import ToggleSwitch from '../../../shared/elements/toggleSwitch/screens/ToggleSwitch';
@@ -132,7 +131,6 @@ const Category = () => {
                     </Styled.AddButton>
                 </Styled.SearchInputWrapper>
 
-                {categories.length > 0 ? (
                     <Styled.TableWrapper>
                         <Styled.TableListWrapper>
                             <thead>
@@ -163,13 +161,6 @@ const Category = () => {
                             </tbody>
                         </Styled.TableListWrapper>
                     </Styled.TableWrapper>
-                ) : (
-                    <Styled.NotFoundContentContainer>
-                        <Styled.NotFoundContentIllustration src={EmptyStateVector} />
-
-                        <Styled.WithoutFoundContentText> Nenhum dado encontrado por aqui. </Styled.WithoutFoundContentText>
-                    </Styled.NotFoundContentContainer>
-                )}
             </Styled.ListWrapper>
 
             <Modal isOpen={isDeleteModalOpen} entityName={categories.find(category => category.id === selectedCategoryId)?.nome ?? " "} onClose={() => setIsDeleteModalOpen(false)} onConfirm={handleConfirmDelete} />

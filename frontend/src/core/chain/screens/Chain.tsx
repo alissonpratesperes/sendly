@@ -9,7 +9,6 @@ import { Read, Update, Delete } from '../services/Chain.service';
 import { ChainFormData } from '../schemas/ChainFormSchema.schema';
 import Modal from '../../../shared/components/modal/screens/Modal';
 import * as Styled from '../../../shared/styles/Registration.style';
-import EmptyStateVector from '../../../assets/emptystate_vector.svg';
 import Pagination from '../../../shared/components/pagination/screens/Pagination';
 import ToggleSwitch from '../../../shared/elements/toggleSwitch/screens/ToggleSwitch';
 import { GenericDrawer } from '../../../shared/components/drawer/screens/GenericDrawer';
@@ -133,7 +132,6 @@ const Chain = () => {
                     </Styled.AddButton>
                 </Styled.SearchInputWrapper>
 
-                {chains.length > 0 ? (
                     <Styled.TableWrapper>
                         <Styled.TableListWrapper>
                             <thead>
@@ -164,13 +162,6 @@ const Chain = () => {
                             </tbody>
                         </Styled.TableListWrapper>
                     </Styled.TableWrapper>
-                ) : (
-                    <Styled.NotFoundContentContainer>
-                        <Styled.NotFoundContentIllustration src={EmptyStateVector} />
-
-                        <Styled.WithoutFoundContentText> Nenhum dado encontrado por aqui. </Styled.WithoutFoundContentText>
-                    </Styled.NotFoundContentContainer>
-                )}
             </Styled.ListWrapper>
 
             <Modal isOpen={isDeleteModalOpen} entityName={chains.find(chain => chain.id === selectedChainId)?.nome ?? " "} onClose={() => setIsDeleteModalOpen(false)} onConfirm={handleConfirmDelete} />

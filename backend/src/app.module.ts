@@ -6,7 +6,6 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { MailModule } from './mail/mail.module';
 import { UserModule } from './user/user.module';
 import { ListModule } from './list/list.module';
-import { NoteModule } from './note/note.module';
 import { BatchModule } from './batch/batch.module';
 import { TokenModule } from './token/token.module';
 import { QueueModule } from './queue/queue.module';
@@ -27,7 +26,6 @@ import { CompanyContextInterceptor } from './common/interceptors/companyContext.
     MailModule,
     UserModule,
     ListModule,
-    NoteModule,
     BatchModule,
     TokenModule,
     QueueModule,

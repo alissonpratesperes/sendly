@@ -73,25 +73,6 @@ CREATE TABLE `Contact` (
     INDEX `IX_Contact_Company_List` (`CompanyId`, `ListId`)
 );
 
-CREATE TABLE `Note` (
-    `Id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `CompanyId` INT UNSIGNED NOT NULL,
-    `ContactId` INT UNSIGNED NOT NULL,
-
-    `Content` TEXT NOT NULL,
-
-    `CreatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `UpdatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
-    `DeletedAt` DATETIME(3) NULL,
-
-    CONSTRAINT `PK_Note` PRIMARY KEY (`Id`),
-
-    CONSTRAINT `FK_Note_CompanyId` FOREIGN KEY (`CompanyId`) REFERENCES `Company` (`Id`) ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT `FK_Note_ContactId` FOREIGN KEY (`ContactId`) REFERENCES `Contact` (`Id`) ON DELETE RESTRICT ON UPDATE CASCADE,
-
-    INDEX `IX_Note_Company_Contact` (`CompanyId`, `ContactId`)
-);
-
 CREATE TABLE `Template` (
     `Id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `CompanyId` INT UNSIGNED NOT NULL,

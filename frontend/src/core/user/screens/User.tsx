@@ -81,6 +81,8 @@ const User = () => {
             }
 
             setIsDeleteModalOpen(false);
+
+            toast.success("Usuário excluído com suceso");
         } catch (error: unknown) {
             toast.error("Não é possível realizar a solicitação");
         }
@@ -113,7 +115,7 @@ const User = () => {
 
                 { isLoading && (
                     <SharedStyled.LoadingContainer>
-                        <PropagateLoader size={ 25 } color="#1C70E9" />
+                        <PropagateLoader size={ 25 } color="#171719" />
                     </SharedStyled.LoadingContainer>
                 ) }
 

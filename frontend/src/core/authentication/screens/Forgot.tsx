@@ -51,7 +51,7 @@ const Forgot: React.FC = () => {
 
                 { isLoading ? (
                     <Styled.LoadingContainer>
-                        <PropagateLoader size={ 25 } color="#1C70E9" />
+                        <PropagateLoader size={ 25 } color="#171719" />
                     </Styled.LoadingContainer>
                 ) : (
                     <Styled.ForgotButton type="submit">

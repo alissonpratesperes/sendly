@@ -25,8 +25,12 @@ export const UserForm: React.FC<UserFormProps> = ({ initialValues, onSubmit, onC
 
             if (isCreatingNewUser) {
                 await Create(validatedFormData);
+
+                toast.success("Usuário criado com sucesso");
             } else {
                 await Update({ id: initialValues.id! }, validatedFormData);
+
+                toast.success("Usuário editado com sucesso");
             }
 
             onSubmit();
@@ -34,7 +38,7 @@ export const UserForm: React.FC<UserFormProps> = ({ initialValues, onSubmit, onC
             if (error instanceof z.ZodError) {
                 toast.error(<Toast errors={error.issues} />);
             } else {
-                console.error(error);
+                toast.error(`Não é possível prosseguir com a solicitação: ${error}`);
             }
         } finally {
         }

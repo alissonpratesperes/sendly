@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { ArrowDown } from 'lucide-react';
 
 import { SortListingActionProps } from '../interfaces/SortListingActionProps.interface';
-import { NotFoundContentContainerProps } from '../interfaces/NotFoundContentContainerProps.interface';
 
 export const LoadingContainer = styled.div`
     height: 55px;
@@ -268,17 +267,6 @@ export const TableListBodyRowDataActionButton = styled.button`
 
 
 
-
-
-export const NotFoundContentContainer = styled.div`
-border: 1px solid black;
-    height: 100%;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-`;
 
 export const CustomOptionsContainer = styled.div`
     padding: 0px 12px 0px 12px;
@@ -559,21 +547,3 @@ export const SortArrow = styled(ArrowDown) <SortListingActionProps>`
 
 
 
-
-
-export const NotFoundContentIllustration = styled.div<NotFoundContentContainerProps>`
-    height: 343.34px;
-    width: 290.98px;
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-
-    background-image: url(${props => props.src});
-`;
-
-export const WithoutFoundContentText = styled.p`
-    font-family: 'Inter';
-    font-weight: 500;
-    font-size: 16px;
-    color: #767380;
-`;

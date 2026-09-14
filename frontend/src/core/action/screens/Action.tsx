@@ -132,7 +132,6 @@ const Action = () => {
                     </Styled.AddButton>
                 </Styled.SearchInputWrapper>
 
-                {actions.length > 0 ? (
                     <Styled.TableWrapper>
                         <Styled.TableListWrapper>
                             <thead>
@@ -163,13 +162,6 @@ const Action = () => {
                             </tbody>
                         </Styled.TableListWrapper>
                     </Styled.TableWrapper>
-                ) : (
-                    <Styled.NotFoundContentContainer>
-                        <Styled.NotFoundContentIllustration src={EmptyStateVector} />
-
-                        <Styled.WithoutFoundContentText> Nenhum dado encontrado por aqui. </Styled.WithoutFoundContentText>
-                    </Styled.NotFoundContentContainer>
-                )}
             </Styled.ListWrapper>
 
             <Modal isOpen={isDeleteModalOpen} entityName={actions.find(action => action.id === selectedActionId)?.nome ?? " "} onClose={() => setIsDeleteModalOpen(false)} onConfirm={handleConfirmDelete} />

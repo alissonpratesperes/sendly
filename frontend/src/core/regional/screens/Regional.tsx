@@ -8,7 +8,6 @@ import { RegionalDTO } from '../dtos/RegionalDTO.dto';
 import Modal from '../../../shared/components/modal/screens/Modal';
 import { Read, Update, Delete } from '../services/Regional.service';
 import * as Styled from '../../../shared/styles/Registration.style';
-import EmptyStateVector from '../../../assets/emptystate_vector.svg';
 import { RegionalFormData } from '../schemas/RegionalFormSchema.schema';
 import Pagination from '../../../shared/components/pagination/screens/Pagination';
 import ToggleSwitch from '../../../shared/elements/toggleSwitch/screens/ToggleSwitch';
@@ -132,7 +131,6 @@ const Regional = () => {
                     </Styled.AddButton>
                 </Styled.SearchInputWrapper>
 
-                {regionals.length > 0 ? (
                     <Styled.TableWrapper>
                         <Styled.TableListWrapper>
                             <thead>
@@ -163,13 +161,6 @@ const Regional = () => {
                             </tbody>
                         </Styled.TableListWrapper>
                     </Styled.TableWrapper>
-                ) : (
-                    <Styled.NotFoundContentContainer>
-                        <Styled.NotFoundContentIllustration src={EmptyStateVector} />
-
-                        <Styled.WithoutFoundContentText> Nenhum dado encontrado por aqui. </Styled.WithoutFoundContentText>
-                    </Styled.NotFoundContentContainer>
-                )}
             </Styled.ListWrapper>
 
             <Modal isOpen={isDeleteModalOpen} entityName={regionals.find(regional => regional.id === selectedRegionalId)?.nome ?? " "} onClose={() => setIsDeleteModalOpen(false)} onConfirm={handleConfirmDelete} />

@@ -15,7 +15,6 @@ import { ActionDTO } from '../../action/dtos/ActionDTO.dto';
 import * as CommercialStyled from '../styles/Commercial.style';
 import { CategoryDTO } from '../../category/dtos/CategoryDTO.dto';
 import Toast from '../../../shared/components/toast/screens/Toast';
-import EmptyStateVector from '../../../assets/emptystate_vector.svg';
 import Card from '../../../shared/components/commercial/screens/Card';
 import { Read as ReadChains } from '../../chain/services/Chain.service';
 import { Read as ReadStores } from '../../store/services/Store.service';
@@ -409,7 +408,6 @@ const Commercial = () => {
                         </CommercialStyled.FilterCard>
                     </CommercialStyled.FilterCardContainer>
 
-                    {commercials.length > 0 ? (
                         <CommercialStyled.CardGrid>
                             {commercials.map((commercial) => {
                                 const imageUrls = (commercial.imagens ?? []).filter(img => typeof img !== 'string' && 'urlDownload' in img).map(img => (img as any).urlDownload);
@@ -417,13 +415,6 @@ const Commercial = () => {
                                 return (<Card key={commercial.id} id={commercial.id!} images={imageUrls} date={new Date(commercial.data)} ta={actionNames[commercial.tipoAcaoId]} product={commercial.produtoNome} location={commercial.local} chain={commercial.redeNome} />);
                             })}
                         </CommercialStyled.CardGrid>
-                    ) : (
-                        <SharedStyled.NotFoundContentContainer>
-                            <SharedStyled.NotFoundContentIllustration src={EmptyStateVector} />
-
-                            <SharedStyled.WithoutFoundContentText> Nenhum dado encontrado por aqui. </SharedStyled.WithoutFoundContentText>
-                        </SharedStyled.NotFoundContentContainer>
-                    )}
                 </CommercialStyled.ContentWrapper>
 
                 {commercials.length > 0 && (

@@ -4,7 +4,7 @@ export const SelectCommonStyles = <Option,>(custom?: { width?: string }): Styles
     control: (base: CSSObjectWithLabel, state: ControlProps<Option, false>) => ({
         ...base,
 
-        marginLeft: "15px",
+        marginLeft: "30px",
         padding: "0px 15px",
         height: "55px",
         width: custom?.width || "120px",
@@ -19,15 +19,14 @@ export const SelectCommonStyles = <Option,>(custom?: { width?: string }): Styles
         borderWidth: "2px",
         boxShadow: "none",
         outline: "none",
-
-        color: "#1C70E9",
+        color: "#171719",
         borderColor: "#E9EAEB",
 
             "&:hover": {
-                borderColor: "#1C70E9"
+                borderColor: "#171719"
             },
 
-        backgroundColor: state.isDisabled ? "#1C70E9" : "transparent",
+        backgroundColor: state.isDisabled ? "#171719" : "transparent",
     }),
     menuPortal: (base: CSSObjectWithLabel) => ({
         ...base,
@@ -68,23 +67,22 @@ export const SelectCommonStyles = <Option,>(custom?: { width?: string }): Styles
         borderRadius: "14px",
         cursor: "pointer",
 
-        fontWeight: state.isFocused ? 700 : 400,
-        color: state.isFocused ? "#FFFFFF" : "#1C70E9",
-        backgroundColor: state.isFocused ? "#1C70E9" : "transparent",
+        fontWeight: state.isFocused ? 900 : 500,
+        color: state.isFocused ? "#FFFFFF" : "#171719",
+        backgroundColor: state.isFocused ? "#171719" : "transparent",
 
             "&:active": {
                 fontWeight: 700,
                 color: "#FFFFFF",
-                backgroundColor: "#1C70E9",
+                backgroundColor: "#171719",
             },
     }),
     singleValue: (base: CSSObjectWithLabel) => ({
         ...base,
 
         fontFamily: "Lato",
-        fontWeight: 500,
+        fontWeight: 700,
         fontSize: "16px",
-
-        color: "#000000",
+        color: "#171719",
     })
 })

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { NavigationTabProps } from '../interfaces/NavigationTabProps.interface';
+import { NavigationTabProps } from '../interfaces/navigationTabProps.interface';
 
 export const HeaderWrapper = styled.header`
     display: flex;
@@ -26,7 +26,7 @@ export const SessionTitle = styled.h1`
 `;
 
 export const SessionSubtitle = styled.span`
-    margin-bottom: 15px;
+    margin-bottom: 30px;
     align-self: flex-start;
     font-family: "Inter";
     font-weight: 400;
@@ -35,7 +35,7 @@ export const SessionSubtitle = styled.span`
 `;
 
 export const NavigationTabs = styled.nav`
-    padding: 15px 0px 0px 0px;
+    padding: 15px;
     height: auto;
     width: auto;
     display: flex;
@@ -44,6 +44,7 @@ export const NavigationTabs = styled.nav`
     column-gap: 30px;
     border-top-left-radius: 14px;
     border-top-right-radius: 14px;
+    background-color: #E6E7EC;
 `;
 
 export const NavigationTabButtons = styled.button<NavigationTabProps>`
@@ -58,22 +59,40 @@ export const NavigationTabButtons = styled.button<NavigationTabProps>`
     cursor: pointer;
     outline: none;
     border: none;
-    border-top-left-radius: 14px;
-    border-top-right-radius: 14px;
+    border-radius: 14px;
     background-color: transparent;
     transition: font-weight 0.3s, color 0.3s ease, background-color 0.3s ease;
 
     font-weight: ${ ({ $active }) => ($active ? 700 : 400) };
-    color: ${({ $active }) => $active ? "#223463" : "#223463"};
-    background-color: ${({ $active }) => $active ? "#E6E7EC" : "transparent"};
+    color: ${ ({ $active }) => $active ? "#FFFFFF" : "#223463" };
+    background-color: ${ ({ $active }) => $active ? "#223463" : "#E6E7EC" };
 
         &:hover {
             ${ ({ $active }) => !$active && `
                 font-weight: 700;
-                color: #223463;
-                background-color: #D9DCE3;
+                color: #FFFFFF;
+                background-color: #223463;
+                animation: navigationTabButtonEffect 0.6s ease-in-out;
             ` }
         }
+
+            svg {
+                stroke: currentColor;
+            }
+
+                @keyframes navigationTabButtonEffect {
+                    0% {
+                        transform: scale(1.08);
+                    }
+
+                    50% {
+                        transform: scale(0.95);
+                    }
+
+                    100% {
+                        transform: scale(1);
+                    }
+                }
 `;
 
 export const NavigationTabButtonText = styled.span<NavigationTabProps>`

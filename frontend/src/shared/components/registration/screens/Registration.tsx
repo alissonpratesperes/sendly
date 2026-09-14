@@ -1,9 +1,9 @@
 import { Fragment } from 'react/jsx-runtime';
+import { Building2, Contact, ListCheck, MessageSquare, Users } from 'lucide-react';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
-import { Building2, Contact, ListCheck, MessageSquare, NotebookPen, Users } from 'lucide-react';
 
 import User from '../../../../core/user/screens/User';
-import * as Styled from '../styles/Registration.style';
+import * as Styled from '../styles/registration.style';
 import PrivateRoute from '../../private/components/PrivateRoute.component';
 
 
@@ -18,12 +18,11 @@ import Category from '../../../../core/category/screens/Category';
 import Regional from '../../../../core/regional/screens/Regional';
 
 const navigationTabs = [
-    { icon: <Building2 size={25}/>, label: "Empresas", path: "regional" },
-    { icon: <Users size={25}/>, label: "Usuários", path: "user" },
-    { icon: <ListCheck size={25}/>, label: "Listas", path: "stores" },
-    { icon: <Contact size={25}/>, label: "Contatos", path: "users" },
-    { icon: <NotebookPen size={25}/>, label: "Anotações", path: "product-categories" },
-    { icon: <MessageSquare size={25}/>, label: "Templates", path: "action-type" },
+    { icon: <Building2 size={ 25 }/>, label: "Empresas", path: "regional" },
+    { icon: <Users size={ 25 }/>, label: "Usuários", path: "user" },
+    { icon: <ListCheck size={ 25 }/>, label: "Listas", path: "stores" },
+    { icon: <Contact size={ 25 }/>, label: "Contatos", path: "users" },
+    { icon: <MessageSquare size={ 25 }/>, label: "Templates", path: "action-type" },
 ]
 const Registration: React.FC = () => {
     const navigate = useNavigate();

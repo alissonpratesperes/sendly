@@ -10,7 +10,6 @@ import { Read, Update, Delete } from '../services/Store.service';
 import { StoreFormData } from '../schemas/StoreFormSchema.schema';
 import Modal from '../../../shared/components/modal/screens/Modal';
 import * as Styled from '../../../shared/styles/Registration.style';
-import EmptyStateVector from '../../../assets/emptystate_vector.svg';
 import { cnpjFormatterUtil } from '../../../shared/utils/cnpjFormatterUtil.util';
 import Pagination from '../../../shared/components/pagination/screens/Pagination';
 import ToggleSwitch from '../../../shared/elements/toggleSwitch/screens/ToggleSwitch';
@@ -155,7 +154,6 @@ const Store = () => {
                     </Styled.AddButton>
                 </Styled.SearchInputWrapper>
 
-                {stores.length > 0 ? (
                     <Styled.TableWrapper>
                         <Styled.TableListWrapper>
                             <thead>
@@ -192,13 +190,6 @@ const Store = () => {
                             </tbody>
                         </Styled.TableListWrapper>
                     </Styled.TableWrapper>
-                ) : (
-                    <Styled.NotFoundContentContainer>
-                        <Styled.NotFoundContentIllustration src={EmptyStateVector} />
-
-                        <Styled.WithoutFoundContentText> Nenhum dado encontrado por aqui. </Styled.WithoutFoundContentText>
-                    </Styled.NotFoundContentContainer>
-                )}
             </Styled.ListWrapper>
 
             <Modal isOpen={isDeleteModalOpen} entityName={stores.find(store => store.id === selectedStoreId)?.apelido ?? " "} onClose={() => setIsDeleteModalOpen(false)} onConfirm={handleConfirmDelete} />

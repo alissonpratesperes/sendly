@@ -96,7 +96,7 @@ const Reset: React.FC = () => {
 
                 { isLoading ? (
                     <Styled.ResetFormContainer>
-                        <PropagateLoader size={ 25 } color="#1C70E9" />
+                        <PropagateLoader size={ 25 } color="#171719" />
                     </Styled.ResetFormContainer>
                 ) : (
                     <Styled.PasswordButton type="submit">
