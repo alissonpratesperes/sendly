@@ -5,6 +5,7 @@ import User from '../../../../core/user/screens/User';
 import * as Styled from '../styles/registration.style';
 import { NavigationTab } from '../types/navigationTab.type';
 import PrivateRoute from '../../private/screens/PrivateRoute';
+import Company from '../../../../core/company/screens/Company';
 import { navigationTabs } from '../constants/navigationTabs.constant';
 
 
@@ -47,6 +48,7 @@ const Registration: React.FC = () => {
             <Routes>
                 <Route path="/" element={<Navigate to="user" replace />} />
                 <Route path="/user" element={ <PrivateRoute element={ <User /> }/> } />
+                <Route path="/company" element={ <PrivateRoute element={ <Company /> }/> } />
 
 
 

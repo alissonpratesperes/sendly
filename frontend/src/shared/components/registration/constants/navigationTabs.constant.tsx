@@ -6,7 +6,7 @@ export const navigationTabs = [
     {
         icon: <Building2 size={ 25 }/>,
         label: "Empresas",
-        path: "user",
+        path: "company",
     },
     {
         icon: <Users size={ 25 }/>,

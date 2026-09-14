@@ -8,9 +8,7 @@ export const UserFormSchema = z.object({
     name: z
         .string()
         .nonempty("O nome é obrigatório")
-        .refine((inputValue) => inputValue
-        .trim()
-        .length > 0, { message: "O nome não pode conter apenas espaços" })
+        .refine((inputValue) => inputValue.trim().length > 0, { message: "O nome não pode conter apenas espaços" })
         .max(150, "O nome não pode ter mais que 150 caracteres"),
 
     email: z

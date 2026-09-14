@@ -4,51 +4,52 @@ import { PropagateLoader } from 'react-spinners';
 import { Plus, Search, Trash, Pen } from 'lucide-react';
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { UserForm } from '../forms/userForm.form';
-import { List, Delete } from '../services/user.service';
-import { UserResponseDto } from '../dtos/userResponse.dto';
-import { UserFormData } from '../schemas/userFormSchema.schema';
-import Modal from '../../../shared/components/modal/screens/Modal';
+import { CompanyForm } from '../forms/companyForm.form';
+import { List, Delete } from '../services/company.service';
+import { CompanyResponseDto } from '../dtos/companyResponse.dto';
 import { formatDate } from '../../../shared/utils/formatDate.util';
+import Modal from '../../../shared/components/modal/screens/Modal';
+import { CompanyFormData } from '../schemas/companyFormSchema.schema';
 import * as SharedStyled from '../../../shared/styles/Registration.style';
-import Paginate from '../../../shared/components/paginate/screens/Paginate';
-import UserBadge from '../../../shared/elements/userBadge/screens/UserBadge';
 import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
+import Paginate from '../../../shared/components/paginate/screens/Paginate';
+import { formatCompanyDocument } from '../../../shared/utils/formatCompanyDocument.util';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
 
-const User = () => {
+const Company = () => {
     const [page, setPage] = useState<number>(1);
     const [total, setTotal] = useState<number>(1);
     const [limit, setLimit] = useState<number>(15);
     const [search, setSearch] = useState<string>("");
-    const [users, setUsers] = useState<UserResponseDto[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
-    const [updating, setUpdating] = useState<UserFormData | null>(null);
-    const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
+    const [companies, setCompanies] = useState<CompanyResponseDto[]>([]);
+    const [updating, setUpdating] = useState<CompanyFormData | null>(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+    const [selectedCompanyId, setSelectedCompanyId] = useState<number | null>(null);
 
     const handleCreate = () => {
         setUpdating(null);
         setIsDrawerOpen(true);
     }
-    const handleReadUsers = useCallback(async () => {
+
+    const handleReadCompanies = useCallback(async () => {
         try {
             setIsLoading(true);
 
             const params: PaginatedQueryDto = { page, limit, search };
             const response = await List(params);
 
-            setUsers(response.data);
+            setCompanies(response.data);
             setTotal(response.total);
         } catch (error) {
-            toast.error(`Erro ao listar Usuários: ${ error }`);
+            toast.error(`Erro ao listar Empresas: ${ error }`);
         } finally {
             setIsLoading(false);
         }
     }, [ page, limit, search ]);
     const handleUpdate = (id: number) => {
-        const clicked = users.find((user: UserResponseDto) => user.id === id);
+        const clicked = companies.find((company: CompanyResponseDto) => company.id === id);
 
         if (!clicked) {
             return;
@@ -57,31 +58,32 @@ const User = () => {
         setUpdating({
             id: clicked.id,
             name: clicked.name,
-            email: clicked.email,
+            document: clicked.document,
+            description: clicked.description,
         });
         setIsDrawerOpen(true);
     }
     const handleConfirmDelete = async () => {
-        if (selectedUserId === null) {
+        if (selectedCompanyId === null) {
             return;
         }
 
         try {
-            await Delete({ id: selectedUserId });
+            await Delete({ id: selectedCompanyId });
 
-            const isLastItemOnLastPage = users.length === 1 && page > 1;
+            const isLastItemOnLastPage = companies.length === 1 && page > 1;
 
-            setUsers((previousUsers: UserResponseDto[]) => previousUsers.filter((user: UserResponseDto) => user.id !== selectedUserId));
+            setCompanies((previousCompanies: CompanyResponseDto[]) => previousCompanies.filter((company: CompanyResponseDto) => company.id !== selectedCompanyId));
 
             if (isLastItemOnLastPage) {
                 setPage((previousPage: number) => previousPage - 1);
             } else {
-                handleReadUsers();
+                handleReadCompanies();
             }
 
             setIsDeleteModalOpen(false);
 
-            toast.success("Usuário excluído com suceso");
+            toast.success("Empresa excluída com suceso");
         } catch (error: unknown) {
             toast.error(`Não é possível prosseguir com a solicitação: ${ error }`);
         }
@@ -89,11 +91,11 @@ const User = () => {
 
     useEffect(() => {
         const timeout = setTimeout(() => {
-            handleReadUsers();
+            handleReadCompanies();
         }, 500);
 
         return () => clearTimeout(timeout);
-    }, [ handleReadUsers ]);
+    }, [ handleReadCompanies ]);
 
     return (
         <Fragment>
@@ -102,13 +104,13 @@ const User = () => {
                     <SharedStyled.SearchInputContainer>
                         <Search size={ 25 } color="#1C70E9" />
 
-                        <SharedStyled.SearchInputField type="text" placeholder="Pesquise um usuário por nome ou e-mail" value={ search } onChange={ (inputEvent) => { setSearch(inputEvent.target.value); setPage(1); } } />
+                        <SharedStyled.SearchInputField type="text" placeholder="Pesquise uma empresa por nome ou cnpj" value={ search } onChange={ (inputEvent) => { setSearch(inputEvent.target.value); setPage(1); } } />
                     </SharedStyled.SearchInputContainer>
 
                     <SharedStyled.AddButton onClick={ handleCreate }>
                         <Plus size={ 25 } />
 
-                        <SharedStyled.SearchInputSubmitText> Cadastrar usuário </SharedStyled.SearchInputSubmitText>
+                        <SharedStyled.SearchInputSubmitText> Cadastrar empresa </SharedStyled.SearchInputSubmitText>
                     </SharedStyled.AddButton>
                 </SharedStyled.SearchInputWrapper>
 
@@ -117,15 +119,14 @@ const User = () => {
                         <PropagateLoader size={ 25 } color="#171719" />
                     </SharedStyled.LoadingContainer>
                 ) }
-                { users.length > 0 ? (
+                { companies.length > 0 ? (
                     <SharedStyled.TableWrapper>
                         <SharedStyled.TableListWrapper>
                             <thead>
                                 <SharedStyled.TableListHeaderRow>
                                     <SharedStyled.TableListHeaderRowColumn> Nome </SharedStyled.TableListHeaderRowColumn>
-                                    <SharedStyled.TableListHeaderRowColumn> Email </SharedStyled.TableListHeaderRowColumn>
-                                    <SharedStyled.TableListHeaderRowColumn> Status </SharedStyled.TableListHeaderRowColumn>
-                                    <SharedStyled.TableListHeaderRowColumn> Acesso </SharedStyled.TableListHeaderRowColumn>
+                                    <SharedStyled.TableListHeaderRowColumn> CNPJ </SharedStyled.TableListHeaderRowColumn>
+                                    <SharedStyled.TableListHeaderRowColumn> Descrição </SharedStyled.TableListHeaderRowColumn>
                                     <SharedStyled.TableListHeaderRowColumn> Criado em </SharedStyled.TableListHeaderRowColumn>
                                     <SharedStyled.TableListHeaderRowColumn> Editado em </SharedStyled.TableListHeaderRowColumn>
                                     <SharedStyled.TableListHeaderRowColumn> </SharedStyled.TableListHeaderRowColumn>
@@ -133,19 +134,18 @@ const User = () => {
                                 </SharedStyled.TableListHeaderRow>
                             </thead>
                             <tbody>
-                                { users.map((user: UserResponseDto) => (
-                                    <SharedStyled.TableListBodyRow key={ user.id }>
-                                        <SharedStyled.TableListBodyRowData> { user.name } </SharedStyled.TableListBodyRowData>
-                                        <SharedStyled.TableListBodyRowData> { user.email } </SharedStyled.TableListBodyRowData>
-                                        <SharedStyled.TableListBodyRowData> <UserBadge variant={ user.isFirstAccess ? "isFirstAccess" : "notIsFirstAccess" } /> </SharedStyled.TableListBodyRowData>
-                                        <SharedStyled.TableListBodyRowData> <UserBadge variant={ user.isSystemRoot ? "isSystemRoot" : "notIsSystemRoot" } /> </SharedStyled.TableListBodyRowData>
-                                        <SharedStyled.TableListBodyRowData> { formatDate(user.createdAt) } </SharedStyled.TableListBodyRowData>
-                                        <SharedStyled.TableListBodyRowData> { formatDate(user.updatedAt) } </SharedStyled.TableListBodyRowData>
+                                { companies.map((company: CompanyResponseDto) => (
+                                    <SharedStyled.TableListBodyRow key={ company.id }>
+                                        <SharedStyled.TableListBodyRowData> { company.name } </SharedStyled.TableListBodyRowData>
+                                        <SharedStyled.TableListBodyRowData> { formatCompanyDocument(company.document) } </SharedStyled.TableListBodyRowData>
+                                        <SharedStyled.TableListBodyRowData> { company.description } </SharedStyled.TableListBodyRowData>
+                                        <SharedStyled.TableListBodyRowData> { formatDate(company.createdAt) } </SharedStyled.TableListBodyRowData>
+                                        <SharedStyled.TableListBodyRowData> { formatDate(company.updatedAt) } </SharedStyled.TableListBodyRowData>
                                         <SharedStyled.TableListBodyRowData> </SharedStyled.TableListBodyRowData>
                                         <SharedStyled.TableListBodyRowData>
                                             <SharedStyled.TableListBodyRowDataActions>
-                                                <SharedStyled.TableListBodyRowDataActionButton onClick={ () => handleUpdate(user.id) }> <Pen size={ 25 } color="#1C70E9" /> </SharedStyled.TableListBodyRowDataActionButton>
-                                                <SharedStyled.TableListBodyRowDataActionButton onClick={ () => { setSelectedUserId(user.id); setIsDeleteModalOpen(true); } }> <Trash size={ 25 } color="#DC143C" /> </SharedStyled.TableListBodyRowDataActionButton>
+                                                <SharedStyled.TableListBodyRowDataActionButton onClick={ () => handleUpdate(company.id) }> <Pen size={ 25 } color="#1C70E9" /> </SharedStyled.TableListBodyRowDataActionButton>
+                                                <SharedStyled.TableListBodyRowDataActionButton onClick={ () => { setSelectedCompanyId(company.id); setIsDeleteModalOpen(true); } }> <Trash size={ 25 } color="#DC143C" /> </SharedStyled.TableListBodyRowDataActionButton>
                                             </SharedStyled.TableListBodyRowDataActions>
                                         </SharedStyled.TableListBodyRowData>
                                     </SharedStyled.TableListBodyRow>
@@ -170,7 +170,6 @@ const User = () => {
                                     </SharedStyled.TableListHeaderRowColumn>
                                 </SharedStyled.TableListHeaderRow>
                             </thead>
-
                             <tbody>
                                 <SharedStyled.TableListBodyRow>
                                     <SharedStyled.TableListBodyRowData>
@@ -183,13 +182,13 @@ const User = () => {
                 ) : null }
             </SharedStyled.ListWrapper>
 
-            <Modal isOpen={ isDeleteModalOpen } entityName={ users.find((user: UserResponseDto) => user.id === selectedUserId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleConfirmDelete } />
+            <Modal isOpen={ isDeleteModalOpen } entityName={ companies.find((company: CompanyResponseDto) => company.id === selectedCompanyId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleConfirmDelete } />
 
-            <Drawer isOpen={ isDrawerOpen } formId="user-form" title={ updating ? "Editar usuário" : "Novo usuário" } mode={ updating ? "edit" : "create" } onClose={ () => { setIsDrawerOpen(false); setUpdating(null); } }>
-                <UserForm initialValues={ updating ?? undefined } onCancel={ () => { setIsDrawerOpen(false); setUpdating(null); } } onSubmit={ () => { setIsDrawerOpen(false); setUpdating(null); handleReadUsers(); } } />
+            <Drawer isOpen={ isDrawerOpen } formId="company-form" title={ updating ? "Editar empresa" : "Nova empresa" } mode={ updating ? "edit" : "create" } onClose={ () => { setIsDrawerOpen(false); setUpdating(null); } }>
+                <CompanyForm initialValues={ updating ?? undefined } onCancel={ () => { setIsDrawerOpen(false); setUpdating(null); } } onSubmit={ () => { setIsDrawerOpen(false); setUpdating(null); handleReadUsers(); } } />
             </Drawer>
         </Fragment>
     );
 }
 
-export default User;
+export default Company;

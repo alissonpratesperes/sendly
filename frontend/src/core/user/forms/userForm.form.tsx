@@ -3,12 +3,11 @@ import { toast } from 'react-toastify';
 import React, { useState, useEffect } from 'react';
 
 import { Create, Update } from '../services/user.service';
-import { UserFormData } from '../schemas/userFormSchema.schema';
-import { UserFormSchema } from '../schemas/userFormSchema.schema';
 import Toast from '../../../shared/components/toast/screens/Toast';
 import { CreateUserCommandDto } from '../dtos/createUserCommand.dto';
 import { UpdateUserCommandDto } from '../dtos/updateUserCommand.dto';
 import { UserFormProps } from '../interfaces/userFormProps.interface';
+import { UserFormData, UserFormSchema } from '../schemas/userFormSchema.schema';
 import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
 
 export const UserForm: React.FC<UserFormProps> = ({ initialValues, onCancel, onSubmit }) => {
@@ -17,7 +16,7 @@ export const UserForm: React.FC<UserFormProps> = ({ initialValues, onCancel, onS
         email: "",
     })
 
-    const handleSubmit = async (formEvent: React.FormEvent) => {
+    const handleSubmit = async (formEvent: React.FormEvent<HTMLFormElement>) => {
         formEvent.preventDefault();
 
         try {
@@ -55,7 +54,11 @@ export const UserForm: React.FC<UserFormProps> = ({ initialValues, onCancel, onS
     const handleChange = (changeEvent: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = changeEvent.target;
 
-        setFormData(prev => ({ ...prev, [name]: value }));
+        setFormData(previous => ({
+            ...previous,
+
+            [name]: value,
+        }));
     }
 
     useEffect(() => {
@@ -70,11 +73,11 @@ export const UserForm: React.FC<UserFormProps> = ({ initialValues, onCancel, onS
     }, [ initialValues ]);
 
     return (
-        <Styled.Form id="user-form" onSubmit={handleSubmit}>
+        <Styled.Form id="user-form" onSubmit={ handleSubmit }>
             <Styled.FieldWrapper>
                 <Styled.Label htmlFor="name"> Nome </Styled.Label>
 
-                <Styled.Input id="name" name="name" placeholder="Digite o nome do usuário" value={formData.name} onChange={ handleChange } />
+                <Styled.Input id="name" name="name" placeholder="Digite o nome do usuário" value={ formData.name } onChange={ handleChange } />
             </Styled.FieldWrapper>
             <Styled.FieldWrapper>
                 <Styled.Label htmlFor="email"> Email </Styled.Label>
