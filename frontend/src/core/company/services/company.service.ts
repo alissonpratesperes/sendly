@@ -1,10 +1,10 @@
-import { IdParamDto } from '../../shared/dtos/idParam.dto';
+import { IdParamDto } from '../../../shared/dtos/idParam.dto';
 import { CompanyResponseDto } from '../dtos/companyResponse.dto';
 import { CreateCompanyCommandDto } from '../dtos/createCompanyCommand.dto';
 import { UpdateCompanyCommandDto } from '../dtos/updateCompanyCommand.dto';
-import axiosInstance from '../../core/authentication/interceptors/authorization.interceptor';
-import { PaginatedQueryDto } from '../../shared/components/paginate/dtos/paginatedQuery.dto';
-import { PaginatedResponseDto } from '../../shared/components/paginate/dtos/paginatedResponse.dto';
+import axiosInstance from '../../../core/authentication/interceptors/authorization.interceptor';
+import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
+import { PaginatedResponseDto } from '../../../shared/components/paginate/dtos/paginatedResponse.dto';
 
 const endpoint = "company";
 

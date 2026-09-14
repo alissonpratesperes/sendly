@@ -37,7 +37,7 @@ export const PaginateButton = styled.button`
             animation: paginateButtonEffect 0.6s ease-in-out;
         }
         &:disabled {
-            color: #E6E7EC;
+            color: #535862;
             cursor: not-allowed;
             opacity: 0.5;
         }
@@ -86,8 +86,7 @@ export const EllipsisIcon = styled(Ellipsis)`
     margin-right: 30px;
     height: 25px;
     width: 25px;
-
-    color: "#E6E7EC";
+    color: #E6E7EC;
 `;
 
 export const PageButton = styled.button<{ $active?: boolean }>`

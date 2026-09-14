@@ -129,19 +129,17 @@ const User = () => {
                                     <SharedStyled.TableListHeaderRowColumn> Criado em </SharedStyled.TableListHeaderRowColumn>
                                     <SharedStyled.TableListHeaderRowColumn> Editado em </SharedStyled.TableListHeaderRowColumn>
                                     <SharedStyled.TableListHeaderRowColumn> </SharedStyled.TableListHeaderRowColumn>
-                                    <SharedStyled.TableListHeaderRowColumn> </SharedStyled.TableListHeaderRowColumn>
                                 </SharedStyled.TableListHeaderRow>
                             </thead>
                             <tbody>
                                 { users.map((user: UserResponseDto) => (
                                     <SharedStyled.TableListBodyRow key={ user.id }>
                                         <SharedStyled.TableListBodyRowData> { user.name } </SharedStyled.TableListBodyRowData>
-                                        <SharedStyled.TableListBodyRowData> { user.email } </SharedStyled.TableListBodyRowData>
+                                        <SharedStyled.TableListBodyRowData> <b> { user.email } </b> </SharedStyled.TableListBodyRowData>
                                         <SharedStyled.TableListBodyRowData> <UserBadge variant={ user.isFirstAccess ? "isFirstAccess" : "notIsFirstAccess" } /> </SharedStyled.TableListBodyRowData>
                                         <SharedStyled.TableListBodyRowData> <UserBadge variant={ user.isSystemRoot ? "isSystemRoot" : "notIsSystemRoot" } /> </SharedStyled.TableListBodyRowData>
-                                        <SharedStyled.TableListBodyRowData> { formatDate(user.createdAt) } </SharedStyled.TableListBodyRowData>
-                                        <SharedStyled.TableListBodyRowData> { formatDate(user.updatedAt) } </SharedStyled.TableListBodyRowData>
-                                        <SharedStyled.TableListBodyRowData> </SharedStyled.TableListBodyRowData>
+                                        <SharedStyled.TableListBodyRowData> { formatDate(user.createdAt, true) } </SharedStyled.TableListBodyRowData>
+                                        <SharedStyled.TableListBodyRowData> { formatDate(user.updatedAt, true) } </SharedStyled.TableListBodyRowData>
                                         <SharedStyled.TableListBodyRowData>
                                             <SharedStyled.TableListBodyRowDataActions>
                                                 <SharedStyled.TableListBodyRowDataActionButton onClick={ () => handleUpdate(user.id) }> <Pen size={ 25 } color="#1C70E9" /> </SharedStyled.TableListBodyRowDataActionButton>
@@ -153,7 +151,7 @@ const User = () => {
                             </tbody>
                             <tfoot>
                                 <SharedStyled.TableListBodyRow>
-                                    <SharedStyled.TableListBodyRowData colSpan={ 8 }>
+                                    <SharedStyled.TableListBodyRowData colSpan={ 7 }>
                                         <Paginate page={ page } total={ total } limit={ limit } onPageChange={ setPage } onLimitChange={ (newLimit: number) => { setLimit(newLimit); setPage(1); } } />
                                     </SharedStyled.TableListBodyRowData>
                                 </SharedStyled.TableListBodyRow>

@@ -132,7 +132,7 @@ export const TableWrapper = styled.div`
 
 export const TableListWrapper = styled.table`
     width: 100%;
-    table-layout: fixed;
+    table-layout: auto;
     border-collapse: collapse;
 `;
 
@@ -172,6 +172,7 @@ export const TableListBodyRow = styled.tr`
 export const TableListBodyRowData = styled.td`
     padding: 15px 25px 15px 25px;
     vertical-align: middle;
+    white-space: pre-line;
 
         &:nth-last-child(1) {
             text-align: center;

@@ -3,13 +3,13 @@ import { toast } from 'react-toastify';
 import React, { useState, useEffect } from 'react';
 
 import { Create, Update } from '../services/company.service';
-import Toast from '../../shared/components/toast/screens/Toast';
+import Toast from '../../../shared/components/toast/screens/Toast';
 import { CreateCompanyCommandDto } from '../dtos/createCompanyCommand.dto';
 import { UpdateCompanyCommandDto } from '../dtos/updateCompanyCommand.dto';
 import { CompanyFormProps } from '../interfaces/companyFormProps.interface';
 import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
-import { formatCompanyDocument } from '../../shared/utils/formatCompanyDocument.util';
 import { CompanyFormData, CompanyFormSchema } from '../schemas/companyFormSchema.schema';
+import { formatCompanyDocument } from '../../../shared/utils/formatCompanyDocument.util';
 
 export const CompanyForm: React.FC<CompanyFormProps> = ({ initialValues, onCancel, onSubmit }) => {
     const [formData, setFormData] = useState<CompanyFormData>({
@@ -28,7 +28,7 @@ export const CompanyForm: React.FC<CompanyFormProps> = ({ initialValues, onCance
                 const command: CreateCompanyCommandDto = {
                     name: validatedFormData.name,
                     document: validatedFormData.document,
-                    description: validatedFormData.description,
+                    description: validatedFormData.description || null,
                 }
 
                 await Create(command);
@@ -38,7 +38,7 @@ export const CompanyForm: React.FC<CompanyFormProps> = ({ initialValues, onCance
                 const command: UpdateCompanyCommandDto = {
                     name: validatedFormData.name,
                     document: validatedFormData.document,
-                    description: validatedFormData.description,
+                    description: validatedFormData.description || null,
                 }
 
                 await Update({ id: initialValues.id }, command);
@@ -67,7 +67,12 @@ export const CompanyForm: React.FC<CompanyFormProps> = ({ initialValues, onCance
 
     useEffect(() => {
         if (initialValues) {
-            setFormData(initialValues);
+            setFormData({
+                id: initialValues.id,
+                name: initialValues.name,
+                document: initialValues.document.replace(/\D/g, "").slice(0, 14),
+                description: initialValues.description ?? "",
+            });
         } else {
             setFormData({
                 name: "",
@@ -75,7 +80,7 @@ export const CompanyForm: React.FC<CompanyFormProps> = ({ initialValues, onCance
                 description: "",
             });
         }
-    }, [ initialValues ]);
+    }, [initialValues]);
 
     return (
         <Styled.Form id="company-form" onSubmit={ handleSubmit }>

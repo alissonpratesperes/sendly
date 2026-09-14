@@ -32,7 +32,6 @@ const Company = () => {
         setUpdating(null);
         setIsDrawerOpen(true);
     }
-
     const handleReadCompanies = useCallback(async () => {
         try {
             setIsLoading(true);
@@ -59,7 +58,7 @@ const Company = () => {
             id: clicked.id,
             name: clicked.name,
             document: clicked.document,
-            description: clicked.description,
+            description: clicked.description ?? "",
         });
         setIsDrawerOpen(true);
     }
@@ -127,9 +126,8 @@ const Company = () => {
                                     <SharedStyled.TableListHeaderRowColumn> Nome </SharedStyled.TableListHeaderRowColumn>
                                     <SharedStyled.TableListHeaderRowColumn> CNPJ </SharedStyled.TableListHeaderRowColumn>
                                     <SharedStyled.TableListHeaderRowColumn> Descrição </SharedStyled.TableListHeaderRowColumn>
-                                    <SharedStyled.TableListHeaderRowColumn> Criado em </SharedStyled.TableListHeaderRowColumn>
-                                    <SharedStyled.TableListHeaderRowColumn> Editado em </SharedStyled.TableListHeaderRowColumn>
-                                    <SharedStyled.TableListHeaderRowColumn> </SharedStyled.TableListHeaderRowColumn>
+                                    <SharedStyled.TableListHeaderRowColumn> Criada em </SharedStyled.TableListHeaderRowColumn>
+                                    <SharedStyled.TableListHeaderRowColumn> Editada em </SharedStyled.TableListHeaderRowColumn>
                                     <SharedStyled.TableListHeaderRowColumn> </SharedStyled.TableListHeaderRowColumn>
                                 </SharedStyled.TableListHeaderRow>
                             </thead>
@@ -137,11 +135,10 @@ const Company = () => {
                                 { companies.map((company: CompanyResponseDto) => (
                                     <SharedStyled.TableListBodyRow key={ company.id }>
                                         <SharedStyled.TableListBodyRowData> { company.name } </SharedStyled.TableListBodyRowData>
-                                        <SharedStyled.TableListBodyRowData> { formatCompanyDocument(company.document) } </SharedStyled.TableListBodyRowData>
+                                        <SharedStyled.TableListBodyRowData> <b> { formatCompanyDocument(company.document) } </b> </SharedStyled.TableListBodyRowData>
                                         <SharedStyled.TableListBodyRowData> { company.description } </SharedStyled.TableListBodyRowData>
-                                        <SharedStyled.TableListBodyRowData> { formatDate(company.createdAt) } </SharedStyled.TableListBodyRowData>
-                                        <SharedStyled.TableListBodyRowData> { formatDate(company.updatedAt) } </SharedStyled.TableListBodyRowData>
-                                        <SharedStyled.TableListBodyRowData> </SharedStyled.TableListBodyRowData>
+                                        <SharedStyled.TableListBodyRowData> { formatDate(company.createdAt, true) } </SharedStyled.TableListBodyRowData>
+                                        <SharedStyled.TableListBodyRowData> { formatDate(company.updatedAt, true) } </SharedStyled.TableListBodyRowData>
                                         <SharedStyled.TableListBodyRowData>
                                             <SharedStyled.TableListBodyRowDataActions>
                                                 <SharedStyled.TableListBodyRowDataActionButton onClick={ () => handleUpdate(company.id) }> <Pen size={ 25 } color="#1C70E9" /> </SharedStyled.TableListBodyRowDataActionButton>
@@ -153,7 +150,7 @@ const Company = () => {
                             </tbody>
                             <tfoot>
                                 <SharedStyled.TableListBodyRow>
-                                    <SharedStyled.TableListBodyRowData colSpan={ 8 }>
+                                    <SharedStyled.TableListBodyRowData colSpan={ 6 }>
                                         <Paginate page={ page } total={ total } limit={ limit } onPageChange={ setPage } onLimitChange={ (newLimit: number) => { setLimit(newLimit); setPage(1); } } />
                                     </SharedStyled.TableListBodyRowData>
                                 </SharedStyled.TableListBodyRow>
@@ -185,7 +182,7 @@ const Company = () => {
             <Modal isOpen={ isDeleteModalOpen } entityName={ companies.find((company: CompanyResponseDto) => company.id === selectedCompanyId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleConfirmDelete } />
 
             <Drawer isOpen={ isDrawerOpen } formId="company-form" title={ updating ? "Editar empresa" : "Nova empresa" } mode={ updating ? "edit" : "create" } onClose={ () => { setIsDrawerOpen(false); setUpdating(null); } }>
-                <CompanyForm initialValues={ updating ?? undefined } onCancel={ () => { setIsDrawerOpen(false); setUpdating(null); } } onSubmit={ () => { setIsDrawerOpen(false); setUpdating(null); handleReadUsers(); } } />
+                <CompanyForm initialValues={ updating ?? undefined } onCancel={ () => { setIsDrawerOpen(false); setUpdating(null); } } onSubmit={ () => { setIsDrawerOpen(false); setUpdating(null); handleReadCompanies(); } } />
             </Drawer>
         </Fragment>
     );

@@ -1,5 +1,5 @@
 export interface CreateCompanyCommandDto {
     name: string;
     document: string;
-    description: string;
+    description?: string | null;
 }
