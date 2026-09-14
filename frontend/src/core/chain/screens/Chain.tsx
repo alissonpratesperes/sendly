@@ -9,10 +9,10 @@ import { Read, Update, Delete } from '../services/Chain.service';
 import { ChainFormData } from '../schemas/ChainFormSchema.schema';
 import Modal from '../../../shared/components/modal/screens/Modal';
 import * as Styled from '../../../shared/styles/Registration.style';
-import Pagination from '../../../shared/components/pagination/screens/Pagination';
+// import Pagination from '../../../shared/components/pagination/screens/Pagination';
 import ToggleSwitch from '../../../shared/elements/toggleSwitch/screens/ToggleSwitch';
 import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
-import { PaginatedRequestDTO } from '../../../shared/components/pagination/dtos/PaginatedRequestDTO.dto';
+// import { PaginatedRequestDTO } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
 
 const Chain = () => {
     const [sort, setSort] = useState<number>(0);
@@ -156,7 +156,7 @@ const Chain = () => {
 
                                 <Styled.TableListBodyRow>
                                     <Styled.TableListBodyRowData colSpan={3}>
-                                        <Pagination pageSize={pageSize} totalPages={totalPages} currentPage={page} onPageChange={(newPage) => setPage(newPage)} onPageSizeChange={(newSize) => { setPageSize(newSize); setPage(1); }} />
+                                        {/* <Pagination pageSize={pageSize} totalPages={totalPages} currentPage={page} onPageChange={(newPage) => setPage(newPage)} onPageSizeChange={(newSize) => { setPageSize(newSize); setPage(1); }} /> */}
                                     </Styled.TableListBodyRowData>
                                 </Styled.TableListBodyRow>
                             </tbody>

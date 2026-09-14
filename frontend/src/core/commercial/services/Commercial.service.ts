@@ -1,7 +1,7 @@
 import { CommercialDTO } from '../dtos/CommercialDTO.dto';
 import axiosInstance from '../../authentication/interceptors/authorization.interceptor';
-import { PaginatedRequestDTO } from '../../../shared/components/pagination/dtos/PaginatedRequestDTO.dto';
-import { PaginatedResponseDTO } from '../../../shared/components/pagination/dtos/PaginatedResponseDTO.dto';
+import { PaginatedRequestDTO } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
+import { PaginatedResponseDTO } from '../../../shared/components/paginate/dtos/paginatedResponse.dto';
 
 const endpoint = "acao";
 

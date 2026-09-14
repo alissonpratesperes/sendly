@@ -10,10 +10,10 @@ import { Read, Update, Delete } from '../services/Store.service';
 import { StoreFormData } from '../schemas/StoreFormSchema.schema';
 import Modal from '../../../shared/components/modal/screens/Modal';
 import * as Styled from '../../../shared/styles/Registration.style';
-import Pagination from '../../../shared/components/pagination/screens/Pagination';
+// import Pagination from '../../../shared/components/pagination/screens/Pagination';
 import ToggleSwitch from '../../../shared/elements/toggleSwitch/screens/ToggleSwitch';
 import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
-import { PaginatedRequestDTO } from '../../../shared/components/pagination/dtos/PaginatedRequestDTO.dto';
+// import { PaginatedRequestDTO } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
 
 const Store = () => {
     const [sort, setSort] = useState<number>(0);
@@ -43,7 +43,7 @@ const Store = () => {
     const handleRead = useCallback(async () => {
         try {
 
-            const params: PaginatedRequestDTO = { page, pageSize, sortBy: 'razaoSocial', sortDir: sort ? 'desc' : 'asc', search };
+            const params  = { page, pageSize, sortBy: 'razaoSocial', sortDir: sort ? 'desc' : 'asc', search };
             const response = await Read(params);
             const itemsWithBoolean = response.items.map(item => ({ ...item, ativo: String(item.ativo).toLowerCase() === 'true' }));
 
@@ -183,7 +183,7 @@ const Store = () => {
 
                                 <Styled.TableListBodyRow>
                                     <Styled.TableListBodyRowData colSpan={6}>
-                                        <Pagination pageSize={pageSize} totalPages={totalPages} currentPage={page} onPageChange={(newPage) => setPage(newPage)} onPageSizeChange={(newSize) => { setPageSize(newSize); setPage(1); }} />
+                                        {/* <Pagination pageSize={pageSize} totalPages={totalPages} currentPage={page} onPageChange={(newPage) => setPage(newPage)} onPageSizeChange={(newSize) => { setPageSize(newSize); setPage(1); }} /> */}
                                     </Styled.TableListBodyRowData>
                                 </Styled.TableListBodyRow>
                             </tbody>

@@ -1,4 +1,4 @@
-import { Fragment } from 'react/jsx-runtime';
+import { Fragment } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { BrowserRouter } from 'react-router-dom';
 
@@ -12,12 +12,23 @@ function App() {
       <GlobalStyle />
 
       <div className="App">
-        <BrowserRouter> <AppRouting /> </BrowserRouter>
+        <BrowserRouter>
+          <AppRouting />
+        </BrowserRouter>
       </div>
 
-      <ToastContainer position="top-center" autoClose={ 5000 } hideProgressBar={ false } newestOnTop={ true } closeOnClick pauseOnHover draggable theme="colored" />
+        <ToastContainer
+          hideProgressBar={ false }
+          position="top-center"
+          newestOnTop={ true }
+          autoClose={ 5000 }
+          theme="colored"
+          closeOnClick
+          pauseOnHover
+          draggable
+        />
     </Fragment>
   );
-};
+}
 
 export default App;

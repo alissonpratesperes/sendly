@@ -20,9 +20,9 @@ import { Read as ReadStores } from '../../store/services/Store.service';
 import * as SharedStyled from '../../../shared/styles/Registration.style';
 import { Read as ReadActions } from '../../action/services/Action.service';
 import { ReadById as ReadAction } from '../../action/services/Action.service';
-import Pagination from '../../../shared/components/pagination/screens/Pagination';
+// import Pagination from '../../../shared/components/pagination/screens/Pagination';
 import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
-import { PaginatedRequestDTO } from '../../../shared/components/pagination/dtos/PaginatedRequestDTO.dto';
+import { PaginatedRequestDTO } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
 
 const Commercial = () => {
     const navigate = useNavigate();
@@ -421,14 +421,14 @@ const Commercial = () => {
                                 <tbody>
                                     <SharedStyled.TableListBodyRow>
                                         <SharedStyled.TableListBodyRowData colSpan={3}>
-                                            <Pagination
+                                            {/* <Pagination
                                                 currentPage={page}
                                                 pageSize={pageSize}
                                                 totalPages={totalPages}
                                                 onPageChange={(newPage) => setPage(newPage)}
                                                 onPageSizeChange={(newSize) => { setPageSize(newSize); setPage(1); }}
                                                 customPageOptions={[{ value: 6, label: 6 }, { value: 12, label: 12 }, { value: 30, label: 30 }, { value: 48, label: 48 }]}
-                                            />
+                                            /> */}
                                         </SharedStyled.TableListBodyRowData>
                                     </SharedStyled.TableListBodyRow>
                                 </tbody>

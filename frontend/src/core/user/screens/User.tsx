@@ -14,7 +14,7 @@ import * as SharedStyled from '../../../shared/styles/Registration.style';
 import Paginate from '../../../shared/components/paginate/screens/Paginate';
 import UserBadge from '../../../shared/elements/userBadge/screens/UserBadge';
 import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
-import { PaginatedQueryDto } from '../../../shared/components/pagination/dtos/PaginatedRequestDTO.dto';
+import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
 
 const User = () => {
     const [page, setPage] = useState<number>(1);

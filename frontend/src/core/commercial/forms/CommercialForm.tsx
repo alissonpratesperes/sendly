@@ -21,7 +21,7 @@ import { CommercialFormProps } from '../interfaces/CommercialFormProps.interface
 import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
 import { CommercialFormData, CommercialFormSchema } from '../schemas/CommercialFormSchema.schema';
 import { UploaderItemType } from '../../../shared/components/uploader/types/UploaderItemType.type';
-import { PaginatedRequestDTO } from '../../../shared/components/pagination/dtos/PaginatedRequestDTO.dto';
+import { PaginatedRequestDTO } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
 
 export const CommercialForm: React.FC<CommercialFormProps> = ({ initialValues, onSubmit, onCancel }) => {
   const [stores, setStores] = useState<StoreDTO[]>([]);

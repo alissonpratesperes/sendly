@@ -87,7 +87,7 @@ export const EllipsisIcon = styled(Ellipsis)`
     height: 25px;
     width: 25px;
 
-    color: ${ ({ theme }) => "#E6E7EC" }
+    color: "#E6E7EC";
 `;
 
 export const PageButton = styled.button<{ $active?: boolean }>`
@@ -106,8 +106,8 @@ export const PageButton = styled.button<{ $active?: boolean }>`
 
     font-weight: ${ ({ $active }) => ($active ? 700 : 500) };
     cursor: ${ ({ $active }) => ($active ? "default" : "pointer") };
-    color: ${ ({ $active, theme }) => ($active ? "#FFFFFF" : "#171719") };
-    background: ${ ({ $active, theme }) => ($active ? "#171719" : "transparent") };
+    color: ${ ({ $active }) => ($active ? "#FFFFFF" : "#171719") };
+    background: ${ ({ $active }) => ($active ? "#171719" : "transparent") };
 
         &:hover {
             font-weight: 700;

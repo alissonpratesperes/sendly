@@ -15,7 +15,6 @@ const PATHS_WITHOUT_APP_LAYOUT = [ "/authentication", "/authentication/forgot", 
 
 export const AppRouting: React.FC = () => {
     const location = useLocation();
-
     const shouldUseAppLayout = !PATHS_WITHOUT_APP_LAYOUT.includes(location.pathname);
 
     return (

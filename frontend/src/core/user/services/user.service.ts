@@ -3,8 +3,8 @@ import { IdParamDto } from '../../../shared/dtos/idParam.dto';
 import { CreateUserCommandDto } from '../dtos/createUserCommand.dto';
 import { UpdateUserCommandDto } from '../dtos/updateUserCommand.dto';
 import axiosInstance from '../../authentication/interceptors/authorization.interceptor';
-import { PaginatedQueryDto } from '../../../shared/components/pagination/dtos/PaginatedRequestDTO.dto';
-import { PaginatedResponseDto } from '../../../shared/components/pagination/dtos/PaginatedResponseDTO.dto';
+import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
+import { PaginatedResponseDto } from '../../../shared/components/paginate/dtos/paginatedResponse.dto';
 
 const endpoint = "user";
 
