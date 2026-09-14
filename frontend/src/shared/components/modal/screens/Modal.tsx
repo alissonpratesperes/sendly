@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { Ban, Trash, X } from 'lucide-react';
 
 import * as Styled from '../styles/modal.style';
-import { DeleteModalProps } from '../interfaces/deleteModalProps.interface';
+import { ModalProps } from '../interfaces/modalProps.interface';
 
-const Modal: React.FC<DeleteModalProps> = ({ isOpen, entityName, onClose, onConfirm }) => {
+const Modal: React.FC<ModalProps> = ({ isOpen, entityName, onClose, onConfirm }) => {
     const [isClosing, setIsClosing] = useState(false);
 
     return (

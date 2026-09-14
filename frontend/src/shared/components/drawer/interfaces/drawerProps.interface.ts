@@ -1,9 +1,9 @@
 export interface DrawerProps {
     isOpen: boolean;
-    onClose: () => void;
+    formId?: string;
     title: string;
     children: React.ReactNode;
-
     mode?: "create" | "edit";
-    formId?: string;
+
+    onClose: () => void;
 }

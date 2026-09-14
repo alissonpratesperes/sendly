@@ -188,7 +188,7 @@ const User = () => {
 
             <Modal isOpen={ isDeleteModalOpen } entityName={ users.find((user: UserResponseDto) => user.id === selectedUserId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleConfirmDelete } />
 
-            <Drawer isOpen={ isDrawerOpen } onClose={ () => { setIsDrawerOpen(false); setUpdating(null); } } title={ updating ? "Editar usuário" : "Novo usuário" } mode={ updating ? "edit" : "create" } formId="user-form">
+            <Drawer isOpen={ isDrawerOpen } formId="user-form" title={ updating ? "Editar usuário" : "Novo usuário" } mode={ updating ? "edit" : "create" } onClose={ () => { setIsDrawerOpen(false); setUpdating(null); } }>
                 <UserForm initialValues={ updating ?? undefined } onCancel={ () => { setIsDrawerOpen(false); setUpdating(null); } } onSubmit={ () => { setIsDrawerOpen(false); setUpdating(null); handleReadUsers(); } } />
             </Drawer>
         </Fragment>

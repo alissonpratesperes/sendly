@@ -10,8 +10,8 @@ export const DrawerOverlay = styled.div<DrawerOverlayProps>`
     z-index: 999;
     transition: opacity 0.6s ease-in-out, visibility 0.6s ease-in-out;
 
-    opacity: ${({ $open }) => ($open ? 1 : 0)};
-    visibility: ${({ $open }) => ($open ? "visible" : "hidden")};
+    opacity: ${ ({ $open }) => ($open ? 1 : 0) };
+    visibility: ${ ({ $open }) => ($open ? "visible" : "hidden") };
 `;
 
 export const Drawer = styled.div<{ $open: boolean; }>`
@@ -27,7 +27,7 @@ export const Drawer = styled.div<{ $open: boolean; }>`
     background-color: #F0F0F5;
     z-index: 1000;
 
-    animation: ${({ $open }) => $open ? "drawerOpen 0.6s ease-in-out forwards" : "drawerClose 0.6s ease-in-out forwards" };
+    animation: ${ ({ $open }) => $open ? "drawerOpen 0.6s ease-in-out forwards" : "drawerClose 0.6s ease-in-out forwards" };
 
         @keyframes drawerOpen {
             0% {
@@ -218,9 +218,9 @@ export const FooterButton = styled.button<{ $variant?: "primary" | "secondary"; 
     cursor: pointer;
     transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
 
-    font-weight: ${({ $variant }) => $variant === "primary" ? "700" : "400" };
-    color: ${({ $variant }) => $variant === "primary" ? "#FFFFFF" : "#223463" };
-    background-color: ${({ $variant }) => $variant === "primary" ? "#1C70E9" : "transparent" };
+    font-weight: ${ ({ $variant }) => $variant === "primary" ? "700" : "400" };
+    color: ${ ({ $variant }) => $variant === "primary" ? "#FFFFFF" : "#223463" };
+    background-color: ${ ({ $variant }) => $variant === "primary" ? "#1C70E9" : "transparent" };
 
         &.secondary:hover {
             font-weight: 700;

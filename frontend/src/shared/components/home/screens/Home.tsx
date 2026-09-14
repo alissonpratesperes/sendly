@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 
-import * as Styled from '../styles/Home.style';
+import * as Styled from '../styles/home.style';
 
 const Home: React.FC = () => {
     return (

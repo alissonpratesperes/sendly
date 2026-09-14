@@ -1,4 +1,4 @@
-export interface DeleteModalProps {
+export interface ModalProps {
     isOpen: boolean;
     entityName: string;
 

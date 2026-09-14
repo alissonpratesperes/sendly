@@ -4,7 +4,7 @@ import { X, Ban, Pencil, Save } from 'lucide-react';
 import * as Styled from '../styles/drawer.style';
 import { DrawerProps } from '../interfaces/drawerProps.interface';
 
-export const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, title, children, mode = "create", formId }) => {
+export const Drawer: React.FC<DrawerProps> = ({ isOpen, formId, title, children, mode = "create", onClose }) => {
     const [isClosing, setIsClosing] = useState(false);
 
     return (
