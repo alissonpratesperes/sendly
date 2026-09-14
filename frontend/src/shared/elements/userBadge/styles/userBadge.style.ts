@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import { UserBadgeVariant } from '../types/userBadgeVariant.type';
-import { UserBadgeStyleProps } from '../interfaces/userBadgeStyleProps.interface';
+import { UserBadgeProps } from '../interfaces/userBadgeProps.interface';
 import { UserBadgeColorProps } from '../interfaces/userBadgeColorProps.interface';
 
 const userBadgeColorMapping: Record<UserBadgeVariant, UserBadgeColorProps> = {
@@ -11,7 +11,7 @@ const userBadgeColorMapping: Record<UserBadgeVariant, UserBadgeColorProps> = {
     notIsSystemRoot: { fontColor: "#535862", backgroundColor: "#F5F5F5", },
 }
 
-export const UserBadgeContainer = styled.span<UserBadgeStyleProps>`
+export const UserBadgeContainer = styled.span<UserBadgeProps>`
     padding: 5px;
     height: auto;
     width: 120px;
@@ -23,6 +23,6 @@ export const UserBadgeContainer = styled.span<UserBadgeStyleProps>`
     font-size: 13px;
     border-radius: 50px;
 
-    color: ${({ variant }) => userBadgeColorMapping[variant].fontColor};
-    background-color: ${({ variant }) => userBadgeColorMapping[variant].backgroundColor};
+    color: ${ ({ variant }) => userBadgeColorMapping[variant].fontColor };
+    background-color: ${ ({ variant }) => userBadgeColorMapping[variant].backgroundColor };
 `;

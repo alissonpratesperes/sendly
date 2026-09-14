@@ -1,10 +1,11 @@
-import { Fragment } from 'react/jsx-runtime';
-import { Building2, Contact, ListCheck, MessageSquare, Users } from 'lucide-react';
+import { Fragment } from 'react';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 
 import User from '../../../../core/user/screens/User';
 import * as Styled from '../styles/registration.style';
-import PrivateRoute from '../../private/components/PrivateRoute';
+import { NavigationTab } from '../types/navigationTab.type';
+import PrivateRoute from '../../private/screens/PrivateRoute';
+import { navigationTabs } from '../constants/navigationtabs.constant';
 
 
 
@@ -17,13 +18,6 @@ import Action from '../../../../core/action/screens/Action';
 import Category from '../../../../core/category/screens/Category';
 import Regional from '../../../../core/regional/screens/Regional';
 
-const navigationTabs = [
-    { icon: <Building2 size={ 25 }/>, label: "Empresas", path: "regional" },
-    { icon: <Users size={ 25 }/>, label: "Usuários", path: "user" },
-    { icon: <ListCheck size={ 25 }/>, label: "Listas", path: "stores" },
-    { icon: <Contact size={ 25 }/>, label: "Contatos", path: "users" },
-    { icon: <MessageSquare size={ 25 }/>, label: "Templates", path: "action-type" },
-]
 const Registration: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -36,8 +30,9 @@ const Registration: React.FC = () => {
 
                     <Styled.SessionSubtitle> Crie, edite e gerencie todos os seus cadastros </Styled.SessionSubtitle>
                 </Styled.SessionInformationWrapper>
+
                 <Styled.NavigationTabs>
-                    { navigationTabs.map(tab => {
+                    { navigationTabs.map((tab: NavigationTab) => {
                         const isActive = location.pathname.endsWith(tab.path);
 
                         return (
@@ -59,11 +54,12 @@ const Registration: React.FC = () => {
 
 
 
+                {/* Voltar private route englobando as rotas */}
 
                 <Route path="/chains" element={<Chain />} />
                 <Route path="/stores" element={<Store />} />
                 <Route path="action-type" element={<Action />} />
-                <Route path="/regional" element={<Regional />} /> /* Voltar private route englobando as rotas */
+                <Route path="/regional" element={<Regional />} />
                 <Route path="/product-categories" element={<Category />} />
             </Routes>
         </Fragment>

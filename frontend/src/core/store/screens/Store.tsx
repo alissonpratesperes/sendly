@@ -162,7 +162,7 @@ const Store = () => {
                                     <Styled.TableListHeaderRowColumn> CNPJ </Styled.TableListHeaderRowColumn>
                                     <Styled.TableListHeaderRowColumn> Rede vinculada </Styled.TableListHeaderRowColumn>
                                     <Styled.TableListHeaderRowColumn> Endereço </Styled.TableListHeaderRowColumn>
-                                    <Styled.TableListHeaderRowColumn onClick={handleSort}> Status <Styled.SortArrow size={12} $isAsc={sort === 1} /> </Styled.TableListHeaderRowColumn>
+                                    <Styled.TableListHeaderRowColumn onClick={handleSort}> Status </Styled.TableListHeaderRowColumn>
                                     <Styled.TableListHeaderRowColumn> </Styled.TableListHeaderRowColumn>
                                 </Styled.TableListHeaderRow>
                             </thead>

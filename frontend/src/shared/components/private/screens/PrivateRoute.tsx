@@ -2,7 +2,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 
-import { isTokenExpiredUtil } from '../../../utils/isTokenExpiredUtil.util';
+import { verifyExpiredToken } from '../../../utils/verifyExpiredToken.util';
 import { PrivateRouteProps } from '../interfaces/privateRouteProps.interface';
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ element }) => {
@@ -13,7 +13,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ element }) => {
     useEffect(() => {
         const accessToken = localStorage.getItem("accessToken");
 
-        if (accessToken && !isTokenExpiredUtil(accessToken)) {
+        if (accessToken && !verifyExpiredToken(accessToken)) {
             setIsAuthorized(true);
         } else {
             localStorage.removeItem("accessToken");

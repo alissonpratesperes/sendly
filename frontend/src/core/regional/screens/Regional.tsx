@@ -136,7 +136,7 @@ const Regional = () => {
                             <thead>
                                 <Styled.TableListHeaderRow>
                                     <Styled.TableListHeaderRowColumn> Nome da regional </Styled.TableListHeaderRowColumn>
-                                    <Styled.TableListHeaderRowColumn onClick={handleSort}> Status <Styled.SortArrow size={12} $isAsc={sort === 1} /> </Styled.TableListHeaderRowColumn>
+                                    <Styled.TableListHeaderRowColumn onClick={handleSort}> Status </Styled.TableListHeaderRowColumn>
                                     <Styled.TableListHeaderRowColumn> </Styled.TableListHeaderRowColumn>
                                 </Styled.TableListHeaderRow>
                             </thead>

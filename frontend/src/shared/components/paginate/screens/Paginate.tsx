@@ -6,19 +6,45 @@ import Dropdown from '../../dropdown/screens/Dropdown';
 import { PaginateParams } from '../types/paginateParams.type';
 
 export default function Paginate({ page, total, limit, onPageChange, onLimitChange, }: PaginateParams) {
+    const pageOptions: PageOption[] = [
+        { value: 5, label: "5" },
+        { value: 15, label: "15" },
+        { value: 30, label: "30" },
+    ];
+
     const totalPages = useMemo<number>(() => {
         return limit > 0 ? Math.ceil(total / limit) : 1;
-    }, [ total, limit ])
-    const pages = useMemo<(number | string)[]>(() => {
-        if (totalPages <= 6) {
-            return Array.from({ length: totalPages }, (_, index) => index + 1);
-        }
+    }, [ total, limit ]);
 
+    const goToPage = useCallback((target: number) => {
+        if (target >= 1 && target <= totalPages && target !== page) {
+            onPageChange(target);
+        }
+    }, [ page, totalPages, onPageChange ]);
+
+    const nextPage = useCallback(() => {
+        goToPage(page + 1);
+    }, [ page, goToPage ]);
+
+    const previousPage = useCallback(() => {
+        goToPage(page - 1);
+    }, [ page, goToPage ]);
+
+    const handleLimitChange = (selectedOption: PageOption | null) => {
+        if (selectedOption && onLimitChange) {
+            onLimitChange(selectedOption.value);
+        }
+    }
+
+    const pages = useMemo<(number | string)[]>(() => {
         const pages: (number | string)[] = [ 1, 2 ];
 
         let start: number;
         let end: number;
 
+        if (totalPages <= 6) {
+            return Array.from({ length: totalPages }, (_, index) => index + 1);
+        }
         if (page <= 4) {
             start = 3;
             end = 4;
@@ -30,7 +56,7 @@ export default function Paginate({ page, total, limit, onPageChange, onLimitChan
             end = page;
         }
         if (start > 3) {
-            pages.push('...');
+            pages.push("...");
         }
 
         for (let i = start; i <= end; i++) {
@@ -38,7 +64,7 @@ export default function Paginate({ page, total, limit, onPageChange, onLimitChan
         }
 
         if (end < totalPages - 2) {
-            pages.push('...');
+            pages.push("...");
             pages.push(totalPages - 1);
         } else if (end === totalPages - 2) {
             pages.push(totalPages - 1);
@@ -48,17 +74,6 @@ export default function Paginate({ page, total, limit, onPageChange, onLimitChan
 
         return pages;
     }, [ page, totalPages ])
-    const goToPage = useCallback((target: number) => {
-        if (target >= 1 && target <= totalPages && target !== page) {
-            onPageChange(target);
-        }
-    }, [ page, totalPages, onPageChange ])
-    const nextPage = useCallback(() => {
-        goToPage(page + 1);
-    }, [ page, goToPage ])
-    const previousPage = useCallback(() => {
-        goToPage(page - 1);
-    }, [ page, goToPage ])
 
     useEffect(() => {
         if (page < 1) {
@@ -70,37 +85,23 @@ export default function Paginate({ page, total, limit, onPageChange, onLimitChan
             onPageChange(totalPages);
         }
     }, [ page, totalPages, onPageChange ])
-    const pageOptions: PageOption[] = [
-        { value: 5, label: "5" },
-        { value: 15, label: "15" },
-        { value: 30, label: "30" },
-    ]
-    const handleLimitChange = (selectedOption: PageOption | null) => {
-        if (selectedOption && onLimitChange) {
-            onLimitChange(selectedOption.value);
-        }
-    }
-    const isFirstPage = page === 1;
-    const isLastPage = page === totalPages;
 
     return (
         <Styled.PaginateContainer>
-            <Styled.PaginateButton disabled={ isFirstPage } onClick={ previousPage }>
+            <Styled.PaginateButton disabled={ page === 1 } onClick={ previousPage }>
                 <Styled.ArrowLeftIcon />
 
                 <Styled.PreviousButtonText> Anterior </Styled.PreviousButtonText>
             </Styled.PaginateButton>
 
             <Styled.PagesArrayContainer>
-                {pages.map((pageNumber, index) =>
-                    pageNumber === '...' ? (
-                        <Styled.EllipsisIcon key={`ellipsis-${index}`} />
+                { pages.map((pageNumber, index) =>
+                    pageNumber === "..." ? (
+                        <Styled.EllipsisIcon key={ `ellipsis-${index}` } />
                     ) : (
-                        <Styled.PageButton key={ `page-${pageNumber}` } $active={ page === pageNumber } onClick={ () => goToPage(pageNumber as number) }>
-                            { pageNumber }
-                        </Styled.PageButton>
+                        <Styled.PageButton key={ `page-${pageNumber}` } $active={ page === pageNumber } onClick={ () => goToPage(pageNumber as number) }> { pageNumber } </Styled.PageButton>
                     )
-                )}
+                ) }
 
                 { onLimitChange && (
                     <Dropdown
@@ -115,12 +116,11 @@ export default function Paginate({ page, total, limit, onPageChange, onLimitChan
                 ) }
             </Styled.PagesArrayContainer>
 
-            <Styled.PaginateButton disabled={ isLastPage } onClick={ nextPage }>
+            <Styled.PaginateButton disabled={ page === totalPages } onClick={ nextPage }>
                 <Styled.NextButtonText> Próxima </Styled.NextButtonText>
 
                 <Styled.ArrowRightIcon />
             </Styled.PaginateButton>
-
         </Styled.PaginateContainer>
     );
 }

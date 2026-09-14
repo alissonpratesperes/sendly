@@ -9,7 +9,6 @@ import { Read, Update, Delete } from '../services/Action.service';
 import Modal from '../../../shared/components/modal/screens/Modal';
 import * as Styled from '../../../shared/styles/Registration.style';
 import { ActionFormData } from '../schemas/ActionFormSchema.schema';
-import EmptyStateVector from '../../../assets/emptystate_vector.svg';
 import Pagination from '../../../shared/components/pagination/screens/Pagination';
 import ToggleSwitch from '../../../shared/elements/toggleSwitch/screens/ToggleSwitch';
 import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
@@ -137,7 +136,7 @@ const Action = () => {
                             <thead>
                                 <Styled.TableListHeaderRow>
                                     <Styled.TableListHeaderRowColumn> Nome da ação </Styled.TableListHeaderRowColumn>
-                                    <Styled.TableListHeaderRowColumn onClick={handleSort}> Status <Styled.SortArrow size={12} $isAsc={sort === 1} /> </Styled.TableListHeaderRowColumn>
+                                    <Styled.TableListHeaderRowColumn onClick={handleSort}> Status </Styled.TableListHeaderRowColumn>
                                     <Styled.TableListHeaderRowColumn> </Styled.TableListHeaderRowColumn>
                                 </Styled.TableListHeaderRow>
                             </thead>

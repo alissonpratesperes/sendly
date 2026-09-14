@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 import { ArrowDown } from 'lucide-react';
 
-import { SortListingActionProps } from '../interfaces/SortListingActionProps.interface';
-
 export const LoadingContainer = styled.div`
     height: 55px;
     width: auto;
@@ -530,20 +528,6 @@ export const SelectCommonStyles = {
     })
 };
 
-
-
-
-
-
-
-
-
-
-export const SortArrow = styled(ArrowDown) <SortListingActionProps>`
-    margin-left: 5px;
-    vertical-align: middle;
-    transform: ${({ $isAsc }) => ($isAsc ? 'rotate(0deg)' : 'rotate(180deg)')};
-`;
 
 
 

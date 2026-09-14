@@ -9,8 +9,8 @@ import { List, Delete } from '../services/user.service';
 import { UserResponseDto } from '../dtos/userResponse.dto';
 import { UserFormData } from '../schemas/userFormSchema.schema';
 import Modal from '../../../shared/components/modal/screens/Modal';
+import { formatDate } from '../../../shared/utils/formatDate.util';
 import * as SharedStyled from '../../../shared/styles/Registration.style';
-import { formatDateUtil } from '../../../shared/utils/formatDateUtil.util';
 import Paginate from '../../../shared/components/paginate/screens/Paginate';
 import UserBadge from '../../../shared/elements/userBadge/screens/UserBadge';
 import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
@@ -141,8 +141,8 @@ const User = () => {
                                         <SharedStyled.TableListBodyRowData> { user.email } </SharedStyled.TableListBodyRowData>
                                         <SharedStyled.TableListBodyRowData> <UserBadge variant={ user.isFirstAccess ? "isFirstAccess" : "notIsFirstAccess" } /> </SharedStyled.TableListBodyRowData>
                                         <SharedStyled.TableListBodyRowData> <UserBadge variant={ user.isSystemRoot ? "isSystemRoot" : "notIsSystemRoot" } /> </SharedStyled.TableListBodyRowData>
-                                        <SharedStyled.TableListBodyRowData> { formatDateUtil(user.createdAt) } </SharedStyled.TableListBodyRowData>
-                                        <SharedStyled.TableListBodyRowData> { formatDateUtil(user.updatedAt) } </SharedStyled.TableListBodyRowData>
+                                        <SharedStyled.TableListBodyRowData> { formatDate(user.createdAt) } </SharedStyled.TableListBodyRowData>
+                                        <SharedStyled.TableListBodyRowData> { formatDate(user.updatedAt) } </SharedStyled.TableListBodyRowData>
                                         <SharedStyled.TableListBodyRowData> </SharedStyled.TableListBodyRowData>
                                         <SharedStyled.TableListBodyRowData>
                                             <SharedStyled.TableListBodyRowDataActions>
