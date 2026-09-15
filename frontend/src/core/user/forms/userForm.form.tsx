@@ -16,6 +16,15 @@ export const UserForm: React.FC<UserFormProps> = ({ initialValues, onCancel, onS
         email: "",
     });
 
+    const handleChange = (changeEvent: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = changeEvent.target;
+
+        setFormData((previous: UserFormData) => ({
+            ...previous,
+
+            [name]: value,
+        }));
+    }
     const handleSubmit = async (formEvent: React.FormEvent<HTMLFormElement>) => {
         formEvent.preventDefault();
 
@@ -50,15 +59,6 @@ export const UserForm: React.FC<UserFormProps> = ({ initialValues, onCancel, onS
                 toast.error(`Não é possível prosseguir com a solicitação: ${error}`);
             }
         } finally { }
-    }
-    const handleChange = (changeEvent: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = changeEvent.target;
-
-        setFormData(previous => ({
-            ...previous,
-
-            [name]: value,
-        }));
     }
 
     useEffect(() => {

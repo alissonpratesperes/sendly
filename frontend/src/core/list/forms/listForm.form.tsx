@@ -9,7 +9,6 @@ import { UpdateListCommandDto } from '../dtos/updateListCommand.dto';
 import { ListFormProps } from '../interfaces/listFormProps.interface';
 import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
 import { ListFormData, ListFormSchema } from '../schemas/listFormSchema.schema';
-import { formatCompanyDocument } from '../../../shared/utils/formatCompanyDocument.util';
 
 export const ListForm: React.FC<ListFormProps> = ({ initialValues, onCancel, onSubmit }) => {
     const [formData, setFormData] = useState<ListFormData>({
@@ -19,6 +18,15 @@ export const ListForm: React.FC<ListFormProps> = ({ initialValues, onCancel, onS
         color: "",
     });
 
+    const handleChange = (changeEvent: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = changeEvent.target;
+
+        setFormData((previous: ListFormData) => ({
+            ...previous,
+
+            [name]: value,
+        }));
+    }
     const handleSubmit = async (formEvent: React.FormEvent<HTMLFormElement>) => {
         formEvent.preventDefault();
 
@@ -56,15 +64,6 @@ export const ListForm: React.FC<ListFormProps> = ({ initialValues, onCancel, onS
                 toast.error(`Não é possível prosseguir com a solicitação: ${error}`);
             }
         } finally { }
-    }
-    const handleChange = (changeEvent: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = changeEvent.target;
-
-        setFormData(previous => ({
-            ...previous,
-
-            [name]: value,
-        }));
     }
 
     useEffect(() => {

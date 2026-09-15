@@ -21,7 +21,7 @@ export class CreateContactCommandDto {
     @IsString()
     @IsNotEmpty()
     @MaxLength(20)
-    @ApiProperty({ example: "+5554900001111" })
+    @ApiProperty({ example: "54900001111" })
     phone!: string;
 
     @IsString()

@@ -18,6 +18,15 @@ export const CompanyForm: React.FC<CompanyFormProps> = ({ initialValues, onCance
         description: "",
     });
 
+    const handleChange = (changeEvent: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = changeEvent.target;
+
+        setFormData((previous: CompanyFormData) => ({
+            ...previous,
+
+            [name]: name === "document" ? value.replace(/\D/g, "").slice(0, 14) : value,
+        }));
+    }
     const handleSubmit = async (formEvent: React.FormEvent<HTMLFormElement>) => {
         formEvent.preventDefault();
 
@@ -54,15 +63,6 @@ export const CompanyForm: React.FC<CompanyFormProps> = ({ initialValues, onCance
                 toast.error(`Não é possível prosseguir com a solicitação: ${error}`);
             }
         } finally { }
-    }
-    const handleChange = (changeEvent: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = changeEvent.target;
-
-        setFormData(previous => ({
-            ...previous,
-
-            [name]: name === "document" ? value.replace(/\D/g, "").slice(0, 14) : value,
-        }));
     }
 
     useEffect(() => {
