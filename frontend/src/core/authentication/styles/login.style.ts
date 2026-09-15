@@ -28,6 +28,26 @@ export const LoginForm = styled.form`
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    border: 1px solid black;
+`;
+
+export const ApplicationBrandContainer = styled.div`
+padding-top: 200px;
+    margin-bottom: 60px;
+    height: 100px;
+    width: 100%;
+    display: flex;
+    flex-drection: row;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid black;
+`;
+
+export const ApplicationBrandMark = styled.p`
+    font-family: "Alien Block";
+    font-weight: 400;
+    font-size: 75px;
+    color: #9CA3AF;
 `;
 
 export const FormTitle = styled.h4`

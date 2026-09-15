@@ -76,6 +76,8 @@ const Reset: React.FC = () => {
     return (
         <Styled.ResetFormContainer>
             <Styled.ResetForm onSubmit={handleSubmit}>
+                <Styled.ApplicationBrandContainer> <Styled.ApplicationBrandMark> Sendly </Styled.ApplicationBrandMark> </Styled.ApplicationBrandContainer>
+
                 <Styled.FormTitle> Definir uma nova senha </Styled.FormTitle>
                 <Styled.FormSubtitle> Para redefinir sua senha, utilize os campos abaixo </Styled.FormSubtitle>
 

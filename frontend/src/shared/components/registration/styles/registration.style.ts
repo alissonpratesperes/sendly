@@ -3,26 +3,26 @@ import styled from 'styled-components';
 import { NavigationTabProps } from '../interfaces/navigationTabProps.interface';
 
 export const HeaderWrapper = styled.header`
+    margin-top: -167px;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
 `;
 
 export const SessionInformationWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
 `;
 
 export const SessionTitle = styled.h1`
     margin-bottom: 7.5px;
-    align-self: flex-start;
     font-family: "Inter";
-    font-weight: 700;
+    font-weight: 900;
     font-size: 25px;
-    color: #171719;
+    color: #F0F0F5;
 `;
 
 export const SessionSubtitle = styled.span`
@@ -30,8 +30,8 @@ export const SessionSubtitle = styled.span`
     align-self: flex-start;
     font-family: "Inter";
     font-weight: 400;
-    font-size: 14px;
-    color: #525059;
+    font-size: 16px;
+    color: #F0F0F5;
 `;
 
 export const NavigationTabs = styled.nav`
@@ -40,10 +40,9 @@ export const NavigationTabs = styled.nav`
     width: auto;
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
-    column-gap: 30px;
-    border-top-left-radius: 14px;
-    border-top-right-radius: 14px;
+    justify-content: center;
+    column-gap: 15px;
+    border-radius: 14px;
     background-color: #E6E7EC;
 `;
 

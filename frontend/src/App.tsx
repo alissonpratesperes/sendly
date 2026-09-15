@@ -19,7 +19,7 @@ function App() {
 
         <ToastContainer
           hideProgressBar={ false }
-          position="top-center"
+          position="bottom-left"
           newestOnTop={ true }
           autoClose={ 5000 }
           theme="colored"

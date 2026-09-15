@@ -56,7 +56,9 @@ const Authentication: React.FC = () => {
     return (
         <Styled.AuthFormContainer>
             <Styled.LoginForm onSubmit={ handleSubmit }>
-                <Styled.FormTitle> Bem-vindo ao Sendly </Styled.FormTitle>
+                <Styled.ApplicationBrandContainer> <Styled.ApplicationBrandMark> Sendly </Styled.ApplicationBrandMark> </Styled.ApplicationBrandContainer>
+
+                <Styled.FormTitle> Bem-vindo </Styled.FormTitle>
                 <Styled.FormSubtitle> Para autenticar no sistema, informe suas credenciais abaixo </Styled.FormSubtitle>
 
                 <Styled.InputWrapper>

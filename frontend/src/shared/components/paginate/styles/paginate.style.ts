@@ -3,7 +3,7 @@ import { ArrowBigLeft, ArrowBigRight, Ellipsis } from 'lucide-react';
 
 export const PaginateContainer = styled.div`
     height: auto;
-    max-width: 100%;
+    width: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -86,7 +86,7 @@ export const EllipsisIcon = styled(Ellipsis)`
     margin-right: 30px;
     height: 25px;
     width: 25px;
-    color: #E6E7EC;
+    color: #535862;
 `;
 
 export const PageButton = styled.button<{ $active?: boolean }>`

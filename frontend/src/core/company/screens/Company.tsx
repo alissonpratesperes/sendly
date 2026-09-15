@@ -1,8 +1,7 @@
-import { Fragment } from 'react';
 import { toast } from 'react-toastify';
 import { PropagateLoader } from 'react-spinners';
 import { Plus, Search, Trash, Pen } from 'lucide-react';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { Fragment, useCallback, useEffect, useState } from 'react';
 
 import { CompanyForm } from '../forms/companyForm.form';
 import { List, Delete } from '../services/company.service';
@@ -119,44 +118,43 @@ const Company = () => {
                     </SharedStyled.LoadingContainer>
                 ) }
                 { companies.length > 0 ? (
-                    <SharedStyled.TableWrapper>
-                        <SharedStyled.TableListWrapper>
-                            <thead>
-                                <SharedStyled.TableListHeaderRow>
-                                    <SharedStyled.TableListHeaderRowColumn> Nome </SharedStyled.TableListHeaderRowColumn>
-                                    <SharedStyled.TableListHeaderRowColumn> CNPJ </SharedStyled.TableListHeaderRowColumn>
-                                    <SharedStyled.TableListHeaderRowColumn> Descrição </SharedStyled.TableListHeaderRowColumn>
-                                    <SharedStyled.TableListHeaderRowColumn> Criada em </SharedStyled.TableListHeaderRowColumn>
-                                    <SharedStyled.TableListHeaderRowColumn> Editada em </SharedStyled.TableListHeaderRowColumn>
-                                    <SharedStyled.TableListHeaderRowColumn> </SharedStyled.TableListHeaderRowColumn>
-                                </SharedStyled.TableListHeaderRow>
-                            </thead>
-                            <tbody>
-                                { companies.map((company: CompanyResponseDto) => (
-                                    <SharedStyled.TableListBodyRow key={ company.id }>
-                                        <SharedStyled.TableListBodyRowData> { company.name } </SharedStyled.TableListBodyRowData>
-                                        <SharedStyled.TableListBodyRowData> <b> { formatCompanyDocument(company.document) } </b> </SharedStyled.TableListBodyRowData>
-                                        <SharedStyled.TableListBodyRowData> { company.description } </SharedStyled.TableListBodyRowData>
-                                        <SharedStyled.TableListBodyRowData> { formatDate(company.createdAt, true) } </SharedStyled.TableListBodyRowData>
-                                        <SharedStyled.TableListBodyRowData> { formatDate(company.updatedAt, true) } </SharedStyled.TableListBodyRowData>
-                                        <SharedStyled.TableListBodyRowData>
-                                            <SharedStyled.TableListBodyRowDataActions>
-                                                <SharedStyled.TableListBodyRowDataActionButton onClick={ () => handleUpdate(company.id) }> <Pen size={ 25 } color="#1C70E9" /> </SharedStyled.TableListBodyRowDataActionButton>
-                                                <SharedStyled.TableListBodyRowDataActionButton onClick={ () => { setSelectedCompanyId(company.id); setIsDeleteModalOpen(true); } }> <Trash size={ 25 } color="#DC143C" /> </SharedStyled.TableListBodyRowDataActionButton>
-                                            </SharedStyled.TableListBodyRowDataActions>
-                                        </SharedStyled.TableListBodyRowData>
-                                    </SharedStyled.TableListBodyRow>
-                                )) }
-                            </tbody>
-                            <tfoot>
-                                <SharedStyled.TableListBodyRow>
-                                    <SharedStyled.TableListBodyRowData colSpan={ 6 }>
-                                        <Paginate page={ page } total={ total } limit={ limit } onPageChange={ setPage } onLimitChange={ (newLimit: number) => { setLimit(newLimit); setPage(1); } } />
-                                    </SharedStyled.TableListBodyRowData>
-                                </SharedStyled.TableListBodyRow>
-                            </tfoot>
-                        </SharedStyled.TableListWrapper>
-                    </SharedStyled.TableWrapper>
+                    <Fragment>
+                        <SharedStyled.TableWrapper>
+                            <SharedStyled.TableListWrapper>
+                                <thead>
+                                    <SharedStyled.TableListHeaderRow>
+                                        <SharedStyled.TableListHeaderRowColumn> Nome </SharedStyled.TableListHeaderRowColumn>
+                                        <SharedStyled.TableListHeaderRowColumn> CNPJ </SharedStyled.TableListHeaderRowColumn>
+                                        <SharedStyled.TableListHeaderRowColumn> Descrição </SharedStyled.TableListHeaderRowColumn>
+                                        <SharedStyled.TableListHeaderRowColumn> Criada em </SharedStyled.TableListHeaderRowColumn>
+                                        <SharedStyled.TableListHeaderRowColumn> Editada em </SharedStyled.TableListHeaderRowColumn>
+                                        <SharedStyled.TableListHeaderRowColumn> </SharedStyled.TableListHeaderRowColumn>
+                                    </SharedStyled.TableListHeaderRow>
+                                </thead>
+                                <tbody>
+                                    { companies.map((company: CompanyResponseDto) => (
+                                        <SharedStyled.TableListBodyRow key={ company.id }>
+                                            <SharedStyled.TableListBodyRowData> { company.name } </SharedStyled.TableListBodyRowData>
+                                            <SharedStyled.TableListBodyRowData> <b> { formatCompanyDocument(company.document) } </b> </SharedStyled.TableListBodyRowData>
+                                            <SharedStyled.TableListBodyRowData> { company.description } </SharedStyled.TableListBodyRowData>
+                                            <SharedStyled.TableListBodyRowData> { formatDate(company.createdAt, true) } </SharedStyled.TableListBodyRowData>
+                                            <SharedStyled.TableListBodyRowData> { formatDate(company.updatedAt, true) } </SharedStyled.TableListBodyRowData>
+                                            <SharedStyled.TableListBodyRowData>
+                                                <SharedStyled.TableListBodyRowDataActions>
+                                                    <SharedStyled.TableListBodyRowDataActionButton onClick={ () => handleUpdate(company.id) }> <Pen size={ 25 } color="#1C70E9" /> </SharedStyled.TableListBodyRowDataActionButton>
+                                                    <SharedStyled.TableListBodyRowDataActionButton onClick={ () => { setSelectedCompanyId(company.id); setIsDeleteModalOpen(true); } }> <Trash size={ 25 } color="#DC143C" /> </SharedStyled.TableListBodyRowDataActionButton>
+                                                </SharedStyled.TableListBodyRowDataActions>
+                                            </SharedStyled.TableListBodyRowData>
+                                        </SharedStyled.TableListBodyRow>
+                                    )) }
+                                </tbody>
+                            </SharedStyled.TableListWrapper>
+                        </SharedStyled.TableWrapper>
+
+                        <SharedStyled.FooterPaginateWrapper>
+                            <Paginate page={ page } total={ total } limit={ limit } onPageChange={ setPage } onLimitChange={ (newLimit: number) => { setLimit(newLimit); setPage(1); } } />
+                        </SharedStyled.FooterPaginateWrapper>
+                    </Fragment>
                 ) : !isLoading ? (
                     <SharedStyled.TableWrapper>
                         <SharedStyled.TableListWrapper>

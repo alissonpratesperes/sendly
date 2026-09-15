@@ -15,7 +15,7 @@ export const LoadingContainer = styled.div`
 export const ListWrapper = styled.div``;
 
 export const SearchInputWrapper = styled.div`
-    margin-bottom: 30px;
+    margin-top: 30px;
     padding: 20px;
     width: 100%;
     position: relative;
@@ -24,8 +24,8 @@ export const SearchInputWrapper = styled.div`
     align-items: center;
     justify-content: center;
     column-gap: 30px;
-    border-radius: 14px;
-    border-top-left-radius: 0px;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
     background-color: #E6E7EC;
 `;
 
@@ -127,8 +127,7 @@ export const SearchInputSubmitText = styled.span`
 `;
 
 export const TableWrapper = styled.div`
-    border-radius: 14px;
-    border: 2px solid #E9EAEB;
+    border: 2px solid #E6E7EC;
     overflow: hidden;
 `;
 
@@ -140,7 +139,7 @@ export const TableListWrapper = styled.table`
 
 export const TableListHeaderRow = styled.tr`
     height: auto;
-    background-color: #F9FAFB;
+    background-color: #E6E7EC;
 `;
 
 export const TableListHeaderRowColumn = styled.th`
@@ -151,7 +150,7 @@ export const TableListHeaderRowColumn = styled.th`
     font-weight: 700;
     font-size: 13px;
     color: #535862;
-    border-bottom: 2px solid #E9EAEB;
+    border-bottom: 2px solid #E6E7EC;
 
         &:nth-last-child(2) {
             width: 137px;
@@ -168,7 +167,7 @@ export const TableListBodyRow = styled.tr`
     padding: 15px 25px 15px 25px;
     height: 75px;
     background-color: #FFFFFF;
-    border-bottom: 2px solid #E9EAEB;
+    border-bottom: 2px solid #E6E7EC;
 `;
 
 export const TableListBodyRowData = styled.td`
@@ -233,9 +232,18 @@ export const TableListBodyRowDataActionButton = styled.button`
             }
 `;
 
-
-
-
+export const FooterPaginateWrapper = styled.div`
+    padding: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    column-gap: 30px;
+    border-bottom-left-radius: 14px;
+    border-bottom-right-radius: 14px;
+    background-color: #E6E7EC;
+`;
 
 
 

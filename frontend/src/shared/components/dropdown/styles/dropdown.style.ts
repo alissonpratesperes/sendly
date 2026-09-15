@@ -20,13 +20,13 @@ export const SelectCommonStyles = <Option,>(custom?: { width?: string }): Styles
         boxShadow: "none",
         outline: "none",
         color: "#171719",
-        borderColor: "#E9EAEB",
+        borderColor: "#171719",
 
             "&:hover": {
                 borderColor: "#171719"
             },
 
-        backgroundColor: state.isDisabled ? "#171719" : "transparent",
+        backgroundColor: state.isDisabled ? "#171719" : "#FFFFFF",
     }),
     menuPortal: (base: CSSObjectWithLabel) => ({
         ...base,

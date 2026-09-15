@@ -40,6 +40,8 @@ const Forgot: React.FC = () => {
     return (
         <Styled.ForgotFormContainer>
             <Styled.ForgotForm onSubmit={handleSubmit}>
+                <Styled.ApplicationBrandContainer> <Styled.ApplicationBrandMark> Sendly </Styled.ApplicationBrandMark> </Styled.ApplicationBrandContainer>
+
                 <Styled.FormTitle> Esqueci minha senha </Styled.FormTitle>
                 <Styled.FormSubtitle> Para solicitar a redefinição de senha, informe seu e-mail abaixo </Styled.FormSubtitle>
 

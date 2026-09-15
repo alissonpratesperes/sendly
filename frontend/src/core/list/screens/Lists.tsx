@@ -1,8 +1,7 @@
-import { Fragment } from 'react';
 import { toast } from 'react-toastify';
 import { PropagateLoader } from 'react-spinners';
 import { Plus, Search, Trash, Pen } from 'lucide-react';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { Fragment, useCallback, useEffect, useState } from 'react';
 
 import { ListForm } from '../forms/listForm.form';
 import { List, Delete } from '../services/list.service';
@@ -120,43 +119,42 @@ const Lists = () => {
                     </SharedStyled.LoadingContainer>
                 ) }
                 { lists.length > 0 ? (
-                    <SharedStyled.TableWrapper>
-                        <SharedStyled.TableListWrapper>
-                            <thead>
-                                <SharedStyled.TableListHeaderRow>
-                                    <SharedStyled.TableListHeaderRowColumn> Nome </SharedStyled.TableListHeaderRowColumn>
-                                    <SharedStyled.TableListHeaderRowColumn> Assunto </SharedStyled.TableListHeaderRowColumn>
-                                    <SharedStyled.TableListHeaderRowColumn> Criada em </SharedStyled.TableListHeaderRowColumn>
-                                    <SharedStyled.TableListHeaderRowColumn> Editada em </SharedStyled.TableListHeaderRowColumn>
-                                    <SharedStyled.TableListHeaderRowColumn> </SharedStyled.TableListHeaderRowColumn>
-                                </SharedStyled.TableListHeaderRow>
-                            </thead>
-                            <tbody>
-                                { lists.map((list: ListResponseDto) => (
-                                    <SharedStyled.TableListBodyRow key={ list.id }>
-                                        <SharedStyled.TableListBodyRowData> <SharedStyled.TableListColorContent> <SharedStyled.TableListColorFragment $color={ list.color } /> <b> { list.name } </b> </SharedStyled.TableListColorContent>
-                                        </SharedStyled.TableListBodyRowData>
-                                        <SharedStyled.TableListBodyRowData> { list.subject } </SharedStyled.TableListBodyRowData>
-                                        <SharedStyled.TableListBodyRowData> { formatDate(list.createdAt, true) } </SharedStyled.TableListBodyRowData>
-                                        <SharedStyled.TableListBodyRowData> { formatDate(list.updatedAt, true) } </SharedStyled.TableListBodyRowData>
-                                        <SharedStyled.TableListBodyRowData>
-                                            <SharedStyled.TableListBodyRowDataActions>
-                                                <SharedStyled.TableListBodyRowDataActionButton onClick={ () => handleUpdate(list.id) }> <Pen size={ 25 } color="#1C70E9" /> </SharedStyled.TableListBodyRowDataActionButton>
-                                                <SharedStyled.TableListBodyRowDataActionButton onClick={ () => { setSelectedListId(list.id); setIsDeleteModalOpen(true); } }> <Trash size={ 25 } color="#DC143C" /> </SharedStyled.TableListBodyRowDataActionButton>
-                                            </SharedStyled.TableListBodyRowDataActions>
-                                        </SharedStyled.TableListBodyRowData>
-                                    </SharedStyled.TableListBodyRow>
-                                )) }
-                            </tbody>
-                            <tfoot>
-                                <SharedStyled.TableListBodyRow>
-                                    <SharedStyled.TableListBodyRowData colSpan={ 6 }>
-                                        <Paginate page={ page } total={ total } limit={ limit } onPageChange={ setPage } onLimitChange={ (newLimit: number) => { setLimit(newLimit); setPage(1); } } />
-                                    </SharedStyled.TableListBodyRowData>
-                                </SharedStyled.TableListBodyRow>
-                            </tfoot>
-                        </SharedStyled.TableListWrapper>
-                    </SharedStyled.TableWrapper>
+                    <Fragment>
+                        <SharedStyled.TableWrapper>
+                            <SharedStyled.TableListWrapper>
+                                <thead>
+                                    <SharedStyled.TableListHeaderRow>
+                                        <SharedStyled.TableListHeaderRowColumn> Nome </SharedStyled.TableListHeaderRowColumn>
+                                        <SharedStyled.TableListHeaderRowColumn> Assunto </SharedStyled.TableListHeaderRowColumn>
+                                        <SharedStyled.TableListHeaderRowColumn> Criada em </SharedStyled.TableListHeaderRowColumn>
+                                        <SharedStyled.TableListHeaderRowColumn> Editada em </SharedStyled.TableListHeaderRowColumn>
+                                        <SharedStyled.TableListHeaderRowColumn> </SharedStyled.TableListHeaderRowColumn>
+                                    </SharedStyled.TableListHeaderRow>
+                                </thead>
+                                <tbody>
+                                    { lists.map((list: ListResponseDto) => (
+                                        <SharedStyled.TableListBodyRow key={ list.id }>
+                                            <SharedStyled.TableListBodyRowData> <SharedStyled.TableListColorContent> <SharedStyled.TableListColorFragment $color={ list.color } /> <b> { list.name } </b> </SharedStyled.TableListColorContent>
+                                            </SharedStyled.TableListBodyRowData>
+                                            <SharedStyled.TableListBodyRowData> { list.subject } </SharedStyled.TableListBodyRowData>
+                                            <SharedStyled.TableListBodyRowData> { formatDate(list.createdAt, true) } </SharedStyled.TableListBodyRowData>
+                                            <SharedStyled.TableListBodyRowData> { formatDate(list.updatedAt, true) } </SharedStyled.TableListBodyRowData>
+                                            <SharedStyled.TableListBodyRowData>
+                                                <SharedStyled.TableListBodyRowDataActions>
+                                                    <SharedStyled.TableListBodyRowDataActionButton onClick={ () => handleUpdate(list.id) }> <Pen size={ 25 } color="#1C70E9" /> </SharedStyled.TableListBodyRowDataActionButton>
+                                                    <SharedStyled.TableListBodyRowDataActionButton onClick={ () => { setSelectedListId(list.id); setIsDeleteModalOpen(true); } }> <Trash size={ 25 } color="#DC143C" /> </SharedStyled.TableListBodyRowDataActionButton>
+                                                </SharedStyled.TableListBodyRowDataActions>
+                                            </SharedStyled.TableListBodyRowData>
+                                        </SharedStyled.TableListBodyRow>
+                                    )) }
+                                </tbody>
+                            </SharedStyled.TableListWrapper>
+                        </SharedStyled.TableWrapper>
+
+                        <SharedStyled.FooterPaginateWrapper>
+                            <Paginate page={ page } total={ total } limit={ limit } onPageChange={ setPage } onLimitChange={ (newLimit: number) => { setLimit(newLimit); setPage(1); } } />
+                        </SharedStyled.FooterPaginateWrapper>
+                    </Fragment>
                 ) : !isLoading ? (
                     <SharedStyled.TableWrapper>
                         <SharedStyled.TableListWrapper>

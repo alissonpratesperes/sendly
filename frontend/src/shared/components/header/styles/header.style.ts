@@ -3,15 +3,27 @@ import { NavLink } from 'react-router-dom';
 
 export const Container = styled.header`
   margin: 0px 30px 0px 30px;
-  padding: 20px 20px 20px 20px;
+  padding: 20px 30px 200px 30px;
   width: auto;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  background-color: #E6E7EC;
+  background-color: #223463;
   border-bottom-left-radius: 14px;
   border-bottom-right-radius: 14px;
+`;
+
+export const ApplicationBrandContainer = styled.div`
+  height: 100%;
+  width: auto;
+`;
+
+export const ApplicationBrandMark = styled.p`
+  font-family: "Alien Block";
+  font-weight: 400;
+  font-size: 55px;
+  color: #FFFFFF;
 `;
 
 export const MenuContainer = styled.div`
@@ -26,30 +38,29 @@ export const MenuContainer = styled.div`
 export const NavItem = styled(NavLink)`
   padding: 15px;
   height: 100%;
-  width: 120px;
+  width: auto;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
-  row-gap: 7.5px;
+  column-gap: 7.5px;
   font-family: "Lato";
   font-weight: 400;
   font-size: 16px;
-  color: #223463;
+  color: #FFFFFF;
   border-radius: 14px;
   transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
 
     &:not(.active):hover {
       font-weight: 700;
-      color: #FFFFFF;
-      background-color: #223463;
+      color: #223463;
+      background-color: #F0F0F5;
       animation: menuEffect 0.6s ease-in-out;
     }
-
     &.active {
       font-weight: 700;
-      color: #FFFFFF;
-      background-color: #223463;
+      color: #223463;
+      background-color: #F0F0F5;
     }
 
       svg {
@@ -77,8 +88,7 @@ export const UserContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 15px;
-  border-radius: 14px;
+  gap: 30px;
 `;
 
 export const UserInformation = styled.div`
@@ -91,17 +101,17 @@ export const UserInformation = styled.div`
 
 export const UserName = styled.h1`
   font-family: "Inter";
-  font-weight: 700;
+  font-weight: 900;
   font-size: 18px;
-  color: #000000;
+  color: #F0F0F5;
 `;
 
 export const UserCompany = styled.h1`
   margin-top: 7.5px;
   font-family: "Inter";
-  font-weight: 500;
-  font-size: 14px;
-  color: #000000;
+  font-weight: 400;
+  font-size: 12px;
+  color: #F0F0F5;
 `;
 
 export const UserActionContainer = styled.div`
@@ -119,15 +129,15 @@ export const LogOutButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  border: none;
+  border: 2px solid #1C70E9;
   background: none;
   border-radius: 14px;
-  color: #1C70E9;
+  color: #F0F0F5;
   cursor: pointer;
   transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
 
     &:hover {
-      color: #FFFFFF;
+      color: #F0F0F5;
       background-color: #1C70E9;
       animation: logOutButtonEffect 0.6s ease-in-out;
     }

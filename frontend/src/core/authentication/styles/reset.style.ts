@@ -19,6 +19,23 @@ export const ResetForm = styled.form`
     justify-content: center;
 `;
 
+export const ApplicationBrandContainer = styled.div`
+    margin-bottom: 60px;
+    height: 100px;
+    width: 100%;
+    display: flex;
+    flex-drection: row;
+    align-items: center;
+    justify-content: center;
+`;
+
+export const ApplicationBrandMark = styled.p`
+    font-family: "Alien Block";
+    font-weight: 400;
+    font-size: 75px;
+    color: #9CA3AF;
+`;
+
 export const FormTitle = styled.h4`
     margin-bottom: 15px;
     align-self: flex-start;

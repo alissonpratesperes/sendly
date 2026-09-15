@@ -1,8 +1,7 @@
-import { Fragment } from 'react';
 import { toast } from 'react-toastify';
 import { PropagateLoader } from 'react-spinners';
 import { Plus, Search, Trash, Pen } from 'lucide-react';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { Fragment, useCallback, useEffect, useState } from 'react';
 
 import { UserForm } from '../forms/userForm.form';
 import { List, Delete } from '../services/user.service';
@@ -118,46 +117,45 @@ const User = () => {
                     </SharedStyled.LoadingContainer>
                 ) }
                 { users.length > 0 ? (
-                    <SharedStyled.TableWrapper>
-                        <SharedStyled.TableListWrapper>
-                            <thead>
-                                <SharedStyled.TableListHeaderRow>
-                                    <SharedStyled.TableListHeaderRowColumn> Nome </SharedStyled.TableListHeaderRowColumn>
-                                    <SharedStyled.TableListHeaderRowColumn> Email </SharedStyled.TableListHeaderRowColumn>
-                                    <SharedStyled.TableListHeaderRowColumn> Status </SharedStyled.TableListHeaderRowColumn>
-                                    <SharedStyled.TableListHeaderRowColumn> Acesso </SharedStyled.TableListHeaderRowColumn>
-                                    <SharedStyled.TableListHeaderRowColumn> Criado em </SharedStyled.TableListHeaderRowColumn>
-                                    <SharedStyled.TableListHeaderRowColumn> Editado em </SharedStyled.TableListHeaderRowColumn>
-                                    <SharedStyled.TableListHeaderRowColumn> </SharedStyled.TableListHeaderRowColumn>
-                                </SharedStyled.TableListHeaderRow>
-                            </thead>
-                            <tbody>
-                                { users.map((user: UserResponseDto) => (
-                                    <SharedStyled.TableListBodyRow key={ user.id }>
-                                        <SharedStyled.TableListBodyRowData> { user.name } </SharedStyled.TableListBodyRowData>
-                                        <SharedStyled.TableListBodyRowData> <b> { user.email } </b> </SharedStyled.TableListBodyRowData>
-                                        <SharedStyled.TableListBodyRowData> <UserBadge variant={ user.isFirstAccess ? "isFirstAccess" : "notIsFirstAccess" } /> </SharedStyled.TableListBodyRowData>
-                                        <SharedStyled.TableListBodyRowData> <UserBadge variant={ user.isSystemRoot ? "isSystemRoot" : "notIsSystemRoot" } /> </SharedStyled.TableListBodyRowData>
-                                        <SharedStyled.TableListBodyRowData> { formatDate(user.createdAt, true) } </SharedStyled.TableListBodyRowData>
-                                        <SharedStyled.TableListBodyRowData> { formatDate(user.updatedAt, true) } </SharedStyled.TableListBodyRowData>
-                                        <SharedStyled.TableListBodyRowData>
-                                            <SharedStyled.TableListBodyRowDataActions>
-                                                <SharedStyled.TableListBodyRowDataActionButton onClick={ () => handleUpdate(user.id) }> <Pen size={ 25 } color="#1C70E9" /> </SharedStyled.TableListBodyRowDataActionButton>
-                                                <SharedStyled.TableListBodyRowDataActionButton onClick={ () => { setSelectedUserId(user.id); setIsDeleteModalOpen(true); } }> <Trash size={ 25 } color="#DC143C" /> </SharedStyled.TableListBodyRowDataActionButton>
-                                            </SharedStyled.TableListBodyRowDataActions>
-                                        </SharedStyled.TableListBodyRowData>
-                                    </SharedStyled.TableListBodyRow>
-                                )) }
-                            </tbody>
-                            <tfoot>
-                                <SharedStyled.TableListBodyRow>
-                                    <SharedStyled.TableListBodyRowData colSpan={ 7 }>
-                                        <Paginate page={ page } total={ total } limit={ limit } onPageChange={ setPage } onLimitChange={ (newLimit: number) => { setLimit(newLimit); setPage(1); } } />
-                                    </SharedStyled.TableListBodyRowData>
-                                </SharedStyled.TableListBodyRow>
-                            </tfoot>
-                        </SharedStyled.TableListWrapper>
-                    </SharedStyled.TableWrapper>
+                    <Fragment>
+                        <SharedStyled.TableWrapper>
+                            <SharedStyled.TableListWrapper>
+                                <thead>
+                                    <SharedStyled.TableListHeaderRow>
+                                        <SharedStyled.TableListHeaderRowColumn> Nome </SharedStyled.TableListHeaderRowColumn>
+                                        <SharedStyled.TableListHeaderRowColumn> Email </SharedStyled.TableListHeaderRowColumn>
+                                        <SharedStyled.TableListHeaderRowColumn> Status </SharedStyled.TableListHeaderRowColumn>
+                                        <SharedStyled.TableListHeaderRowColumn> Acesso </SharedStyled.TableListHeaderRowColumn>
+                                        <SharedStyled.TableListHeaderRowColumn> Criado em </SharedStyled.TableListHeaderRowColumn>
+                                        <SharedStyled.TableListHeaderRowColumn> Editado em </SharedStyled.TableListHeaderRowColumn>
+                                        <SharedStyled.TableListHeaderRowColumn> </SharedStyled.TableListHeaderRowColumn>
+                                    </SharedStyled.TableListHeaderRow>
+                                </thead>
+                                <tbody>
+                                    { users.map((user: UserResponseDto) => (
+                                        <SharedStyled.TableListBodyRow key={ user.id }>
+                                            <SharedStyled.TableListBodyRowData> { user.name } </SharedStyled.TableListBodyRowData>
+                                            <SharedStyled.TableListBodyRowData> <b> { user.email } </b> </SharedStyled.TableListBodyRowData>
+                                            <SharedStyled.TableListBodyRowData> <UserBadge variant={ user.isFirstAccess ? "isFirstAccess" : "notIsFirstAccess" } /> </SharedStyled.TableListBodyRowData>
+                                            <SharedStyled.TableListBodyRowData> <UserBadge variant={ user.isSystemRoot ? "isSystemRoot" : "notIsSystemRoot" } /> </SharedStyled.TableListBodyRowData>
+                                            <SharedStyled.TableListBodyRowData> { formatDate(user.createdAt, true) } </SharedStyled.TableListBodyRowData>
+                                            <SharedStyled.TableListBodyRowData> { formatDate(user.updatedAt, true) } </SharedStyled.TableListBodyRowData>
+                                            <SharedStyled.TableListBodyRowData>
+                                                <SharedStyled.TableListBodyRowDataActions>
+                                                    <SharedStyled.TableListBodyRowDataActionButton onClick={ () => handleUpdate(user.id) }> <Pen size={ 25 } color="#1C70E9" /> </SharedStyled.TableListBodyRowDataActionButton>
+                                                    <SharedStyled.TableListBodyRowDataActionButton onClick={ () => { setSelectedUserId(user.id); setIsDeleteModalOpen(true); } }> <Trash size={ 25 } color="#DC143C" /> </SharedStyled.TableListBodyRowDataActionButton>
+                                                </SharedStyled.TableListBodyRowDataActions>
+                                            </SharedStyled.TableListBodyRowData>
+                                        </SharedStyled.TableListBodyRow>
+                                    )) }
+                                </tbody>
+                            </SharedStyled.TableListWrapper>
+                        </SharedStyled.TableWrapper>
+
+                        <SharedStyled.FooterPaginateWrapper>
+                            <Paginate page={ page } total={ total } limit={ limit } onPageChange={ setPage } onLimitChange={ (newLimit: number) => { setLimit(newLimit); setPage(1); } } />
+                        </SharedStyled.FooterPaginateWrapper>
+                    </Fragment>
                 ) : !isLoading ? (
                     <SharedStyled.TableWrapper>
                         <SharedStyled.TableListWrapper>

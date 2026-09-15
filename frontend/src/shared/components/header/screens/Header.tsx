@@ -21,6 +21,10 @@ const Header: React.FC<HeaderMenuLinksProps> = ({ links }) => {
 
     return (
         <Styled.Container>
+            <Styled.ApplicationBrandContainer>
+                <Styled.ApplicationBrandMark> Sendly </Styled.ApplicationBrandMark>
+            </Styled.ApplicationBrandContainer>
+
             <Styled.MenuContainer>
                 { links.map(({ label, path }, index) => {
                     return (
