@@ -34,8 +34,8 @@ export const AppRouting: React.FC = () => {
                     <Route path="/authentication/reset" element={ <PublicRoute element={ <Reset /> } /> } />
                     <Route path="/authentication/forgot" element={ <PublicRoute element={ <Forgot /> } /> } />
 
+                    <Route path="/" element={ <Navigate to="/home" replace /> } />
                     <Route path="/home" element={ <PrivateRoute element={ <Home /> }/> } />
-                    <Route path="/" element={ <PrivateRoute element={ <Navigate to="/home" replace /> }/> } />
                     <Route path="/registrations/*" element={ <PrivateRoute element={ <Registration /> }/> } />
 
                     <Route path="*" element={ <Navigate to="/" replace /> } />
