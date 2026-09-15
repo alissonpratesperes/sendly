@@ -16,7 +16,7 @@ export const navigationTabs = [
     {
         icon: <ListCheck size={ 25 }/>,
         label: "Listas",
-        path: "stores",
+        path: "list",
     },
     {
         icon: <Contact size={ 25 }/>,

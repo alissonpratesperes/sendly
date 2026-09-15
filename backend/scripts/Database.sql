@@ -48,6 +48,7 @@ CREATE TABLE `List` (
     `DeletedAt` DATETIME(3) NULL,
 
     CONSTRAINT `PK_List` PRIMARY KEY (`Id`),
+    CONSTRAINT `UK_List_CompanyId_Name` UNIQUE (`CompanyId`, `Name`),
 
     CONSTRAINT `FK_List_CompanyId` FOREIGN KEY (`CompanyId`) REFERENCES `Company` (`Id`) ON DELETE RESTRICT ON UPDATE CASCADE
 );

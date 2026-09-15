@@ -16,7 +16,7 @@ export const CompanyForm: React.FC<CompanyFormProps> = ({ initialValues, onCance
         name: "",
         document: "",
         description: "",
-    })
+    });
 
     const handleSubmit = async (formEvent: React.FormEvent<HTMLFormElement>) => {
         formEvent.preventDefault();
@@ -80,7 +80,7 @@ export const CompanyForm: React.FC<CompanyFormProps> = ({ initialValues, onCance
                 description: "",
             });
         }
-    }, [initialValues]);
+    }, [ initialValues ]);
 
     return (
         <Styled.Form id="company-form" onSubmit={ handleSubmit }>

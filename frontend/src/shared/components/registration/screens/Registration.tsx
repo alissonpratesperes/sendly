@@ -3,6 +3,7 @@ import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-
 
 import User from '../../../../core/user/screens/User';
 import * as Styled from '../styles/registration.style';
+import Lists from '../../../../core/list/screens/Lists';
 import { NavigationTab } from '../types/navigationTab.type';
 import PrivateRoute from '../../private/screens/PrivateRoute';
 import Company from '../../../../core/company/screens/Company';
@@ -46,9 +47,11 @@ const Registration: React.FC = () => {
             </Styled.HeaderWrapper>
 
             <Routes>
-                <Route path="/" element={<Navigate to="user" replace />} />
-                <Route path="/user" element={ <PrivateRoute element={ <User /> }/> } />
+                <Route path="/" element={ <Navigate to="company" replace /> } />
+
                 <Route path="/company" element={ <PrivateRoute element={ <Company /> }/> } />
+                <Route path="/user" element={ <PrivateRoute element={ <User /> }/> } />
+                <Route path="/list" element={ <PrivateRoute element={ <Lists /> }/> } />
 
 
 
@@ -56,7 +59,6 @@ const Registration: React.FC = () => {
 
                 {/* Voltar private route englobando as rotas */}
 
-                <Route path="/chains" element={<Chain />} />
                 <Route path="/stores" element={<Store />} />
                 <Route path="action-type" element={<Action />} />
             </Routes>

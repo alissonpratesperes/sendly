@@ -183,6 +183,30 @@ export const Input = styled.input`
         }
 `;
 
+export const ColorInput = styled.input`
+    padding: 15px;
+    padding-top: 25px;
+    height: 60px;
+    width: 100%;
+    border: none;
+    outline: none;
+    background-color: #FFFFFF;
+    border-radius: 14px;
+    cursor: pointer;
+
+        &::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+        &::-webkit-color-swatch {
+            border: none;
+            border-radius: 14px;
+        }
+        &::-moz-color-swatch {
+            border: none;
+            border-radius: 14px;
+        }
+`;
+
 export const Footer = styled.div`
     margin-top: auto;
     padding: 15px;

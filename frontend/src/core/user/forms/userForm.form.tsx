@@ -14,7 +14,7 @@ export const UserForm: React.FC<UserFormProps> = ({ initialValues, onCancel, onS
     const [formData, setFormData] = useState<UserFormData>({
         name: "",
         email: "",
-    })
+    });
 
     const handleSubmit = async (formEvent: React.FormEvent<HTMLFormElement>) => {
         formEvent.preventDefault();

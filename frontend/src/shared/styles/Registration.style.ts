@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import { TableListColorFragmentProps } from '../interfaces/tableListColorFragmentProps.interface';
+
 export const LoadingContainer = styled.div`
     height: 55px;
     width: auto;
@@ -183,8 +185,24 @@ export const TableListBodyRowData = styled.td`
         }
 `;
 
+export const TableListColorFragment = styled.div<TableListColorFragmentProps>`
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+    vertical-align: middle;
+    background-color: ${ ({ $color }) => $color };
+`;
+
+export const TableListColorContent = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 30px;
+`;
+
 export const TableListBodyRowDataActions = styled.div`
-   text-align: center;
+    text-align: center;
     display: flex;
     align-items: center;
     justify-content: center;
