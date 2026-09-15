@@ -1,4 +1,4 @@
-import { Building2, Contact, ListCheck, MessageSquare, Users } from 'lucide-react';
+import { Building2, MessageSquare, NotepadText, PhoneCall, Users } from 'lucide-react';
 
 import { NavigationTab } from '../types/navigationTab.type';
 
@@ -14,12 +14,12 @@ export const navigationTabs = [
         path: "user",
     },
     {
-        icon: <ListCheck size={ 25 }/>,
+        icon: <NotepadText size={ 25 }/>,
         label: "Listas",
         path: "list",
     },
     {
-        icon: <Contact size={ 25 }/>,
+        icon: <PhoneCall size={ 25 }/>,
         label: "Contatos",
         path: "users",
     },
