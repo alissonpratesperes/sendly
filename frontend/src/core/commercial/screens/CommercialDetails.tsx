@@ -16,7 +16,7 @@ import { ReadById, Delete } from '../services/Commercial.service';
 import Modal from '../../../shared/components/modal/screens/Modal';
 import { ReadById as ReadAction } from '../../action/services/Action.service';
 import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
-import { UploaderItemType } from '../../../shared/components/uploader/types/UploaderItemType.type';
+import { UploaderItemType } from '../../../shared/components/uploader/types/uploaderItemType.type';
 import { formatImagesWithBase64ToUploaderUtil } from '../../../shared/utils/formatImagesWithBase64ToUploaderUtil.util';
 
 const CommercialDetails = () => {

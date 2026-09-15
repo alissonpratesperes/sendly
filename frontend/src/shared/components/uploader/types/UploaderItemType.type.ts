@@ -1,3 +1,8 @@
-import { FileWithPath } from "react-dropzone/.";
-
-export type UploaderItemType = | FileWithPath | { url: string; nome: string; imagemBase64?: string; tamanho: number; contentType?: string; file?: File; };
+export type UploaderItemType =
+    | File
+    | {
+        url: string;
+        name: string;
+        size: number;
+        contentType?: string;
+    }

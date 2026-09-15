@@ -103,17 +103,15 @@ export default function Paginate({ page, total, limit, onPageChange, onLimitChan
                     )
                 ) }
 
-                { onLimitChange && (
-                    <Dropdown
-                        width="120px"
-                        isClearable={ false }
-                        isDisabled={ false }
-                        isLoading={ false }
-                        options={ pageOptions }
-                        value={ pageOptions.find(option => option.value === limit) || null }
-                        onChange={ handleLimitChange }
-                    />
-                ) }
+                <Dropdown
+                    width="120px"
+                    isClearable={ false }
+                    isDisabled={ false }
+                    isLoading={ false }
+                    options={ pageOptions }
+                    value={ pageOptions.find(option => option.value === limit) || null }
+                    onChange={ handleLimitChange }
+                />
             </Styled.PagesArrayContainer>
 
             <Styled.PaginateButton disabled={ page === totalPages } onClick={ nextPage }>

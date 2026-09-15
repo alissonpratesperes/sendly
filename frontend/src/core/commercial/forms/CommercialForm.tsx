@@ -20,7 +20,7 @@ import Uploader from '../../../shared/components/uploader/screens/Uploader';
 import { CommercialFormProps } from '../interfaces/CommercialFormProps.interface';
 import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
 import { CommercialFormData, CommercialFormSchema } from '../schemas/CommercialFormSchema.schema';
-import { UploaderItemType } from '../../../shared/components/uploader/types/UploaderItemType.type';
+import { UploaderItemType } from '../../../shared/components/uploader/types/uploaderItemType.type';
 
 export const CommercialForm: React.FC<CommercialFormProps> = ({ initialValues, onSubmit, onCancel }) => {
   const [stores, setStores] = useState<StoreDTO[]>([]);

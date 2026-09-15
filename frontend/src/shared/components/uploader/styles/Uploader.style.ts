@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { DropzoneProps } from '../interfaces/DropzoneProps.interface';
+import { DropzoneProps } from '../interfaces/dropzoneProps.interface';
 
 export const UploaderWrapper = styled.div``;
 
@@ -46,7 +46,7 @@ export const DropzoneStrongContent = styled.h5`
     color: #171719;
 `;
 
-export const DropzoneLabel = styled.h5` 
+export const DropzoneLabel = styled.h5`
     line-height: 18px;
     font-family: 'Lato';
     font-weight: 400;
@@ -91,7 +91,7 @@ export const DraggedFilesListItem = styled.li`
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between; 
+    justify-content: space-between;
 `;
 
 export const DraggedFileIcon = styled.div`
@@ -138,7 +138,7 @@ export const DraggedFilesActionButton = styled.button`
     background-color: transparent;
 `;
 
-export const DraggedFilesActionsContainer = styled.div` 
+export const DraggedFilesActionsContainer = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
