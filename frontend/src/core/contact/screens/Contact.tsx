@@ -1,7 +1,7 @@
 import { toast } from 'react-toastify';
 import { PropagateLoader } from 'react-spinners';
+import { BadgeAlert, Trash, Pen } from 'lucide-react';
 import parsePhoneNumberFromString from 'libphonenumber-js';
-import { BadgeAlert, CirclePlus, Search, Trash, Pen } from 'lucide-react';
 import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 
 import { ContactForm } from '../forms/contactForm.form';
@@ -12,6 +12,7 @@ import { formatDate } from '../../../shared/utils/formatDate.util';
 import Modal from '../../../shared/components/modal/screens/Modal';
 import { ListResponseDto } from '../../list/dtos/listResponse.dto';
 import { ContactFormData } from '../schemas/contactFormSchema.schema';
+import { Finder } from '../../../shared/components/finder/screen/Finder';
 import * as SharedStyled from '../../../shared/styles/Registration.style';
 import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
 import Paginate from '../../../shared/components/paginate/screens/Paginate';
@@ -65,7 +66,7 @@ const Contact = () => {
                     }
                 });
 
-                setListsNames((previousListsNames: Record<number, ListResponseDto>[]) => ({ ...previousListsNames, ...newLists, }));
+                setListsNames((previousListsNames: Record<number, ListResponseDto>) => ({ ...previousListsNames, ...newLists, }));
             }
         } catch (error) {
             toast.error(`Erro ao listar Contatos: ${ error }`);
@@ -102,13 +103,11 @@ const Contact = () => {
         try {
             const contact = contacts.find((contact: ContactResponseDto) => contact.id === id);
 
-            if (!selectedContactId) {
+            if (!contact) {
                 return;
             }
 
-            const updatedAction = { ...contact, active: status };
-
-            await Update(contact.id, updatedAction);
+            await Update({ id: contact.id }, { active: status });
 
             setContacts((previousContacts: ContactResponseDto[]) => previousContacts.map(contact => (contact.id === id ? { ...contact, active: status } : contact)));
         } catch (error) {
@@ -155,19 +154,7 @@ const Contact = () => {
     return (
         <Fragment>
             <SharedStyled.ListWrapper>
-                <SharedStyled.SearchInputWrapper>
-                    <SharedStyled.SearchInputContainer>
-                        <Search size={ 25 } color="#1C70E9" />
-
-                        <SharedStyled.SearchInputField type="text" placeholder="Pesquise um contato por nome ou telefone" value={ search } onChange={ (inputEvent) => { setSearch(inputEvent.target.value); setPage(1); } } />
-                    </SharedStyled.SearchInputContainer>
-
-                    <SharedStyled.AddButton onClick={ handleCreate }>
-                        <CirclePlus size={ 25 } />
-
-                        <SharedStyled.SearchInputSubmitText> Cadastrar contato </SharedStyled.SearchInputSubmitText>
-                    </SharedStyled.AddButton>
-                </SharedStyled.SearchInputWrapper>
+                <Finder placeholder="Pesquise um contato por nome ou telefone" buttonText="Cadastrar contato" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } } />
 
                 { isLoading && (
                     <SharedStyled.LoadingContainer>
@@ -208,9 +195,7 @@ const Contact = () => {
                             </SharedStyled.TableListWrapper>
                         </SharedStyled.TableWrapper>
 
-                        <SharedStyled.FooterPaginateWrapper>
-                            <Paginate page={ page } total={ total } limit={ limit } onPageChange={ setPage } onLimitChange={ (newLimit: number) => { setLimit(newLimit); setPage(1); } } />
-                        </SharedStyled.FooterPaginateWrapper>
+                        <Paginate page={ page } total={ total } limit={ limit } onPageChange={ setPage } onLimitChange={ (newLimit: number) => { setLimit(newLimit); setPage(1); } } />
                     </Fragment>
                 ) : !isLoading ? (
                     <SharedStyled.NotFoundRegisterContainer>

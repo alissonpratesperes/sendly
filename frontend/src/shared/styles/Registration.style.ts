@@ -230,14 +230,7 @@ export const TableListBodyRowDataActionButton = styled.button`
             }
 `;
 
-export const FooterPaginateWrapper = styled.div`
-    margin-top: 30px;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    column-gap: 30px;
+export const FooterPaginateWrapper = styled.div``;
 `;
 
 export const NotFoundRegisterContainer = styled.div`

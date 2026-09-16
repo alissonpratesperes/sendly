@@ -6,4 +6,5 @@ export interface CreateContactCommandDto {
     name: string;
     phone: string;
     country: CountryCode | "";
+    active?: boolean;
 }
