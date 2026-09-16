@@ -1,46 +1,49 @@
 import styled from 'styled-components';
 
 export const HeaderWrapper = styled.header`
+    margin-top: -170px;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
 `;
 
 export const SessionInformationWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
 `;
 
 export const SessionTitle = styled.h1`
     margin-bottom: 7.5px;
-    align-self: flex-start;
     font-family: "Inter";
-    font-weight: 700;
+    font-weight: 900;
     font-size: 25px;
-    color: #171719;
+    color: #1C70E9;
 `;
 
 export const SessionSubtitle = styled.span`
-    margin-bottom: 15px;
+    margin-bottom: 30px;
     align-self: flex-start;
     font-family: "Inter";
-    font-weight: 400;
-    font-size: 14px;
-    color: #525059;
+    font-weight: 500;
+    font-size: 18px;
+    color: #1C70E9;
 `;
 
 export const IframeContainer = styled.div`
     height: calc(100vh - 180px);
     width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 `;
 
 export const BullBoardIframe = styled.iframe`
-    margin-top: 15px;
     height: 100%;
-    width: 100%;
+    width: 97%;
     border: none;
     display: block;
     overflow: hidden;

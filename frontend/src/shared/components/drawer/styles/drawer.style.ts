@@ -220,7 +220,7 @@ export const Footer = styled.div`
         &:has(.secondary:hover) {
             .primary {
                 font-weight: 400;
-                color: #1C70E9;
+                color: #238636;
                 background-color: transparent;
             }
         }
@@ -244,20 +244,20 @@ export const FooterButton = styled.button<{ $variant?: "primary" | "secondary"; 
 
     font-weight: ${ ({ $variant }) => $variant === "primary" ? "700" : "400" };
     color: ${ ({ $variant }) => $variant === "primary" ? "#FFFFFF" : "#223463" };
-    background-color: ${ ({ $variant }) => $variant === "primary" ? "#1C70E9" : "transparent" };
+    background-color: ${ ({ $variant }) => $variant === "primary" ? "#238636" : "transparent" };
 
         &.secondary:hover {
             font-weight: 700;
             color: #FFFFFF;
             background-color: #223463;
-            animation: buttonEffect 0.6s ease-in-out;
+            animation: footerButtonEffect 0.6s ease-in-out;
         }
 
             svg {
                 stroke: currentColor;
             }
 
-                @keyframes buttonEffect {
+                @keyframes footerButtonEffect {
                     0% {
                         transform: scale(1.08);
                     }

@@ -129,16 +129,17 @@ export const LogOutButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid #1C70E9;
-  background: none;
+  border: none;
+  outline: none;
   border-radius: 14px;
-  color: #F0F0F5;
+  background: none;
+  color: #DC143C;
   cursor: pointer;
-  transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
+  transition: opacity 0.3s ease, opacity 0.3s ease, opacity 0.3s ease;
 
     &:hover {
-      color: #F0F0F5;
-      background-color: #1C70E9;
+      background: #DC143C;
+      color: #FFFFFF;
       animation: logOutButtonEffect 0.6s ease-in-out;
     }
 

@@ -1,6 +1,6 @@
+import { AtSign } from 'lucide-react';
 import { toast } from 'react-toastify';
 import React, { useState } from 'react';
-import { MailCheckIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { PropagateLoader } from 'react-spinners';
 
@@ -53,11 +53,11 @@ const Forgot: React.FC = () => {
 
                 { isLoading ? (
                     <Styled.LoadingContainer>
-                        <PropagateLoader size={ 25 } color="#171719" />
+                        <PropagateLoader size={ 25 } color="#1C70E9" />
                     </Styled.LoadingContainer>
                 ) : (
                     <Styled.ForgotButton type="submit">
-                        <MailCheckIcon size={ 25 } color="#FFFFFF" />
+                        <AtSign size={ 25 } color="#FFFFFF" />
 
                         <Styled.ForgotButtonText> Solicitar link </Styled.ForgotButtonText>
                     </Styled.ForgotButton>

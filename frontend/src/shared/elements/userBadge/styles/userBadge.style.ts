@@ -13,7 +13,7 @@ const userBadgeColorMapping: Record<UserBadgeVariant, UserBadgeColorProps> = {
 
 export const UserBadgeContainer = styled.span<UserBadgeProps>`
     padding: 5px;
-    height: auto;
+    max-height: 25px;
     width: 120px;
     display: flex;
     align-items: center;

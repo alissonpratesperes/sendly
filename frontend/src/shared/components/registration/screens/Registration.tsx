@@ -7,6 +7,7 @@ import Lists from '../../../../core/list/screens/Lists';
 import { NavigationTab } from '../types/navigationTab.type';
 import PrivateRoute from '../../private/screens/PrivateRoute';
 import Company from '../../../../core/company/screens/Company';
+import Contact from '../../../../core/contact/screens/Contact';
 import { navigationTabs } from '../constants/navigationTabs.constant';
 
 
@@ -52,6 +53,7 @@ const Registration: React.FC = () => {
                 <Route path="/company" element={ <PrivateRoute element={ <Company /> }/> } />
                 <Route path="/user" element={ <PrivateRoute element={ <User /> }/> } />
                 <Route path="/list" element={ <PrivateRoute element={ <Lists /> }/> } />
+                <Route path="/contact" element={ <PrivateRoute element={ <Contact /> }/> } />
 
 
 

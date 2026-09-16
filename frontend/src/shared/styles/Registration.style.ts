@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import { TableListColorFragmentProps } from '../interfaces/tableListColorFragmentProps.interface';
 
 export const LoadingContainer = styled.div`
-    height: 55px;
+    height: 300px;
     width: auto;
     display: flex;
     flex-direction: row;
-    align-items: flex-end;
+    align-items: center;
     justify-content: center;
     background: transparent;
 `;
@@ -16,7 +16,7 @@ export const ListWrapper = styled.div``;
 
 export const SearchInputWrapper = styled.div`
     margin-top: 30px;
-    padding: 20px;
+    margin-bottom: 30px;
     width: 100%;
     position: relative;
     display: flex;
@@ -26,7 +26,6 @@ export const SearchInputWrapper = styled.div`
     column-gap: 30px;
     border-top-left-radius: 14px;
     border-top-right-radius: 14px;
-    background-color: #E6E7EC;
 `;
 
 export const SearchInputContainer = styled.div`
@@ -86,28 +85,28 @@ export const AddButton = styled.button`
     align-items: center;
     justify-content: center;
     font-family: "Lato";
-    font-weight: 400;
+    font-weight: 700;
     font-size: 16px;
-    color: #1C70E9;
+    color: #238636;
     border: none;
     outline: none;
     border-radius: 14px;
+    border: 2px solid #238636;
     background-color: transparent;
     cursor: pointer;
-    transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
+    transition: color 0.3s ease, background-color 0.3s ease;
 
         &:hover {
-            font-weight: 700;
             color: #FFFFFF;
-            background-color: #1C70E9;
-            animation: logOutButtonEffect 0.6s ease-in-out;
+            background-color: #238636;
+            animation: addButtonEffect 0.6s ease-in-out;
         }
 
             svg {
                 stroke: currentColor;
             }
 
-                @keyframes logOutButtonEffect {
+                @keyframes addButtonEffect {
                     0% {
                         transform: scale(1.08);
                     }
@@ -127,8 +126,8 @@ export const SearchInputSubmitText = styled.span`
 `;
 
 export const TableWrapper = styled.div`
-    border: 2px solid #E6E7EC;
     overflow: hidden;
+    border-radius: 14px;
 `;
 
 export const TableListWrapper = styled.table`
@@ -144,13 +143,12 @@ export const TableListHeaderRow = styled.tr`
 
 export const TableListHeaderRowColumn = styled.th`
     padding: 15px 25px 15px 25px;
-    text-align: left;
     text-transform: uppercase;
     font-family: "Inter";
     font-weight: 700;
     font-size: 13px;
     color: #535862;
-    border-bottom: 2px solid #E6E7EC;
+    text-align: left;
 
         &:nth-last-child(2) {
             width: 137px;
@@ -167,7 +165,7 @@ export const TableListBodyRow = styled.tr`
     padding: 15px 25px 15px 25px;
     height: 75px;
     background-color: #FFFFFF;
-    border-bottom: 2px solid #E6E7EC;
+    border-bottom: 1px solid #E6E7EC;
 `;
 
 export const TableListBodyRowData = styled.td`
@@ -219,11 +217,11 @@ export const TableListBodyRowDataActionButton = styled.button`
 
             @keyframes tableButtonEffect {
                 0% {
-                    transform: scale(1.30);
+                    transform: scale(1.08);
                 }
 
                 50% {
-                    transform: scale(0.80);
+                    transform: scale(0.95);
                 }
 
                 100% {
@@ -233,17 +231,31 @@ export const TableListBodyRowDataActionButton = styled.button`
 `;
 
 export const FooterPaginateWrapper = styled.div`
-    padding: 20px;
+    margin-top: 30px;
     width: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     column-gap: 30px;
-    border-bottom-left-radius: 14px;
-    border-bottom-right-radius: 14px;
-    background-color: #E6E7EC;
 `;
+
+export const NotFoundRegisterContainer = styled.div`
+    height: 300px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+`
+
+export const NotFoundRegisterText = styled.div`
+    margin-top: 30px;
+    font-family: "Inter";
+    font-weight: 900;
+    font-size: 18px;
+    color: #535862;
+`
 
 
 

@@ -80,7 +80,7 @@ export const ListForm: React.FC<ListFormProps> = ({ initialValues, onCancel, onS
                 companyId: 0,
                 name: "",
                 subject: "",
-                color: "",
+                color: "#FFFFFF",
             });
         }
     }, [ initialValues ]);

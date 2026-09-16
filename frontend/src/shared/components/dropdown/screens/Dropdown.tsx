@@ -3,7 +3,7 @@ import Select, { SingleValue } from 'react-select';
 import { SelectCommonStyles } from '../styles/dropdown.style';
 import { DropdownProps } from '../interfaces/dropdownProps.interface';
 
-export default function Dropdown<Option>({ width, isClearable, isDisabled, isLoading, options, placeholder, value, onChange, ...props }: DropdownProps<Option>) {
+export default function Dropdown<Option>({ width, isInPagination, isClearable, isDisabled, isLoading, options, placeholder, value, isSearchable, onChange, ...props }: DropdownProps<Option>) {
     return (
         <Select<Option>
             isClearable={ isClearable }
@@ -19,11 +19,11 @@ export default function Dropdown<Option>({ width, isClearable, isDisabled, isLoa
 
             isMulti={ false }
             menuPosition="fixed"
-            isSearchable={ false }
+            isSearchable={ isSearchable }
             closeMenuOnSelect={ true }
             hideSelectedOptions={ false }
             menuPortalTarget={ document.body }
-            styles={SelectCommonStyles({ width })}
+            styles={SelectCommonStyles({ width, isInPagination })}
             components={{ IndicatorSeparator: () => null, ...props.components }}
         />
     );

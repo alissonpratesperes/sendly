@@ -84,21 +84,21 @@ const Reset: React.FC = () => {
                 <Styled.InputWrapper>
                     <Styled.Label htmlFor="newPassword"> NOVA SENHA </Styled.Label>
 
-                    <Styled.Input type={showPassword ? "text" : "password"} id="newPassword" placeholder="Digite sua nova senha" value={newPassword} onChange={(inputEvent) => setNewPassword(inputEvent.target.value)} required />
+                    <Styled.Input type={ showPassword ? "text" : "password" } id="newPassword" placeholder="Digite sua nova senha" value={ newPassword } onChange={ (inputEvent) => setNewPassword(inputEvent.target.value) } required />
 
-                    <Styled.EyeButton type="button" onClick={() => setShowPassword(!showPassword)}> {showPassword ? ( <EyeIcon size={25} color="#1C70E9" /> ) : ( <EyeOffIcon size={25} color="#1C70E9" /> )} </Styled.EyeButton>
+                    <Styled.EyeButton type="button" onClick={ () => setShowPassword(!showPassword) }> { showPassword ? ( <EyeIcon size={25} color="#238636" /> ) : ( <EyeOffIcon size={25} color="#238636" /> ) } </Styled.EyeButton>
                 </Styled.InputWrapper>
                 <Styled.InputWrapper>
                     <Styled.Label htmlFor="confirmPassword"> CONFIRMAR NOVA SENHA </Styled.Label>
 
-                    <Styled.Input type={showConfirmPassword ? "text" : "password"} id="confirmPassword" placeholder="Confirme sua nova senha" value={confirmPassword} onChange={(inputEvent) => setConfirmPassword(inputEvent.target.value)} required />
+                    <Styled.Input type={ showConfirmPassword ? "text" : "password" } id="confirmPassword" placeholder="Confirme sua nova senha" value={ confirmPassword } onChange={ (inputEvent) => setConfirmPassword(inputEvent.target.value) } required />
 
-                    <Styled.EyeButton type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)}> {showConfirmPassword ? ( <EyeIcon size={25} color="#1C70E9" /> ) : ( <EyeOffIcon size={25} color="#1C70E9" /> )} </Styled.EyeButton>
+                    <Styled.EyeButton type="button" onClick={ () => setShowConfirmPassword(!showConfirmPassword) }> { showConfirmPassword ? ( <EyeIcon size={25} color="#238636" /> ) : ( <EyeOffIcon size={25} color="#238636" /> ) } </Styled.EyeButton>
                 </Styled.InputWrapper>
 
                 { isLoading ? (
                     <Styled.ResetFormContainer>
-                        <PropagateLoader size={ 25 } color="#171719" />
+                        <PropagateLoader size={ 25 } color="#1C70E9" />
                     </Styled.ResetFormContainer>
                 ) : (
                     <Styled.PasswordButton type="submit">

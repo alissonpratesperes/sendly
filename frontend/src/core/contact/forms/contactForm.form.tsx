@@ -1,7 +1,7 @@
 import * as z from 'zod';
 import { toast } from 'react-toastify';
 import React, { useState, useEffect } from 'react';
-import { AsYouType, getCountries, getCountryCallingCode, parsePhoneNumberFromString } from 'libphonenumber-js';
+import { AsYouType, CountryCode, getCountries, getCountryCallingCode, parsePhoneNumberFromString } from 'libphonenumber-js';
 
 import { List } from '../../list/services/list.service';
 import { Create, Update } from '../services/contact.service';
@@ -23,11 +23,15 @@ export const ContactForm: React.FC<ContactFormProps> = ({ initialValues, onCance
         .map((list: ListResponseDto) => ({ value: Number(list.id), label: list.name }))
         .sort((a, b) => a.label.localeCompare(b.label));
 
-    const regionNames = new Intl.DisplayNames(["pt-BR"], { type: "region" } );
-    const optionsForCountries = getCountries().map((country) => ({
-        value: country,
-        label: `${ country.toUpperCase().replace(/./g, (char) => String.fromCodePoint(127397 + char.charCodeAt(0))) } ${ regionNames.of(country) } +${ getCountryCallingCode(country) }`,
-    }));
+    const regionNames = new Intl.DisplayNames(["pt-BR"], { type: "region", } );
+    const optionsForCountries = getCountries()
+        .map((country) => ({
+            value: country,
+            label: `${ country.toUpperCase().replace(/./g, (char) => String.fromCodePoint(127397 + char.charCodeAt(0))) } ${ regionNames.of(country) } +${ getCountryCallingCode(country) }`,
+            countryName: regionNames.of(country) ?? "",
+        }))
+        .sort((a, b) => a.countryName.localeCompare(b.countryName, "pt-BR"))
+        .map(({ countryName, ...option }) => option);
 
     const [formData, setFormData] = useState<ContactFormData>({
         companyId: 0,
@@ -42,7 +46,8 @@ export const ContactForm: React.FC<ContactFormProps> = ({ initialValues, onCance
 
         setFormData((previous: ContactFormData) => {
             if (name === "phone" && previous.country) {
-                const formattedPhone = new AsYouType(previous.country).input(value);
+                const country = previous.country as CountryCode;
+                const formattedPhone = new AsYouType(country).input(value);
 
                 return {
                     ...previous,
@@ -53,18 +58,21 @@ export const ContactForm: React.FC<ContactFormProps> = ({ initialValues, onCance
 
             return {
                 ...previous,
-
                 [name]: value,
             };
         });
-    }
+    };
     const handleSubmit = async (formEvent: React.FormEvent<HTMLFormElement>) => {
         formEvent.preventDefault();
 
         try {
             const validatedFormData = ContactFormSchema.parse(formData);
-            const parsedPhone = parsePhoneNumberFromString(validatedFormData.phone, validatedFormData.country);
 
+            if (!validatedFormData.country) {
+                throw new Error("O país é obrigatório");
+            }
+
+            const parsedPhone = parsePhoneNumberFromString(validatedFormData.phone, validatedFormData.country);
 
             if (!parsedPhone || !parsedPhone.isValid()) {
                 throw new Error("O telefone informado é inválido");
@@ -155,7 +163,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ initialValues, onCance
                 listId: 0,
                 name: "",
                 phone: "",
-                country: "",
+                country: "BR",
             });
         }
     }, [ initialValues ]);
@@ -163,12 +171,10 @@ export const ContactForm: React.FC<ContactFormProps> = ({ initialValues, onCance
     return (
         <Styled.Form id="contact-form" onSubmit={ handleSubmit }>
             <Styled.FieldWrapper>
-                <Styled.Label htmlFor="listId"> Lista </Styled.Label>
-
                 <Dropdown
                     inputId="listId"
                     width="100%"
-                    isClearable={ false }
+                    isClearable={ true }
                     isDisabled={ false }
                     isLoading={ isListsLoading }
                     options={ optionsForLists }
@@ -190,12 +196,10 @@ export const ContactForm: React.FC<ContactFormProps> = ({ initialValues, onCance
                 <Styled.Input id="phone" name="phone" placeholder="Digite o telefone do contato" value={ formData.phone } onChange={ handleChange } />
             </Styled.FieldWrapper>
             <Styled.FieldWrapper>
-                <Styled.Label htmlFor="country"> País </Styled.Label>
-
                 <Dropdown
                     inputId="country"
                     width="100%"
-                    isClearable={ false }
+                    isClearable={ true }
                     isDisabled={ false }
                     isLoading={ false }
                     options={ optionsForCountries }

@@ -32,7 +32,7 @@ export const ApplicationBrandContainer = styled.div`
 export const ApplicationBrandMark = styled.p`
     font-family: "Alien Block";
     font-weight: 400;
-    font-size: 75px;
+    font-size: 85px;
     color: #9CA3AF;
 `;
 
@@ -176,6 +176,6 @@ export const CompanyPresentation = styled.div`
 export const CopyrightParagraph = styled.p`
     font-family: "Inter";
     font-weight: 500;
-    font-size: 12px;
+    font-size: 14px;
     color: #9CA3AF;
 `;

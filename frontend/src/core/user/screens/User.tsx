@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify';
 import { PropagateLoader } from 'react-spinners';
-import { Plus, Search, Trash, Pen } from 'lucide-react';
+import { BadgeAlert, CirclePlus, Search, Trash, Pen } from 'lucide-react';
 import React, { Fragment, useCallback, useEffect, useState } from 'react';
 
 import { UserForm } from '../forms/userForm.form';
@@ -10,9 +10,9 @@ import { UserFormData } from '../schemas/userFormSchema.schema';
 import Modal from '../../../shared/components/modal/screens/Modal';
 import { formatDate } from '../../../shared/utils/formatDate.util';
 import * as SharedStyled from '../../../shared/styles/Registration.style';
+import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
 import Paginate from '../../../shared/components/paginate/screens/Paginate';
 import UserBadge from '../../../shared/elements/userBadge/screens/UserBadge';
-import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
 
 const User = () => {
@@ -105,7 +105,7 @@ const User = () => {
                     </SharedStyled.SearchInputContainer>
 
                     <SharedStyled.AddButton onClick={ handleCreate }>
-                        <Plus size={ 25 } />
+                        <CirclePlus size={ 25 } />
 
                         <SharedStyled.SearchInputSubmitText> Cadastrar usuário </SharedStyled.SearchInputSubmitText>
                     </SharedStyled.AddButton>
@@ -113,7 +113,7 @@ const User = () => {
 
                 { isLoading && (
                     <SharedStyled.LoadingContainer>
-                        <PropagateLoader size={ 25 } color="#171719" />
+                        <PropagateLoader size={ 25 } color="#1C70E9" />
                     </SharedStyled.LoadingContainer>
                 ) }
                 { users.length > 0 ? (
@@ -142,7 +142,7 @@ const User = () => {
                                             <SharedStyled.TableListBodyRowData> { formatDate(user.updatedAt, true) } </SharedStyled.TableListBodyRowData>
                                             <SharedStyled.TableListBodyRowData>
                                                 <SharedStyled.TableListBodyRowDataActions>
-                                                    <SharedStyled.TableListBodyRowDataActionButton onClick={ () => handleUpdate(user.id) }> <Pen size={ 25 } color="#1C70E9" /> </SharedStyled.TableListBodyRowDataActionButton>
+                                                    <SharedStyled.TableListBodyRowDataActionButton onClick={ () => handleUpdate(user.id) }> <Pen size={ 25 } color="#238636" /> </SharedStyled.TableListBodyRowDataActionButton>
                                                     <SharedStyled.TableListBodyRowDataActionButton onClick={ () => { setSelectedUserId(user.id); setIsDeleteModalOpen(true); } }> <Trash size={ 25 } color="#DC143C" /> </SharedStyled.TableListBodyRowDataActionButton>
                                                 </SharedStyled.TableListBodyRowDataActions>
                                             </SharedStyled.TableListBodyRowData>
@@ -157,25 +157,11 @@ const User = () => {
                         </SharedStyled.FooterPaginateWrapper>
                     </Fragment>
                 ) : !isLoading ? (
-                    <SharedStyled.TableWrapper>
-                        <SharedStyled.TableListWrapper>
-                            <thead>
-                                <SharedStyled.TableListHeaderRow>
-                                    <SharedStyled.TableListHeaderRowColumn>
-                                        Verifique os dados informados na busca, ou se for a sua primeira vez utilizando a aplicação, realize o cadastro das informações!
-                                    </SharedStyled.TableListHeaderRowColumn>
-                                </SharedStyled.TableListHeaderRow>
-                            </thead>
+                    <SharedStyled.NotFoundRegisterContainer>
+                        <BadgeAlert size={ 50 } color="#1C70E9"/>
 
-                            <tbody>
-                                <SharedStyled.TableListBodyRow>
-                                    <SharedStyled.TableListBodyRowData>
-                                        Nenhum registro encontrado por aqui.
-                                    </SharedStyled.TableListBodyRowData>
-                                </SharedStyled.TableListBodyRow>
-                            </tbody>
-                        </SharedStyled.TableListWrapper>
-                    </SharedStyled.TableWrapper>
+                        <SharedStyled.NotFoundRegisterText> Nenhum registro encontrado </SharedStyled.NotFoundRegisterText>
+                    </SharedStyled.NotFoundRegisterContainer>
                 ) : null }
             </SharedStyled.ListWrapper>
 

@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify';
 import { PropagateLoader } from 'react-spinners';
-import { Plus, Search, Trash, Pen } from 'lucide-react';
+import { BadgeAlert, CirclePlus, Search, Trash, Pen } from 'lucide-react';
 import React, { Fragment, useCallback, useEffect, useState } from 'react';
 
 import { CompanyForm } from '../forms/companyForm.form';
@@ -106,7 +106,7 @@ const Company = () => {
                     </SharedStyled.SearchInputContainer>
 
                     <SharedStyled.AddButton onClick={ handleCreate }>
-                        <Plus size={ 25 } />
+                        <CirclePlus size={ 25 } />
 
                         <SharedStyled.SearchInputSubmitText> Cadastrar empresa </SharedStyled.SearchInputSubmitText>
                     </SharedStyled.AddButton>
@@ -114,7 +114,7 @@ const Company = () => {
 
                 { isLoading && (
                     <SharedStyled.LoadingContainer>
-                        <PropagateLoader size={ 25 } color="#171719" />
+                        <PropagateLoader size={ 25 } color="#1C70E9" />
                     </SharedStyled.LoadingContainer>
                 ) }
                 { companies.length > 0 ? (
@@ -141,7 +141,7 @@ const Company = () => {
                                             <SharedStyled.TableListBodyRowData> { formatDate(company.updatedAt, true) } </SharedStyled.TableListBodyRowData>
                                             <SharedStyled.TableListBodyRowData>
                                                 <SharedStyled.TableListBodyRowDataActions>
-                                                    <SharedStyled.TableListBodyRowDataActionButton onClick={ () => handleUpdate(company.id) }> <Pen size={ 25 } color="#1C70E9" /> </SharedStyled.TableListBodyRowDataActionButton>
+                                                    <SharedStyled.TableListBodyRowDataActionButton onClick={ () => handleUpdate(company.id) }> <Pen size={ 25 } color="#238636" /> </SharedStyled.TableListBodyRowDataActionButton>
                                                     <SharedStyled.TableListBodyRowDataActionButton onClick={ () => { setSelectedCompanyId(company.id); setIsDeleteModalOpen(true); } }> <Trash size={ 25 } color="#DC143C" /> </SharedStyled.TableListBodyRowDataActionButton>
                                                 </SharedStyled.TableListBodyRowDataActions>
                                             </SharedStyled.TableListBodyRowData>
@@ -156,24 +156,11 @@ const Company = () => {
                         </SharedStyled.FooterPaginateWrapper>
                     </Fragment>
                 ) : !isLoading ? (
-                    <SharedStyled.TableWrapper>
-                        <SharedStyled.TableListWrapper>
-                            <thead>
-                                <SharedStyled.TableListHeaderRow>
-                                    <SharedStyled.TableListHeaderRowColumn>
-                                        Verifique os dados informados na busca, ou se for a sua primeira vez utilizando a aplicação, realize o cadastro das informações!
-                                    </SharedStyled.TableListHeaderRowColumn>
-                                </SharedStyled.TableListHeaderRow>
-                            </thead>
-                            <tbody>
-                                <SharedStyled.TableListBodyRow>
-                                    <SharedStyled.TableListBodyRowData>
-                                        Nenhum registro encontrado por aqui.
-                                    </SharedStyled.TableListBodyRowData>
-                                </SharedStyled.TableListBodyRow>
-                            </tbody>
-                        </SharedStyled.TableListWrapper>
-                    </SharedStyled.TableWrapper>
+                    <SharedStyled.NotFoundRegisterContainer>
+                        <BadgeAlert size={ 50 } color="#1C70E9"/>
+
+                        <SharedStyled.NotFoundRegisterText> Nenhum registro encontrado </SharedStyled.NotFoundRegisterText>
+                    </SharedStyled.NotFoundRegisterContainer>
                 ) : null }
             </SharedStyled.ListWrapper>
 

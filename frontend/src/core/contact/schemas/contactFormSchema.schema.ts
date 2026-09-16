@@ -1,6 +1,8 @@
 import { z } from 'zod';
 import { CountryCode, getCountries } from 'libphonenumber-js';
 
+const countries = getCountries();
+
 export const ContactFormSchema = z.object({
     id: z
         .number()
@@ -25,11 +27,13 @@ export const ContactFormSchema = z.object({
         .refine((inputValue) => inputValue.trim().length > 0, { message: "O telefone não pode conter apenas espaços" })
         .max(20, "O telefone não pode ter mais que 20 caracteres"),
 
-    country: z
+        country: z
         .string()
-        .nonempty("O país é obrigatório")
-        .length(2, "O país deve possuir 2 caracteres")
-        .refine((country) => getCountries().includes(country as CountryCode), { message: "O país selecionado é inválido" })
+        .refine(
+            (country) => country === "" || countries.includes(country as CountryCode),
+            "País inválido"
+        )
+        .transform((country) => country as CountryCode | ""),
 });
 
 export type ContactFormData = z.infer<typeof ContactFormSchema>;

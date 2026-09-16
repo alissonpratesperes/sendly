@@ -71,13 +71,13 @@ const Authentication: React.FC = () => {
 
                     <Styled.Input type={ showPassword ? "text" : "password" } id="password" placeholder="Digite sua senha" value={ password } onChange={ (inputEvent) => setPassword(inputEvent.target.value) } required />
 
-                   <Styled.EyeButton type="button" onClick={ togglePasswordVisibility }> { showPassword ? ( <EyeIcon size={ 25 } color="#1C70E9" /> ) : ( <EyeOffIcon size={ 25 } color="#1C70E9" /> ) } </Styled.EyeButton>
+                   <Styled.EyeButton type="button" onClick={ togglePasswordVisibility }> { showPassword ? ( <EyeIcon size={ 25 } color="#238636" /> ) : ( <EyeOffIcon size={ 25 } color="#238636" /> ) } </Styled.EyeButton>
                 </Styled.InputWrapper>
 
                 <Styled.LoginButtonsContainer>
                     { isLoading ? (
                         <Styled.LoadingContainer>
-                            <PropagateLoader size={ 25 } color="#171719" />
+                            <PropagateLoader size={ 25 } color="#1C70E9" />
                         </Styled.LoadingContainer>
                     ) : (
                         <Fragment>

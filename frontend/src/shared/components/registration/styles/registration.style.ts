@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { NavigationTabProps } from '../interfaces/navigationTabProps.interface';
 
 export const HeaderWrapper = styled.header`
-    margin-top: -167px;
+    margin-top: -170px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -22,16 +22,16 @@ export const SessionTitle = styled.h1`
     font-family: "Inter";
     font-weight: 900;
     font-size: 25px;
-    color: #F0F0F5;
+    color: #1C70E9;
 `;
 
 export const SessionSubtitle = styled.span`
     margin-bottom: 30px;
     align-self: flex-start;
     font-family: "Inter";
-    font-weight: 400;
-    font-size: 16px;
-    color: #F0F0F5;
+    font-weight: 500;
+    font-size: 18px;
+    color: #1C70E9;
 `;
 
 export const NavigationTabs = styled.nav`

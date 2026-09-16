@@ -9,7 +9,7 @@ const Home: React.FC = () => {
                 <Styled.SessionInformationWrapper>
                     <Styled.SessionTitle> Gerenciar envios </Styled.SessionTitle>
 
-                    <Styled.SessionSubtitle> Monitore os envios realizados, e fique por dentro da execução </Styled.SessionSubtitle>
+                    <Styled.SessionSubtitle> Monitore os envios, e fique por dentro da execução </Styled.SessionSubtitle>
                 </Styled.SessionInformationWrapper>
             </Styled.HeaderWrapper>
 

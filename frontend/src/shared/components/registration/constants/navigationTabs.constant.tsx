@@ -21,7 +21,7 @@ export const navigationTabs = [
     {
         icon: <PhoneCall size={ 25 }/>,
         label: "Contatos",
-        path: "users",
+        path: "contact",
     },
     {
         icon: <MessageSquare size={ 25 }/>,

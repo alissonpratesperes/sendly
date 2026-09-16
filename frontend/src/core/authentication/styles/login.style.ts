@@ -22,17 +22,16 @@ export const AuthFormContainer = styled.div`
 `;
 
 export const LoginForm = styled.form`
+    position: relative;
     height: auto;
     width: 500px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border: 1px solid black;
 `;
 
 export const ApplicationBrandContainer = styled.div`
-padding-top: 200px;
     margin-bottom: 60px;
     height: 100px;
     width: 100%;
@@ -40,13 +39,12 @@ padding-top: 200px;
     flex-drection: row;
     align-items: center;
     justify-content: center;
-    border: 1px solid black;
 `;
 
 export const ApplicationBrandMark = styled.p`
     font-family: "Alien Block";
     font-weight: 400;
-    font-size: 75px;
+    font-size: 85px;
     color: #9CA3AF;
 `;
 
@@ -246,6 +244,6 @@ export const CompanyPresentation = styled.div`
 export const CopyrightParagraph = styled.p`
     font-family: "Inter";
     font-weight: 500;
-    font-size: 12px;
+    font-size: 14px;
     color: #9CA3AF;
 `;

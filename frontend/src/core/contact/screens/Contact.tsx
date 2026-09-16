@@ -1,6 +1,7 @@
 import { toast } from 'react-toastify';
 import { PropagateLoader } from 'react-spinners';
-import { Plus, Search, Trash, Pen } from 'lucide-react';
+import parsePhoneNumberFromString from 'libphonenumber-js';
+import { BadgeAlert, CirclePlus, Search, Trash, Pen } from 'lucide-react';
 import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 
 import { ContactForm } from '../forms/contactForm.form';
@@ -24,12 +25,12 @@ const Contact = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
     const [contacts, setContacts] = useState<ContactResponseDto[]>([]);
-    const [listsNames, setListsNames] = useState<ListResponseDto[]>([]);
     const [updating, setUpdating] = useState<ContactFormData | null>(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
     const [selectedContactId, setSelectedContactId] = useState<number | null>(null);
+    const [listsNames, setListsNames] = useState<Record<number, ListResponseDto>>({});
 
-    const listsNamesRef = useRef(listsNames);
+    const listsNamesRef = useRef<Record<number, ListResponseDto>>({});
 
     const handleCreate = () => {
         setUpdating(null);
@@ -49,16 +50,28 @@ const Contact = () => {
             const missingListsIds = uniqueListsIds.filter((id: number) => !listsNamesRef.current[id]);
 
             if (missingListsIds.length > 0) {
-                const responses = await Promise.all(missingListsIds.map((id: number) => Read({ id }).then((response: ListResponseDto) => { return response; }).catch(() => { return null; })));
-                const newLists: ListResponseDto[] = [];
+                const responses = await Promise.all(
+                    missingListsIds.map(async (id: number) => {
+                        try {
+                            return await Read({ id });
+                        } catch {
+                            return null;
+                        }
+                    })
+                );
 
-                for (const response of responses) {
-                    if (response) {
-                        newLists.push(response);
+                const newLists: Record<number, ListResponseDto> = {};
+
+                responses.forEach((list) => {
+                    if (list) {
+                        newLists[list.id] = list;
                     }
-                }
+                });
 
-                setListsNames((previousListsNames: ListResponseDto[]) => ({ ...previousListsNames, ...newLists }));
+                setListsNames((previousListsNames) => ({
+                    ...previousListsNames,
+                    ...newLists
+                }));
             }
         } catch (error) {
             toast.error(`Erro ao listar Contatos: ${ error }`);
@@ -73,14 +86,17 @@ const Contact = () => {
             return;
         }
 
+        const parsedPhone = parsePhoneNumberFromString(clicked.phone);
+
         setUpdating({
             id: clicked.id,
             companyId: clicked.companyId,
             listId: clicked.listId,
             name: clicked.name,
             phone: clicked.phone,
-            country: clicked.country
+            country: parsedPhone?.country ?? ""
         });
+
         setIsDrawerOpen(true);
     }
     const handleConfirmDelete = async () => {
@@ -131,7 +147,7 @@ const Contact = () => {
                     </SharedStyled.SearchInputContainer>
 
                     <SharedStyled.AddButton onClick={ handleCreate }>
-                        <Plus size={ 25 } />
+                        <CirclePlus size={ 25 } />
 
                         <SharedStyled.SearchInputSubmitText> Cadastrar contato </SharedStyled.SearchInputSubmitText>
                     </SharedStyled.AddButton>
@@ -139,7 +155,7 @@ const Contact = () => {
 
                 { isLoading && (
                     <SharedStyled.LoadingContainer>
-                        <PropagateLoader size={ 25 } color="#171719" />
+                        <PropagateLoader size={ 25 } color="#1C70E9" />
                     </SharedStyled.LoadingContainer>
                 ) }
                 { contacts.length > 0 ? (
@@ -150,7 +166,6 @@ const Contact = () => {
                                     <SharedStyled.TableListHeaderRow>
                                         <SharedStyled.TableListHeaderRowColumn> Nome </SharedStyled.TableListHeaderRowColumn>
                                         <SharedStyled.TableListHeaderRowColumn> Telefone </SharedStyled.TableListHeaderRowColumn>
-                                        <SharedStyled.TableListHeaderRowColumn> Lista </SharedStyled.TableListHeaderRowColumn>
                                         <SharedStyled.TableListHeaderRowColumn> Criada em </SharedStyled.TableListHeaderRowColumn>
                                         <SharedStyled.TableListHeaderRowColumn> Editada em </SharedStyled.TableListHeaderRowColumn>
                                         <SharedStyled.TableListHeaderRowColumn> </SharedStyled.TableListHeaderRowColumn>
@@ -159,14 +174,13 @@ const Contact = () => {
                                 <tbody>
                                     { contacts.map((contact: ContactResponseDto) => (
                                         <SharedStyled.TableListBodyRow key={ contact.id }>
-                                            <SharedStyled.TableListBodyRowData> { contact.name } </SharedStyled.TableListBodyRowData>
-                                            <SharedStyled.TableListBodyRowData> { contact.phone } </SharedStyled.TableListBodyRowData>
-                                            <SharedStyled.TableListBodyRowData> <SharedStyled.TableListColorContent> <SharedStyled.TableListColorFragment $color={ listsNames[contact.listId].color } /> <b> { listsNames[contact.listId].name } </b> </SharedStyled.TableListColorContent> </SharedStyled.TableListBodyRowData>
+                                            <SharedStyled.TableListBodyRowData> <SharedStyled.TableListColorContent> <SharedStyled.TableListColorFragment $color={ listsNames[contact.listId]?.color ?? "transparent" }/> { contact.name } </SharedStyled.TableListColorContent> </SharedStyled.TableListBodyRowData>
+                                            <SharedStyled.TableListBodyRowData> <b> { parsePhoneNumberFromString(contact.phone)?.formatNational() } </b> </SharedStyled.TableListBodyRowData>
                                             <SharedStyled.TableListBodyRowData> { formatDate(contact.createdAt, true) } </SharedStyled.TableListBodyRowData>
                                             <SharedStyled.TableListBodyRowData> { formatDate(contact.updatedAt, true) } </SharedStyled.TableListBodyRowData>
                                             <SharedStyled.TableListBodyRowData>
                                                 <SharedStyled.TableListBodyRowDataActions>
-                                                    <SharedStyled.TableListBodyRowDataActionButton onClick={ () => handleUpdate(contact.id) }> <Pen size={ 25 } color="#1C70E9" /> </SharedStyled.TableListBodyRowDataActionButton>
+                                                    <SharedStyled.TableListBodyRowDataActionButton onClick={ () => handleUpdate(contact.id) }> <Pen size={ 25 } color="#238636"/> </SharedStyled.TableListBodyRowDataActionButton>
                                                     <SharedStyled.TableListBodyRowDataActionButton onClick={ () => { setSelectedContactId(contact.id); setIsDeleteModalOpen(true); } }> <Trash size={ 25 } color="#DC143C" /> </SharedStyled.TableListBodyRowDataActionButton>
                                                 </SharedStyled.TableListBodyRowDataActions>
                                             </SharedStyled.TableListBodyRowData>
@@ -181,24 +195,11 @@ const Contact = () => {
                         </SharedStyled.FooterPaginateWrapper>
                     </Fragment>
                 ) : !isLoading ? (
-                    <SharedStyled.TableWrapper>
-                        <SharedStyled.TableListWrapper>
-                            <thead>
-                                <SharedStyled.TableListHeaderRow>
-                                    <SharedStyled.TableListHeaderRowColumn>
-                                        Verifique os dados informados na busca, ou se for a sua primeira vez utilizando a aplicação, realize o cadastro das informações!
-                                    </SharedStyled.TableListHeaderRowColumn>
-                                </SharedStyled.TableListHeaderRow>
-                            </thead>
-                            <tbody>
-                                <SharedStyled.TableListBodyRow>
-                                    <SharedStyled.TableListBodyRowData>
-                                        Nenhum registro encontrado por aqui.
-                                    </SharedStyled.TableListBodyRowData>
-                                </SharedStyled.TableListBodyRow>
-                            </tbody>
-                        </SharedStyled.TableListWrapper>
-                    </SharedStyled.TableWrapper>
+                    <SharedStyled.NotFoundRegisterContainer>
+                        <BadgeAlert size={ 50 } color="#1C70E9"/>
+
+                        <SharedStyled.NotFoundRegisterText> Nenhum registro encontrado </SharedStyled.NotFoundRegisterText>
+                    </SharedStyled.NotFoundRegisterContainer>
                 ) : null }
             </SharedStyled.ListWrapper>
 

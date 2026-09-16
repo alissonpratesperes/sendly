@@ -1,12 +1,12 @@
 import { ControlProps, CSSObjectWithLabel, GroupBase, StylesConfig } from 'react-select';
 
-export const SelectCommonStyles = <Option,>(custom?: { width?: string }): StylesConfig<Option, false, GroupBase<Option>> => ({
+export const SelectCommonStyles = <Option,>(custom?: { width?: string; isInPagination?: boolean; }): StylesConfig<Option, false, GroupBase<Option>> => ({
     control: (base: CSSObjectWithLabel, state: ControlProps<Option, false>) => ({
         ...base,
 
-        marginLeft: "30px",
+        marginLeft: custom?.isInPagination ? "30px" : "0px",
         padding: "0px 15px",
-        height: "55px",
+        height: custom?.isInPagination ? "55px" : "60px",
         width: custom?.width || "120px",
         display: "flex",
         flexDirection: "row",
@@ -19,14 +19,20 @@ export const SelectCommonStyles = <Option,>(custom?: { width?: string }): Styles
         borderWidth: "2px",
         boxShadow: "none",
         outline: "none",
-        color: "#171719",
-        borderColor: "#171719",
+        color: "#1C70E9",
+        borderColor: "transparent",
 
             "&:hover": {
-                borderColor: "#171719"
+                borderColor: custom?.isInPagination ? "#1C70E9" : "transparent"
             },
+    }),
+    placeholder: (base: CSSObjectWithLabel) => ({
+        ...base,
 
-        backgroundColor: state.isDisabled ? "#171719" : "#FFFFFF",
+        color: "#BDBDBD",
+        fontFamily: "Lato",
+        fontWeight: 400,
+        fontSize: "16px",
     }),
     menuPortal: (base: CSSObjectWithLabel) => ({
         ...base,
@@ -43,16 +49,12 @@ export const SelectCommonStyles = <Option,>(custom?: { width?: string }): Styles
     menuList: (base: CSSObjectWithLabel) => ({
         ...base,
 
-        padding: "7.5px",
-        maxHeight: "auto",
+        padding: "15px",
+        maxHeight: "300px",
         border: "1px solid #E9EAEB",
         borderRadius: "14px",
         overflowY: "auto",
         scrollbarWidth: "none",
-
-            "&::-webkit-scrollbar": {
-                display: "none"
-            },
     }),
     option: (base: CSSObjectWithLabel, state: { isFocused: boolean; isSelected: boolean }) => ({
         ...base,
@@ -68,21 +70,21 @@ export const SelectCommonStyles = <Option,>(custom?: { width?: string }): Styles
         cursor: "pointer",
 
         fontWeight: state.isFocused ? 900 : 500,
-        color: state.isFocused ? "#FFFFFF" : "#171719",
-        backgroundColor: state.isFocused ? "#171719" : "transparent",
+        color: state.isFocused ? "#FFFFFF" : "#1C70E9",
+        backgroundColor: state.isFocused ? "#1C70E9" : "transparent",
 
             "&:active": {
                 fontWeight: 700,
                 color: "#FFFFFF",
-                backgroundColor: "#171719",
+                backgroundColor: "#1C70E9",
             },
     }),
     singleValue: (base: CSSObjectWithLabel) => ({
         ...base,
 
         fontFamily: "Lato",
-        fontWeight: 700,
+        fontWeight: 400,
         fontSize: "16px",
-        color: "#171719",
+        color: "#212121",
     })
 })

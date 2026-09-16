@@ -106,11 +106,13 @@ export default function Paginate({ page, total, limit, onPageChange, onLimitChan
                 { onLimitChange && (
                     <Dropdown
                         width="120px"
+                        isInPagination={ true }
                         isClearable={ false }
                         isDisabled={ false }
                         isLoading={ false }
                         options={ pageOptions }
                         value={ pageOptions.find(option => option.value === limit) || null }
+                        isSearchable={ false }
                         onChange={ handleLimitChange }
                     />
                 ) }

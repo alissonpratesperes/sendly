@@ -1,6 +1,6 @@
 import React, { JSX } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { DatabaseZapIcon, House, LogOut } from 'lucide-react';
+import { DatabaseZapIcon, House, Power } from 'lucide-react';
 
 import * as Styled from '../styles/header.style';
 import { HeaderMenuLinksProps } from '../interfaces/headerMenuLinksProps.interface';
@@ -43,7 +43,7 @@ const Header: React.FC<HeaderMenuLinksProps> = ({ links }) => {
 
                 <Styled.UserActionContainer>
                     <Styled.LogOutButton type="button" onClick={ () => { handleLogout(); } }>
-                        <LogOut size={ 25 } />
+                        <Power size={ 25 } />
                     </Styled.LogOutButton>
                 </Styled.UserActionContainer>
             </Styled.UserContainer>

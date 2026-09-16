@@ -27,13 +27,13 @@ export const PaginateButton = styled.button`
     outline: none;
     cursor: pointer;
     border-radius: 14px;
-    color: #171719;
+    color: #1C70E9;
     transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
 
         &:hover:not(:disabled) {
             font-weight: 700;
             color: #FFFFFF;
-            background-color: #171719;
+            background-color: #1C70E9;
             animation: paginateButtonEffect 0.6s ease-in-out;
         }
         &:disabled {
@@ -86,7 +86,7 @@ export const EllipsisIcon = styled(Ellipsis)`
     margin-right: 30px;
     height: 25px;
     width: 25px;
-    color: #535862;
+    color: #171719;
 `;
 
 export const PageButton = styled.button<{ $active?: boolean }>`
@@ -105,13 +105,13 @@ export const PageButton = styled.button<{ $active?: boolean }>`
 
     font-weight: ${ ({ $active }) => ($active ? 700 : 500) };
     cursor: ${ ({ $active }) => ($active ? "default" : "pointer") };
-    color: ${ ({ $active }) => ($active ? "#FFFFFF" : "#171719") };
-    background: ${ ({ $active }) => ($active ? "#171719" : "transparent") };
+    color: ${ ({ $active }) => ($active ? "#FFFFFF" : "#1C70E9") };
+    background: ${ ({ $active }) => ($active ? "#1C70E9" : "transparent") };
 
         &:hover {
             font-weight: 700;
             color: #FFFFFF;
-            background-color: #171719;
+            background-color: #1C70E9;
             animation: paginateButtonEffect 0.6s ease-in-out;
         }
 
