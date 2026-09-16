@@ -1,8 +1,8 @@
-import { UploaderItemType } from '../types/UploaderItemType.type';
+import { UploaderItemType } from '../types/uploaderItemType.type';
 
 export interface UploaderProps {
     isExcel?: boolean;
-    value: UploaderItemType[];
+    value?: UploaderItemType;
 
-    onChange: (files: UploaderItemType[]) => void;
-};
+    onChange: (file?: UploaderItemType) => void;
+}

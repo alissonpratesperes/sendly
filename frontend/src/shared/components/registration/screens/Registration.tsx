@@ -10,15 +10,6 @@ import Company from '../../../../core/company/screens/Company';
 import Contact from '../../../../core/contact/screens/Contact';
 import { navigationTabs } from '../constants/navigationTabs.constant';
 
-
-
-
-
-
-import Chain from '../../../../core/chain/screens/Chain';
-import Store from '../../../../core/store/screens/Store';
-import Action from '../../../../core/action/screens/Action';
-
 const Registration: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -54,15 +45,6 @@ const Registration: React.FC = () => {
                 <Route path="/user" element={ <PrivateRoute element={ <User /> }/> } />
                 <Route path="/list" element={ <PrivateRoute element={ <Lists /> }/> } />
                 <Route path="/contact" element={ <PrivateRoute element={ <Contact /> }/> } />
-
-
-
-
-
-                {/* Voltar private route englobando as rotas */}
-
-                <Route path="/stores" element={<Store />} />
-                <Route path="action-type" element={<Action />} />
             </Routes>
         </Fragment>
     );
