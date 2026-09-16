@@ -120,38 +120,39 @@ const Company = () => {
                 ) }
                 { companies.length > 0 ? (
                     <Fragment>
-                        <SharedStyled.TableWrapper>
-                            <SharedStyled.TableListWrapper>
-                                <thead>
-                                    <SharedStyled.TableListHeaderRow>
-                                        <SharedStyled.TableListHeaderRowColumn> Nome </SharedStyled.TableListHeaderRowColumn>
-                                        <SharedStyled.TableListHeaderRowColumn> CNPJ </SharedStyled.TableListHeaderRowColumn>
-                                        <SharedStyled.TableListHeaderRowColumn> Descrição </SharedStyled.TableListHeaderRowColumn>
-                                        <SharedStyled.TableListHeaderRowColumn> Criada em </SharedStyled.TableListHeaderRowColumn>
-                                        <SharedStyled.TableListHeaderRowColumn> Editada em </SharedStyled.TableListHeaderRowColumn>
-                                        <SharedStyled.TableListHeaderRowColumn> </SharedStyled.TableListHeaderRowColumn>
-                                    </SharedStyled.TableListHeaderRow>
-                                </thead>
-                                <tbody>
-                                    { companies.map((company: CompanyResponseDto) => (
-                                        <SharedStyled.TableListBodyRow key={ company.id }>
-                                            <SharedStyled.TableListBodyRowData> { company.name } </SharedStyled.TableListBodyRowData>
-                                            <SharedStyled.TableListBodyRowData> <b> { formatCompanyDocument(company.document) } </b> </SharedStyled.TableListBodyRowData>
-                                            <SharedStyled.TableListBodyRowData> { company.description } </SharedStyled.TableListBodyRowData>
-                                            <SharedStyled.TableListBodyRowData> { formatDate(company.createdAt, true) } </SharedStyled.TableListBodyRowData>
-                                            <SharedStyled.TableListBodyRowData> { formatDate(company.updatedAt, true) } </SharedStyled.TableListBodyRowData>
-                                            <SharedStyled.TableListBodyRowData>
-                                                <SharedStyled.TableListBodyRowDataActions>
-                                                    <SharedStyled.TableListBodyRowDataActionButton onClick={ () => handleUpdate(company.id) }> <Pen size={ 25 } color="#238636" /> </SharedStyled.TableListBodyRowDataActionButton>
-                                                    <SharedStyled.TableListBodyRowDataActionButton onClick={ () => { setSelectedCompanyId(company.id); setIsDeleteModalOpen(true); } }> <Trash size={ 25 } color="#DC143C" /> </SharedStyled.TableListBodyRowDataActionButton>
-                                                </SharedStyled.TableListBodyRowDataActions>
-                                            </SharedStyled.TableListBodyRowData>
-                                        </SharedStyled.TableListBodyRow>
-                                    )) }
-                                </tbody>
-                            </SharedStyled.TableListWrapper>
-                        </SharedStyled.TableWrapper>
+<Listing
+    headers={["Nome", "Documento", "Descrição", "Criada em", "Editada em", ""]}
+    data={companies}
+    getId={(company) => company.id}
+    onEdit={handleUpdate}
+    onDelete={(id) => {
+                                setSelectedCompanyId(id);
+                                setIsDeleteModalOpen(true);
+                            }}
+    renderRow={(company) => (
+        <>
+            <Styled.ListingColumn>
+                {company.name}
+            </Styled.ListingColumn>
 
+            <Styled.ListingColumn>
+                <b>{formatCompanyDocument(company.document)}</b>
+            </Styled.ListingColumn>
+
+            <Styled.ListingColumn>
+                {company.description}
+            </Styled.ListingColumn>
+
+            <Styled.ListingColumn>
+                {formatDate(company.createdAt, true)}
+            </Styled.ListingColumn>
+
+            <Styled.ListingColumn>
+                {formatDate(company.updatedAt, true)}
+            </Styled.ListingColumn>
+        </>
+    )}
+/>
                         <SharedStyled.FooterPaginateWrapper>
                             <Paginate page={ page } total={ total } limit={ limit } onPageChange={ setPage } onLimitChange={ (newLimit: number) => { setLimit(newLimit); setPage(1); } } />
                         </SharedStyled.FooterPaginateWrapper>
