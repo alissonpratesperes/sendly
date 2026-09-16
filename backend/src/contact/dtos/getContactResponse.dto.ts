@@ -6,6 +6,7 @@ export class GetContactResponseDto {
 
         public name: string,
         public phone: string,
+        public active: boolean,
 
         public createdAt: Date,
         public updatedAt: Date,

@@ -27,10 +27,6 @@ const Company = () => {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
     const [selectedCompanyId, setSelectedCompanyId] = useState<number | null>(null);
 
-    const handleCreate = () => {
-        setUpdating(null);
-        setIsDrawerOpen(true);
-    }
     const handleReadCompanies = useCallback(async () => {
         try {
             setIsLoading(true);
@@ -46,6 +42,11 @@ const Company = () => {
             setIsLoading(false);
         }
     }, [ page, limit, search ]);
+
+    const handleCreate = () => {
+        setUpdating(null);
+        setIsDrawerOpen(true);
+    }
     const handleUpdate = (id: number) => {
         const clicked = companies.find((company: CompanyResponseDto) => company.id === id);
 

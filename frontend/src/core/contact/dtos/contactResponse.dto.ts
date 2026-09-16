@@ -5,6 +5,7 @@ export interface ContactResponseDto {
 
     name: string;
     phone: string;
+    active: boolean;
 
     createdAt: string;
     updatedAt: string;

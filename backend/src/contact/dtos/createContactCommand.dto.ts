@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsInt, IsISO31661Alpha2, IsNotEmpty, IsString, MaxLength, Min } from 'class-validator';
+import { IsBoolean, IsOptional, IsInt, IsISO31661Alpha2, IsNotEmpty, IsString, MaxLength, Min } from 'class-validator';
 
 export class CreateContactCommandDto {
     @Min(1)
@@ -30,4 +30,9 @@ export class CreateContactCommandDto {
     @IsISO31661Alpha2()
     @ApiProperty({ example: "BR" })
     country!: string;
+
+    @IsBoolean()
+    @IsOptional()
+    @ApiProperty({ example: true })
+    active!: boolean;
 }

@@ -27,10 +27,6 @@ const User = () => {
     const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
 
-    const handleCreate = () => {
-        setUpdating(null);
-        setIsDrawerOpen(true);
-    }
     const handleReadUsers = useCallback(async () => {
         try {
             setIsLoading(true);
@@ -46,6 +42,11 @@ const User = () => {
             setIsLoading(false);
         }
     }, [ page, limit, search ]);
+
+    const handleCreate = () => {
+        setUpdating(null);
+        setIsDrawerOpen(true);
+    }
     const handleUpdate = (id: number) => {
         const clicked = users.find((user: UserResponseDto) => user.id === id);
 

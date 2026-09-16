@@ -66,6 +66,7 @@ export class ContactService {
                 ListId: listId,
                 Name: name,
                 Phone: formatContactPhoneNumber(phone, country as CountryCode),
+                Active: true,
             },
         });
 
@@ -146,7 +147,7 @@ export class ContactService {
         );
     }
 
-    async update(id: number, companyId?: number, listId?: number, name?: string, phone?: string, country?: string): Promise<GetContactResponseDto> {
+    async update(id: number, companyId?: number, listId?: number, name?: string, phone?: string, country?: string, active?: string): Promise<GetContactResponseDto> {
         const contact = await this.read(id);
         const targetCompanyId = companyId ?? contact.companyId;
         const targetListId = listId ?? contact.listId;
@@ -176,6 +177,7 @@ export class ContactService {
                 ...(listId !== undefined && { ListId: listId, }),
                 ...(name !== undefined && { Name: name, }),
                 ...(normalizedPhone !== undefined && { Phone: normalizedPhone, }),
+                ...(active !== undefined && { Active: active, }),
             },
         });
 

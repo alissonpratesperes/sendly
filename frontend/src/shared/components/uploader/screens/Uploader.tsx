@@ -6,7 +6,7 @@ import { Upload, FileCheck, Download, Trash2 } from 'lucide-react';
 import * as Styled from '../styles/uploader.style';
 import { UploaderItemType } from '../types/uploaderItemType.type';
 import { UploaderProps } from '../interfaces/UploaderProps.interface';
-import { ACCEPTED_IMAGES_CONFIG, ACCEPTED_EXCEL_CONFIG, ALLOWED_IMAGE_EXTENSIONS } from '../constants/uploaderFileTypesAndExtensions.constant';
+import { ACCEPTED_EXCEL_CONFIG, ACCEPTED_IMAGES_CONFIG, ALLOWED_IMAGE_EXTENSIONS } from '../constants/uploaderFileTypesAndExtensions.constant';
 
 const MAX_EXCEL_FILE_SIZE = 50 * 1024 * 1024; // TODO - ENV
 

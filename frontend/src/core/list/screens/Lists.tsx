@@ -27,10 +27,6 @@ const Lists = () => {
     const [selectedListId, setSelectedListId] = useState<number | null>(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
 
-    const handleCreate = () => {
-        setUpdating(null);
-        setIsDrawerOpen(true);
-    }
     const handleReadLists = useCallback(async () => {
         try {
             setIsLoading(true);
@@ -46,6 +42,11 @@ const Lists = () => {
             setIsLoading(false);
         }
     }, [ page, limit, search ]);
+
+    const handleCreate = () => {
+        setUpdating(null);
+        setIsDrawerOpen(true);
+    }
     const handleUpdate = (id: number) => {
         const clicked = lists.find((list: ListResponseDto) => list.id === id);
 

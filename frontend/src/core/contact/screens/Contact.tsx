@@ -6,8 +6,8 @@ import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react
 
 import { ContactForm } from '../forms/contactForm.form';
 import { Read } from '../../list/services/list.service';
-import { List, Delete } from '../services/contact.service';
 import { ContactResponseDto } from '../dtos/contactResponse.dto';
+import { List, Update, Delete } from '../services/contact.service';
 import { formatDate } from '../../../shared/utils/formatDate.util';
 import Modal from '../../../shared/components/modal/screens/Modal';
 import { ListResponseDto } from '../../list/dtos/listResponse.dto';
@@ -15,6 +15,7 @@ import { ContactFormData } from '../schemas/contactFormSchema.schema';
 import * as SharedStyled from '../../../shared/styles/Registration.style';
 import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
 import Paginate from '../../../shared/components/paginate/screens/Paginate';
+import ToggleSwitch from '../../../shared/elements/toggleSwitch/screens/ToggleSwitch';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
 
 const Contact = () => {
@@ -32,10 +33,6 @@ const Contact = () => {
 
     const listsNamesRef = useRef<Record<number, ListResponseDto>>({});
 
-    const handleCreate = () => {
-        setUpdating(null);
-        setIsDrawerOpen(true);
-    }
     const handleReadContacts = useCallback(async () => {
         try {
             setIsLoading(true);
@@ -68,10 +65,7 @@ const Contact = () => {
                     }
                 });
 
-                setListsNames((previousListsNames) => ({
-                    ...previousListsNames,
-                    ...newLists
-                }));
+                setListsNames((previousListsNames: Record<number, ListResponseDto>[]) => ({ ...previousListsNames, ...newLists, }));
             }
         } catch (error) {
             toast.error(`Erro ao listar Contatos: ${ error }`);
@@ -79,6 +73,11 @@ const Contact = () => {
             setIsLoading(false);
         }
     }, [ page, limit, search ]);
+
+    const handleCreate = () => {
+        setUpdating(null);
+        setIsDrawerOpen(true);
+    }
     const handleUpdate = (id: number) => {
         const clicked = contacts.find((contact: ContactResponseDto) => contact.id === id);
 
@@ -98,6 +97,23 @@ const Contact = () => {
         });
 
         setIsDrawerOpen(true);
+    }
+    const handleActiveCommunication = async (id: number, status: boolean) => {
+        try {
+            const contact = contacts.find((contact: ContactResponseDto) => contact.id === id);
+
+            if (!selectedContactId) {
+                return;
+            }
+
+            const updatedAction = { ...contact, active: status };
+
+            await Update(contact.id, updatedAction);
+
+            setContacts((previousContacts: ContactResponseDto[]) => previousContacts.map(contact => (contact.id === id ? { ...contact, active: status } : contact)));
+        } catch (error) {
+            toast.error(`Erro ao alterar o status da comunicação para o Contato: ${error}`);
+        };
     }
     const handleConfirmDelete = async () => {
         if (selectedContactId === null) {
@@ -166,6 +182,7 @@ const Contact = () => {
                                     <SharedStyled.TableListHeaderRow>
                                         <SharedStyled.TableListHeaderRowColumn> Nome </SharedStyled.TableListHeaderRowColumn>
                                         <SharedStyled.TableListHeaderRowColumn> Telefone </SharedStyled.TableListHeaderRowColumn>
+                                        <SharedStyled.TableListHeaderRowColumn> Comunicação </SharedStyled.TableListHeaderRowColumn>
                                         <SharedStyled.TableListHeaderRowColumn> Criada em </SharedStyled.TableListHeaderRowColumn>
                                         <SharedStyled.TableListHeaderRowColumn> Editada em </SharedStyled.TableListHeaderRowColumn>
                                         <SharedStyled.TableListHeaderRowColumn> </SharedStyled.TableListHeaderRowColumn>
@@ -176,6 +193,7 @@ const Contact = () => {
                                         <SharedStyled.TableListBodyRow key={ contact.id }>
                                             <SharedStyled.TableListBodyRowData> <SharedStyled.TableListColorContent> <SharedStyled.TableListColorFragment $color={ listsNames[contact.listId]?.color ?? "transparent" }/> { contact.name } </SharedStyled.TableListColorContent> </SharedStyled.TableListBodyRowData>
                                             <SharedStyled.TableListBodyRowData> <b> { parsePhoneNumberFromString(contact.phone)?.formatNational() } </b> </SharedStyled.TableListBodyRowData>
+                                            <SharedStyled.TableListBodyRowData> <ToggleSwitch label={ contact.active ? "Active" : "Inactive" } checked={ contact.active } onChange={ (event) => handleActiveCommunication(contact.id, event.target.checked) } /> </SharedStyled.TableListBodyRowData>
                                             <SharedStyled.TableListBodyRowData> { formatDate(contact.createdAt, true) } </SharedStyled.TableListBodyRowData>
                                             <SharedStyled.TableListBodyRowData> { formatDate(contact.updatedAt, true) } </SharedStyled.TableListBodyRowData>
                                             <SharedStyled.TableListBodyRowData>

@@ -19,9 +19,9 @@ function App() {
 
         <ToastContainer
           hideProgressBar={ false }
-          position="bottom-left"
           newestOnTop={ true }
           autoClose={ 5000 }
+          position="center"
           theme="colored"
           closeOnClick
           pauseOnHover
