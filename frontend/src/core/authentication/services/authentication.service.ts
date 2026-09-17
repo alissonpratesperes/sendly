@@ -2,12 +2,13 @@ import api from '../../../shared/api/axios.client';
 import { LoginCommandDto } from '../dtos/loginCommand.dto';
 import { ResetCommandDto } from '../dtos/resetCommand.dto';
 import { ForgotCommandDto } from '../dtos/forgotCommand.dto';
-import { AuthenticationTokenPair } from '../interfaces/authenticationTokenPair.interface';
+import { AuthenticationTokenPair } from '../types/authenticationTokenPair.type';
+import { AuthenticatedUserResponse } from '../interfaces/authenticatedUserResponse.interface';
 
 const BASE_ENDPOINT: string = "authentication";
 
-export const login = async (command: LoginCommandDto): Promise<AuthenticationTokenPair> => {
-    const response = await api.post<AuthenticationTokenPair>(`${BASE_ENDPOINT}/login`, command);
+export const login = async (command: LoginCommandDto): Promise<AuthenticatedUserResponse> => {
+    const response = await api.post<AuthenticatedUserResponse>(`${BASE_ENDPOINT}/login`, command);
 
     return response.data;
 }
@@ -18,7 +19,7 @@ export const refresh = async (refreshToken: string): Promise<AuthenticationToken
     });
 
     return response.data;
-};
+}
 
 export const forgot = async (command: ForgotCommandDto): Promise<void> => {
     return await api.post(`${BASE_ENDPOINT}/forgot`, command);

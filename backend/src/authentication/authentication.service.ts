@@ -7,7 +7,8 @@ import { TokenService } from '../token/token.service';
 import { LoginCommandDto } from './dtos/loginCommand.dto';
 import { ResetCommandDto } from './dtos/resetCommand.dto';
 import { ForgotCommandDto } from './dtos/forgotCommand.dto';
-import { AuthenticationTokenPair } from './types/AuthenticationTokenPair.type';
+import { AuthenticationTokenPair } from './types/authenticationTokenPair.type';
+import { AuthenticatedUserResponse } from './interfaces/authenticatedUserResponse.interface';
 
 @Injectable()
 export class AuthenticationService {
@@ -17,7 +18,7 @@ export class AuthenticationService {
     private readonly tokenService: TokenService,
   ) {}
 
-  async login(command: LoginCommandDto): Promise<AuthenticationTokenPair> {
+  async login(command: LoginCommandDto): Promise<AuthenticatedUserResponse> {
     this.clsService.set("isSystemOperation", true);
 
     const user = await this.userService.readByEmail(command.email, true);
@@ -34,7 +35,21 @@ export class AuthenticationService {
 
     await this.userService.updateUserRefreshToken(user.Id, hashedRefreshToken);
 
-    return authenticatedUserTokenPair;
+    return {
+      ...authenticatedUserTokenPair,
+
+      user: {
+        id: user.Id,
+        name: user.Name,
+        email: user.Email,
+        isSystemRoot: user.IsSystemRoot,
+
+        company: {
+          id: user.Company.Id,
+          name: user.Company.Name,
+        },
+      },
+    };
   }
 
   async logout(id: number): Promise<void> {

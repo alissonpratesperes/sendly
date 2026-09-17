@@ -5,7 +5,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 
 import { JwtTokenPayload } from './interfaces/jwtTokenPayload.interface';
 import { requireEnvironmentVariable } from '../common/utils/requireEnvironmentVariable.util';
-import type { AuthenticationTokenPair } from '../authentication/types/AuthenticationTokenPair.type';
+import type { AuthenticationTokenPair } from '../authentication/types/authenticationTokenPair.type';
 
 @Injectable()
 export class TokenService {

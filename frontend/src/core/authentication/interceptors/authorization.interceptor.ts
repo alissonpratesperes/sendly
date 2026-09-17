@@ -1,7 +1,8 @@
-import axios from 'axios';
 import { StatusCodes } from 'http-status-codes';
+import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 
 import { refresh } from '../services/authentication.service';
+import { AuthenticationTokenPair } from '../types/authenticationTokenPair.type';
 import { RetryableAxiosRequestConfig } from '../types/retryableRequestAxiosConfig.type';
 import { clearAuthenticationStorage, getAuthenticationStorage, setAuthenticationStorage } from '../../../shared/utils/authenticationStorage.util';
 
@@ -9,16 +10,16 @@ const authenticatedApi = axios.create({
     baseURL: process.env.REACT_APP_API_URL,
     headers: { "Content-Type": "application/json" }
 });
-const handleLogout = () => {
+const handleLogout = (): void => {
     clearAuthenticationStorage();
 
     window.location.href = "/authentication";
-};
+}
 
 let refreshPromise: Promise<string> | null = null;
 
 authenticatedApi.interceptors.request.use(
-    (config) => {
+    (config: InternalAxiosRequestConfig) => {
         const { accessToken } = getAuthenticationStorage();
 
         if (accessToken) {
@@ -27,15 +28,15 @@ authenticatedApi.interceptors.request.use(
 
         return config;
     },
-    (error) => {
+    (error: AxiosError) => {
         return Promise.reject(error);
     }
 );
 authenticatedApi.interceptors.response.use(
-    (response) => {
+    (response: AxiosResponse) => {
         return response;
     },
-    async (error) => {
+    async (error: AxiosError) => {
         const originalRequest = error.config as RetryableAxiosRequestConfig | undefined;
 
         if (error.response?.status !== StatusCodes.UNAUTHORIZED || !originalRequest || originalRequest._retry) {
@@ -54,8 +55,12 @@ authenticatedApi.interceptors.response.use(
 
         try {
             if(!refreshPromise) {
-                refreshPromise = refresh(refreshToken).then((response) => {
+                refreshPromise = refresh(refreshToken).then((response: AuthenticationTokenPair) => {
                     setAuthenticationStorage(response);
+
+                    if (!response?.accessToken) {
+                        throw new Error("The new 'AccessToken' was not returned yet");
+                    }
 
                     return response.accessToken;
                 }).finally(() => {
@@ -63,9 +68,13 @@ authenticatedApi.interceptors.response.use(
                 });
             }
 
-            const accessToken = await refreshPromise;
+            const newAccessToken = await refreshPromise;
 
-            originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+            if (typeof originalRequest.headers.set === "function") {
+                originalRequest.headers.set("Authorization", `Bearer ${ newAccessToken }`);
+            } else {
+                originalRequest.headers.Authorization = `Bearer ${ newAccessToken }`;
+            }
 
             return authenticatedApi(originalRequest);
         } catch (refreshError) {

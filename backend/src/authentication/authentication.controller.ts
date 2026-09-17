@@ -8,7 +8,8 @@ import { RefreshTokenGuard } from './guards/refreshToken.guard';
 import { AuthenticationService } from './authentication.service';
 import { CurrentUser } from './interfaces/currentUser.interface';
 import { GetCurrentUser } from './decorators/getCurrentUser.decorator';
-import { AuthenticationTokenPair } from './types/AuthenticationTokenPair.type';
+import { AuthenticationTokenPair } from './types/authenticationTokenPair.type';
+import { AuthenticatedUserResponse } from './interfaces/authenticatedUserResponse.interface';
 
 @Controller("authentication")
 export class AuthenticationController {
@@ -19,7 +20,7 @@ export class AuthenticationController {
   @IsPublic()
   @Post("login")
   @HttpCode(HttpStatus.OK)
-  async login(@Body() command: LoginCommandDto): Promise<AuthenticationTokenPair> {
+  async login(@Body() command: LoginCommandDto): Promise<AuthenticatedUserResponse> {
     return this.authenticationService.login(command);
   }
 
