@@ -2,10 +2,10 @@ import { AtSign } from 'lucide-react';
 import { toast } from 'react-toastify';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PropagateLoader } from 'react-spinners';
 
 import * as Styled from '../styles/forgot.style';
 import { forgot } from '../services/authentication.service';
+import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
 
 const Forgot: React.FC = () => {
     const [email, setEmail] = useState("");
@@ -51,11 +51,10 @@ const Forgot: React.FC = () => {
                     <Styled.Input type="email" id="email" placeholder="Digite seu email" value={email} onChange={(inputEvent) => setEmail(inputEvent.target.value)} required />
                 </Styled.InputWrapper>
 
-                { isLoading ? (
-                    <Styled.LoadingContainer>
-                        <PropagateLoader size={ 25 } color="#1C70E9" />
-                    </Styled.LoadingContainer>
-                ) : (
+                { isLoading && (
+                    <LoadingState/>
+                ) }
+                { !isLoading && (
                     <Styled.ForgotButton type="submit">
                         <AtSign size={ 25 } color="#FFFFFF" />
 

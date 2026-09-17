@@ -1,10 +1,9 @@
 import styled from 'styled-components';
 
-export const LoadingContainer = styled.div`
+export const LoadingStateContainer = styled.div`
     height: 300px;
-    width: auto;
+    width: 100%;
     display: flex;
-    flex-direction: row;
     align-items: center;
     justify-content: center;
     background: transparent;

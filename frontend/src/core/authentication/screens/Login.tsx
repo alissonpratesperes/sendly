@@ -2,13 +2,13 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { StatusCodes } from 'http-status-codes';
-import { PropagateLoader } from 'react-spinners';
 import React, { useState, Fragment } from 'react';
 import { EyeIcon, EyeOffIcon, LogInIcon, LockKeyhole } from 'lucide-react';
 
 import * as Styled from '../styles/login.style';
 import { login } from '../services/authentication.service';
 import { setAuthenticationStorage } from '../../../shared/utils/authenticationStorage.util';
+import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
 
 const Authentication: React.FC = () => {
     const [email, setEmail] = useState<string>("");
@@ -75,11 +75,10 @@ const Authentication: React.FC = () => {
                 </Styled.InputWrapper>
 
                 <Styled.LoginButtonsContainer>
-                    { isLoading ? (
-                        <Styled.LoadingContainer>
-                            <PropagateLoader size={ 25 } color="#1C70E9" />
-                        </Styled.LoadingContainer>
-                    ) : (
+                    { isLoading && (
+                        <LoadingState/>
+                    ) }
+                    { !isLoading && (
                         <Fragment>
                             <Styled.ForgotButton to="/authentication/forgot">
                                 <LockKeyhole size={ 25 } color="#FFFFFF" />

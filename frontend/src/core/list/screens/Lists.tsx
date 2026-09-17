@@ -1,5 +1,4 @@
 import { toast } from 'react-toastify';
-import { PropagateLoader } from 'react-spinners';
 import React, { Fragment, useCallback, useEffect, useState } from 'react';
 
 import { ListForm } from '../forms/listForm.form';
@@ -10,11 +9,11 @@ import { formatDate } from '../../../shared/utils/formatDate.util';
 import Modal from '../../../shared/components/modal/screens/Modal';
 import { Table } from '../../../shared/components/table/screens/Table';
 import { Finder } from '../../../shared/components/finder/screen/Finder';
-import * as SharedStyled from '../../../shared/styles/Registration.style';
 import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
 import Paginate from '../../../shared/components/paginate/screens/Paginate';
 import * as Styled from '../../../shared/components/table/styles/table.style';
 import { EmptyState } from '../../../shared/components/emptyState/screens/EmpyState';
+import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
 
 const Lists = () => {
@@ -104,9 +103,7 @@ const Lists = () => {
             <Finder placeholder="Pesquise uma lista por nome ou assunto" buttonText="Cadastrar lista" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } } />
 
             { isLoading && (
-                <SharedStyled.LoadingContainer>
-                    <PropagateLoader size={ 25 } color="#1C70E9" />
-                </SharedStyled.LoadingContainer>
+                <LoadingState/>
             ) }
             { !isLoading && lists.length > 0 && (
                 <Fragment>

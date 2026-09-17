@@ -1,13 +1,13 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { StatusCodes } from 'http-status-codes';
-import { PropagateLoader } from 'react-spinners';
 import React, { useEffect, useState } from 'react';
 import { EyeIcon, EyeOffIcon, UserLock } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import * as Styled from '../styles/reset.style';
 import { reset } from '../services/authentication.service';
+import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
 
 const Reset: React.FC = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -96,11 +96,10 @@ const Reset: React.FC = () => {
                     <Styled.EyeButton type="button" onClick={ () => setShowConfirmPassword(!showConfirmPassword) }> { showConfirmPassword ? ( <EyeIcon size={25} color="#238636" /> ) : ( <EyeOffIcon size={25} color="#238636" /> ) } </Styled.EyeButton>
                 </Styled.InputWrapper>
 
-                { isLoading ? (
-                    <Styled.ResetFormContainer>
-                        <PropagateLoader size={ 25 } color="#1C70E9" />
-                    </Styled.ResetFormContainer>
-                ) : (
+                { isLoading && (
+                    <LoadingState/>
+                ) }
+                { !isLoading && (
                     <Styled.PasswordButton type="submit">
                         <UserLock size={ 25 } color="#FFFFFF" />
 

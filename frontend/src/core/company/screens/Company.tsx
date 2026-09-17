@@ -1,5 +1,4 @@
 import { toast } from 'react-toastify';
-import { PropagateLoader } from 'react-spinners';
 import React, { Fragment, useCallback, useEffect, useState } from 'react';
 
 import { CompanyForm } from '../forms/companyForm.form';
@@ -10,12 +9,12 @@ import Modal from '../../../shared/components/modal/screens/Modal';
 import { CompanyFormData } from '../schemas/companyFormSchema.schema';
 import { Table } from '../../../shared/components/table/screens/Table';
 import { Finder } from '../../../shared/components/finder/screen/Finder';
-import * as SharedStyled from '../../../shared/styles/Registration.style';
 import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
 import Paginate from '../../../shared/components/paginate/screens/Paginate';
 import * as Styled from '../../../shared/components/table/styles/table.style';
 import { EmptyState } from '../../../shared/components/emptyState/screens/EmpyState';
 import { formatCompanyDocument } from '../../../shared/utils/formatCompanyDocument.util';
+import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
 
 const Company = () => {
@@ -104,9 +103,7 @@ const Company = () => {
             <Finder placeholder="Pesquise uma empresa por nome ou cnpj" buttonText="Cadastrar empresa" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } } />
 
             { isLoading && (
-                <SharedStyled.LoadingContainer>
-                    <PropagateLoader size={ 25 } color="#1C70E9" />
-                </SharedStyled.LoadingContainer>
+                <LoadingState/>
             ) }
             { !isLoading && companies.length > 0 && (
                 <Fragment>

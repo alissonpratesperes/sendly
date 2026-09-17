@@ -1,5 +1,4 @@
 import { toast } from 'react-toastify';
-import { PropagateLoader } from 'react-spinners';
 import parsePhoneNumberFromString from 'libphonenumber-js';
 import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 
@@ -13,12 +12,12 @@ import { ListResponseDto } from '../../list/dtos/listResponse.dto';
 import { ContactFormData } from '../schemas/contactFormSchema.schema';
 import { Table } from '../../../shared/components/table/screens/Table';
 import { Finder } from '../../../shared/components/finder/screen/Finder';
-import * as SharedStyled from '../../../shared/styles/Registration.style';
 import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
 import Paginate from '../../../shared/components/paginate/screens/Paginate';
 import * as Styled from '../../../shared/components/table/styles/table.style';
 import { EmptyState } from '../../../shared/components/emptyState/screens/EmpyState';
 import ToggleSwitch from '../../../shared/elements/toggleSwitch/screens/ToggleSwitch';
+import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
 
 const Contact = () => {
@@ -158,9 +157,7 @@ const Contact = () => {
             <Finder placeholder="Pesquise um contato por nome ou telefone" buttonText="Cadastrar contato" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } } />
 
             { isLoading && (
-                <SharedStyled.LoadingContainer>
-                    <PropagateLoader size={ 25 } color="#1C70E9" />
-                </SharedStyled.LoadingContainer>
+                <LoadingState/>
             ) }
             { !isLoading && contacts.length > 0 && (
                 <Fragment>
