@@ -55,6 +55,12 @@ export class MailService implements OnModuleInit {
                 to,
                 subject,
                 html,
+
+                attachments: [{
+                    cid: "logo_sendly",
+                    filename: "logo.png",
+                    path: path.join(__dirname, "assets", "logo.png"),
+                }]
             });
 
             const previewUrl = nodemailer.getTestMessageUrl(info);
@@ -75,5 +81,9 @@ export class MailService implements OnModuleInit {
 
     async sendForgotPasswordEmail(to: string, context: MailTemplateContext[MailTemplate.FORGOT_PASSWORD]): Promise<void> {
         return this.sendEmail(to, MailSubject.FORGOT_PASSWORD, MailTemplate.FORGOT_PASSWORD, context);
+    }
+
+    async sendSystemRootEmail(to: string, context: MailTemplateContext[MailTemplate.SYSTEM_ROOT]): Promise<void> {
+        return this.sendEmail(to, MailSubject.SYSTEM_ROOT, MailTemplate.SYSTEM_ROOT, context);
     }
 }

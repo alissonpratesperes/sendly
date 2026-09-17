@@ -10,4 +10,10 @@ export type MailTemplateContext = {
         name: string;
         url: string;
     }
+
+    [MailTemplate.SYSTEM_ROOT]: {
+        name: string;
+        password: string;
+        url: string;
+    }
 }
