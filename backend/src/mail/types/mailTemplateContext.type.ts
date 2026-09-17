@@ -5,12 +5,10 @@ export type MailTemplateContext = {
         name: string;
         url: string;
     }
-
     [MailTemplate.FORGOT_PASSWORD]: {
         name: string;
         url: string;
     }
-
     [MailTemplate.SYSTEM_ROOT]: {
         name: string;
         password: string;

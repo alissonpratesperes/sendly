@@ -1,0 +1,3 @@
+interface EmptyStateProps {
+  message?: string;
+}

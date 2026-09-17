@@ -1,5 +1,4 @@
 import { toast } from 'react-toastify';
-import { BadgeAlert } from 'lucide-react';
 import { PropagateLoader } from 'react-spinners';
 import React, { Fragment, useCallback, useEffect, useState } from 'react';
 
@@ -16,6 +15,7 @@ import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
 import Paginate from '../../../shared/components/paginate/screens/Paginate';
 import UserBadge from '../../../shared/elements/userBadge/screens/UserBadge';
 import * as Styled from '../../../shared/components/table/styles/table.style';
+import { EmptyState } from '../../../shared/components/emptyState/screens/EmpyState';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
 
 const User = () => {
@@ -100,42 +100,39 @@ const User = () => {
 
     return (
         <Fragment>
-                <Finder placeholder="Pesquise um usuário por nome ou e-mail" buttonText="Cadastrar usuário" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } } />
+            <Finder placeholder="Pesquise um usuário por nome ou e-mail" buttonText="Cadastrar usuário" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } } />
 
-                { isLoading && (
-                    <SharedStyled.LoadingContainer>
-                        <PropagateLoader size={ 25 } color="#1C70E9" />
-                    </SharedStyled.LoadingContainer>
-                ) }
-                { users.length > 0 ? (
-                    <Fragment>
-                        <Table<UserResponseDto>
-                            headers={[ "Nome", "E-mail", "Status", "Acesso", "Criado em", "Editado em", ]}
-                            data={ users }
-                            getEntityId={ (user: UserResponseDto) => user.id }
-                            onEdit={ handleUpdate }
-                            onDelete={ (id: number) => { setSelectedUserId(id); setIsDeleteModalOpen(true); } }
-                            renderEntityRow={ (user: UserResponseDto) => (
-                                <Fragment>
-                                    <Styled.TableListBodyRowData> { user.name } </Styled.TableListBodyRowData>
-                                    <Styled.TableListBodyRowData> <b> { user.email } </b> </Styled.TableListBodyRowData>
-                                    <Styled.TableListBodyRowData> <UserBadge variant={ user.isFirstAccess ? "isFirstAccess" : "notIsFirstAccess" } /> </Styled.TableListBodyRowData>
-                                    <Styled.TableListBodyRowData> <UserBadge variant={ user.isSystemRoot ? "isSystemRoot" : "notIsSystemRoot" } /> </Styled.TableListBodyRowData>
-                                    <Styled.TableListBodyRowData> { formatDate(user.createdAt, true) } </Styled.TableListBodyRowData>
-                                    <Styled.TableListBodyRowData> { formatDate(user.updatedAt, true) } </Styled.TableListBodyRowData>
-                                </Fragment>
-                            ) }
-                        />
+            { isLoading && (
+                <SharedStyled.LoadingContainer>
+                    <PropagateLoader size={ 25 } color="#1C70E9" />
+                </SharedStyled.LoadingContainer>
+            ) }
+            { !isLoading && users.length > 0 && (
+                <Fragment>
+                    <Table<UserResponseDto>
+                        headers={[ "Nome", "E-mail", "Status", "Acesso", "Criado em", "Editado em", ]}
+                        data={ users }
+                        getEntityId={ (user: UserResponseDto) => user.id }
+                        onEdit={ handleUpdate }
+                        onDelete={ (id: number) => { setSelectedUserId(id); setIsDeleteModalOpen(true); } }
+                        renderEntityRow={ (user: UserResponseDto) => (
+                            <Fragment>
+                                <Styled.TableListBodyRowData> { user.name } </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <b> { user.email } </b> </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <UserBadge variant={ user.isFirstAccess ? "isFirstAccess" : "notIsFirstAccess" } /> </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <UserBadge variant={ user.isSystemRoot ? "isSystemRoot" : "notIsSystemRoot" } /> </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> { formatDate(user.createdAt, true) } </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> { formatDate(user.updatedAt, true) } </Styled.TableListBodyRowData>
+                            </Fragment>
+                        ) }
+                    />
 
-                        <Paginate page={ page } total={ total } limit={ limit } onPageChange={ setPage } onLimitChange={ (newLimit: number) => { setLimit(newLimit); setPage(1); } } />
-                    </Fragment>
-                ) : !isLoading ? (
-                    <SharedStyled.NotFoundRegisterContainer>
-                        <BadgeAlert size={ 50 } color="#1C70E9"/>
-
-                        <SharedStyled.NotFoundRegisterText> Nenhum registro encontrado </SharedStyled.NotFoundRegisterText>
-                    </SharedStyled.NotFoundRegisterContainer>
-                ) : null }
+                    <Paginate page={ page } total={ total } limit={ limit } onPageChange={ setPage } onLimitChange={ (newLimit: number) => { setLimit(newLimit); setPage(1); } } />
+                </Fragment>
+            ) }
+            { !isLoading && users.length === 0 && (
+                <EmptyState message="Nenhum usuário encontrado" />
+            ) }
 
             <Modal isOpen={ isDeleteModalOpen } entityName={ users.find((user: UserResponseDto) => user.id === selectedUserId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleConfirmDelete } />
 

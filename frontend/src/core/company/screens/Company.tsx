@@ -1,5 +1,4 @@
 import { toast } from 'react-toastify';
-import { BadgeAlert } from 'lucide-react';
 import { PropagateLoader } from 'react-spinners';
 import React, { Fragment, useCallback, useEffect, useState } from 'react';
 
@@ -15,6 +14,7 @@ import * as SharedStyled from '../../../shared/styles/Registration.style';
 import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
 import Paginate from '../../../shared/components/paginate/screens/Paginate';
 import * as Styled from '../../../shared/components/table/styles/table.style';
+import { EmptyState } from '../../../shared/components/emptyState/screens/EmpyState';
 import { formatCompanyDocument } from '../../../shared/utils/formatCompanyDocument.util';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
 
@@ -101,41 +101,38 @@ const Company = () => {
 
     return (
         <Fragment>
-                <Finder placeholder="Pesquise uma empresa por nome ou cnpj" buttonText="Cadastrar empresa" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } } />
+            <Finder placeholder="Pesquise uma empresa por nome ou cnpj" buttonText="Cadastrar empresa" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } } />
 
-                { isLoading && (
-                    <SharedStyled.LoadingContainer>
-                        <PropagateLoader size={ 25 } color="#1C70E9" />
-                    </SharedStyled.LoadingContainer>
-                ) }
-                { companies.length > 0 ? (
-                    <Fragment>
-                        <Table<CompanyResponseDto>
-                            headers={[ "Nome", "Documento", "Descrição", "Criada em", "Editada em", ]}
-                            data={ companies }
-                            getEntityId={ (company: CompanyResponseDto) => company.id }
-                            onEdit={ handleUpdate }
-                            onDelete={ (id: number) => { setSelectedCompanyId(id); setIsDeleteModalOpen(true); } }
-                            renderEntityRow={ (company: CompanyResponseDto) => (
-                                <Fragment>
-                                    <Styled.TableListBodyRowData> { company.name } </Styled.TableListBodyRowData>
-                                    <Styled.TableListBodyRowData> <b> { formatCompanyDocument(company.document) } </b> </Styled.TableListBodyRowData>
-                                    <Styled.TableListBodyRowData> { company.description } </Styled.TableListBodyRowData>
-                                    <Styled.TableListBodyRowData> { formatDate(company.createdAt, true) } </Styled.TableListBodyRowData>
-                                    <Styled.TableListBodyRowData> { formatDate(company.updatedAt, true) } </Styled.TableListBodyRowData>
-                                </Fragment>
-                            ) }
-                        />
+            { isLoading && (
+                <SharedStyled.LoadingContainer>
+                    <PropagateLoader size={ 25 } color="#1C70E9" />
+                </SharedStyled.LoadingContainer>
+            ) }
+            { !isLoading && companies.length > 0 && (
+                <Fragment>
+                    <Table<CompanyResponseDto>
+                        headers={[ "Nome", "Documento", "Descrição", "Criada em", "Editada em", ]}
+                        data={ companies }
+                        getEntityId={ (company: CompanyResponseDto) => company.id }
+                        onEdit={ handleUpdate }
+                        onDelete={ (id: number) => { setSelectedCompanyId(id); setIsDeleteModalOpen(true); } }
+                        renderEntityRow={ (company: CompanyResponseDto) => (
+                            <Fragment>
+                                <Styled.TableListBodyRowData> { company.name } </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <b> { formatCompanyDocument(company.document) } </b> </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> { company.description } </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> { formatDate(company.createdAt, true) } </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> { formatDate(company.updatedAt, true) } </Styled.TableListBodyRowData>
+                            </Fragment>
+                        ) }
+                    />
 
-                        <Paginate page={ page } total={ total } limit={ limit } onPageChange={ setPage } onLimitChange={ (newLimit: number) => { setLimit(newLimit); setPage(1); } } />
-                    </Fragment>
-                ) : !isLoading ? (
-                    <SharedStyled.NotFoundRegisterContainer>
-                        <BadgeAlert size={ 50 } color="#1C70E9"/>
-
-                        <SharedStyled.NotFoundRegisterText> Nenhum registro encontrado </SharedStyled.NotFoundRegisterText>
-                    </SharedStyled.NotFoundRegisterContainer>
-                ) : null }
+                    <Paginate page={ page } total={ total } limit={ limit } onPageChange={ setPage } onLimitChange={ (newLimit: number) => { setLimit(newLimit); setPage(1); } } />
+                </Fragment>
+            ) }
+            { !isLoading && companies.length === 0 && (
+                <EmptyState message="Nenhuma empresa encontrada" />
+            ) }
 
             <Modal isOpen={ isDeleteModalOpen } entityName={ companies.find((company: CompanyResponseDto) => company.id === selectedCompanyId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleConfirmDelete } />
 

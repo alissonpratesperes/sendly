@@ -1,5 +1,4 @@
 import { toast } from 'react-toastify';
-import { BadgeAlert } from 'lucide-react';
 import { PropagateLoader } from 'react-spinners';
 import parsePhoneNumberFromString from 'libphonenumber-js';
 import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react';
@@ -18,6 +17,7 @@ import * as SharedStyled from '../../../shared/styles/Registration.style';
 import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
 import Paginate from '../../../shared/components/paginate/screens/Paginate';
 import * as Styled from '../../../shared/components/table/styles/table.style';
+import { EmptyState } from '../../../shared/components/emptyState/screens/EmpyState';
 import ToggleSwitch from '../../../shared/elements/toggleSwitch/screens/ToggleSwitch';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
 
@@ -155,41 +155,38 @@ const Contact = () => {
 
     return (
         <Fragment>
-                <Finder placeholder="Pesquise um contato por nome ou telefone" buttonText="Cadastrar contato" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } } />
+            <Finder placeholder="Pesquise um contato por nome ou telefone" buttonText="Cadastrar contato" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } } />
 
-                { isLoading && (
-                    <SharedStyled.LoadingContainer>
-                        <PropagateLoader size={ 25 } color="#1C70E9" />
-                    </SharedStyled.LoadingContainer>
-                ) }
-                { contacts.length > 0 ? (
-                    <Fragment>
-                        <Table<ContactResponseDto>
-                            headers={[ "Nome", "Telefone", "Comunicação", "Criada em", "Editada em", ]}
-                            data={ contacts }
-                            getEntityId={ (contact: ContactResponseDto) => contact.id }
-                            onEdit={ handleUpdate }
-                            onDelete={ (id: number) => { setSelectedContactId(id); setIsDeleteModalOpen(true); } }
-                            renderEntityRow={ (contact: ContactResponseDto) => (
-                                <Fragment>
-                                    <Styled.TableListBodyRowData> <Styled.TableListColorContent> <Styled.TableListColorFragment $color={ listsNames[contact.listId]?.color ?? "transparent" }/> { contact.name } </Styled.TableListColorContent> </Styled.TableListBodyRowData>
-                                    <Styled.TableListBodyRowData> <b> { parsePhoneNumberFromString(contact.phone)?.formatNational() } </b> </Styled.TableListBodyRowData>
-                                    <Styled.TableListBodyRowData> <ToggleSwitch label={ contact.active ? "Active" : "Inactive" } checked={ contact.active } onChange={ (event) => handleActiveCommunication(contact.id, event.target.checked) } /> </Styled.TableListBodyRowData>
-                                    <Styled.TableListBodyRowData> { formatDate(contact.createdAt, true) } </Styled.TableListBodyRowData>
-                                    <Styled.TableListBodyRowData> { formatDate(contact.updatedAt, true) } </Styled.TableListBodyRowData>
-                                </Fragment>
-                            ) }
-                        />
+            { isLoading && (
+                <SharedStyled.LoadingContainer>
+                    <PropagateLoader size={ 25 } color="#1C70E9" />
+                </SharedStyled.LoadingContainer>
+            ) }
+            { !isLoading && contacts.length > 0 && (
+                <Fragment>
+                    <Table<ContactResponseDto>
+                        headers={[ "Nome", "Telefone", "Comunicação", "Criada em", "Editada em", ]}
+                        data={ contacts }
+                        getEntityId={ (contact: ContactResponseDto) => contact.id }
+                        onEdit={ handleUpdate }
+                        onDelete={ (id: number) => { setSelectedContactId(id); setIsDeleteModalOpen(true); } }
+                        renderEntityRow={ (contact: ContactResponseDto) => (
+                            <Fragment>
+                                <Styled.TableListBodyRowData> <Styled.TableListColorContent> <Styled.TableListColorFragment $color={ listsNames[contact.listId]?.color ?? "transparent" }/> { contact.name } </Styled.TableListColorContent> </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <b> { parsePhoneNumberFromString(contact.phone)?.formatNational() } </b> </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <ToggleSwitch label={ contact.active ? "Active" : "Inactive" } checked={ contact.active } onChange={ (event) => handleActiveCommunication(contact.id, event.target.checked) } /> </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> { formatDate(contact.createdAt, true) } </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> { formatDate(contact.updatedAt, true) } </Styled.TableListBodyRowData>
+                            </Fragment>
+                        ) }
+                    />
 
-                        <Paginate page={ page } total={ total } limit={ limit } onPageChange={ setPage } onLimitChange={ (newLimit: number) => { setLimit(newLimit); setPage(1); } } />
-                    </Fragment>
-                ) : !isLoading ? (
-                    <SharedStyled.NotFoundRegisterContainer>
-                        <BadgeAlert size={ 50 } color="#1C70E9"/>
-
-                        <SharedStyled.NotFoundRegisterText> Nenhum registro encontrado </SharedStyled.NotFoundRegisterText>
-                    </SharedStyled.NotFoundRegisterContainer>
-                ) : null }
+                    <Paginate page={ page } total={ total } limit={ limit } onPageChange={ setPage } onLimitChange={ (newLimit: number) => { setLimit(newLimit); setPage(1); } } />
+                </Fragment>
+            ) }
+            { !isLoading && contacts.length === 0 && (
+                <EmptyState message="Nenhum contato encontrado" />
+            ) }
 
             <Modal isOpen={ isDeleteModalOpen } entityName={ contacts.find((contact: ContactResponseDto) => contact.id === selectedContactId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleConfirmDelete } />
 
