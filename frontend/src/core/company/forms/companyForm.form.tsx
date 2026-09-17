@@ -6,12 +6,12 @@ import { Create, Update } from '../services/company.service';
 import Toast from '../../../shared/components/toast/screens/Toast';
 import { CreateCompanyCommandDto } from '../dtos/createCompanyCommand.dto';
 import { UpdateCompanyCommandDto } from '../dtos/updateCompanyCommand.dto';
-import { CompanyFormProps } from '../interfaces/companyFormProps.interface';
+import { FormProps } from '../../../shared/interfaces/formProps.interface';
 import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
 import { CompanyFormData, CompanyFormSchema } from '../schemas/companyFormSchema.schema';
 import { formatCompanyDocument } from '../../../shared/utils/formatCompanyDocument.util';
 
-export const CompanyForm: React.FC<CompanyFormProps> = ({ initialValues, onCancel, onSubmit }) => {
+export const CompanyForm: React.FC<FormProps<CompanyFormData>> = ({ initialValues, onSubmit }) => {
     const [formData, setFormData] = useState<CompanyFormData>({
         name: "",
         document: "",

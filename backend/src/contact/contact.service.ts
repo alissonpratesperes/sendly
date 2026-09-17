@@ -25,6 +25,7 @@ export class ContactService {
 
             contact.Name,
             contact.Phone,
+            contact.Active,
 
             contact.CreatedAt,
             contact.UpdatedAt,
@@ -147,7 +148,7 @@ export class ContactService {
         );
     }
 
-    async update(id: number, companyId?: number, listId?: number, name?: string, phone?: string, country?: string, active?: string): Promise<GetContactResponseDto> {
+    async update(id: number, companyId?: number, listId?: number, name?: string, phone?: string, country?: string, active?: boolean): Promise<GetContactResponseDto> {
         const contact = await this.read(id);
         const targetCompanyId = companyId ?? contact.companyId;
         const targetListId = listId ?? contact.listId;

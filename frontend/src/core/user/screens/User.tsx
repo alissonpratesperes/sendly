@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify';
+import { BadgeAlert } from 'lucide-react';
 import { PropagateLoader } from 'react-spinners';
-import { BadgeAlert, CirclePlus, Search, Trash, Pen } from 'lucide-react';
 import React, { Fragment, useCallback, useEffect, useState } from 'react';
 
 import { UserForm } from '../forms/userForm.form';
@@ -9,10 +9,13 @@ import { UserResponseDto } from '../dtos/userResponse.dto';
 import { UserFormData } from '../schemas/userFormSchema.schema';
 import Modal from '../../../shared/components/modal/screens/Modal';
 import { formatDate } from '../../../shared/utils/formatDate.util';
+import { Table } from '../../../shared/components/table/screens/Table';
+import { Finder } from '../../../shared/components/finder/screen/Finder';
 import * as SharedStyled from '../../../shared/styles/Registration.style';
 import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
 import Paginate from '../../../shared/components/paginate/screens/Paginate';
 import UserBadge from '../../../shared/elements/userBadge/screens/UserBadge';
+import * as Styled from '../../../shared/components/table/styles/table.style';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
 
 const User = () => {
@@ -97,20 +100,7 @@ const User = () => {
 
     return (
         <Fragment>
-            <SharedStyled.ListWrapper>
-                <SharedStyled.SearchInputWrapper>
-                    <SharedStyled.SearchInputContainer>
-                        <Search size={ 25 } color="#1C70E9" />
-
-                        <SharedStyled.SearchInputField type="text" placeholder="Pesquise um usuário por nome ou e-mail" value={ search } onChange={ (inputEvent) => { setSearch(inputEvent.target.value); setPage(1); } } />
-                    </SharedStyled.SearchInputContainer>
-
-                    <SharedStyled.AddButton onClick={ handleCreate }>
-                        <CirclePlus size={ 25 } />
-
-                        <SharedStyled.SearchInputSubmitText> Cadastrar usuário </SharedStyled.SearchInputSubmitText>
-                    </SharedStyled.AddButton>
-                </SharedStyled.SearchInputWrapper>
+                <Finder placeholder="Pesquise um usuário por nome ou e-mail" buttonText="Cadastrar usuário" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } } />
 
                 { isLoading && (
                     <SharedStyled.LoadingContainer>
@@ -119,43 +109,25 @@ const User = () => {
                 ) }
                 { users.length > 0 ? (
                     <Fragment>
-                        <SharedStyled.TableWrapper>
-                            <SharedStyled.TableListWrapper>
-                                <thead>
-                                    <SharedStyled.TableListHeaderRow>
-                                        <SharedStyled.TableListHeaderRowColumn> Nome </SharedStyled.TableListHeaderRowColumn>
-                                        <SharedStyled.TableListHeaderRowColumn> Email </SharedStyled.TableListHeaderRowColumn>
-                                        <SharedStyled.TableListHeaderRowColumn> Status </SharedStyled.TableListHeaderRowColumn>
-                                        <SharedStyled.TableListHeaderRowColumn> Acesso </SharedStyled.TableListHeaderRowColumn>
-                                        <SharedStyled.TableListHeaderRowColumn> Criado em </SharedStyled.TableListHeaderRowColumn>
-                                        <SharedStyled.TableListHeaderRowColumn> Editado em </SharedStyled.TableListHeaderRowColumn>
-                                        <SharedStyled.TableListHeaderRowColumn> </SharedStyled.TableListHeaderRowColumn>
-                                    </SharedStyled.TableListHeaderRow>
-                                </thead>
-                                <tbody>
-                                    { users.map((user: UserResponseDto) => (
-                                        <SharedStyled.TableListBodyRow key={ user.id }>
-                                            <SharedStyled.TableListBodyRowData> { user.name } </SharedStyled.TableListBodyRowData>
-                                            <SharedStyled.TableListBodyRowData> <b> { user.email } </b> </SharedStyled.TableListBodyRowData>
-                                            <SharedStyled.TableListBodyRowData> <UserBadge variant={ user.isFirstAccess ? "isFirstAccess" : "notIsFirstAccess" } /> </SharedStyled.TableListBodyRowData>
-                                            <SharedStyled.TableListBodyRowData> <UserBadge variant={ user.isSystemRoot ? "isSystemRoot" : "notIsSystemRoot" } /> </SharedStyled.TableListBodyRowData>
-                                            <SharedStyled.TableListBodyRowData> { formatDate(user.createdAt, true) } </SharedStyled.TableListBodyRowData>
-                                            <SharedStyled.TableListBodyRowData> { formatDate(user.updatedAt, true) } </SharedStyled.TableListBodyRowData>
-                                            <SharedStyled.TableListBodyRowData>
-                                                <SharedStyled.TableListBodyRowDataActions>
-                                                    <SharedStyled.TableListBodyRowDataActionButton onClick={ () => handleUpdate(user.id) }> <Pen size={ 25 } color="#238636" /> </SharedStyled.TableListBodyRowDataActionButton>
-                                                    <SharedStyled.TableListBodyRowDataActionButton onClick={ () => { setSelectedUserId(user.id); setIsDeleteModalOpen(true); } }> <Trash size={ 25 } color="#DC143C" /> </SharedStyled.TableListBodyRowDataActionButton>
-                                                </SharedStyled.TableListBodyRowDataActions>
-                                            </SharedStyled.TableListBodyRowData>
-                                        </SharedStyled.TableListBodyRow>
-                                    )) }
-                                </tbody>
-                            </SharedStyled.TableListWrapper>
-                        </SharedStyled.TableWrapper>
+                        <Table<UserResponseDto>
+                            headers={[ "Nome", "E-mail", "Status", "Acesso", "Criado em", "Editado em", ]}
+                            data={ users }
+                            getEntityId={ (user: UserResponseDto) => user.id }
+                            onEdit={ handleUpdate }
+                            onDelete={ (id: number) => { setSelectedUserId(id); setIsDeleteModalOpen(true); } }
+                            renderEntityRow={ (user: UserResponseDto) => (
+                                <Fragment>
+                                    <Styled.TableListBodyRowData> { user.name } </Styled.TableListBodyRowData>
+                                    <Styled.TableListBodyRowData> <b> { user.email } </b> </Styled.TableListBodyRowData>
+                                    <Styled.TableListBodyRowData> <UserBadge variant={ user.isFirstAccess ? "isFirstAccess" : "notIsFirstAccess" } /> </Styled.TableListBodyRowData>
+                                    <Styled.TableListBodyRowData> <UserBadge variant={ user.isSystemRoot ? "isSystemRoot" : "notIsSystemRoot" } /> </Styled.TableListBodyRowData>
+                                    <Styled.TableListBodyRowData> { formatDate(user.createdAt, true) } </Styled.TableListBodyRowData>
+                                    <Styled.TableListBodyRowData> { formatDate(user.updatedAt, true) } </Styled.TableListBodyRowData>
+                                </Fragment>
+                            ) }
+                        />
 
-                        <SharedStyled.FooterPaginateWrapper>
-                            <Paginate page={ page } total={ total } limit={ limit } onPageChange={ setPage } onLimitChange={ (newLimit: number) => { setLimit(newLimit); setPage(1); } } />
-                        </SharedStyled.FooterPaginateWrapper>
+                        <Paginate page={ page } total={ total } limit={ limit } onPageChange={ setPage } onLimitChange={ (newLimit: number) => { setLimit(newLimit); setPage(1); } } />
                     </Fragment>
                 ) : !isLoading ? (
                     <SharedStyled.NotFoundRegisterContainer>
@@ -164,7 +136,6 @@ const User = () => {
                         <SharedStyled.NotFoundRegisterText> Nenhum registro encontrado </SharedStyled.NotFoundRegisterText>
                     </SharedStyled.NotFoundRegisterContainer>
                 ) : null }
-            </SharedStyled.ListWrapper>
 
             <Modal isOpen={ isDeleteModalOpen } entityName={ users.find((user: UserResponseDto) => user.id === selectedUserId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleConfirmDelete } />
 

@@ -27,7 +27,6 @@ export const ApplicationBrandMark = styled.p`
 `;
 
 export const MenuContainer = styled.div`
-  width: 500px;
   display: flex;
   flex-direction: row;
   align-items: center;

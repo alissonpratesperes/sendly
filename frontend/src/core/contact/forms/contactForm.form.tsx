@@ -9,26 +9,30 @@ import { ListResponseDto } from '../../list/dtos/listResponse.dto';
 import Toast from '../../../shared/components/toast/screens/Toast';
 import { CreateContactCommandDto } from '../dtos/createContactCommand.dto';
 import { UpdateContactCommandDto } from '../dtos/updateContactCommand.dto';
-import { ContactFormProps } from '../interfaces/contactFormProps.interface';
+import { FormProps } from '../../../shared/interfaces/formProps.interface';
 import Dropdown from '../../../shared/components/dropdown/screens/Dropdown';
 import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
 import { ContactFormData, ContactFormSchema } from '../schemas/contactFormSchema.schema';
 
-export const ContactForm: React.FC<ContactFormProps> = ({ initialValues, onCancel, onSubmit }) => {
+export const ContactForm: React.FC<FormProps<ContactFormData>> = ({ initialValues, onSubmit }) => {
     const [lists, setLists] = useState<ListResponseDto[]>([]);
     const [isListsLoading, setIsListsLoading] = useState(false);
 
     const optionsForLists = lists
         .filter((list: ListResponseDto) =>list.id !== undefined && list.id !== null)
-        .map((list: ListResponseDto) => ({ value: Number(list.id), label: list.name }))
+        .map((list: ListResponseDto) => ({
+            value: Number(list.id),
+            label: list.name,
+            color: list.color,
+        }))
         .sort((a, b) => a.label.localeCompare(b.label));
-
     const regionNames = new Intl.DisplayNames(["pt-BR"], { type: "region", } );
     const optionsForCountries = getCountries()
         .map((country) => ({
             value: country,
-            label: `${ country.toUpperCase().replace(/./g, (char) => String.fromCodePoint(127397 + char.charCodeAt(0))) } ${ regionNames.of(country) } +${ getCountryCallingCode(country) }`,
+            label: `${ regionNames.of(country) } +${ getCountryCallingCode(country) }`,
             countryName: regionNames.of(country) ?? "",
+            flag: country.replace(/./g, (char) => String.fromCodePoint(127397 + char.charCodeAt(0))),
         }))
         .sort((a, b) => a.countryName.localeCompare(b.countryName, "pt-BR"))
         .map(({ countryName, ...option }) => option);
@@ -183,6 +187,13 @@ export const ContactForm: React.FC<ContactFormProps> = ({ initialValues, onCance
                     value={ optionsForLists.find((option) => option.value === formData.listId) || null }
                     onChange={ (selectedOption) => setFormData(previous => ({ ...previous, listId: selectedOption ? selectedOption.value : 0 })) }
                     isSearchable={ true }
+
+                    formatOptionLabel={ (option) => (
+                        <div style={ { display: "flex", flexDirection: "row", alignItems: "center", gap: 15, } }>
+                            <span style={ { width: 25, height: 25, flexShrink: 0, borderRadius: "50%", backgroundColor: option.color, } } />
+                            <span> { option.label } </span>
+                        </div>
+                    ) }
                 />
             </Styled.FieldWrapper>
             <Styled.FieldWrapper>
@@ -208,6 +219,13 @@ export const ContactForm: React.FC<ContactFormProps> = ({ initialValues, onCance
                     value={ optionsForCountries.find((option) => option.value === formData.country) || null }
                     onChange={(selectedOption) => setFormData((previous) => ({ ...previous, country: selectedOption?.value ?? "" })) }
                     isSearchable={ true }
+
+                    formatOptionLabel={ (option) => (
+                        <div style={ { display: "flex", flexDirection: "row", alignItems: "center", gap: 15, } }>
+                            <span style={ { fontSize: 25 } }> { option.flag } </span>
+                            <span> { option.label } </span>
+                        </div>
+                    ) }
                 />
             </Styled.FieldWrapper>
 

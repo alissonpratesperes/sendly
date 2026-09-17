@@ -6,11 +6,11 @@ import { Create, Update } from '../services/list.service';
 import Toast from '../../../shared/components/toast/screens/Toast';
 import { CreateListCommandDto } from '../dtos/createListCommand.dto';
 import { UpdateListCommandDto } from '../dtos/updateListCommand.dto';
-import { ListFormProps } from '../interfaces/listFormProps.interface';
+import { FormProps } from '../../../shared/interfaces/formProps.interface';
 import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
 import { ListFormData, ListFormSchema } from '../schemas/listFormSchema.schema';
 
-export const ListForm: React.FC<ListFormProps> = ({ initialValues, onCancel, onSubmit }) => {
+export const ListForm: React.FC<FormProps<ListFormData>> = ({ initialValues, onSubmit }) => {
     const [formData, setFormData] = useState<ListFormData>({
         companyId: 0,
         name: "",

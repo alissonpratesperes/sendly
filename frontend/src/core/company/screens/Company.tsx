@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify';
+import { BadgeAlert } from 'lucide-react';
 import { PropagateLoader } from 'react-spinners';
-import { BadgeAlert, CirclePlus, Search, Trash, Pen } from 'lucide-react';
 import React, { Fragment, useCallback, useEffect, useState } from 'react';
 
 import { CompanyForm } from '../forms/companyForm.form';
@@ -9,9 +9,12 @@ import { CompanyResponseDto } from '../dtos/companyResponse.dto';
 import { formatDate } from '../../../shared/utils/formatDate.util';
 import Modal from '../../../shared/components/modal/screens/Modal';
 import { CompanyFormData } from '../schemas/companyFormSchema.schema';
+import { Table } from '../../../shared/components/table/screens/Table';
+import { Finder } from '../../../shared/components/finder/screen/Finder';
 import * as SharedStyled from '../../../shared/styles/Registration.style';
 import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
 import Paginate from '../../../shared/components/paginate/screens/Paginate';
+import * as Styled from '../../../shared/components/table/styles/table.style';
 import { formatCompanyDocument } from '../../../shared/utils/formatCompanyDocument.util';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
 
@@ -98,20 +101,7 @@ const Company = () => {
 
     return (
         <Fragment>
-            <SharedStyled.ListWrapper>
-                <SharedStyled.SearchInputWrapper>
-                    <SharedStyled.SearchInputContainer>
-                        <Search size={ 25 } color="#1C70E9" />
-
-                        <SharedStyled.SearchInputField type="text" placeholder="Pesquise uma empresa por nome ou cnpj" value={ search } onChange={ (inputEvent) => { setSearch(inputEvent.target.value); setPage(1); } } />
-                    </SharedStyled.SearchInputContainer>
-
-                    <SharedStyled.AddButton onClick={ handleCreate }>
-                        <CirclePlus size={ 25 } />
-
-                        <SharedStyled.SearchInputSubmitText> Cadastrar empresa </SharedStyled.SearchInputSubmitText>
-                    </SharedStyled.AddButton>
-                </SharedStyled.SearchInputWrapper>
+                <Finder placeholder="Pesquise uma empresa por nome ou cnpj" buttonText="Cadastrar empresa" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } } />
 
                 { isLoading && (
                     <SharedStyled.LoadingContainer>
@@ -120,42 +110,24 @@ const Company = () => {
                 ) }
                 { companies.length > 0 ? (
                     <Fragment>
-<Listing
-    headers={["Nome", "Documento", "Descrição", "Criada em", "Editada em", ""]}
-    data={companies}
-    getId={(company) => company.id}
-    onEdit={handleUpdate}
-    onDelete={(id) => {
-                                setSelectedCompanyId(id);
-                                setIsDeleteModalOpen(true);
-                            }}
-    renderRow={(company) => (
-        <>
-            <Styled.ListingColumn>
-                {company.name}
-            </Styled.ListingColumn>
+                        <Table<CompanyResponseDto>
+                            headers={[ "Nome", "Documento", "Descrição", "Criada em", "Editada em", ]}
+                            data={ companies }
+                            getEntityId={ (company: CompanyResponseDto) => company.id }
+                            onEdit={ handleUpdate }
+                            onDelete={ (id: number) => { setSelectedCompanyId(id); setIsDeleteModalOpen(true); } }
+                            renderEntityRow={ (company: CompanyResponseDto) => (
+                                <Fragment>
+                                    <Styled.TableListBodyRowData> { company.name } </Styled.TableListBodyRowData>
+                                    <Styled.TableListBodyRowData> <b> { formatCompanyDocument(company.document) } </b> </Styled.TableListBodyRowData>
+                                    <Styled.TableListBodyRowData> { company.description } </Styled.TableListBodyRowData>
+                                    <Styled.TableListBodyRowData> { formatDate(company.createdAt, true) } </Styled.TableListBodyRowData>
+                                    <Styled.TableListBodyRowData> { formatDate(company.updatedAt, true) } </Styled.TableListBodyRowData>
+                                </Fragment>
+                            ) }
+                        />
 
-            <Styled.ListingColumn>
-                <b>{formatCompanyDocument(company.document)}</b>
-            </Styled.ListingColumn>
-
-            <Styled.ListingColumn>
-                {company.description}
-            </Styled.ListingColumn>
-
-            <Styled.ListingColumn>
-                {formatDate(company.createdAt, true)}
-            </Styled.ListingColumn>
-
-            <Styled.ListingColumn>
-                {formatDate(company.updatedAt, true)}
-            </Styled.ListingColumn>
-        </>
-    )}
-/>
-                        <SharedStyled.FooterPaginateWrapper>
-                            <Paginate page={ page } total={ total } limit={ limit } onPageChange={ setPage } onLimitChange={ (newLimit: number) => { setLimit(newLimit); setPage(1); } } />
-                        </SharedStyled.FooterPaginateWrapper>
+                        <Paginate page={ page } total={ total } limit={ limit } onPageChange={ setPage } onLimitChange={ (newLimit: number) => { setLimit(newLimit); setPage(1); } } />
                     </Fragment>
                 ) : !isLoading ? (
                     <SharedStyled.NotFoundRegisterContainer>
@@ -164,7 +136,6 @@ const Company = () => {
                         <SharedStyled.NotFoundRegisterText> Nenhum registro encontrado </SharedStyled.NotFoundRegisterText>
                     </SharedStyled.NotFoundRegisterContainer>
                 ) : null }
-            </SharedStyled.ListWrapper>
 
             <Modal isOpen={ isDeleteModalOpen } entityName={ companies.find((company: CompanyResponseDto) => company.id === selectedCompanyId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleConfirmDelete } />
 

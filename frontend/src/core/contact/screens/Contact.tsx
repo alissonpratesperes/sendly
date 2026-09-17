@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify';
+import { BadgeAlert } from 'lucide-react';
 import { PropagateLoader } from 'react-spinners';
-import { BadgeAlert, Trash, Pen } from 'lucide-react';
 import parsePhoneNumberFromString from 'libphonenumber-js';
 import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 
@@ -12,10 +12,12 @@ import { formatDate } from '../../../shared/utils/formatDate.util';
 import Modal from '../../../shared/components/modal/screens/Modal';
 import { ListResponseDto } from '../../list/dtos/listResponse.dto';
 import { ContactFormData } from '../schemas/contactFormSchema.schema';
+import { Table } from '../../../shared/components/table/screens/Table';
 import { Finder } from '../../../shared/components/finder/screen/Finder';
 import * as SharedStyled from '../../../shared/styles/Registration.style';
 import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
 import Paginate from '../../../shared/components/paginate/screens/Paginate';
+import * as Styled from '../../../shared/components/table/styles/table.style';
 import ToggleSwitch from '../../../shared/elements/toggleSwitch/screens/ToggleSwitch';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
 
@@ -153,7 +155,6 @@ const Contact = () => {
 
     return (
         <Fragment>
-            <SharedStyled.ListWrapper>
                 <Finder placeholder="Pesquise um contato por nome ou telefone" buttonText="Cadastrar contato" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } } />
 
                 { isLoading && (
@@ -163,37 +164,22 @@ const Contact = () => {
                 ) }
                 { contacts.length > 0 ? (
                     <Fragment>
-                        <SharedStyled.TableWrapper>
-                            <SharedStyled.TableListWrapper>
-                                <thead>
-                                    <SharedStyled.TableListHeaderRow>
-                                        <SharedStyled.TableListHeaderRowColumn> Nome </SharedStyled.TableListHeaderRowColumn>
-                                        <SharedStyled.TableListHeaderRowColumn> Telefone </SharedStyled.TableListHeaderRowColumn>
-                                        <SharedStyled.TableListHeaderRowColumn> Comunicação </SharedStyled.TableListHeaderRowColumn>
-                                        <SharedStyled.TableListHeaderRowColumn> Criada em </SharedStyled.TableListHeaderRowColumn>
-                                        <SharedStyled.TableListHeaderRowColumn> Editada em </SharedStyled.TableListHeaderRowColumn>
-                                        <SharedStyled.TableListHeaderRowColumn> </SharedStyled.TableListHeaderRowColumn>
-                                    </SharedStyled.TableListHeaderRow>
-                                </thead>
-                                <tbody>
-                                    { contacts.map((contact: ContactResponseDto) => (
-                                        <SharedStyled.TableListBodyRow key={ contact.id }>
-                                            <SharedStyled.TableListBodyRowData> <SharedStyled.TableListColorContent> <SharedStyled.TableListColorFragment $color={ listsNames[contact.listId]?.color ?? "transparent" }/> { contact.name } </SharedStyled.TableListColorContent> </SharedStyled.TableListBodyRowData>
-                                            <SharedStyled.TableListBodyRowData> <b> { parsePhoneNumberFromString(contact.phone)?.formatNational() } </b> </SharedStyled.TableListBodyRowData>
-                                            <SharedStyled.TableListBodyRowData> <ToggleSwitch label={ contact.active ? "Active" : "Inactive" } checked={ contact.active } onChange={ (event) => handleActiveCommunication(contact.id, event.target.checked) } /> </SharedStyled.TableListBodyRowData>
-                                            <SharedStyled.TableListBodyRowData> { formatDate(contact.createdAt, true) } </SharedStyled.TableListBodyRowData>
-                                            <SharedStyled.TableListBodyRowData> { formatDate(contact.updatedAt, true) } </SharedStyled.TableListBodyRowData>
-                                            <SharedStyled.TableListBodyRowData>
-                                                <SharedStyled.TableListBodyRowDataActions>
-                                                    <SharedStyled.TableListBodyRowDataActionButton onClick={ () => handleUpdate(contact.id) }> <Pen size={ 25 } color="#238636"/> </SharedStyled.TableListBodyRowDataActionButton>
-                                                    <SharedStyled.TableListBodyRowDataActionButton onClick={ () => { setSelectedContactId(contact.id); setIsDeleteModalOpen(true); } }> <Trash size={ 25 } color="#DC143C" /> </SharedStyled.TableListBodyRowDataActionButton>
-                                                </SharedStyled.TableListBodyRowDataActions>
-                                            </SharedStyled.TableListBodyRowData>
-                                        </SharedStyled.TableListBodyRow>
-                                    )) }
-                                </tbody>
-                            </SharedStyled.TableListWrapper>
-                        </SharedStyled.TableWrapper>
+                        <Table<ContactResponseDto>
+                            headers={[ "Nome", "Telefone", "Comunicação", "Criada em", "Editada em", ]}
+                            data={ contacts }
+                            getEntityId={ (contact: ContactResponseDto) => contact.id }
+                            onEdit={ handleUpdate }
+                            onDelete={ (id: number) => { setSelectedContactId(id); setIsDeleteModalOpen(true); } }
+                            renderEntityRow={ (contact: ContactResponseDto) => (
+                                <Fragment>
+                                    <Styled.TableListBodyRowData> <Styled.TableListColorContent> <Styled.TableListColorFragment $color={ listsNames[contact.listId]?.color ?? "transparent" }/> { contact.name } </Styled.TableListColorContent> </Styled.TableListBodyRowData>
+                                    <Styled.TableListBodyRowData> <b> { parsePhoneNumberFromString(contact.phone)?.formatNational() } </b> </Styled.TableListBodyRowData>
+                                    <Styled.TableListBodyRowData> <ToggleSwitch label={ contact.active ? "Active" : "Inactive" } checked={ contact.active } onChange={ (event) => handleActiveCommunication(contact.id, event.target.checked) } /> </Styled.TableListBodyRowData>
+                                    <Styled.TableListBodyRowData> { formatDate(contact.createdAt, true) } </Styled.TableListBodyRowData>
+                                    <Styled.TableListBodyRowData> { formatDate(contact.updatedAt, true) } </Styled.TableListBodyRowData>
+                                </Fragment>
+                            ) }
+                        />
 
                         <Paginate page={ page } total={ total } limit={ limit } onPageChange={ setPage } onLimitChange={ (newLimit: number) => { setLimit(newLimit); setPage(1); } } />
                     </Fragment>
@@ -204,7 +190,6 @@ const Contact = () => {
                         <SharedStyled.NotFoundRegisterText> Nenhum registro encontrado </SharedStyled.NotFoundRegisterText>
                     </SharedStyled.NotFoundRegisterContainer>
                 ) : null }
-            </SharedStyled.ListWrapper>
 
             <Modal isOpen={ isDeleteModalOpen } entityName={ contacts.find((contact: ContactResponseDto) => contact.id === selectedContactId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleConfirmDelete } />
 

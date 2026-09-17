@@ -6,11 +6,11 @@ import { Create, Update } from '../services/user.service';
 import Toast from '../../../shared/components/toast/screens/Toast';
 import { CreateUserCommandDto } from '../dtos/createUserCommand.dto';
 import { UpdateUserCommandDto } from '../dtos/updateUserCommand.dto';
-import { UserFormProps } from '../interfaces/userFormProps.interface';
+import { FormProps } from '../../../shared/interfaces/formProps.interface';
 import { UserFormData, UserFormSchema } from '../schemas/userFormSchema.schema';
 import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
 
-export const UserForm: React.FC<UserFormProps> = ({ initialValues, onCancel, onSubmit }) => {
+export const UserForm: React.FC<FormProps<UserFormData>> = ({ initialValues, onSubmit }) => {
     const [formData, setFormData] = useState<UserFormData>({
         name: "",
         email: "",

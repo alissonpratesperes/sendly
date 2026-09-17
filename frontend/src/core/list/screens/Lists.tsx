@@ -1,18 +1,20 @@
 import { toast } from 'react-toastify';
+import { BadgeAlert } from 'lucide-react';
 import { PropagateLoader } from 'react-spinners';
-import { BadgeAlert, CirclePlus, Search, Trash, Pen } from 'lucide-react';
 import React, { Fragment, useCallback, useEffect, useState } from 'react';
 
 import { ListForm } from '../forms/listForm.form';
 import { List, Delete } from '../services/list.service';
 import { ListResponseDto } from '../dtos/listResponse.dto';
+import { ListFormData } from '../schemas/listFormSchema.schema';
 import { formatDate } from '../../../shared/utils/formatDate.util';
 import Modal from '../../../shared/components/modal/screens/Modal';
-import { ListFormData } from '../schemas/listFormSchema.schema';
+import { Table } from '../../../shared/components/table/screens/Table';
+import { Finder } from '../../../shared/components/finder/screen/Finder';
 import * as SharedStyled from '../../../shared/styles/Registration.style';
 import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
 import Paginate from '../../../shared/components/paginate/screens/Paginate';
-import { formatCompanyDocument } from '../../../shared/utils/formatCompanyDocument.util';
+import * as Styled from '../../../shared/components/table/styles/table.style';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
 
 const Lists = () => {
@@ -99,20 +101,7 @@ const Lists = () => {
 
     return (
         <Fragment>
-            <SharedStyled.ListWrapper>
-                <SharedStyled.SearchInputWrapper>
-                    <SharedStyled.SearchInputContainer>
-                        <Search size={ 25 } color="#1C70E9" />
-
-                        <SharedStyled.SearchInputField type="text" placeholder="Pesquise uma lista por nome ou assunto" value={ search } onChange={ (inputEvent) => { setSearch(inputEvent.target.value); setPage(1); } } />
-                    </SharedStyled.SearchInputContainer>
-
-                    <SharedStyled.AddButton onClick={ handleCreate }>
-                        <CirclePlus size={ 25 } />
-
-                        <SharedStyled.SearchInputSubmitText> Cadastrar lista </SharedStyled.SearchInputSubmitText>
-                    </SharedStyled.AddButton>
-                </SharedStyled.SearchInputWrapper>
+                <Finder placeholder="Pesquise uma lista por nome ou assunto" buttonText="Cadastrar lista" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } } />
 
                 { isLoading && (
                     <SharedStyled.LoadingContainer>
@@ -121,39 +110,24 @@ const Lists = () => {
                 ) }
                 { lists.length > 0 ? (
                     <Fragment>
-                        <SharedStyled.TableWrapper>
-                            <SharedStyled.TableListWrapper>
-                                <thead>
-                                    <SharedStyled.TableListHeaderRow>
-                                        <SharedStyled.TableListHeaderRowColumn> Nome </SharedStyled.TableListHeaderRowColumn>
-                                        <SharedStyled.TableListHeaderRowColumn> Assunto </SharedStyled.TableListHeaderRowColumn>
-                                        <SharedStyled.TableListHeaderRowColumn> Criada em </SharedStyled.TableListHeaderRowColumn>
-                                        <SharedStyled.TableListHeaderRowColumn> Editada em </SharedStyled.TableListHeaderRowColumn>
-                                        <SharedStyled.TableListHeaderRowColumn> </SharedStyled.TableListHeaderRowColumn>
-                                    </SharedStyled.TableListHeaderRow>
-                                </thead>
-                                <tbody>
-                                    { lists.map((list: ListResponseDto) => (
-                                        <SharedStyled.TableListBodyRow key={ list.id }>
-                                            <SharedStyled.TableListBodyRowData> <SharedStyled.TableListColorContent> <SharedStyled.TableListColorFragment $color={ list.color } /> <b> { list.name } </b> </SharedStyled.TableListColorContent> </SharedStyled.TableListBodyRowData>
-                                            <SharedStyled.TableListBodyRowData> { list.subject } </SharedStyled.TableListBodyRowData>
-                                            <SharedStyled.TableListBodyRowData> { formatDate(list.createdAt, true) } </SharedStyled.TableListBodyRowData>
-                                            <SharedStyled.TableListBodyRowData> { formatDate(list.updatedAt, true) } </SharedStyled.TableListBodyRowData>
-                                            <SharedStyled.TableListBodyRowData>
-                                                <SharedStyled.TableListBodyRowDataActions>
-                                                    <SharedStyled.TableListBodyRowDataActionButton onClick={ () => handleUpdate(list.id) }> <Pen size={ 25 } color="#238636" /> </SharedStyled.TableListBodyRowDataActionButton>
-                                                    <SharedStyled.TableListBodyRowDataActionButton onClick={ () => { setSelectedListId(list.id); setIsDeleteModalOpen(true); } }> <Trash size={ 25 } color="#DC143C" /> </SharedStyled.TableListBodyRowDataActionButton>
-                                                </SharedStyled.TableListBodyRowDataActions>
-                                            </SharedStyled.TableListBodyRowData>
-                                        </SharedStyled.TableListBodyRow>
-                                    )) }
-                                </tbody>
-                            </SharedStyled.TableListWrapper>
-                        </SharedStyled.TableWrapper>
+                        <Table<ListResponseDto>
+                            headers={[ "Nome", "Assunto", "Cor", "Criada em", "Editada em", ]}
+                            data={ lists }
+                            getEntityId={ (list: ListResponseDto) => list.id }
+                            onEdit={ handleUpdate }
+                            onDelete={ (id: number) => { setSelectedListId(id); setIsDeleteModalOpen(true); } }
+                            renderEntityRow={ (list: ListResponseDto) => (
+                                <Fragment>
+                                    <Styled.TableListBodyRowData> <b> { list.name } </b> </Styled.TableListBodyRowData>
+                                    <Styled.TableListBodyRowData> { list.subject } </Styled.TableListBodyRowData>
+                                    <Styled.TableListBodyRowData> <Styled.TableListColorContent> <Styled.TableListColorFragment $color={ list.color } /> </Styled.TableListColorContent> </Styled.TableListBodyRowData>
+                                    <Styled.TableListBodyRowData> { formatDate(list.createdAt, true) } </Styled.TableListBodyRowData>
+                                    <Styled.TableListBodyRowData> { formatDate(list.updatedAt, true) } </Styled.TableListBodyRowData>
+                                </Fragment>
+                            ) }
+                        />
 
-                        <SharedStyled.FooterPaginateWrapper>
-                            <Paginate page={ page } total={ total } limit={ limit } onPageChange={ setPage } onLimitChange={ (newLimit: number) => { setLimit(newLimit); setPage(1); } } />
-                        </SharedStyled.FooterPaginateWrapper>
+                        <Paginate page={ page } total={ total } limit={ limit } onPageChange={ setPage } onLimitChange={ (newLimit: number) => { setLimit(newLimit); setPage(1); } } />
                     </Fragment>
                 ) : !isLoading ? (
                     <SharedStyled.NotFoundRegisterContainer>
@@ -162,7 +136,6 @@ const Lists = () => {
                         <SharedStyled.NotFoundRegisterText> Nenhum registro encontrado </SharedStyled.NotFoundRegisterText>
                     </SharedStyled.NotFoundRegisterContainer>
                 ) : null }
-            </SharedStyled.ListWrapper>
 
             <Modal isOpen={ isDeleteModalOpen } entityName={ lists.find((list: ListResponseDto) => list.id === selectedListId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleConfirmDelete } />
 

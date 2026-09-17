@@ -1,60 +1,115 @@
 import styled from 'styled-components';
 
+import { TableListColorFragmentProps } from '../../../interfaces/tableListColorFragmentProps.interface';
+
 export const TableWrapper = styled.div`
-    overflow: hidden;
-    border-radius: 14px;
+    width: 100%;
+    overflow-x: auto;
 `;
 
 export const TableListWrapper = styled.table`
     width: 100%;
     table-layout: auto;
-    border-collapse: collapse;
+    border-spacing: 0 15px;
+    background: transparent;
+    border-collapse: separate;
 `;
 
 export const TableListHeaderRow = styled.tr`
-    height: auto;
-    background-color: #E6E7EC;
+    background: transparent;
 `;
 
 export const TableListHeaderRowColumn = styled.th`
-    padding: 15px 25px 15px 25px;
+    padding-left: 25px;
     text-transform: uppercase;
-    font-family: "Inter";
-    font-weight: 700;
+    font-family: "Lato";
+    font-weight: 900;
     font-size: 13px;
-    color: #535862;
+    color: #1C70E9;
     text-align: left;
-
-        &:nth-last-child(2) {
-            width: 137px;
-            text-align: start;
-            vertical-align: middle;
-            cursor: pointer;
-        }
-        &:nth-last-child(1) {
-            width: 116px;
-        }
-`;
-
-export const TableListBodyRow = styled.tr`
-    padding: 15px 25px 15px 25px;
-    height: 75px;
-    background-color: #FFFFFF;
-    border-bottom: 1px solid #E6E7EC;
 `;
 
 export const TableListBodyRowData = styled.td`
-    padding: 15px 25px 15px 25px;
-    vertical-align: middle;
+    padding: 15px 25px;
     white-space: pre-line;
+    vertical-align: middle;
+    background: transparent;
 
-        &:nth-last-child(1) {
+        &:last-of-type {
+            width: 140px;
+            min-width: 200px;
+            max-width: 200px;
             text-align: center;
 
-                button + button {
-                    margin-left: 20px;
-                }
+            button + button {
+                margin-left: 15px;
+            }
         }
+`;
+
+export const TableListBodyRowDataActions = styled.div` width: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    white-space: nowrap;
+    transform: translateX(-20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+`;
+
+export const TableListBodyRow = styled.tr`
+    height: 85px;
+    display: table-row;
+    border-radius: 14px;
+    background-color: #FFFFFF;
+    clip-path: inset(0 round 14px);
+
+        &:hover {
+            ${ TableListBodyRowDataActions } {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+`;
+
+export const TableListBodyRowDataActionButton = styled.button`
+    height: 55px;
+    width: 55px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background: transparent;
+    border-radius: 50px;
+
+        &:hover {
+            animation: tableButtonEffect 0.6s ease-in-out;
+        }
+
+            &:first-child {
+                background-color: #E6F4EA;
+            }
+            &:nth-child(2) {
+                background-color: #FCE8E6;
+            }
+
+                @keyframes tableButtonEffect {
+                    0% {
+                        transform: scale(1.08);
+                    }
+
+                    50% {
+                        transform: scale(0.95);
+                    }
+
+                    100% {
+                        transform: scale(1);
+                    }
+                }
 `;
 
 export const TableListColorFragment = styled.div<TableListColorFragmentProps>`
@@ -72,37 +127,3 @@ export const TableListColorContent = styled.div`
     justify-content: flex-start;
     gap: 30px;
 `;
-
-export const TableListBodyRowDataActions = styled.div`
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-`;
-
-export const TableListBodyRowDataActionButton = styled.button`
-    border: none;
-    outline: none;
-    background: none;
-    cursor: pointer;
-
-        &:hover {
-            animation: tableButtonEffect 0.6s ease-in-out;
-        }
-
-            @keyframes tableButtonEffect {
-                0% {
-                    transform: scale(1.08);
-                }
-
-                50% {
-                    transform: scale(0.95);
-                }
-
-                100% {
-                    transform: scale(1);
-                }
-            }
-`;
-
-export const FooterPaginateWrapper = styled.div``;

@@ -48,6 +48,7 @@ model Contact {
   CreatedAt DateTime    @default(now())
   UpdatedAt DateTime    @default(now())
   DeletedAt DateTime?
+  Active    Boolean     @default(true)
   BatchSend BatchSend[]
   Company   Company     @relation(fields: [CompanyId], references: [Id], map: "FK_Contact_CompanyId")
   List      List        @relation(fields: [ListId], references: [Id], map: "FK_Contact_ListId")
@@ -68,7 +69,7 @@ model List {
   Contact   Contact[]
   Company   Company   @relation(fields: [CompanyId], references: [Id], map: "FK_List_CompanyId")
 
-  @@index([CompanyId], map: "FK_List_CompanyId")
+  @@unique([CompanyId, Name], map: "UK_List_CompanyId_Name")
 }
 
 model Template {

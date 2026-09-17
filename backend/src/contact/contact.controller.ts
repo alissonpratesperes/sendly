@@ -35,7 +35,7 @@ export class ContactController {
     @Patch(":id")
     @HttpCode(HttpStatus.OK)
     async update(@Param() param: IdParamDto, @Body() command: UpdateContactCommandDto): Promise<GetContactResponseDto> {
-        return this.contactService.update(param.id, command.companyId, command.listId, command.name, command.phone, command.country, command.isReceiver);
+        return this.contactService.update(param.id, command.companyId, command.listId, command.name, command.phone, command.country, command.active);
     }
 
     @Delete(":id")
