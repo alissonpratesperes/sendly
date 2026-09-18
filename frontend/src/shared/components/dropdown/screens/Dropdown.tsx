@@ -1,30 +1,30 @@
-import Select, { SingleValue } from 'react-select';
+import Select from 'react-select';
 
 import { SelectCommonStyles } from '../styles/dropdown.style';
 import { DropdownProps } from '../interfaces/dropdownProps.interface';
 
-export default function Dropdown<Option>({ width, isInPagination, isClearable, isDisabled, isLoading, options, placeholder, value, isSearchable, onChange, ...props }: DropdownProps<Option>) {
+export default function Dropdown<Option>({
+    width = "100%",
+    isInPagination,
+    onChange,
+    components,
+    menuPosition = "fixed",
+    closeMenuOnSelect = true,
+    hideSelectedOptions = false,
+    menuPortalTarget = document.body,
+    ...props
+}: DropdownProps<Option>) {
     return (
-        <Select<Option>
-            isClearable={ isClearable }
-            isDisabled={ isDisabled }
-            isLoading={ isLoading }
-            options={ options }
-            placeholder={ placeholder }
-            value={ value }
-
-            onChange={ (option: SingleValue<Option>) => onChange(option ?? null) }
-
+        <Select<Option, false>
             { ...props }
-
             isMulti={ false }
-            menuPosition="fixed"
-            isSearchable={ isSearchable }
-            closeMenuOnSelect={ true }
-            hideSelectedOptions={ false }
-            menuPortalTarget={ document.body }
-            styles={SelectCommonStyles({ width, isInPagination })}
-            components={{ IndicatorSeparator: () => null, ...props.components }}
+            onChange={ (option) => onChange(option ?? null) }
+            menuPosition={ menuPosition }
+            closeMenuOnSelect={ closeMenuOnSelect }
+            hideSelectedOptions={ hideSelectedOptions }
+            menuPortalTarget={ menuPortalTarget }
+            styles={ SelectCommonStyles({ width, isInPagination, }) }
+            components={ { IndicatorSeparator: () => null, ...components, } }
         />
     );
 }

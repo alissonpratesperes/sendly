@@ -13,6 +13,7 @@ import { FormProps } from '../../../shared/interfaces/formProps.interface';
 import Dropdown from '../../../shared/components/dropdown/screens/Dropdown';
 import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
 import { ContactFormData, ContactFormSchema } from '../schemas/contactFormSchema.schema';
+import * as ContactFormStyled from '../../../shared/components/dropdown/styles/contactFormDropdown.style';
 
 export const ContactForm: React.FC<FormProps<ContactFormData>> = ({ initialValues, onSubmit }) => {
     const [lists, setLists] = useState<ListResponseDto[]>([]);
@@ -177,22 +178,17 @@ export const ContactForm: React.FC<FormProps<ContactFormData>> = ({ initialValue
             <Styled.FieldWrapper>
                 <Dropdown
                     inputId="listId"
-                    width="100%"
-                    isClearable={ true }
-                    isDisabled={ false }
                     isLoading={ isListsLoading }
                     options={ optionsForLists }
                     placeholder="Vincule a uma lista"
-                    components={{ IndicatorSeparator: () => null }}
-                    value={ optionsForLists.find((option) => option.value === formData.listId) || null }
-                    onChange={ (selectedOption) => setFormData(previous => ({ ...previous, listId: selectedOption ? selectedOption.value : 0 })) }
-                    isSearchable={ true }
+                    value={ optionsForLists.find((option) => option.value === formData.listId) ?? null }
+                    onChange={ (selectedOption) => setFormData((previous) => ({ ...previous, listId: selectedOption?.value ?? 0 })) }
 
                     formatOptionLabel={ (option) => (
-                        <div style={ { display: "flex", flexDirection: "row", alignItems: "center", gap: 15, } }>
-                            <span style={ { width: 25, height: 25, flexShrink: 0, borderRadius: "50%", backgroundColor: option.color, } } />
+                        <ContactFormStyled.OptionContent>
+                            <ContactFormStyled.ListColor $color={ option.color } />
                             <span> { option.label } </span>
-                        </div>
+                        </ContactFormStyled.OptionContent>
                     ) }
                 />
             </Styled.FieldWrapper>
@@ -209,23 +205,17 @@ export const ContactForm: React.FC<FormProps<ContactFormData>> = ({ initialValue
             <Styled.FieldWrapper>
                 <Dropdown
                     inputId="country"
-                    width="100%"
-                    isClearable={ true }
-                    isDisabled={ false }
-                    isLoading={ false }
                     options={ optionsForCountries }
                     placeholder="Selecione um país"
-                    components={{ IndicatorSeparator: () => null }}
-                    value={ optionsForCountries.find((option) => option.value === formData.country) || null }
-                    onChange={(selectedOption) => setFormData((previous) => ({ ...previous, country: selectedOption?.value ?? "" })) }
-                    isSearchable={ true }
+                    value={ optionsForCountries.find((option) => option.value === formData.country) ?? null }
+                    onChange={ (selectedOption) => setFormData((previous) => ({ ...previous, country: selectedOption?.value ?? "" })) }
 
-                    formatOptionLabel={ (option) => (
-                        <div style={ { display: "flex", flexDirection: "row", alignItems: "center", gap: 15, } }>
-                            <span style={ { fontSize: 25 } }> { option.flag } </span>
+                    formatOptionLabel={(option) => (
+                        <ContactFormStyled.OptionContent>
+                            <ContactFormStyled.CountryFlag> { option.flag } </ContactFormStyled.CountryFlag>
                             <span> { option.label } </span>
-                        </div>
-                    ) }
+                        </ContactFormStyled.OptionContent>
+                    )}
                 />
             </Styled.FieldWrapper>
 
