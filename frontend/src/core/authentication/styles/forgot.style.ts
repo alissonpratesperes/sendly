@@ -1,15 +1,5 @@
 import styled from 'styled-components';
 
-export const LoadingContainer = styled.div`
-    height: 55px;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    background: transparent;
-`;
-
 export const ForgotFormContainer = styled.div`
     position: relative;
     height: 100vh;
@@ -22,17 +12,6 @@ export const ForgotFormContainer = styled.div`
     background-color: #F0F0F5;
 `;
 
-export const BackgroundWave = styled.svg`
-    height: 300px;
-    width: 100%;
-    position: absolute;
-    left: 50%;
-    bottom: 0;
-    transform: translateX(-50%);
-    pointer-events: none;
-    z-index: 0;
-`;
-
 export const ForgotForm = styled.form`
     height: auto;
     width: 500px;
@@ -40,23 +19,6 @@ export const ForgotForm = styled.form`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-`;
-
-export const ApplicationBrandContainer = styled.div`
-    margin-bottom: 60px;
-    height: 100px;
-    width: 100%;
-    display: flex;
-    flex-drection: row;
-    align-items: center;
-    justify-content: center;
-`;
-
-export const ApplicationBrandMark = styled.p`
-    font-family: "Alien Block";
-    font-weight: 400;
-    font-size: 85px;
-    color: #9CA3AF;
 `;
 
 export const FormTitle = styled.h4`
@@ -175,15 +137,4 @@ export const ForgotButton = styled.button`
 
 export const ForgotButtonText = styled.span`
     margin-left: 7.5px;
-`;
-
-export const CompanyPresentation = styled.div`
-    margin-top: 45px;
-`;
-
-export const CopyrightParagraph = styled.p`
-    font-family: "Inter";
-    font-weight: 500;
-    font-size: 14px;
-    color: #9CA3AF;
 `;

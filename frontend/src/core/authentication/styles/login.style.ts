@@ -1,16 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-export const LoadingContainer = styled.div`
-    height: 55px;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    background: transparent;
-`;
-
 export const AuthFormContainer = styled.div`
     position: relative;
     height: 100vh;
@@ -24,17 +14,6 @@ export const AuthFormContainer = styled.div`
     overflow: hidden;
 `;
 
-export const BackgroundWave = styled.svg`
-    height: 300px;
-    width: 100%;
-    position: absolute;
-    left: 50%;
-    bottom: 0;
-    transform: translateX(-50%);
-    pointer-events: none;
-    z-index: 0;
-`;
-
 export const LoginForm = styled.form`
     position: relative;
     height: auto;
@@ -43,23 +22,6 @@ export const LoginForm = styled.form`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-`;
-
-export const ApplicationBrandContainer = styled.div`
-    margin-bottom: 60px;
-    height: 100px;
-    width: 100%;
-    display: flex;
-    flex-drection: row;
-    align-items: center;
-    justify-content: center;
-`;
-
-export const ApplicationBrandMark = styled.p`
-    font-family: "Alien Block";
-    font-weight: 400;
-    font-size: 85px;
-    color: #9CA3AF;
 `;
 
 export const FormTitle = styled.h4`
@@ -249,15 +211,4 @@ export const ForgotButton = styled(Link)`
 
 export const ForgotButtonText = styled.span`
     margin-left: 7.5px;
-`;
-
-export const CompanyPresentation = styled.div`
-    margin-top: 45px;
-`;
-
-export const CopyrightParagraph = styled.p`
-    font-family: "Inter";
-    font-weight: 500;
-    font-size: 14px;
-    color: #9CA3AF;
 `;

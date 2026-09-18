@@ -7,6 +7,9 @@ import { EyeIcon, EyeOffIcon, LogInIcon, LockKeyhole } from 'lucide-react';
 
 import * as Styled from '../styles/login.style';
 import { login } from '../services/authentication.service';
+import { Wave } from '../../../shared/elements/wave/screens/Wave';
+import { Brand } from '../../../shared/elements/brand/screens/brand';
+import { Copyright } from '../../../shared/elements/copyright/screens/Copyright';
 import { setAuthenticationStorage } from '../../../shared/utils/authenticationStorage.util';
 import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
 
@@ -55,14 +58,10 @@ const Authentication: React.FC = () => {
 
     return (
         <Styled.AuthFormContainer>
-            <Styled.BackgroundWave viewBox="0 0 1440 320" preserveAspectRatio="none" aria-hidden="true">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-                    <path fill="#223463" fill-opacity="1" d="M0,192L80,160C160,128,320,64,480,80C640,96,800,192,960,202.7C1120,213,1280,139,1360,101.3L1440,64L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"></path>
-                </svg>
-            </Styled.BackgroundWave>
+            <Wave/>
 
             <Styled.LoginForm onSubmit={ handleSubmit }>
-                <Styled.ApplicationBrandContainer> <Styled.ApplicationBrandMark> Sendly </Styled.ApplicationBrandMark> </Styled.ApplicationBrandContainer>
+                <Brand/>
 
                 <Styled.FormTitle> Bem-vindo </Styled.FormTitle>
                 <Styled.FormSubtitle> Para autenticar no sistema, informe suas credenciais abaixo </Styled.FormSubtitle>
@@ -100,9 +99,7 @@ const Authentication: React.FC = () => {
                     ) }
                 </Styled.LoginButtonsContainer>
 
-                <Styled.CompanyPresentation>
-                    <Styled.CopyrightParagraph> © 2026 Sendly | Todos os direitos reservados </Styled.CopyrightParagraph>
-                </Styled.CompanyPresentation>
+                <Copyright/>
             </Styled.LoginForm>
         </Styled.AuthFormContainer>
     );

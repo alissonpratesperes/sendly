@@ -16,7 +16,7 @@ import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
 import Paginate from '../../../shared/components/paginate/screens/Paginate';
 import * as Styled from '../../../shared/components/table/styles/table.style';
 import { EmptyState } from '../../../shared/components/emptyState/screens/EmpyState';
-import ToggleSwitch from '../../../shared/elements/toggleSwitch/screens/ToggleSwitch';
+import ToggleSwitch from '../../../shared/components/toggleSwitch/screens/ToggleSwitch';
 import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
 
