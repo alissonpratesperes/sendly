@@ -14,33 +14,25 @@ export class MailService implements OnModuleInit {
     private transporter!: nodemailer.Transporter;
 
     async onModuleInit(): Promise<void> {
-        const testAccount = await nodemailer.createTestAccount();
+        const port = Number(requireEnvironmentVariable("SMTP_PORT"));
 
         this.transporter = nodemailer.createTransport({
-            host: testAccount.smtp.host,
-            port: testAccount.smtp.port,
-            secure: testAccount.smtp.secure,
+            host: requireEnvironmentVariable("SMTP_HOST"),
+            port,
+            secure: port === 465,
+
             auth: {
-                user: testAccount.user,
-                pass: testAccount.pass,
+                user: requireEnvironmentVariable("SMTP_USER"),
+                pass: requireEnvironmentVariable("SMTP_PASS"),
             },
         });
+
+        await this.transporter.verify();
     }
 
     private async renderTemplate<T extends MailTemplate>(template: T, context: MailTemplateContext[T]): Promise<string> {
         try {
-            return Handlebars.compile(
-                await fs.readFile(
-                    path.join(
-                        __dirname,
-                        "layouts",
-                        `${template}.hbs`,
-                    ),
-                    "utf-8",
-                )
-            )(
-                context,
-            );
+            return Handlebars.compile(await fs.readFile(path.join(__dirname, "layouts", `${template}.hbs`), "utf-8"))(context);
         } catch (error) {
             throw new Error("Failed to render e-mail template", { cause: error });
         }
@@ -50,7 +42,7 @@ export class MailService implements OnModuleInit {
         const html = await this.renderTemplate(template, context);
 
         try {
-            const info = await this.transporter.sendMail({
+            await this.transporter.sendMail({
                 from: requireEnvironmentVariable("SMTP_FROM"),
                 to,
                 subject,
@@ -60,16 +52,8 @@ export class MailService implements OnModuleInit {
                     cid: "logo_sendly",
                     filename: "logo.png",
                     path: path.join(__dirname, "assets", "logo.png"),
-                }]
+                }],
             });
-
-            const previewUrl = nodemailer.getTestMessageUrl(info);
-
-            if (previewUrl) {
-                console.log(`\n==================================================`);
-                console.log(`📧 E-mail preview (Ethereal): ${previewUrl}`);
-                console.log(`==================================================\n`);
-            }
         } catch(error) {
             throw new Error("Failed to send email", { cause: error });
         }
