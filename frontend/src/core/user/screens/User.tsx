@@ -99,10 +99,11 @@ const User = () => {
 
     return (
         <Fragment>
-            <Finder placeholder="Pesquise um usuário por nome ou e-mail" buttonText="Cadastrar usuário" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } } />
-
             { isLoading && (
                 <LoadingState/>
+            ) }
+            { !isLoading && (
+                <Finder placeholder="Pesquise um usuário por nome ou e-mail" buttonText="Cadastrar usuário" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } } />
             ) }
             { !isLoading && users.length > 0 && (
                 <Fragment>

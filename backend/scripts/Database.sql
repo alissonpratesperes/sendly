@@ -30,7 +30,7 @@
 --     `DeletedAt` DATETIME(3) NULL,
 
 --     CONSTRAINT `PK_User` PRIMARY KEY (`Id`),
---     CONSTRAINT `UK_User_Email` UNIQUE (`Email`),
+--     CONSTRAINT `UK_User_CompanyId_Email` UNIQUE (`CompanyId`, `Email`),
 
 --     CONSTRAINT `FK_User_CompanyId` FOREIGN KEY (`CompanyId`) REFERENCES `Company` (`Id`) ON DELETE RESTRICT ON UPDATE CASCADE
 -- );

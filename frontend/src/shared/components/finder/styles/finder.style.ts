@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 export const SearchInputWrapper = styled.div`
-    margin-top: 30px;
     margin-bottom: 30px;
     width: 100%;
     position: relative;
@@ -77,7 +76,6 @@ export const AddButton = styled.button`
     border: none;
     outline: none;
     border-radius: 14px;
-    border: 2px solid #238636;
     background-color: transparent;
     cursor: pointer;
     transition: color 0.3s ease, background-color 0.3s ease;

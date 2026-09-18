@@ -11,13 +11,26 @@ export const LoadingContainer = styled.div`
 `;
 
 export const ForgotFormContainer = styled.div`
+    position: relative;
     height: 100vh;
+    min-height: 100vh;
     width: 100vw;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
     background-color: #F0F0F5;
+`;
+
+export const BackgroundWave = styled.svg`
+    height: 300px;
+    width: 100%;
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    pointer-events: none;
+    z-index: 0;
 `;
 
 export const ForgotForm = styled.form`

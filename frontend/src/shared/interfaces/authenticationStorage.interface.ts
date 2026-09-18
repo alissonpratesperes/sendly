@@ -1,4 +1,4 @@
-import { AuthenticatedUser } from "../../core/authentication/interfaces/authenticatedUser.interface";
+import { AuthenticatedUser } from '../../core/authentication/interfaces/authenticatedUser.interface';
 
 export interface AuthenticationStorage {
     accessToken: string | null;

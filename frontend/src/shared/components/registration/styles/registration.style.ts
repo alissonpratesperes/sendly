@@ -35,6 +35,7 @@ export const SessionSubtitle = styled.span`
 `;
 
 export const NavigationTabs = styled.nav`
+    margin-bottom: 30px;
     padding: 15px;
     height: auto;
     width: auto;

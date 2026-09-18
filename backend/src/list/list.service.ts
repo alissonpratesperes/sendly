@@ -1,3 +1,4 @@
+import { ClsService } from 'nestjs-cls';
 import { List, Prisma } from '@prisma/client';
 import { Injectable, NotFoundException } from '@nestjs/common';
 
@@ -9,6 +10,7 @@ import { PaginatedResponseDto } from '../common/dtos/paginatedResponse.dto';
 @Injectable()
 export class ListService {
     constructor(
+        private readonly clsService: ClsService,
         private readonly prismaService: PrismaService,
         private readonly companyService: CompanyService,
     ) {}
@@ -94,8 +96,21 @@ export class ListService {
     }
 
     async validateBelongsToCompany(id: number, companyId: number): Promise<void> {
-        if (!await this.findByCompany(id, companyId)) {
-            throw new NotFoundException("List not found");
+        this.clsService.set("isSystemOperation", true);
+
+        try {
+            const list = await this.prismaService.client.list.findFirst({
+                where: {
+                    Id: id,
+                    CompanyId: companyId,
+                },
+            });
+
+            if (!list) {
+                throw new NotFoundException("List not found");
+            }
+        } finally {
+            this.clsService.set("isSystemOperation", false);
         }
     }
 

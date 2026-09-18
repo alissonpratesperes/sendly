@@ -100,10 +100,11 @@ const Lists = () => {
 
     return (
         <Fragment>
-            <Finder placeholder="Pesquise uma lista por nome ou assunto" buttonText="Cadastrar lista" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } } />
-
             { isLoading && (
                 <LoadingState/>
+            ) }
+            { !isLoading && (
+                <Finder placeholder="Pesquise uma lista por nome ou assunto" buttonText="Cadastrar lista" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } } />
             ) }
             { !isLoading && lists.length > 0 && (
                 <Fragment>

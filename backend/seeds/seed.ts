@@ -1,7 +1,7 @@
 import * as bcrypt from 'bcrypt';
 import { PrismaClient } from '@prisma/client';
 
-import { MailService } from '../mail/mail.service';
+import { MailService } from '../src/mail/mail.service';
 import { requireEnvironmentVariable } from '../src/common/utils/requireEnvironmentVariable.util';
 
 const prismaClient = new PrismaClient();
@@ -35,9 +35,12 @@ async function main() {
     },
   });
 
-  await prismaClient.user.upsert({
+  const seededUser = await prismaClient.user.upsert({
     where: {
-      Email: seedUser.email,
+      CompanyId_Email: {
+        CompanyId: seededCompany.Id,
+        Email: seedUser.email,
+      },
     },
     update: {
       IsSystemRoot: true,
@@ -53,8 +56,8 @@ async function main() {
   });
 
   await mailService.onModuleInit();
-  await mailService.sendSystemRootEmail(seededUser.email, {
-    name: seededUser.name,
+  await mailService.sendSystemRootEmail(seededUser.Email, {
+    name: seededUser.Name,
     password: seedUser.password,
     url: `${ serverInformation.url }:${ serverInformation.port }`
   });

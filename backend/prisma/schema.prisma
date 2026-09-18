@@ -90,7 +90,7 @@ model User {
   Id                 Int       @id @default(autoincrement()) @db.UnsignedInt
   CompanyId          Int       @db.UnsignedInt
   Name               String    @db.VarChar(150)
-  Email              String    @unique(map: "UK_User_Email") @db.VarChar(255)
+  Email              String    @db.VarChar(255)
   Password           String    @db.VarChar(255)
   HashedRefreshToken String?   @db.VarChar(255)
   PasswordResetToken String?   @db.VarChar(255)
@@ -101,7 +101,7 @@ model User {
   IsSystemRoot       Boolean   @default(false)
   Company            Company   @relation(fields: [CompanyId], references: [Id], map: "FK_User_CompanyId")
 
-  @@index([CompanyId], map: "FK_User_CompanyId")
+  @@unique([CompanyId, Email], map: "UK_User_CompanyId_Email")
 }
 
 model BatchSend {

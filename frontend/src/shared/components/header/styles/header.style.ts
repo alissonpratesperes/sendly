@@ -2,16 +2,13 @@ import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 
 export const Container = styled.header`
-  margin: 0px 30px 0px 30px;
-  padding: 20px 30px 200px 30px;
+  padding: 20px 30px 160px 30px;
   width: auto;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   background-color: #223463;
-  border-bottom-left-radius: 14px;
-  border-bottom-right-radius: 14px;
 `;
 
 export const ApplicationBrandContainer = styled.div`
@@ -86,8 +83,10 @@ export const UserContainer = styled.div`
   width: 350px;
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   justify-content: flex-end;
   gap: 30px;
+  text-align: right;
 `;
 
 export const UserInformation = styled.div`
@@ -102,14 +101,14 @@ export const UserName = styled.h1`
   font-family: "Inter";
   font-weight: 900;
   font-size: 18px;
-  color: #F0F0F5;
+  color: #1C70E9;
 `;
 
 export const UserCompany = styled.h1`
   margin-top: 7.5px;
   font-family: "Inter";
   font-weight: 400;
-  font-size: 12px;
+  font-size: 14px;
   color: #F0F0F5;
 `;
 
@@ -134,7 +133,7 @@ export const LogOutButton = styled.button`
   background: none;
   color: #DC143C;
   cursor: pointer;
-  transition: opacity 0.3s ease, opacity 0.3s ease, opacity 0.3s ease;
+  transition: background 0.3s ease, color 0.3s ease;
 
     &:hover {
       background: #DC143C;

@@ -97,7 +97,6 @@ const Contact = () => {
             phone: clicked.phone,
             country: parsedPhone?.country ?? ""
         });
-
         setIsDrawerOpen(true);
     }
     const handleActiveCommunication = async (id: number, status: boolean) => {
@@ -154,10 +153,11 @@ const Contact = () => {
 
     return (
         <Fragment>
-            <Finder placeholder="Pesquise um contato por nome ou telefone" buttonText="Cadastrar contato" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } } />
-
             { isLoading && (
                 <LoadingState/>
+            ) }
+            { !isLoading && (
+                <Finder placeholder="Pesquise um contato por nome ou telefone" buttonText="Cadastrar contato" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } } />
             ) }
             { !isLoading && contacts.length > 0 && (
                 <Fragment>

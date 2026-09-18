@@ -28,12 +28,18 @@ export class AccessTokenStrategy extends PassportStrategy(Strategy, Authenticati
         }
 
         this.clsService.set("companyId", user.CompanyId);
+        this.clsService.set("isSystemRoot", user.IsSystemRoot);
 
         return {
             id: user.Id,
-            companyId: user.CompanyId,
+            name: user.Name,
             email: user.Email,
-            isSystemRoot: user.IsSystemRoot
+            isSystemRoot: user.IsSystemRoot,
+
+            company: {
+                id: user.Company.Id,
+                name: user.Company.Name,
+            }
         };
     }
 }

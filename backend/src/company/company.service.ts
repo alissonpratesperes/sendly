@@ -1,4 +1,3 @@
-import { ClsService } from 'nestjs-cls';
 import { Company, Prisma } from '@prisma/client';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 
@@ -10,7 +9,6 @@ import { formatCompanyDocument } from '../common/formatters/companyDocument.form
 @Injectable()
 export class CompanyService {
     constructor(
-        private readonly clsService: ClsService,
         private readonly prismaService: PrismaService,
     ) {}
 
@@ -42,8 +40,6 @@ export class CompanyService {
     }
 
     async create(name: string, document: string, description: string | null): Promise<GetCompanyResponseDto> {
-        this.clsService.set("isSystemOperation", true);
-
         const documentAlreadyUsed = await this.prismaService.client.company.findUnique({
             where: {
                 Document: document,

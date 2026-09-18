@@ -100,10 +100,11 @@ const Company = () => {
 
     return (
         <Fragment>
-            <Finder placeholder="Pesquise uma empresa por nome ou cnpj" buttonText="Cadastrar empresa" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } } />
-
             { isLoading && (
                 <LoadingState/>
+            ) }
+            { !isLoading && (
+                <Finder placeholder="Pesquise uma empresa por nome ou cnpj" buttonText="Cadastrar empresa" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } } />
             ) }
             { !isLoading && companies.length > 0 && (
                 <Fragment>

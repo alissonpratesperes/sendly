@@ -61,7 +61,7 @@ export class UserService {
     async create(companyId: number, name: string, email: string): Promise<GetUserResponseDto> {
         await this.companyService.read(companyId);
 
-        if(await this.findByEmail(email)) {
+        if(await this.findByEmail(companyId, email)) {
             throw new ConflictException("A user with this e-mail is already registered");
         }
 
@@ -91,7 +91,7 @@ export class UserService {
             createdUser.Email,
             {
                 name: createdUser.Name,
-                url: `${requireEnvironmentVariable("BASE_URL")}/authentication/reset?passwordResetToken=${generatedPasswordResetToken}`,
+                url: `${ requireEnvironmentVariable("BASE_FRONTEND_URL") }/authentication/reset?passwordResetToken=${ generatedPasswordResetToken }`,
             },
         );
 
@@ -117,36 +117,49 @@ export class UserService {
         return this.toUserResponse(user);
     }
 
-    private async findByEmail(email: string): Promise<User | null> {
+    private async findByEmail(companyId: number, email: string): Promise<User | null> {
         return this.prismaService.client.user.findUnique({
             where: {
-                Email: email,
+                CompanyId_Email: {
+                    CompanyId: companyId,
+                    Email: email,
+                },
             },
         });
     }
 
-    async readByEmail(email: string, requireNoPasswordReset: boolean): Promise<User> {
+    async readByEmail(email: string, requireNoPasswordReset: boolean) {
         this.clsService.set("isSystemOperation", true);
 
-        const user = await this.prismaService.client.user.findFirst({
-            where: {
-                Email: email,
-                ...(requireNoPasswordReset && {
-                    PasswordResetToken: null,
-                }),
-                DeletedAt: null,
-
-                Company: {
+        try {
+            const user = await this.prismaService.client.user.findFirst({
+                where: {
+                    Email: email,
+                    ...(requireNoPasswordReset && {
+                        PasswordResetToken: null,
+                    }),
                     DeletedAt: null,
+
+                    Company: {
+                        DeletedAt: null,
+                    },
                 },
-            },
-        });
+                include: {
+                    Company: true,
+                },
+            });
 
-        if(!user) {
-            throw new NotFoundException("User not found");
+            if (!user) {
+                throw new NotFoundException("User not found");
+            }
+
+            this.clsService.set("companyId", user.CompanyId);
+            this.clsService.set("isSystemRoot", user.IsSystemRoot);
+
+            return user;
+        } finally {
+            this.clsService.set("isSystemOperation", false);
         }
-
-        return user;
     }
 
     async list(page: number = 1, limit: number = 10, search?: string): Promise<PaginatedResponseDto<GetUserResponseDto>> {
@@ -176,12 +189,13 @@ export class UserService {
 
     async update(id: number, companyId?: number, name?: string, email?: string): Promise<GetUserResponseDto> {
         const user = await this.read(id);
+        const targetCompanyId = companyId ?? user.companyId;
 
         if (companyId !== undefined) {
             await this.companyService.read(companyId);
         }
-        if (email !== undefined && email !== user.email) {
-            if (await this.findByEmail(email)) {
+        if (email !== undefined && (email !== user.email || targetCompanyId !== user.companyId)) {
+            if (await this.findByEmail(targetCompanyId, email)) {
                 throw new ConflictException("A user with this e-mail is already registered");
             }
         }
@@ -214,8 +228,6 @@ export class UserService {
     }
 
     async startPasswordReset(id: number, generatedPasswordResetToken: string, hashedPasswordResetToken: string): Promise<void> {
-        this.clsService.set("isSystemOperation", true);
-
         const user = await this.read(id);
 
         await this.prismaService.client.user.update({
@@ -231,14 +243,12 @@ export class UserService {
             user.email,
             {
                 name: user.name,
-                url: `${requireEnvironmentVariable("BASE_URL")}/authentication/reset?passwordResetToken=${generatedPasswordResetToken}`,
+                url: `${ requireEnvironmentVariable("BASE_FRONTEND_URL") }/authentication/reset?passwordResetToken=${ generatedPasswordResetToken }`,
             },
         );
     }
 
     async completePasswordReset(id: number, hashedPassword: string): Promise<void> {
-        this.clsService.set("isSystemOperation", true);
-
         const user = await this.read(id);
 
         await this.prismaService.client.user.update({

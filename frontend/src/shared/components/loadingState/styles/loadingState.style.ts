@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const LoadingStateContainer = styled.div`
-    height: 300px;
+    height: 55px;
     width: 100%;
     display: flex;
     align-items: center;
