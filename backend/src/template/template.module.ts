@@ -4,6 +4,8 @@ import { MulterModule } from '@nestjs/platform-express';
 import { TemplateService } from './template.service';
 import { CompanyModule } from '../company/company.module';
 import { TemplateController } from './template.controller';
+import { TemplateParser } from './parsers/templateParser.parser';
+import { TemplateBuilder } from './builders/templateBuilder.builder';
 
 @Module({
   imports: [
@@ -16,6 +18,9 @@ import { TemplateController } from './template.controller';
   ],
   providers: [
     TemplateService,
+
+    TemplateParser,
+    TemplateBuilder,
   ],
   exports: [
     TemplateService,

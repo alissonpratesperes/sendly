@@ -3,8 +3,9 @@ import { diskStorage } from 'multer';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { NestInterceptor, BadRequestException, mixin, Type } from '@nestjs/common';
 
-import { ALLOWED_IMAGE_MIME_TYPES, AllowedImageMimeType } from '../types/allowedImageMimeTypes.type';
-import { ALLOWED_IMAGE_EXTENSIONS, AllowedImageExtension } from '../types/allowedImageExtensions.type';
+import { requireEnvironmentVariable } from '../utils/requireEnvironmentVariable.util';
+import { ALLOWED_IMAGE_MIME_TYPES, AllowedImageMimeTypes } from '../types/allowedImageMimeTypes.type';
+import { ALLOWED_IMAGE_EXTENSIONS, AllowedImageExtensions } from '../types/allowedImageExtensions.type';
 
 export function TemplateImageInterceptor(): Type<NestInterceptor> {
   class MixinInterceptor extends FileInterceptor("file", {
@@ -19,8 +20,8 @@ export function TemplateImageInterceptor(): Type<NestInterceptor> {
       },
     }),
     fileFilter: (req, file, callback) => {
-      const fileExtension = extname(file.originalname).toLowerCase() as AllowedImageExtension;
-      const fileMimeType = file.mimetype.toLowerCase() as AllowedImageMimeType;
+      const fileExtension = extname(file.originalname).toLowerCase() as AllowedImageExtensions;
+      const fileMimeType = file.mimetype.toLowerCase() as AllowedImageMimeTypes;
       const isExtensionValid = ALLOWED_IMAGE_EXTENSIONS.includes(fileExtension);
       const isMimeValid = ALLOWED_IMAGE_MIME_TYPES.includes(fileMimeType) || fileMimeType.startsWith('image/');
 
@@ -31,7 +32,7 @@ export function TemplateImageInterceptor(): Type<NestInterceptor> {
       callback(null, true);
     },
     limits: {
-      fileSize: 5 * 1024 * 1024,
+      fileSize: Number(requireEnvironmentVariable("FILE_UPLOAD_MAX_SIZE")),
     },
   }) {}
 

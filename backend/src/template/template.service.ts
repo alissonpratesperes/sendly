@@ -3,6 +3,10 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
 import { CompanyService } from '../company/company.service';
+import { TemplateParser } from './parsers/templateParser.parser';
+import { TemplateBuilder } from './builders/templateBuilder.builder';
+import { WhatsAppMessage } from '../common/types/whatsAppMessage.type';
+import { ParsedTemplate } from './interfaces/parsedTemplate.interface';
 import { GetTemplateResponseDto } from './dtos/getTemplateResponse.dto';
 import { PaginatedResponseDto } from '../common/dtos/paginatedResponse.dto';
 
@@ -11,7 +15,15 @@ export class TemplateService {
     constructor(
         private readonly prismaService: PrismaService,
         private readonly companyService: CompanyService,
+        private readonly templateParser: TemplateParser,
+        private readonly templateBuilder: TemplateBuilder,
     ) {}
+
+    buildForSending(content: string): WhatsAppMessage {
+        const parsedTemplate = this.templateParser.parse(content);
+
+        return this.templateBuilder.build(parsedTemplate);
+    }
 
     private toTemplateResponse(template: Template): GetTemplateResponseDto {
         return new GetTemplateResponseDto(
@@ -19,11 +31,15 @@ export class TemplateService {
             template.CompanyId,
 
             template.Name,
-            template.Content as Prisma.JsonValue,
+            template.Content as unknown as ParsedTemplate,
 
             template.CreatedAt,
             template.UpdatedAt,
         );
+    }
+
+    private toPrismaJson(content: ParsedTemplate): Prisma.InputJsonValue {
+        return content as unknown as Prisma.InputJsonValue;
     }
 
     private buildTemplateListWhere(search?: string): Prisma.TemplateWhereInput {
@@ -43,14 +59,14 @@ export class TemplateService {
         };
     }
 
-    async create(companyId: number, name: string, content: Prisma.InputJsonValue): Promise<GetTemplateResponseDto> {
+    async create(companyId: number, name: string, content: ParsedTemplate): Promise<GetTemplateResponseDto> {
         await this.companyService.read(companyId);
 
         const createdTemplate = await this.prismaService.client.template.create({
             data: {
                 CompanyId: companyId,
                 Name: name,
-                Content: content,
+                Content: this.toPrismaJson(content),
             },
         });
 
@@ -101,7 +117,7 @@ export class TemplateService {
         );
     }
 
-    async update(id: number, companyId?: number, name?: string, content?: Prisma.InputJsonValue): Promise<GetTemplateResponseDto> {
+    async update(id: number, companyId?: number, name?: string, content?: ParsedTemplate): Promise<GetTemplateResponseDto> {
         const template = await this.read(id);
 
         if (companyId !== undefined) {
@@ -115,7 +131,7 @@ export class TemplateService {
             data: {
                 ...(companyId !== undefined && { CompanyId: companyId, }),
                 ...(name !== undefined && { Name: name, }),
-                ...(content !== undefined && { Content: content, }),
+                ...(content !== undefined && { Content: this.toPrismaJson(content), }),
             },
         });
 

@@ -35,7 +35,7 @@ export class BatchSendService {
         return {
             id: template.id,
             name: template.name,
-            content: template.content as Prisma.InputJsonValue,
+            content: template.content as unknown as Prisma.InputJsonValue,
         };
     }
 

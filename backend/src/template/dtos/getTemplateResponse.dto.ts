@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import { ParsedTemplate } from '../interfaces/parsedTemplate.interface';
 
 export class GetTemplateResponseDto {
     constructor(
@@ -6,7 +6,7 @@ export class GetTemplateResponseDto {
         public companyId: number,
 
         public name: string,
-        public content: Prisma.JsonValue,
+        public content: ParsedTemplate,
 
         public createdAt: Date,
         public updatedAt: Date,
