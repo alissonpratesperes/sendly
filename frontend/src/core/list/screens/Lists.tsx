@@ -86,7 +86,7 @@ const Lists = () => {
 
             toast.success("Lista excluída com suceso");
         } catch (error: unknown) {
-            toast.error(`Não é possível prosseguir com a solicitação: ${ error }`);
+            toast.error("Não é possível prosseguir com a solicitação");
         }
     }
 

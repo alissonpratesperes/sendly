@@ -136,7 +136,7 @@ const Contact = () => {
 
             toast.success("Contato excluído com suceso");
         } catch (error: unknown) {
-            toast.error(`Não é possível prosseguir com a solicitação: ${ error }`);
+            toast.error("Não é possível prosseguir com a solicitação");
         }
     }
 
