@@ -52,13 +52,7 @@ const Reset: React.FC = () => {
 
             navigate("/authentication", { replace: true });
         } catch (error: unknown) {
-            if (axios.isAxiosError(error) && error.response?.status === StatusCodes.BAD_REQUEST) {
-                toast.error("As senhas não coincidem");
-
-                setIsLoading(false);
-
-                return;
-            } else if(axios.isAxiosError(error) && error.response?.status === StatusCodes.UNAUTHORIZED)  {
+            if(axios.isAxiosError(error) && error.response?.status === StatusCodes.UNAUTHORIZED)  {
                 toast.error("Token de redefinição de senha inválido");
 
                 setIsLoading(false);

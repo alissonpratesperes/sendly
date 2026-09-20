@@ -4,10 +4,10 @@ import * as Styled from '../styles/brand.style';
 
 export const Brand: React.FC = () => {
     return (
-        <Styled.ApplicationBrandContainer>
-            <Styled.ApplicationBrandMark>
+        <Styled.BrandContainer>
+            <Styled.BrandLogotype>
                 Sendly
-            </Styled.ApplicationBrandMark>
-        </Styled.ApplicationBrandContainer>
+            </Styled.BrandLogotype>
+        </Styled.BrandContainer>
     );
 }
