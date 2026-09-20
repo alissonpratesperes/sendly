@@ -8,6 +8,7 @@ import { UpdateUserCommandDto } from './dtos/updateUserCommand.dto';
 import { PaginationQueryDto } from '../common/dtos/paginationQuery.dto';
 import { PaginatedResponseDto } from '../common/dtos/paginatedResponse.dto';
 import { IsSystemRoot } from '../authentication/decorators/isSystemRoot.decorator';
+import { GetCurrentUser } from 'src/authentication/decorators/getCurrentUser.decorator';
 
 @Controller("user")
 export class UserController {
@@ -44,7 +45,7 @@ export class UserController {
     @Delete(":id")
     @IsSystemRoot()
     @HttpCode(HttpStatus.NO_CONTENT)
-    async delete(@Param() param: IdParamDto): Promise<void> {
-        return this.userService.delete(param.id);
+    async delete(@GetCurrentUser(["id"]) currentUser: { id: number }, @Param() param: IdParamDto): Promise<void> {
+        return this.userService.delete(currentUser.id, param.id);
     }
 }

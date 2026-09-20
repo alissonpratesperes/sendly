@@ -3,8 +3,9 @@ import { X, Ban, Pencil, Save } from 'lucide-react';
 
 import * as Styled from '../styles/drawer.style';
 import { DrawerProps } from '../interfaces/drawerProps.interface';
+import { LoadingState } from '../../loadingState/screens/LoadingState';
 
-export const Drawer: React.FC<DrawerProps> = ({ isOpen, formId, title, children, mode = "create", onClose }) => {
+export const Drawer: React.FC<DrawerProps> = ({ isOpen, isSubmitting = false, formId, title, children, mode = "create", onClose }) => {
     const [isClosing, setIsClosing] = useState(false);
 
     return (
@@ -22,16 +23,23 @@ export const Drawer: React.FC<DrawerProps> = ({ isOpen, formId, title, children,
                         <Styled.Content> { children } </Styled.Content>
 
                         <Styled.Footer>
-                            <Styled.FooterButton type="button" $variant="secondary" className="secondary" onClick={ () => setIsClosing(true) }>
-                                <Ban size={ 25 } />
+                            { isSubmitting && (
+                                <LoadingState/>
+                            ) }
+                            { !isSubmitting && (
+                                <Fragment>
+                                    <Styled.FooterButton type="button" $variant="secondary" className="secondary" onClick={ () => setIsClosing(true) }>
+                                        <Ban size={ 25 } />
 
-                                <Styled.FooterButtonText> Cancelar </Styled.FooterButtonText>
-                            </Styled.FooterButton>
-                            <Styled.FooterButton type="submit" $variant="primary" className="primary" form={ formId }>
-                                { mode === "edit"? <Pencil size={ 25 } /> : <Save size={ 25 } /> }
+                                        <Styled.FooterButtonText> Cancelar </Styled.FooterButtonText>
+                                    </Styled.FooterButton>
+                                    <Styled.FooterButton type="submit" $variant="primary" className="primary" form={ formId }>
+                                        { mode === "edit"? <Pencil size={ 25 } /> : <Save size={ 25 } /> }
 
-                                <Styled.FooterButtonText> { mode === "edit" ? "Atualizar" : "Cadastrar" } </Styled.FooterButtonText>
-                            </Styled.FooterButton>
+                                        <Styled.FooterButtonText> { mode === "edit" ? "Atualizar" : "Cadastrar" } </Styled.FooterButtonText>
+                                    </Styled.FooterButton>
+                                </Fragment>
+                            ) }
                         </Styled.Footer>
                     </Styled.Drawer>
                 ) }

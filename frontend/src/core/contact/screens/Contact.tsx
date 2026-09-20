@@ -26,6 +26,7 @@ const Contact = () => {
     const [limit, setLimit] = useState<number>(15);
     const [search, setSearch] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
     const [contacts, setContacts] = useState<ContactResponseDto[]>([]);
     const [updating, setUpdating] = useState<ContactFormData | null>(null);
@@ -112,7 +113,7 @@ const Contact = () => {
             setContacts((previousContacts: ContactResponseDto[]) => previousContacts.map(contact => (contact.id === id ? { ...contact, active: status } : contact)));
         } catch (error) {
             toast.error(`Erro ao alterar o status da comunicação para o Contato: ${error}`);
-        };
+        } finally { }
     }
     const handleConfirmDelete = async () => {
         if (selectedContactId === null) {
@@ -137,7 +138,7 @@ const Contact = () => {
             toast.success("Contato excluído com suceso");
         } catch (error: unknown) {
             toast.error("Não é possível prosseguir com a solicitação");
-        }
+        } finally { }
     }
 
     useEffect(() => {
@@ -187,8 +188,8 @@ const Contact = () => {
 
             <Modal isOpen={ isDeleteModalOpen } entityName={ contacts.find((contact: ContactResponseDto) => contact.id === selectedContactId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleConfirmDelete } />
 
-            <Drawer isOpen={ isDrawerOpen } formId="contact-form" title={ updating ? "Editar contato" : "Novo contato" } mode={ updating ? "edit" : "create" } onClose={ () => { setIsDrawerOpen(false); setUpdating(null); } }>
-                <ContactForm initialValues={ updating ?? undefined } onCancel={ () => { setIsDrawerOpen(false); setUpdating(null); } } onSubmit={ () => { setIsDrawerOpen(false); setUpdating(null); handleReadContacts(); } } />
+            <Drawer isOpen={ isDrawerOpen } isSubmitting={ isSubmitting } formId="contact-form" title={ updating ? "Editar contato" : "Novo contato" } mode={ updating ? "edit" : "create" } onClose={ () => { setIsDrawerOpen(false); setUpdating(null); } }>
+                <ContactForm initialValues={ updating ?? undefined } onCancel={ () => { setIsDrawerOpen(false); if (isSubmitting) { return; } setUpdating(null); } } onSubmit={ () => { setIsDrawerOpen(false); setUpdating(null); handleReadContacts(); } } onLoadingChange={ setIsSubmitting } />
             </Drawer>
         </Fragment>
     );

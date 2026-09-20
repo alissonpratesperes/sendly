@@ -11,12 +11,8 @@ import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
 import { CompanyFormData, CompanyFormSchema } from '../schemas/companyFormSchema.schema';
 import { formatCompanyDocument } from '../../../shared/utils/formatCompanyDocument.util';
 
-export const CompanyForm: React.FC<FormProps<CompanyFormData>> = ({ initialValues, onSubmit }) => {
-    const [formData, setFormData] = useState<CompanyFormData>({
-        name: "",
-        document: "",
-        description: "",
-    });
+export const CompanyForm: React.FC<FormProps<CompanyFormData>> = ({ initialValues, onSubmit, onLoadingChange, }) => {
+    const [formData, setFormData] = useState<CompanyFormData>({ name: "", document: "", description: "", });
 
     const handleChange = (changeEvent: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = changeEvent.target;
@@ -29,6 +25,8 @@ export const CompanyForm: React.FC<FormProps<CompanyFormData>> = ({ initialValue
     }
     const handleSubmit = async (formEvent: React.FormEvent<HTMLFormElement>) => {
         formEvent.preventDefault();
+
+        onLoadingChange(true);
 
         try {
             const validatedFormData = CompanyFormSchema.parse(formData);
@@ -62,7 +60,9 @@ export const CompanyForm: React.FC<FormProps<CompanyFormData>> = ({ initialValue
             } else {
                 toast.error("Não é possível prosseguir com a solicitação");
             }
-        } finally { }
+        } finally {
+            onLoadingChange(false);
+        }
     }
 
     useEffect(() => {
@@ -74,11 +74,7 @@ export const CompanyForm: React.FC<FormProps<CompanyFormData>> = ({ initialValue
                 description: initialValues.description ?? "",
             });
         } else {
-            setFormData({
-                name: "",
-                document: "",
-                description: "",
-            });
+            setFormData({ name: "", document: "", description: "", });
         }
     }, [ initialValues ]);
 

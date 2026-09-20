@@ -23,6 +23,7 @@ const Lists = () => {
     const [search, setSearch] = useState<string>("");
     const [lists, setLists] = useState<ListResponseDto[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
     const [updating, setUpdating] = useState<ListFormData | null>(null);
     const [selectedListId, setSelectedListId] = useState<number | null>(null);
@@ -87,7 +88,7 @@ const Lists = () => {
             toast.success("Lista excluída com suceso");
         } catch (error: unknown) {
             toast.error("Não é possível prosseguir com a solicitação");
-        }
+        } finally { }
     }
 
     useEffect(() => {
@@ -134,8 +135,8 @@ const Lists = () => {
 
             <Modal isOpen={ isDeleteModalOpen } entityName={ lists.find((list: ListResponseDto) => list.id === selectedListId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleConfirmDelete } />
 
-            <Drawer isOpen={ isDrawerOpen } formId="list-form" title={ updating ? "Editar lista" : "Nova lista" } mode={ updating ? "edit" : "create" } onClose={ () => { setIsDrawerOpen(false); setUpdating(null); } }>
-                <ListForm initialValues={ updating ?? undefined } onCancel={ () => { setIsDrawerOpen(false); setUpdating(null); } } onSubmit={ () => { setIsDrawerOpen(false); setUpdating(null); handleReadLists(); } } />
+            <Drawer isOpen={ isDrawerOpen } isSubmitting={ isSubmitting } formId="list-form" title={ updating ? "Editar lista" : "Nova lista" } mode={ updating ? "edit" : "create" } onClose={ () => { setIsDrawerOpen(false); setUpdating(null); } }>
+                <ListForm initialValues={ updating ?? undefined } onCancel={ () => { setIsDrawerOpen(false); if (isSubmitting) { return; } setUpdating(null); } } onSubmit={ () => { setIsDrawerOpen(false); setUpdating(null); handleReadLists(); } } onLoadingChange={ setIsSubmitting } />
             </Drawer>
         </Fragment>
     );

@@ -264,8 +264,12 @@ export class UserService {
         });
     }
 
-    async delete(id: number): Promise<void> {
+    async delete(currentUserId: number, id: number): Promise<void> {
         const user = await this.read(id);
+
+        if(user.id === currentUserId) {
+            throw new ConflictException("You cannot delete yourself");
+        }
 
         await this.prismaService.client.user.update({
             where: {

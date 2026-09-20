@@ -5,6 +5,9 @@ export const UserFormSchema = z.object({
         .number()
         .optional(),
 
+    companyId: z
+        .number(),
+
     name: z
         .string()
         .nonempty("O nome é obrigatório")

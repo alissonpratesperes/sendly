@@ -3,4 +3,5 @@ export interface FormProps<T> {
 
     onCancel: () => void;
     onSubmit: () => void;
+    onLoadingChange: (isSubmitting: boolean) => void;
 }

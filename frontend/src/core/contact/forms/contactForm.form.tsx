@@ -15,12 +15,13 @@ import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
 import { ContactFormData, ContactFormSchema } from '../schemas/contactFormSchema.schema';
 import * as ContactFormStyled from '../../../shared/components/dropdown/styles/contactFormDropdown.style';
 
-export const ContactForm: React.FC<FormProps<ContactFormData>> = ({ initialValues, onSubmit }) => {
+export const ContactForm: React.FC<FormProps<ContactFormData>> = ({ initialValues, onSubmit, onLoadingChange, }) => {
     const [lists, setLists] = useState<ListResponseDto[]>([]);
-    const [isListsLoading, setIsListsLoading] = useState(false);
+    const [isListsLoading, setIsListsLoading] = useState<boolean>(false);
+    const [formData, setFormData] = useState<ContactFormData>({ companyId: 0, listId: 0, name: "", phone: "", country: "", });
 
     const optionsForLists = lists
-        .filter((list: ListResponseDto) =>list.id !== undefined && list.id !== null)
+        .filter((list: ListResponseDto) => list.id !== undefined && list.id !== null)
         .map((list: ListResponseDto) => ({
             value: Number(list.id),
             label: list.name,
@@ -37,14 +38,6 @@ export const ContactForm: React.FC<FormProps<ContactFormData>> = ({ initialValue
         }))
         .sort((a, b) => a.countryName.localeCompare(b.countryName, "pt-BR"))
         .map(({ countryName, ...option }) => option);
-
-    const [formData, setFormData] = useState<ContactFormData>({
-        companyId: 0,
-        listId: 0,
-        name: "",
-        phone: "",
-        country: "",
-    });
 
     const handleChange = (changeEvent: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = changeEvent.target;
@@ -69,6 +62,8 @@ export const ContactForm: React.FC<FormProps<ContactFormData>> = ({ initialValue
     };
     const handleSubmit = async (formEvent: React.FormEvent<HTMLFormElement>) => {
         formEvent.preventDefault();
+
+        onLoadingChange(true);
 
         try {
             const validatedFormData = ContactFormSchema.parse(formData);
@@ -117,7 +112,9 @@ export const ContactForm: React.FC<FormProps<ContactFormData>> = ({ initialValue
             } else {
                 toast.error("Não é possível prosseguir com a solicitação");
             }
-        } finally { }
+        } finally {
+            onLoadingChange(false);
+        }
     }
 
     useEffect(() => {
@@ -163,13 +160,7 @@ export const ContactForm: React.FC<FormProps<ContactFormData>> = ({ initialValue
                 country: parsedContactPhone?.country ?? "",
             });
         } else {
-            setFormData({
-                companyId: 0,
-                listId: 0,
-                name: "",
-                phone: "",
-                country: "BR",
-            });
+            setFormData({ companyId: 0, listId: 0, name: "", phone: "", country: "BR", });
         }
     }, [ initialValues ]);
 

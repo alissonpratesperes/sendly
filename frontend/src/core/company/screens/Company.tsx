@@ -14,6 +14,7 @@ import Paginate from '../../../shared/components/paginate/screens/Paginate';
 import * as Styled from '../../../shared/components/table/styles/table.style';
 import { EmptyState } from '../../../shared/components/emptyState/screens/EmpyState';
 import { formatCompanyDocument } from '../../../shared/utils/formatCompanyDocument.util';
+import { getAuthenticationStorage } from '../../../shared/utils/authenticationStorage.util';
 import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
 
@@ -23,11 +24,14 @@ const Company = () => {
     const [limit, setLimit] = useState<number>(15);
     const [search, setSearch] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
     const [companies, setCompanies] = useState<CompanyResponseDto[]>([]);
     const [updating, setUpdating] = useState<CompanyFormData | null>(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
     const [selectedCompanyId, setSelectedCompanyId] = useState<number | null>(null);
+
+    const { userInformation } = getAuthenticationStorage();
 
     const handleReadCompanies = useCallback(async () => {
         try {
@@ -87,7 +91,7 @@ const Company = () => {
             toast.success("Empresa excluída com suceso");
         } catch (error: unknown) {
             toast.error("Não é possível prosseguir com a solicitação");
-        }
+        } finally { }
     }
 
     useEffect(() => {
@@ -104,11 +108,12 @@ const Company = () => {
                 <LoadingState/>
             ) }
             { !isLoading && (
-                <Finder placeholder="Pesquise uma empresa por nome ou cnpj" buttonText="Cadastrar empresa" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } } />
+                <Finder isSystemRoot={ userInformation?.isSystemRoot } placeholder="Pesquise uma empresa por nome ou cnpj" buttonText="Cadastrar empresa" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } } />
             ) }
             { !isLoading && companies.length > 0 && (
                 <Fragment>
                     <Table<CompanyResponseDto>
+                        isSystemRoot={ userInformation?.isSystemRoot }
                         headers={[ "Nome", "Documento", "Descrição", "Criada em", "Editada em", ]}
                         data={ companies }
                         getEntityId={ (company: CompanyResponseDto) => company.id }
@@ -134,8 +139,8 @@ const Company = () => {
 
             <Modal isOpen={ isDeleteModalOpen } entityName={ companies.find((company: CompanyResponseDto) => company.id === selectedCompanyId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleConfirmDelete } />
 
-            <Drawer isOpen={ isDrawerOpen } formId="company-form" title={ updating ? "Editar empresa" : "Nova empresa" } mode={ updating ? "edit" : "create" } onClose={ () => { setIsDrawerOpen(false); setUpdating(null); } }>
-                <CompanyForm initialValues={ updating ?? undefined } onCancel={ () => { setIsDrawerOpen(false); setUpdating(null); } } onSubmit={ () => { setIsDrawerOpen(false); setUpdating(null); handleReadCompanies(); } } />
+            <Drawer isOpen={ isDrawerOpen } isSubmitting={ isSubmitting } formId="company-form" title={ updating ? "Editar empresa" : "Nova empresa" } mode={ updating ? "edit" : "create" } onClose={ () => { setIsDrawerOpen(false); setUpdating(null); } }>
+                <CompanyForm initialValues={ updating ?? undefined } onCancel={ () => { setIsDrawerOpen(false); if (isSubmitting) { return; } setUpdating(null); } } onSubmit={ () => { setIsDrawerOpen(false); setUpdating(null); handleReadCompanies(); } } onLoadingChange={ setIsSubmitting } />
             </Drawer>
         </Fragment>
     );

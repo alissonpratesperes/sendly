@@ -10,13 +10,8 @@ import { FormProps } from '../../../shared/interfaces/formProps.interface';
 import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
 import { ListFormData, ListFormSchema } from '../schemas/listFormSchema.schema';
 
-export const ListForm: React.FC<FormProps<ListFormData>> = ({ initialValues, onSubmit }) => {
-    const [formData, setFormData] = useState<ListFormData>({
-        companyId: 0,
-        name: "",
-        subject: "",
-        color: "",
-    });
+export const ListForm: React.FC<FormProps<ListFormData>> = ({ initialValues, onSubmit, onLoadingChange, }) => {
+    const [formData, setFormData] = useState<ListFormData>({ companyId: 0, name: "", subject: "", color: "", });
 
     const handleChange = (changeEvent: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = changeEvent.target;
@@ -29,6 +24,8 @@ export const ListForm: React.FC<FormProps<ListFormData>> = ({ initialValues, onS
     }
     const handleSubmit = async (formEvent: React.FormEvent<HTMLFormElement>) => {
         formEvent.preventDefault();
+
+        onLoadingChange(true);
 
         try {
             const validatedFormData = ListFormSchema.parse(formData);
@@ -63,7 +60,9 @@ export const ListForm: React.FC<FormProps<ListFormData>> = ({ initialValues, onS
             } else {
                 toast.error("Não é possível prosseguir com a solicitação");
             }
-        } finally { }
+        } finally {
+            onLoadingChange(false);
+        }
     }
 
     useEffect(() => {
@@ -76,12 +75,7 @@ export const ListForm: React.FC<FormProps<ListFormData>> = ({ initialValues, onS
                 color: initialValues.color,
             });
         } else {
-            setFormData({
-                companyId: 0,
-                name: "",
-                subject: "",
-                color: "#FFFFFF",
-            });
+            setFormData({ companyId: 0, name: "", subject: "", color: "#FFFFFF", });
         }
     }, [ initialValues ]);
 

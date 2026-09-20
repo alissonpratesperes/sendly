@@ -15,6 +15,7 @@ import * as Styled from '../../../shared/components/table/styles/table.style';
 import UserBadge from '../../../shared/components/userBadge/screens/UserBadge';
 import { EmptyState } from '../../../shared/components/emptyState/screens/EmpyState';
 import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
+import { getAuthenticationStorage } from '../../../shared/utils/authenticationStorage.util';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
 
 const User = () => {
@@ -24,10 +25,13 @@ const User = () => {
     const [search, setSearch] = useState<string>("");
     const [users, setUsers] = useState<UserResponseDto[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
     const [updating, setUpdating] = useState<UserFormData | null>(null);
     const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+
+    const { userInformation } = getAuthenticationStorage();
 
     const handleReadUsers = useCallback(async () => {
         try {
@@ -58,6 +62,7 @@ const User = () => {
 
         setUpdating({
             id: clicked.id,
+            companyId: clicked.companyId,
             name: clicked.name,
             email: clicked.email,
         });
@@ -86,7 +91,7 @@ const User = () => {
             toast.success("Usuário excluído com suceso");
         } catch (error: unknown) {
             toast.error("Não é possível prosseguir com a solicitação");
-        }
+        } finally { }
     }
 
     useEffect(() => {
@@ -103,11 +108,12 @@ const User = () => {
                 <LoadingState/>
             ) }
             { !isLoading && (
-                <Finder placeholder="Pesquise um usuário por nome ou e-mail" buttonText="Cadastrar usuário" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } } />
+                <Finder isSystemRoot={ userInformation?.isSystemRoot } placeholder="Pesquise um usuário por nome ou e-mail" buttonText="Cadastrar usuário" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } } />
             ) }
             { !isLoading && users.length > 0 && (
                 <Fragment>
                     <Table<UserResponseDto>
+                        isSystemRoot={ userInformation?.isSystemRoot }
                         headers={[ "Nome", "E-mail", "Status", "Acesso", "Criado em", "Editado em", ]}
                         data={ users }
                         getEntityId={ (user: UserResponseDto) => user.id }
@@ -134,8 +140,8 @@ const User = () => {
 
             <Modal isOpen={ isDeleteModalOpen } entityName={ users.find((user: UserResponseDto) => user.id === selectedUserId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleConfirmDelete } />
 
-            <Drawer isOpen={ isDrawerOpen } formId="user-form" title={ updating ? "Editar usuário" : "Novo usuário" } mode={ updating ? "edit" : "create" } onClose={ () => { setIsDrawerOpen(false); setUpdating(null); } }>
-                <UserForm initialValues={ updating ?? undefined } onCancel={ () => { setIsDrawerOpen(false); setUpdating(null); } } onSubmit={ () => { setIsDrawerOpen(false); setUpdating(null); handleReadUsers(); } } />
+            <Drawer isOpen={ isDrawerOpen } isSubmitting={ isSubmitting } formId="user-form" title={ updating ? "Editar usuário" : "Novo usuário" } mode={ updating ? "edit" : "create" } onClose={ () => { setIsDrawerOpen(false); setUpdating(null); } }>
+                <UserForm initialValues={ updating ?? undefined } onCancel={ () => { setIsDrawerOpen(false); if (isSubmitting) { return; } setUpdating(null); } } onSubmit={ () => { setIsDrawerOpen(false); setUpdating(null); handleReadUsers(); } } onLoadingChange={ setIsSubmitting } />
             </Drawer>
         </Fragment>
     );
