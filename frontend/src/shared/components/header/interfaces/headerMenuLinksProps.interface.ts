@@ -1,6 +1,5 @@
+import { HeaderMenuLinkItem } from './HeaderMenuLinkItem.interface';
+
 export interface HeaderMenuLinksProps {
-    links: {
-        label: string;
-        path: string;
-    }[];
+    links: HeaderMenuLinkItem[];
 }

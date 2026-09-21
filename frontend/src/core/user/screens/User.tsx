@@ -17,6 +17,7 @@ import { EmptyState } from '../../../shared/components/emptyState/screens/EmpySt
 import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
 import { getAuthenticationStorage } from '../../../shared/utils/authenticationStorage.util';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
+import { UserBadgeVariant } from '../../../shared/components/userBadge/enums/userBadgeVariant.enum';
 
 const User = () => {
     const [page, setPage] = useState<number>(1);
@@ -122,8 +123,8 @@ const User = () => {
                             <Fragment>
                                 <Styled.TableListBodyRowData> { user.name } </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> <b> { user.email } </b> </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> <UserBadge variant={ user.isFirstAccess ? "isFirstAccess" : "notIsFirstAccess" } /> </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> <UserBadge variant={ user.isSystemRoot ? "isSystemRoot" : "notIsSystemRoot" } /> </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <UserBadge variant={ user.isFirstAccess ? UserBadgeVariant.FIRST_ACCESS : UserBadgeVariant.NOT_FIRST_ACCESS } /> </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <UserBadge variant={ user.isSystemRoot ? UserBadgeVariant.SYSTEM_ROOT : UserBadgeVariant.NOT_SYSTEM_ROOT } /> </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> { formatDate(user.createdAt, true) } </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> { formatDate(user.updatedAt, true) } </Styled.TableListBodyRowData>
                             </Fragment>

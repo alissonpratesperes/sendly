@@ -1,16 +1,13 @@
-import React, { JSX, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { DatabaseZapIcon, House, Power, RadioTower } from 'lucide-react';
+import { Power, RadioTower } from 'lucide-react';
 
 import * as Styled from '../styles/header.style';
 import Connection from '../../../components/connection/screens/Connection';
 import { HeaderMenuLinksProps } from '../interfaces/headerMenuLinksProps.interface';
+import { HEADER_MENU_ICONS_CONFIG } from '../constants/headerMenuIconsConfig.constant';
 import { clearAuthenticationStorage, getAuthenticationStorage } from '../../../utils/authenticationStorage.util';
 
-const menuLinksIconsMapping: Record<string, JSX.Element> = {
-    home: <House size={ 25 } />,
-    registrations: <DatabaseZapIcon size={ 25 } />,
-}
 const Header: React.FC<HeaderMenuLinksProps> = ({ links }) => {
     const [isConnectionOpen, setIsConnectionOpen] = useState<boolean>(false);
 
@@ -31,10 +28,12 @@ const Header: React.FC<HeaderMenuLinksProps> = ({ links }) => {
             </Styled.ApplicationBrandContainer>
 
             <Styled.MenuContainer>
-                { links.map(({ label, path }, index) => {
+                { links.map(({ label, path }) => {
+                    const Icon = HEADER_MENU_ICONS_CONFIG[path];
+
                     return (
-                        <Styled.NavItem key={ index } to={ path }>
-                            { menuLinksIconsMapping[path.replace("/", "") as keyof typeof menuLinksIconsMapping] }
+                        <Styled.NavItem key={ path } to={ path }>
+                            { Icon && <Icon size={ 25 } />}
                             { label }
                         </Styled.NavItem>
                     );
@@ -62,7 +61,6 @@ const Header: React.FC<HeaderMenuLinksProps> = ({ links }) => {
                     onPairingSuccess={ false }
                     isOpen={ isConnectionOpen }
                     companyId={ userInformation.company.id }
-                    entityName={ userInformation.company.name }
                     onClose={ () => setIsConnectionOpen(false) }
                 />
             ) }

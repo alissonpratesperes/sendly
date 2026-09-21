@@ -1,4 +1,4 @@
-import { ConnectionBadgeVariant } from '../types/connectionBadgeVariant.type';
+import { ConnectionBadgeVariant } from '../enums/connectionBadgeVariant.enum';
 
 export interface ConnectionBadgeProps {
     variant: ConnectionBadgeVariant;

@@ -1,7 +1,4 @@
 import styled from 'styled-components';
-import { ConnectionBadgeVariant } from '../types/connectionBadgeVariant.type';
-import { ConnectionBadgeProps } from '../interfaces/connectionBadgeProps.interface';
-import { ConnectionBadgeColorProps } from '../interfaces/connectionBadgeColorProps.interface';
 
 export const Overlay = styled.div<{ $open: boolean }>`
     position: fixed;
@@ -119,39 +116,6 @@ export const ModalBody = styled.div`
     flex-direction: column;
     align-items: center;.
     justify-content: center;
-`;
-
-export const ConnectionStatusContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-`;
-
-const connectionBadgeColorMapping: Record<ConnectionBadgeVariant, ConnectionBadgeColorProps> = {
-    disconnected: { fontColor: "#DC143C", backgroundColor: "#FDECEF", },
-    waiting: { fontColor: "#B54708", backgroundColor: "#FFFAEB" },
-    connected: { fontColor: "#10CF67", backgroundColor: "#ECFDF3", },
-}
-
-export const ConnectionBadgeContainer = styled.span<ConnectionBadgeProps>`
-    margin-bottom: 30px;
-    padding: 15px;
-    height: auto;
-    width: auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    column-gap: 15px;
-    font-family: "Inter";
-    font-weight: 500;
-    font-size: 16px;
-    border-radius: 50px;
-
-    color: ${ ({ variant }) => connectionBadgeColorMapping[variant].fontColor };
-    margin-bottom: ${ ({ variant }) => variant === "connected" ? "0px" : "30px" };
-    background-color: ${ ({ variant }) => connectionBadgeColorMapping[variant].backgroundColor };
 `;
 
 export const PairingCodeContainer = styled.div`

@@ -1,26 +1,24 @@
 import { toast } from 'react-toastify';
 import React, { useState, useEffect, Fragment } from 'react';
-import { Ban, GlobeOff, KeyRound, Wifi, WifiCog, WifiOff, WifiSync, X } from 'lucide-react';
+import { Ban, GlobeOff, KeyRound, WifiSync, X } from 'lucide-react';
 
 import * as Styled from '../styles/connection.style';
 import { LoadingState } from '../../loadingState/screens/LoadingState';
 import { ConnectionProps } from '../interfaces/connectionProps.interface';
+import ConnectionBadge from '../../connectionBadge/screens/ConnectionBadge';
 import { BaileysForm } from '../../../../core/baileys/forms/baileysForm.form';
 import { Status, Logout } from '../../../../core/baileys/services/baileys.service';
-import { getAuthenticationStorage } from '../../../utils/authenticationStorage.util';
+import { ConnectionBadgeVariant } from '../../connectionBadge/enums/connectionBadgeVariant.enum';
 import { BaileysStatusResponseDto } from '../../../../core/baileys/dtos/baileysStatusResponse.dto';
 
-const Connection: React.FC<ConnectionProps> = ({ onPairingSuccess, isOpen, companyId, entityName, onClose }) => {
+const Connection: React.FC<ConnectionProps> = ({ onPairingSuccess, isOpen, companyId, onClose }) => {
     const [isClosing, setIsClosing] = useState(false);
     const [loadingStatus, setLoadingStatus] = useState(false);
     const [pairingCode, setPairingCode] = useState<string | null>(null);
     const [status, setStatus] = useState<BaileysStatusResponseDto | null>(null);
 
-    const { userInformation } = getAuthenticationStorage();
-    const targetCompanyId = companyId ?? userInformation?.company?.id;
-
     const handleDisconnect = async () => {
-        if (!targetCompanyId) {
+        if (!companyId) {
             toast.error("Empresa não encontrada para logout");
 
             return;
@@ -29,7 +27,7 @@ const Connection: React.FC<ConnectionProps> = ({ onPairingSuccess, isOpen, compa
         setLoadingStatus(true);
 
         try {
-            await Logout({ id: targetCompanyId });
+            await Logout({ id: companyId });
 
             setStatus({ connected: false });
             setPairingCode(null);
@@ -49,7 +47,7 @@ const Connection: React.FC<ConnectionProps> = ({ onPairingSuccess, isOpen, compa
 
             return;
         }
-        if (!targetCompanyId) {
+        if (!companyId) {
             toast.error("Empresa não encontrada");
 
             setStatus({ connected: false });
@@ -61,7 +59,7 @@ const Connection: React.FC<ConnectionProps> = ({ onPairingSuccess, isOpen, compa
             setLoadingStatus(true);
 
             try {
-                const response = await Status({ id: targetCompanyId });
+                const response = await Status({ id: companyId });
 
                 setStatus(response);
             } catch (error) {
@@ -74,7 +72,7 @@ const Connection: React.FC<ConnectionProps> = ({ onPairingSuccess, isOpen, compa
         }
 
         fetchStatus();
-    }, [ isOpen, targetCompanyId ]);
+    }, [ isOpen, companyId ]);
 
     return (
         <Styled.Overlay $open={ isOpen && !isClosing } onClick={ () => setIsClosing(true) }>
@@ -93,38 +91,16 @@ const Connection: React.FC<ConnectionProps> = ({ onPairingSuccess, isOpen, compa
                             { loadingStatus ? (
                                 <LoadingState />
                             ) : status?.connected ? (
-                                <Styled.ConnectionStatusContainer>
-                                    <Styled.ConnectionBadgeContainer variant="connected">
-                                        <Wifi color="#10CF67" size={ 25 } />
-
-                                        Conectado
-                                    </Styled.ConnectionBadgeContainer>
-                                </Styled.ConnectionStatusContainer>
+                                <ConnectionBadge variant={ ConnectionBadgeVariant.CONNECTED }/>
                             ) : (
                                 <Styled.PairingCodeContainer>
-                                    <Styled.ConnectionStatusContainer>
-                                        { pairingCode ? (
-                                            <Styled.ConnectionBadgeContainer variant="waiting">
-                                                <WifiCog className="animate-spin" color="#B54708" size={ 25 } />
-
-                                                Aguardando conexão
-                                            </Styled.ConnectionBadgeContainer>
-                                        ) : (
-                                            <Styled.ConnectionBadgeContainer variant="disconnected">
-                                                <WifiOff color="#DC143C" size={ 25 } />
-
-                                                Desconectado
-                                            </Styled.ConnectionBadgeContainer>
-                                        ) }
-                                    </Styled.ConnectionStatusContainer>
-
+                                    { pairingCode ? (
+                                        <ConnectionBadge variant={ ConnectionBadgeVariant.WAITING }/>
+                                    ) : (
+                                        <ConnectionBadge variant={ ConnectionBadgeVariant.DISCONNECTED }/>
+                                    ) }
                                     { !pairingCode ? (
-                                        <BaileysForm
-                                            onCancel={ () => {} }
-                                            onSubmit={ () => {} }
-                                            onLoadingChange={ setLoadingStatus }
-                                            onPairingSuccess={ (code) => setPairingCode(code) }
-                                        />
+                                        <BaileysForm onCancel={ () => {} } onSubmit={ () => {} } onLoadingChange={ setLoadingStatus } onPairingSuccess={ (pairingCode) => setPairingCode(pairingCode) } />
                                     ) : (
                                         <Fragment>
                                             <Styled.PairingTextContainer>
@@ -134,7 +110,7 @@ const Connection: React.FC<ConnectionProps> = ({ onPairingSuccess, isOpen, compa
                                             </Styled.PairingTextContainer>
 
                                             <Styled.PairingDigitsContainer>
-                                                { pairingCode.replace(/[^a-zA-Z0-9]/g, "").split('').map((char, index) => (
+                                                { pairingCode.replace(/[^a-zA-Z0-9]/g, "").split("").map((char: string, index: number) => (
                                                     <Fragment key={ index }>
                                                         <Styled.CodeChar> { char } </Styled.CodeChar>
 
