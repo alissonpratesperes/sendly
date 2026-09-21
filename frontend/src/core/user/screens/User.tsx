@@ -113,12 +113,11 @@ const User = () => {
             { !isLoading && users.length > 0 && (
                 <Fragment>
                     <Table<UserResponseDto>
-                        isSystemRoot={ userInformation?.isSystemRoot }
                         headers={[ "Nome", "E-mail", "Status", "Acesso", "Criado em", "Editado em", ]}
                         data={ users }
                         getEntityId={ (user: UserResponseDto) => user.id }
-                        onEdit={ handleUpdate }
-                        onDelete={ (id: number) => { setSelectedUserId(id); setIsDeleteModalOpen(true); } }
+                        onEdit={ userInformation?.isSystemRoot ? handleUpdate : undefined }
+                        onDelete={ userInformation?.isSystemRoot ? (id: number) => { setSelectedUserId(id); setIsDeleteModalOpen(true); } : undefined }
                         renderEntityRow={ (user: UserResponseDto) => (
                             <Fragment>
                                 <Styled.TableListBodyRowData> { user.name } </Styled.TableListBodyRowData>

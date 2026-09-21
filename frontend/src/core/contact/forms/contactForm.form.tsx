@@ -209,7 +209,6 @@ export const ContactForm: React.FC<FormProps<ContactFormData>> = ({ initialValue
                     )}
                 />
             </Styled.FieldWrapper>
-
         </Styled.Form>
     );
 }

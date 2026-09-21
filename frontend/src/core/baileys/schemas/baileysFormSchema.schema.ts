@@ -3,24 +3,7 @@ import { CountryCode, getCountries } from 'libphonenumber-js';
 
 const countries = getCountries();
 
-export const ContactFormSchema = z.object({
-    id: z
-        .number()
-        .optional(),
-
-    companyId: z
-        .number(),
-
-    listId: z
-        .number()
-        .positive("A lista é obrigatória"),
-
-    name: z
-        .string()
-        .nonempty("O nome é obrigatório")
-        .refine((inputValue) => inputValue.trim().length > 0, { message: "O nome não pode conter apenas espaços" })
-        .max(150, "O nome não pode ter mais que 150 caracteres"),
-
+export const BaileysFormSchema = z.object({
     phone: z
         .string()
         .nonempty("O telefone é obrigatório")
@@ -33,4 +16,4 @@ export const ContactFormSchema = z.object({
         .transform((country) => country as CountryCode | ""),
 });
 
-export type ContactFormData = z.infer<typeof ContactFormSchema>;
+export type BaileysFormData = z.infer<typeof BaileysFormSchema>;

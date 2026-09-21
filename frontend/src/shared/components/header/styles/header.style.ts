@@ -80,7 +80,7 @@ export const NavItem = styled(NavLink)`
 
 export const UserContainer = styled.div`
   height: 80px;
-  width: 350px;
+  width: 500px;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -113,12 +113,52 @@ export const UserCompany = styled.h1`
 `;
 
 export const UserActionContainer = styled.div`
-  width: 55px;
+  width: auto;
   height: 55px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+`;
+
+export const WhatsAppButton = styled.button`
+  margin-right: 15px;
+  width: 55px;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  outline: none;
+  border-radius: 14px;
+  background: none;
+  color: #1C70E9;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+
+    &:hover {
+      background: #1C70E9;
+      color: #FFFFFF;
+      animation: whatsAppButton 0.6s ease-in-out;
+    }
+
+      svg {
+        stroke: currentColor;
+      }
+
+        @keyframes whatsAppButton {
+          0% {
+            transform: scale(1.08);
+          }
+
+          50% {
+            transform: scale(0.95);
+          }
+
+          100% {
+            transform: scale(1);
+          }
+        }
 `;
 
 export const LogOutButton = styled.button`

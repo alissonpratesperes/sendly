@@ -146,7 +146,7 @@ export class BaileysService implements OnModuleDestroy {
         };
     }
 
-    async startPairing(companyId: number, phoneNumber: string): Promise<string> {
+    async pair(companyId: number, phoneNumber: string): Promise<string> {
         if (this.sessions.has(companyId)) {
             throw new Error(`A WhatsApp session already exists for Company: "${ companyId }"`);
         }
@@ -254,7 +254,32 @@ export class BaileysService implements OnModuleDestroy {
         return response;
     }
 
-    async logoutSession(companyId: number): Promise<void> {
+    async status(companyId: number): Promise<{ connected: boolean; phone?: string }> {
+        const sessionPromise = this.sessions.get(companyId);
+
+        if (!sessionPromise) {
+            return { connected: false };
+        }
+
+        try {
+            const socket = await sessionPromise;
+
+            if (socket && socket.user) {
+                const cleanPhone = socket.user.id.split(':')[0] || socket.user.id.split("@")[0];
+
+                return {
+                    connected: true,
+                    phone: cleanPhone,
+                };
+            }
+
+            return { connected: false };
+        } catch {
+            return { connected: false };
+        }
+    }
+
+    async logout(companyId: number): Promise<void> {
         const sessionPath = path.resolve(process.cwd(), "sessions", `company_${ companyId }`);
 
         try {
@@ -286,31 +311,6 @@ export class BaileysService implements OnModuleDestroy {
             } catch (fsError) {
                 this.logger.error(`Error when delete session folder of Company: "${ companyId }"`);
             }
-        }
-    }
-
-    async getSessionStatus(companyId: number): Promise<{ connected: boolean; phone?: string }> {
-        const sessionPromise = this.sessions.get(companyId);
-
-        if (!sessionPromise) {
-            return { connected: false };
-        }
-
-        try {
-            const socket = await sessionPromise;
-
-            if (socket && socket.user) {
-                const cleanPhone = socket.user.id.split(':')[0] || socket.user.id.split("@")[0];
-
-                return {
-                    connected: true,
-                    phone: cleanPhone,
-                };
-            }
-
-            return { connected: false };
-        } catch {
-            return { connected: false };
         }
     }
 

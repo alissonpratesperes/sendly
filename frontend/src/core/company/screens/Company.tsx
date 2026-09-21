@@ -113,12 +113,11 @@ const Company = () => {
             { !isLoading && companies.length > 0 && (
                 <Fragment>
                     <Table<CompanyResponseDto>
-                        isSystemRoot={ userInformation?.isSystemRoot }
                         headers={[ "Nome", "Documento", "Descrição", "Criada em", "Editada em", ]}
                         data={ companies }
                         getEntityId={ (company: CompanyResponseDto) => company.id }
-                        onEdit={ handleUpdate }
-                        onDelete={ (id: number) => { setSelectedCompanyId(id); setIsDeleteModalOpen(true); } }
+                        onEdit={ userInformation?.isSystemRoot ? handleUpdate : undefined }
+                        onDelete={ userInformation?.isSystemRoot ? (id: number) => { setSelectedCompanyId(id); setIsDeleteModalOpen(true); } : undefined }
                         renderEntityRow={ (company: CompanyResponseDto) => (
                             <Fragment>
                                 <Styled.TableListBodyRowData> { company.name } </Styled.TableListBodyRowData>

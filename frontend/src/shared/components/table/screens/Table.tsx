@@ -4,7 +4,7 @@ import { Pen, Trash } from 'lucide-react';
 import * as Styled from '../styles/table.style';
 import { TableProps } from '../interfaces/tableProps.interface';
 
-export const Table = <T,>({ isSystemRoot, headers, data, getEntityId, onEdit, onDelete, renderEntityRow, }: TableProps<T>) => {
+export const Table = <T,>({ headers, data, getEntityId, onEdit, onDelete, renderEntityRow, }: TableProps<T>) => {
     return (
             <Styled.TableWrapper>
                 <Styled.TableListWrapper>
@@ -23,7 +23,7 @@ export const Table = <T,>({ isSystemRoot, headers, data, getEntityId, onEdit, on
                                 return (
                                     <Styled.TableListBodyRow key={ id }>
                                         { renderEntityRow(entity) }
-                                        { (onEdit || onDelete) && isSystemRoot && (
+                                        { (onEdit || onDelete) && (
                                             <Styled.TableListBodyRowData>
                                                 <Styled.TableListBodyRowDataActions>
                                                     { onEdit && (

@@ -1,5 +1,4 @@
 export interface TableProps<T> {
-    isSystemRoot?: boolean;
     headers: string[];
     data: T[];
 
