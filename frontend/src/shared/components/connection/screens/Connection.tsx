@@ -3,6 +3,7 @@ import React, { useState, useEffect, Fragment } from 'react';
 import { Ban, GlobeOff, KeyRound, WifiSync, X } from 'lucide-react';
 
 import * as Styled from '../styles/connection.style';
+import PairingCode from '../../pairingCode/screens/PairingCode';
 import { LoadingState } from '../../loadingState/screens/LoadingState';
 import { ConnectionProps } from '../interfaces/connectionProps.interface';
 import ConnectionBadge from '../../connectionBadge/screens/ConnectionBadge';
@@ -102,23 +103,7 @@ const Connection: React.FC<ConnectionProps> = ({ onPairingSuccess, isOpen, compa
                                     { !pairingCode ? (
                                         <BaileysForm onCancel={ () => {} } onSubmit={ () => {} } onLoadingChange={ setLoadingStatus } onPairingSuccess={ (pairingCode) => setPairingCode(pairingCode) } />
                                     ) : (
-                                        <Fragment>
-                                            <Styled.PairingTextContainer>
-                                                <KeyRound size={ 25 } color="#2F2E33" />
-
-                                                <Styled.BoldText> Insira o código abaixo no seu aplicativo do WhatsApp </Styled.BoldText>
-                                            </Styled.PairingTextContainer>
-
-                                            <Styled.PairingDigitsContainer>
-                                                { pairingCode.replace(/[^a-zA-Z0-9]/g, "").split("").map((char: string, index: number) => (
-                                                    <Fragment key={ index }>
-                                                        <Styled.CodeChar> { char } </Styled.CodeChar>
-
-                                                        { index === 3 && (<Styled.CodeSeparator> - </Styled.CodeSeparator>) }
-                                                    </Fragment>
-                                                )) }
-                                            </Styled.PairingDigitsContainer>
-                                        </Fragment>
+                                        <PairingCode pairingCode={ pairingCode } />
                                     ) }
                                 </Styled.PairingCodeContainer>
                             ) }

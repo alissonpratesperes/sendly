@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Overlay = styled.div<{ $open: boolean }>`
+export const ModalOverlay = styled.div<{ $open: boolean }>`
     position: fixed;
     display: flex;
     align-items: center;
@@ -64,14 +64,14 @@ export const ModalHeader = styled.div`
     border-bottom: 2px solid #E9EAEB;
 `;
 
-export const Title = styled.h3`
+export const ModalTitle = styled.h3`
     font-family: "Inter";
     font-weight: 700;
     font-size: 18px;
     color: #171719;
 `;
 
-export const CloseButton = styled.button`
+export const ModalDismissButton = styled.button`
     height: 55px;
     width: 55px;
     display: flex;
@@ -114,58 +114,18 @@ export const ModalBody = styled.div`
     padding: 30px;
     display: flex;
     flex-direction: column;
-    align-items: center;.
-    justify-content: center;
-`;
-
-export const PairingCodeContainer = styled.div`
-    width: 100%;
-`;
-
-export const PairingTextContainer = styled.div`
-    display: flex;
-    flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: 15px;
 `;
 
-export const PairingDigitsContainer = styled.div`
-    margin-top: 30px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 7.5px;
-`;
-
-export const CodeChar = styled.span`
-    height: 44px;
-    width: 36px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 18px;
-    color: #FFFFFF;
-    background-color: #1C70E9;
-    border-radius: 7px;
-`;
-
-export const CodeSeparator = styled.span`
-    font-size: 25px;
-    font-weight: bold;
-    color: #2F2E33;
-`;
-
-export const Text = styled.p`
+export const ModalText = styled.p`
     font-family: "Inter";
     font-weight: 500;
     font-size: 16px;
     color: #2F2E33;
 `;
 
-export const BoldText = styled.b`
+export const ModalBoldText = styled.b`
     font-weight: 700;
 `;
 
@@ -180,11 +140,11 @@ export const ModalFooter = styled.div`
     border-top: 2px solid #E9EAEB;
 `;
 
-export const FooterButtonText = styled.span`
+export const ModalFooterButtonText = styled.span`
     margin-left: 7.5px;
 `;
 
-export const Button = styled.button`
+export const ModalButton = styled.button`
     padding: 15px;
     height: 55px;
     width: auto;
@@ -200,7 +160,7 @@ export const Button = styled.button`
     cursor: pointer;
 `;
 
-export const CancelButton = styled(Button)`
+export const ModalPrimaryButton = styled(ModalButton)`
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -236,18 +196,18 @@ export const CancelButton = styled(Button)`
                 }
 `;
 
-export const CodeGenerationButton = styled(Button)`
+export const ModalSecondaryButton = styled(ModalButton)`
     flex-direction: row;
     align-items: center;
     justify-content: center;
     font-weight: 400;
-    color: #1C70E9;
+    color: #DC143C;
     background: transparent;transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
 
         &:hover {
             font-weight: 700;
             color: #FFFFFF;
-            background-color: #1C70E9;
+            background-color: #DC143C;
             animation: footerButtonEffect 0.6s ease-in-out;
         }
 
@@ -270,18 +230,18 @@ export const CodeGenerationButton = styled(Button)`
                 }
 `;
 
-export const FinishSessionButton = styled(Button)`
+export const ModalTertiaryButton = styled(ModalButton)`
     flex-direction: row;
     align-items: center;
     justify-content: center;
     font-weight: 400;
-    color: #DC143C;
+    color: #1C70E9;
     background: transparent;transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
 
         &:hover {
             font-weight: 700;
             color: #FFFFFF;
-            background-color: #DC143C;
+            background-color: #1C70E9;
             animation: footerButtonEffect 0.6s ease-in-out;
         }
 
