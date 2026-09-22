@@ -130,16 +130,16 @@ export const WhatsAppButton = styled.button`
   border: none;
   outline: none;
   background: none;
-  color: #1C70E9;
-  background: rgba(28, 112, 233, 0.25);
+  color: #FF6B00;
+  background: rgba(255, 107, 0, 0.25);
   border-top-left-radius: 14px;
   border-bottom-left-radius: 14px;
   cursor: pointer;
   transition: background 0.3s ease, color 0.3s ease;
 
     &:hover {
-      background: #1C70E9;
       color: #FFFFFF;
+      background: #FF6B00;
       animation: whatsAppButton 0.6s ease-in-out;
     }
 
@@ -178,8 +178,8 @@ export const LogOutButton = styled.button`
   transition: background 0.3s ease, color 0.3s ease;
 
     &:hover {
-      background: #FF6B00;
       color: #FFFFFF;
+      background: #FF6B00;
       animation: logOutButtonEffect 0.6s ease-in-out;
     }
 

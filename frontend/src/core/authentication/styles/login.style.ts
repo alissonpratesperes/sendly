@@ -175,7 +175,7 @@ export const ForgotButton = styled(Link)`
     font-family: "Lato";
     font-weight: 400;
     font-size: 16px;
-    color: #DC143C;
+    color: #FF6B00;
     border: none;
     outline: none;
     border-radius: 14px;
@@ -186,7 +186,7 @@ export const ForgotButton = styled(Link)`
         &:hover {
             font-weight: 700;
             color: #FFFFFF;
-            background-color: #DC143C;
+            background-color: #FF6B00;
             animation: logOutButtonEffect 0.6s ease-in-out;
         }
 
