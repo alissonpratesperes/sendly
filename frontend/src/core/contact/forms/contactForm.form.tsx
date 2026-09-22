@@ -13,9 +13,12 @@ import { FormProps } from '../../../shared/interfaces/formProps.interface';
 import Dropdown from '../../../shared/components/dropdown/screens/Dropdown';
 import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
 import { ContactFormData, ContactFormSchema } from '../schemas/contactFormSchema.schema';
+import { getAuthenticationStorage } from '../../../shared/utils/authenticationStorage.util';
 import * as ContactFormStyled from '../../../shared/components/dropdown/styles/contactFormDropdown.style';
 
 export const ContactForm: React.FC<FormProps<ContactFormData>> = ({ initialValues, onSubmit, onLoadingChange, }) => {
+    const { userInformation } = getAuthenticationStorage();
+
     const [lists, setLists] = useState<ListResponseDto[]>([]);
     const [isListsLoading, setIsListsLoading] = useState<boolean>(false);
     const [formData, setFormData] = useState<ContactFormData>({ companyId: 0, listId: 0, name: "", phone: "", country: "", });
@@ -82,7 +85,7 @@ export const ContactForm: React.FC<FormProps<ContactFormData>> = ({ initialValue
 
             if (initialValues?.id === undefined) {
                 const command: CreateContactCommandDto = {
-                    companyId: validatedFormData.companyId,
+                    companyId: userInformation?.company.id ?? 0,
                     listId: validatedFormData.listId,
                     name: validatedFormData.name,
                     phone: normalizedPhone,

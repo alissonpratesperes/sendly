@@ -9,6 +9,7 @@ import Forgot from './core/authentication/screens/Forgot';
 import Header from './shared/components/header/screens/Header';
 import PublicRoute from './shared/components/public/screens/PublicRoute';
 import PrivateRoute from './shared/components/private/screens/PrivateRoute';
+import { AppRoutes } from './shared/components/header/enums/appRoutes.enum';
 import Registration from './shared/components/registration/screens/Registration';
 
 const PATHS_WITHOUT_APP_LAYOUT = [ "/authentication", "/authentication/forgot", "/authentication/reset", ];
@@ -22,8 +23,8 @@ export const AppRouting: React.FC = () => {
             { shouldUseAppLayout && (
                 <Header
                     links={[
-                        { label: "Home", path: "/home" },
-                        { label: "Cadastros", path: "/registrations" },
+                        { label: "Home", path: AppRoutes.HOME, },
+                        { label: "Cadastros", path: AppRoutes.REGISTRATIONS, },
                     ]}
                 />
             ) }

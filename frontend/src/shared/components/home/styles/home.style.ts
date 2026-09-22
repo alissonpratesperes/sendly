@@ -33,7 +33,7 @@ export const SessionSubtitle = styled.span`
 `;
 
 export const IframeContainer = styled.div`
-    height: calc(100vh - 180px);
+    height: 100vh;
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -43,7 +43,7 @@ export const IframeContainer = styled.div`
 
 export const BullBoardIframe = styled.iframe`
     height: 100%;
-    width: 97%;
+    width: 100%;
     border: none;
     display: block;
     overflow: hidden;

@@ -118,6 +118,10 @@ export const ModalBody = styled.div`
     justify-content: center;
 `;
 
+export const ModalInnerBodyContainer = styled.div`
+    width: 100%;
+`;
+
 export const ModalText = styled.p`
     font-family: "Inter";
     font-weight: 500;

@@ -1,5 +1,5 @@
 export interface FinderProps {
-    isSystemRoot?: boolean;
+    showAddButton: boolean;
     placeholder: string;
     buttonText: string;
     search: string;

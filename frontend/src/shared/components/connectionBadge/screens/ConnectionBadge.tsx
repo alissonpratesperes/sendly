@@ -14,11 +14,11 @@ const ConnectionBadge: React.FC<ConnectionBadgeProps> = ({ variant }) => {
     const Icon = badgeConfig.icon;
 
     return (
-        <Styled.UserBadgeContainer variant={ variant }>
+        <Styled.ConnectionBadgeContainer variant={ variant }>
             <Icon size={ 25 } />
 
             { badgeConfig.label }
-        </Styled.UserBadgeContainer>
+        </Styled.ConnectionBadgeContainer>
     );
 }
 

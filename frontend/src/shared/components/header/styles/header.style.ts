@@ -122,7 +122,6 @@ export const UserActionContainer = styled.div`
 `;
 
 export const WhatsAppButton = styled.button`
-  margin-right: 15px;
   width: 55px;
   height: 55px;
   display: flex;
@@ -130,9 +129,11 @@ export const WhatsAppButton = styled.button`
   justify-content: center;
   border: none;
   outline: none;
-  border-radius: 14px;
   background: none;
   color: #1C70E9;
+  background: rgba(28, 112, 233, 0.25);
+  border-top-left-radius: 14px;
+  border-bottom-left-radius: 14px;
   cursor: pointer;
   transition: background 0.3s ease, color 0.3s ease;
 
@@ -169,14 +170,15 @@ export const LogOutButton = styled.button`
   justify-content: center;
   border: none;
   outline: none;
-  border-radius: 14px;
-  background: none;
-  color: #DC143C;
+  color: #FF6B00;
+  background: rgba(255, 107, 0, 0.25);
+  border-top-right-radius: 14px;
+  border-bottom-right-radius: 14px;
   cursor: pointer;
   transition: background 0.3s ease, color 0.3s ease;
 
     &:hover {
-      background: #DC143C;
+      background: #FF6B00;
       color: #FFFFFF;
       animation: logOutButtonEffect 0.6s ease-in-out;
     }

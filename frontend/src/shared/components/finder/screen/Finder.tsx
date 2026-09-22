@@ -4,7 +4,7 @@ import { CirclePlus, Search } from 'lucide-react';
 import * as Styled from '../styles/finder.style';
 import { FinderProps } from '../interfaces/finderProps.interface';
 
-export const Finder: React.FC<FinderProps> = ({ isSystemRoot, placeholder, buttonText, search, onAdd, onSearchChange }) => {
+export const Finder: React.FC<FinderProps> = ({ showAddButton = false, placeholder, buttonText, search, onAdd, onSearchChange }) => {
     return (
         <Styled.SearchInputWrapper>
             <Styled.SearchInputContainer>
@@ -13,7 +13,7 @@ export const Finder: React.FC<FinderProps> = ({ isSystemRoot, placeholder, butto
                 <Styled.SearchInputField type="text" placeholder={ placeholder } value={ search } onChange={ (event) => onSearchChange(event.target.value) } />
             </Styled.SearchInputContainer>
 
-            { isSystemRoot && (
+            { showAddButton && (
                 <Styled.AddButton type="button" onClick={ onAdd }>
                     <CirclePlus size={ 25 } />
 

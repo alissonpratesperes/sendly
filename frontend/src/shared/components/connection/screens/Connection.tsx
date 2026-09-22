@@ -1,8 +1,8 @@
 import { toast } from 'react-toastify';
+import { Ban, GlobeOff, WifiSync, X } from 'lucide-react';
 import React, { useState, useEffect, Fragment } from 'react';
-import { Ban, GlobeOff, KeyRound, WifiSync, X } from 'lucide-react';
 
-import * as Styled from '../styles/connection.style';
+import * as Styled from '../../../styles/modal.style';
 import PairingCode from '../../pairingCode/screens/PairingCode';
 import { LoadingState } from '../../loadingState/screens/LoadingState';
 import { ConnectionProps } from '../interfaces/connectionProps.interface';
@@ -32,9 +32,10 @@ const Connection: React.FC<ConnectionProps> = ({ onPairingSuccess, isOpen, compa
 
             setStatus({ connected: false });
             setPairingCode(null);
-            setIsClosing(true);
 
             toast.success("Sessão do WhatsApp encerrada com sucesso");
+
+            setIsClosing(true);
         } catch (error) {
             toast.error("Erro ao desconectar sessão do WhatsApp");
         } finally {
@@ -76,16 +77,14 @@ const Connection: React.FC<ConnectionProps> = ({ onPairingSuccess, isOpen, compa
     }, [ isOpen, companyId ]);
 
     return (
-        <Styled.Overlay $open={ isOpen && !isClosing } onClick={ () => setIsClosing(true) }>
+        <Styled.ModalOverlay $open={ isOpen && !isClosing } onClick={ () => setIsClosing(true) }>
             { isOpen && (
                 <Styled.ModalWrapper $open={ !isClosing } onClick={ (event) => event.stopPropagation() } onAnimationEnd={ (event) => { if (event.animationName === "modalClose") { onClose(); setIsClosing(false); } } }>
                     <Styled.ModalContainer>
                         <Styled.ModalHeader>
-                            <Styled.Title> Status da sessão do WhatsApp </Styled.Title>
+                            <Styled.ModalTitle> Status da sessão do WhatsApp </Styled.ModalTitle>
 
-                            <Styled.CloseButton type="button" onClick={ () => setIsClosing(true) }>
-                                <X size={ 25 } />
-                            </Styled.CloseButton>
+                            <Styled.ModalDismissButton type="button" onClick={ () => setIsClosing(true) }> <X size={ 25 } /> </Styled.ModalDismissButton>
                         </Styled.ModalHeader>
 
                         <Styled.ModalBody>
@@ -94,47 +93,50 @@ const Connection: React.FC<ConnectionProps> = ({ onPairingSuccess, isOpen, compa
                             ) : status?.connected ? (
                                 <ConnectionBadge variant={ ConnectionBadgeVariant.CONNECTED }/>
                             ) : (
-                                <Styled.PairingCodeContainer>
+                                <Fragment>
                                     { pairingCode ? (
                                         <ConnectionBadge variant={ ConnectionBadgeVariant.WAITING }/>
                                     ) : (
                                         <ConnectionBadge variant={ ConnectionBadgeVariant.DISCONNECTED }/>
                                     ) }
-                                    { !pairingCode ? (
-                                        <BaileysForm onCancel={ () => {} } onSubmit={ () => {} } onLoadingChange={ setLoadingStatus } onPairingSuccess={ (pairingCode) => setPairingCode(pairingCode) } />
-                                    ) : (
-                                        <PairingCode pairingCode={ pairingCode } />
-                                    ) }
-                                </Styled.PairingCodeContainer>
+
+                                    <Styled.ModalInnerBodyContainer>
+                                        { !pairingCode ? (
+                                            <BaileysForm onCancel={ () => {} } onSubmit={ () => {} } onLoadingChange={ setLoadingStatus } onPairingSuccess={ (pairingCode) => setPairingCode(pairingCode) } />
+                                        ) : (
+                                            <PairingCode pairingCode={ pairingCode } />
+                                        ) }
+                                    </Styled.ModalInnerBodyContainer>
+                                </Fragment>
                             ) }
                         </Styled.ModalBody>
 
                         <Styled.ModalFooter>
-                            <Styled.CancelButton onClick={ () => setIsClosing(true) }>
+                            <Styled.ModalPrimaryButton onClick={ () => setIsClosing(true) }>
                                 <Ban size={ 25 } />
 
-                                <Styled.FooterButtonText> Fechar </Styled.FooterButtonText>
-                            </Styled.CancelButton>
+                                <Styled.ModalFooterButtonText> Fechar </Styled.ModalFooterButtonText>
+                            </Styled.ModalPrimaryButton>
 
                             { !status?.connected && !pairingCode && (
-                                <Styled.CodeGenerationButton type="submit" form="baileys-form" disabled={ loadingStatus }>
+                                <Styled.ModalTertiaryButton type="submit" form="baileys-form" disabled={ loadingStatus }>
                                   <WifiSync size={ 25 } />
 
-                                  <Styled.FooterButtonText> Gerar código </Styled.FooterButtonText>
-                                </Styled.CodeGenerationButton>
+                                  <Styled.ModalFooterButtonText> Gerar código </Styled.ModalFooterButtonText>
+                                </Styled.ModalTertiaryButton>
                             ) }
                             { status?.connected && (
-                                <Styled.FinishSessionButton onClick={ handleDisconnect }>
+                                <Styled.ModalSecondaryButton onClick={ handleDisconnect }>
                                     <GlobeOff size={ 25 } />
 
-                                    <Styled.FooterButtonText> Desconectar </Styled.FooterButtonText>
-                                </Styled.FinishSessionButton>
+                                    <Styled.ModalFooterButtonText> Desconectar </Styled.ModalFooterButtonText>
+                                </Styled.ModalSecondaryButton>
                             ) }
                         </Styled.ModalFooter>
                     </Styled.ModalContainer>
                 </Styled.ModalWrapper>
             ) }
-        </Styled.Overlay>
+        </Styled.ModalOverlay>
     );
 }
 

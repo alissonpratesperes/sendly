@@ -9,8 +9,11 @@ import { UpdateListCommandDto } from '../dtos/updateListCommand.dto';
 import { FormProps } from '../../../shared/interfaces/formProps.interface';
 import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
 import { ListFormData, ListFormSchema } from '../schemas/listFormSchema.schema';
+import { getAuthenticationStorage } from '../../../shared/utils/authenticationStorage.util';
 
 export const ListForm: React.FC<FormProps<ListFormData>> = ({ initialValues, onSubmit, onLoadingChange, }) => {
+    const { userInformation } = getAuthenticationStorage();
+
     const [formData, setFormData] = useState<ListFormData>({ companyId: 0, name: "", subject: "", color: "", });
 
     const handleChange = (changeEvent: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,7 +35,7 @@ export const ListForm: React.FC<FormProps<ListFormData>> = ({ initialValues, onS
 
             if (initialValues?.id === undefined) {
                 const command: CreateListCommandDto = {
-                    companyId: validatedFormData.companyId,
+                    companyId: userInformation?.company.id ?? 0,
                     name: validatedFormData.name,
                     subject: validatedFormData.subject,
                     color: validatedFormData.color,

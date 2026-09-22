@@ -28,9 +28,15 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
             const companyId = clsService.get<number>("companyId");
 
             if (isSystemOperation) {
-              return query(args);
+                return query(args);
             }
-            if (isSystemRoot) {
+            if (isSystemRoot && [ "findMany", "findFirst", "findFirstOrThrow", "findUnique", "findUniqueOrThrow", "count", "aggregate", "groupBy", ].includes(operation)) {
+                return query(args);
+            }
+            if (model === "Company" && isSystemRoot) {
+                return query(args);
+            }
+            if (model === "User" && isSystemRoot && ["create", "update"].includes(operation)) {
               return query(args);
             }
             if (companyId === undefined) {
