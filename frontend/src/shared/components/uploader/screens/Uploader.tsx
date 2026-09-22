@@ -8,18 +8,25 @@ import { UploaderItemType } from '../types/uploaderItemType.type';
 import { UploaderProps } from '../interfaces/UploaderProps.interface';
 import { ACCEPTED_EXCEL_CONFIG, ACCEPTED_IMAGES_CONFIG, ALLOWED_IMAGE_EXTENSIONS } from '../constants/uploaderFileTypesAndExtensions.constant';
 
-const MAX_EXCEL_FILE_SIZE = 50 * 1024 * 1024; // TODO - ENV
+const MAX_EXCEL_FILE_SIZE = process.env.MAX_EXCEL_FILE_SIZE;
+const MAX_IMAGE_FILE_SIZE = process.env.MAX_IMAGE_FILE_SIZE;
 
 const Uploader: React.FC<UploaderProps> = ({ value, onChange, isExcel = false }) => {
     const accept = isExcel ? ACCEPTED_EXCEL_CONFIG : ACCEPTED_IMAGES_CONFIG;
+    const maxFileSize = isExcel ? MAX_EXCEL_FILE_SIZE : MAX_IMAGE_FILE_SIZE;
 
+    const getMaxFileSizeText = useCallback(() => {
+        const maxFileSizeInMB = maxFileSize / (1024 * 1024);
+
+        return `${ maxFileSizeInMB } MB`;
+    }, [ maxFileSize ]);
     const getAcceptedText = useCallback(() => {
-        if(isExcel) {
-            return "XLS ou XLSX de até 50MB";
+        if (isExcel) {
+            return `XLS ou XLSX de até ${ getMaxFileSizeText() }`;
         }
 
         return ALLOWED_IMAGE_EXTENSIONS.map((fileExtension: string) => fileExtension.replace(".", "").toUpperCase()).join(", ");
-    }, [ isExcel ]);
+    }, [ isExcel, getMaxFileSizeText ]);
     const onDrop = useCallback((acceptedFiles: File[]) => {
         if (acceptedFiles.length !== 1) {
             return;
@@ -31,13 +38,13 @@ const Uploader: React.FC<UploaderProps> = ({ value, onChange, isExcel = false })
         const errors = fileRejections[0]?.errors ?? [];
 
         if (errors.some(error => error.code === "file-too-large")) {
-            toast.error("O arquivo deve ter no máximo 50MB");
+            toast.error(`O arquivo deve ter no máximo ${ getMaxFileSizeText() }`);
 
             return;
         }
 
         toast.error(`Formato de arquivo inválido. Formatos aceitos: ${ getAcceptedText() }`);
-    }, [ getAcceptedText ]);
+    }, [ getAcceptedText, getMaxFileSizeText ]);
     const onFileRemove = useCallback(() => {
         onChange(undefined);
     }, [ onChange ]);
@@ -48,14 +55,20 @@ const Uploader: React.FC<UploaderProps> = ({ value, onChange, isExcel = false })
         multiple: false,
         disabled: !!value,
         accept,
-        maxSize: isExcel ? MAX_EXCEL_FILE_SIZE : undefined,
+        maxSize: maxFileSize,
     });
 
     const getFileName = (item: UploaderItemType): string => {
         return item.name;
     }
     const getFileSize = (item: UploaderItemType): string => {
-        return (item.size / 1024).toFixed(1);
+        const sizeInKB = item.size / 1024;
+
+        if (sizeInKB >= 1024) {
+            return `${ (sizeInKB / 1024).toFixed(1) } MB`;
+        }
+
+        return `${ sizeInKB.toFixed(1) } KB`;
     }
 
     const downloadFile = (item: UploaderItemType) => {
@@ -103,25 +116,25 @@ const Uploader: React.FC<UploaderProps> = ({ value, onChange, isExcel = false })
 
             <Styled.FileCountText> { value ? 1 : 0 } de 1 arquivo </Styled.FileCountText>
 
-                { value && (
-                    <Styled.DraggedFilesList>
-                        <Styled.DraggedFilesListItem>
-                            <Styled.ListItemContainer>
-                                <Styled.DraggedFileIcon> <FileCheck size={ 25 } /> </Styled.DraggedFileIcon>
+            { value && (
+                <Styled.DraggedFilesList>
+                    <Styled.DraggedFilesListItem>
+                        <Styled.ListItemContainer>
+                            <Styled.DraggedFileIcon> <FileCheck size={ 25 } /> </Styled.DraggedFileIcon>
 
-                                <Styled.DraggedFileData>
-                                    <Styled.DraggedFileName> { getFileName(value) } </Styled.DraggedFileName>
-                                    <Styled.DraggedFileSize> { getFileSize(value) } KB </Styled.DraggedFileSize>
-                                </Styled.DraggedFileData>
-                            </Styled.ListItemContainer>
+                            <Styled.DraggedFileData>
+                                <Styled.DraggedFileName> { getFileName(value) } </Styled.DraggedFileName>
+                                <Styled.DraggedFileSize> { getFileSize(value) } </Styled.DraggedFileSize>
+                            </Styled.DraggedFileData>
+                        </Styled.ListItemContainer>
 
-                            <Styled.DraggedFilesActionsContainer>
-                                <Styled.DraggedFilesActionButton type="button" onClick={ () => downloadFile(value) }> <Download size={ 25 } /> </Styled.DraggedFilesActionButton>
-                                <Styled.DraggedFilesActionButton type="button" onClick={ onFileRemove }> <Trash2 size={ 25 } /> </Styled.DraggedFilesActionButton>
-                            </Styled.DraggedFilesActionsContainer>
-                        </Styled.DraggedFilesListItem>
-                    </Styled.DraggedFilesList>
-                ) }
+                        <Styled.DraggedFilesActionsContainer>
+                            <Styled.DraggedFilesActionButton type="button" onClick={ () => downloadFile(value) }> <Download size={ 25 } /> </Styled.DraggedFilesActionButton>
+                            <Styled.DraggedFilesActionButton type="button" onClick={ onFileRemove }> <Trash2 size={ 25 } /> </Styled.DraggedFilesActionButton>
+                        </Styled.DraggedFilesActionsContainer>
+                    </Styled.DraggedFilesListItem>
+                </Styled.DraggedFilesList>
+            ) }
         </Styled.UploaderWrapper>
     );
 }

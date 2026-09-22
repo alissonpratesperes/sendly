@@ -6,32 +6,32 @@ import axiosInstance from '../../../core/authentication/interceptors/authorizati
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
 import { PaginatedResponseDto } from '../../../shared/components/paginate/dtos/paginatedResponse.dto';
 
-const endpoint = "contact";
+const BASE_ENDPOINT: string = "list";
 
 export const Create = async (command: CreateContactCommandDto): Promise<ContactResponseDto> => {
-    const { data } = await axiosInstance.post<ContactResponseDto>(endpoint, command);
+    const { data } = await axiosInstance.post<ContactResponseDto>(BASE_ENDPOINT, command);
 
     return data;
 }
 
 export const Read = async (param: IdParamDto): Promise<ContactResponseDto> => {
-    const { data } = await axiosInstance.get<ContactResponseDto>(`${endpoint}/${param.id}`);
+    const { data } = await axiosInstance.get<ContactResponseDto>(`${ BASE_ENDPOINT }/${ param.id }`);
 
     return data;
 }
 
 export const List = async (query: PaginatedQueryDto): Promise<PaginatedResponseDto<ContactResponseDto>> => {
-    const { data } = await axiosInstance.get<PaginatedResponseDto<ContactResponseDto>>(endpoint, { params: query });
+    const { data } = await axiosInstance.get<PaginatedResponseDto<ContactResponseDto>>(BASE_ENDPOINT, { params: query });
 
     return data;
 }
 
 export const Update = async (param: IdParamDto, command: UpdateContactCommandDto): Promise<ContactResponseDto> => {
-    const { data } = await axiosInstance.patch<ContactResponseDto>(`${endpoint}/${param.id}`, command);
+    const { data } = await axiosInstance.patch<ContactResponseDto>(`${ BASE_ENDPOINT }/${ param.id }`, command);
 
     return data;
 }
 
 export const Delete = async (param: IdParamDto): Promise<void> => {
-    await axiosInstance.delete<void>(`${endpoint}/${param.id}`);
+    await axiosInstance.delete<void>(`${ BASE_ENDPOINT }/${ param.id }`);
 }

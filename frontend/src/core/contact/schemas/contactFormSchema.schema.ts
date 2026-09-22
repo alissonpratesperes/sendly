@@ -5,11 +5,13 @@ const countries = getCountries();
 
 export const ContactFormSchema = z.object({
     id: z
+        .optional()
         .number()
-        .optional(),
+        .int(),
 
     companyId: z
-        .number(),
+        .number()
+        .int(),
 
     listId: z
         .number()

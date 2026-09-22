@@ -8,23 +8,23 @@ import { AuthenticatedUserResponse } from '../interfaces/authenticatedUserRespon
 const BASE_ENDPOINT: string = "authentication";
 
 export const login = async (command: LoginCommandDto): Promise<AuthenticatedUserResponse> => {
-    const response = await api.post<AuthenticatedUserResponse>(`${BASE_ENDPOINT}/login`, command);
+    const response = await api.post<AuthenticatedUserResponse>(`${ BASE_ENDPOINT }/login`, command);
 
     return response.data;
 }
 
 export const refresh = async (refreshToken: string): Promise<AuthenticationTokenPair> => {
-    const response = await api.post<AuthenticationTokenPair>(`${BASE_ENDPOINT}/refresh`, null, {
-        headers: { Authorization: `Bearer ${refreshToken}` }
+    const response = await api.post<AuthenticationTokenPair>(`${ BASE_ENDPOINT }/refresh`, null, {
+        headers: { Authorization: `Bearer ${ refreshToken }` }
     });
 
     return response.data;
 }
 
 export const forgot = async (command: ForgotCommandDto): Promise<void> => {
-    return await api.post(`${BASE_ENDPOINT}/forgot`, command);
+    return await api.post(`${ BASE_ENDPOINT }/forgot`, command);
 }
 
 export const reset = async (passwordResetToken: string, command: ResetCommandDto): Promise<void> => {
-    return await api.patch(`${BASE_ENDPOINT}/reset?passwordResetToken=${encodeURIComponent(passwordResetToken)}`, command);
+    return await api.patch(`${ BASE_ENDPOINT }/reset?passwordResetToken=${ encodeURIComponent(passwordResetToken) }`, command);
 }

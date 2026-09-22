@@ -22,7 +22,7 @@ import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/pagi
 
 const Contact = () => {
     const [page, setPage] = useState<number>(1);
-    const [total, setTotal] = useState<number>(1);
+    const [total, setTotal] = useState<number>(0);
     const [limit, setLimit] = useState<number>(15);
     const [search, setSearch] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);

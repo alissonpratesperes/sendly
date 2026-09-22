@@ -87,6 +87,7 @@ CREATE TABLE `Template` (
     `DeletedAt` DATETIME(3) NULL,
 
     CONSTRAINT `PK_Template` PRIMARY KEY (`Id`),
+    CONSTRAINT `UK_Template_CompanyId_Name` UNIQUE (`CompanyId`, `Name`),
 
     CONSTRAINT `FK_Template_CompanyId` FOREIGN KEY (`CompanyId`) REFERENCES `Company` (`Id`) ON DELETE RESTRICT ON UPDATE CASCADE
 );

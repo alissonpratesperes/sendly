@@ -68,7 +68,7 @@ export const UserForm: React.FC<FormProps<UserFormData>> = ({ initialValues, onS
             onSubmit();
         } catch (error: unknown) {
             if (error instanceof z.ZodError) {
-                toast.error(<Toast errors={error.issues} />);
+                toast.error(<Toast errors={ error.issues } />);
             } else {
                 toast.error("Não é possível prosseguir com a solicitação");
             }

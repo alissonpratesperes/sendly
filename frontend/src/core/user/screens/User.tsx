@@ -21,7 +21,7 @@ import { UserBadgeVariant } from '../../../shared/components/userBadge/enums/use
 
 const User = () => {
     const [page, setPage] = useState<number>(1);
-    const [total, setTotal] = useState<number>(1);
+    const [total, setTotal] = useState<number>(0);
     const [limit, setLimit] = useState<number>(15);
     const [search, setSearch] = useState<string>("");
     const [users, setUsers] = useState<UserResponseDto[]>([]);

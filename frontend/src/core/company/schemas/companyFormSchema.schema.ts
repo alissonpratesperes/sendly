@@ -2,8 +2,9 @@ import { z } from 'zod';
 
 export const CompanyFormSchema = z.object({
     id: z
+        .optional()
         .number()
-        .optional(),
+        .int(),
 
     name: z
         .string()
