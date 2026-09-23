@@ -107,10 +107,9 @@ export class TemplateParser {
         if (templateBlock.type === "image") {
             this.validateProperties(block, ["type", "path"], "Image block contains invalid properties");
 
-            if (typeof templateBlock.path !== "string" || !templateBlock.path.trim()) {
-                throw new BadRequestException("Image block must contain a valid path");
+            if (typeof templateBlock.path !== "string") {
+                throw new BadRequestException("Image block path must be a string");
             }
-
             return;
         }
 

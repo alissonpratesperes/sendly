@@ -8,7 +8,6 @@ import { clearAuthenticationStorage, getAuthenticationStorage, setAuthentication
 
 const authenticatedApi = axios.create({
     baseURL: process.env.REACT_APP_API_URL,
-    headers: { "Content-Type": "application/json" }
 });
 const handleLogout = (): void => {
     clearAuthenticationStorage();

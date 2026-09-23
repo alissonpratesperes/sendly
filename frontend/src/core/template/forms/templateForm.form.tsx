@@ -17,10 +17,11 @@ export const TemplateForm: React.FC<FormProps<TemplateFormData>> = ({ initialVal
     const { userInformation } = getAuthenticationStorage();
 
     const [templateImage, setTemplateImage] = useState<File | undefined>();
+    const [existingImage, setExistingImage] = useState<string | undefined>();
     const [formData, setFormData] = useState<TemplateFormData>({ companyId: 0, name: "", content: { body: [], }, });
     const [templateFields, setTemplateFields] = useState<TemplateContentFields>({ header: "", body: "", footer: "", });
 
-    const handleChange = <T,>(changeEvent: React.ChangeEvent<HTMLInputElement>, setState: React.Dispatch<React.SetStateAction<T>>) => {
+    const handleChange = <T,>(changeEvent: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, setState: React.Dispatch<React.SetStateAction<T>>) => {
         const { name, value } = changeEvent.target;
 
         setState(previous => ({
@@ -32,13 +33,13 @@ export const TemplateForm: React.FC<FormProps<TemplateFormData>> = ({ initialVal
     const buildFormData = (command: CreateTemplateCommandDto | UpdateTemplateCommandDto, image?: File): FormData => {
         const formData = new FormData();
 
-        formData.append("name", command.name);
-        formData.append("content", command.content);
+        formData.append("name", command.name ?? "");
+        formData.append("content", command.content ?? "");
 
         if ("companyId" in command) {
             formData.append("companyId", String(command.companyId));
         }
-        if (image) {
+        if (image instanceof File) {
             formData.append("image", image);
         }
 
@@ -50,6 +51,18 @@ export const TemplateForm: React.FC<FormProps<TemplateFormData>> = ({ initialVal
         onLoadingChange(true);
 
         try {
+            const existingImageBlock = initialValues?.content.body.find(
+                block => block.type === "image"
+            );
+
+            const imageBlock = templateImage
+                ? {
+                    type: "image" as const,
+                    path: "",
+                }
+                : existingImage
+                    ? existingImageBlock
+                    : undefined;
             const content = {
                 ...(templateFields.header && {
                     header: {
@@ -57,10 +70,14 @@ export const TemplateForm: React.FC<FormProps<TemplateFormData>> = ({ initialVal
                     },
                 }),
 
-                body: [{
-                    type: "text" as const,
-                    text: templateFields.body,
-                }],
+                body: [
+                    {
+                        type: "text" as const,
+                        text: templateFields.body,
+                    },
+
+                    ...(imageBlock ? [imageBlock] : []),
+                ],
 
                 ...(templateFields.footer && {
                     footer: {
@@ -119,6 +136,13 @@ export const TemplateForm: React.FC<FormProps<TemplateFormData>> = ({ initialVal
                 body: initialValues.content.body.find(block => block.type === "text")?.text ?? "",
                 footer: initialValues.content.footer?.text ?? "",
             });
+
+            const imageBlock = initialValues.content.body.find(
+                block => block.type === "image"
+            );
+
+            setExistingImage(imageBlock?.path);
+            setTemplateImage(undefined);
         } else {
             setFormData({ companyId: 0, name: "", content: { body: [], }, });
             setTemplateFields({ header: "", body: "", footer: "", });
@@ -133,25 +157,25 @@ export const TemplateForm: React.FC<FormProps<TemplateFormData>> = ({ initialVal
                 <Styled.Input id="name" name="name" placeholder="Digite o nome do template" value={ formData.name } onChange={ (event) => handleChange(event, setFormData) } />
             </Styled.FieldWrapper>
 
-            <Styled.FieldWrapper>
-                <Styled.Label htmlFor="header"> Cabeçalho </Styled.Label>
+            <Styled.Fieldset>
+                <Styled.Legend> Conteúdo </Styled.Legend>
 
-                <Styled.Input id="header" name="header" placeholder="Digite o cabeçalho do template" value={ templateFields.header } onChange={ (event) => handleChange(event, setTemplateFields) } />
-            </Styled.FieldWrapper>
+                <Styled.FieldWrapper>
+                    <Styled.Label htmlFor="header"> Cabeçalho </Styled.Label>
 
-            <Styled.FieldWrapper>
-                <Styled.Label htmlFor="body"> Corpo </Styled.Label>
+                    <Styled.Input id="header" name="header" placeholder="Digite o cabeçalho do template" value={ templateFields.header } onChange={ (event) => handleChange(event, setTemplateFields) } />
+                </Styled.FieldWrapper>
+                <Styled.FieldWrapper>
+                    <Styled.Textarea id="body" name="body" placeholder="Digite o corpo do template" value={ templateFields.body } onChange={ (event) => handleChange(event, setTemplateFields) } />
+                </Styled.FieldWrapper>
+                <Styled.FieldWrapper>
+                    <Styled.Label htmlFor="footer"> Rodapé </Styled.Label>
 
-                <Styled.Input id="body" name="body" placeholder="Digite o corpo do template" value={ templateFields.body } onChange={ (event) => handleChange(event, setTemplateFields) } />
-            </Styled.FieldWrapper>
+                    <Styled.Input id="footer" name="footer" placeholder="Digite o rodapé do template" value={ templateFields.footer } onChange={ (event) => handleChange(event, setTemplateFields) } />
+                </Styled.FieldWrapper>
 
-            <Uploader value={ templateImage } onChange={ setTemplateImage } />
-
-            <Styled.FieldWrapper>
-                <Styled.Label htmlFor="footer"> Rodapé </Styled.Label>
-
-                <Styled.Input id="footer" name="footer" placeholder="Digite o rodapé do template" value={ templateFields.footer } onChange={ (event) => handleChange(event, setTemplateFields) } />
-            </Styled.FieldWrapper>
+                <Uploader value={ templateImage } existingImage={ existingImage }  onRemoveExistingImage={ () => { setExistingImage(undefined); } } onChange={ (file) => { if (file instanceof File) { setTemplateImage(file); } else { setTemplateImage(undefined); } } } />
+            </Styled.Fieldset>
         </Styled.Form>
     );
 }

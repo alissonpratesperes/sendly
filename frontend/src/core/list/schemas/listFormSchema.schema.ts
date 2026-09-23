@@ -2,9 +2,9 @@ import { z } from 'zod';
 
 export const ListFormSchema = z.object({
     id: z
-        .optional()
         .number()
-        .int(),
+        .int()
+        .optional(),
 
     companyId: z
         .number()

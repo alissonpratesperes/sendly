@@ -26,6 +26,6 @@ export const navigationTabs = [
     {
         icon: <MessageSquare size={ 25 }/>,
         label: "Templates",
-        path: "action-type",
+        path: "template",
     },
 ] satisfies NavigationTab[];

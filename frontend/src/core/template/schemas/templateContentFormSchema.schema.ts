@@ -22,7 +22,6 @@ const TemplateImageBlockSchema = z.object({
     path: z
         .string()
         .trim()
-        .min(1, "O bloco de imagem deve conter um caminho válido"),
 }).strict();
 
 const TemplateBlockSchema = z.discriminatedUnion("type", [

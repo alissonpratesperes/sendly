@@ -1,7 +1,9 @@
+import { join } from 'path';
 import { ClsModule } from 'nestjs-cls';
 import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { APP_INTERCEPTOR } from '@nestjs/core';
+import { ServeStaticModule } from '@nestjs/serve-static';
 
 import { MailModule } from './mail/mail.module';
 import { UserModule } from './user/user.module';
@@ -22,6 +24,7 @@ import { CompanyContextInterceptor } from './common/interceptors/companyContext.
 @Module({
   imports: [
     ClsModule.forRoot({ global: true, middleware: { mount: true }, }),
+    ServeStaticModule.forRoot({ rootPath: join(process.cwd(), "uploads"), serveRoot: "/uploads", }),
 
     MailModule,
     UserModule,

@@ -8,7 +8,7 @@ import { ALLOWED_IMAGE_MIME_TYPES, AllowedImageMimeTypes } from '../../common/ty
 import { ALLOWED_IMAGE_EXTENSIONS, AllowedImageExtensions } from '../../common/types/allowedImageExtensions.type';
 
 export function TemplateImageInterceptor(): Type<NestInterceptor> {
-  class MixinInterceptor extends FileInterceptor("file", {
+  class MixinInterceptor extends FileInterceptor("image", {
     storage: memoryStorage(),
 
     fileFilter: (request, file, callback) => {
@@ -25,7 +25,7 @@ export function TemplateImageInterceptor(): Type<NestInterceptor> {
     },
 
     limits: {
-      fileSize: Number(requireEnvironmentVariable("FILE_UPLOAD_MAX_SIZE")),
+      fileSize: Number(requireEnvironmentVariable("MAX_IMAGE_SIZE")),
     },
   }) {}
 

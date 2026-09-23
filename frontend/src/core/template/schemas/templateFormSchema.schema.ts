@@ -4,9 +4,9 @@ import { TemplateContentSchema } from './templateContentFormSchema.schema';
 
 export const TemplateFormSchema = z.object({
     id: z
-        .optional()
         .number()
-        .int(),
+        .int()
+        .optional(),
 
     companyId: z
         .number()

@@ -24,9 +24,9 @@ export class TemplateController {
     @HttpCode(HttpStatus.CREATED)
     @ApiConsumes("multipart/form-data")
     @UseInterceptors(TemplateImageInterceptor())
-    async create(@UploadedFile() file: Express.Multer.File | undefined, @Body() command: CreateTemplateCommandDto): Promise<GetTemplateResponseDto> {
+    async create(@UploadedFile() image: Express.Multer.File | undefined, @Body() command: CreateTemplateCommandDto): Promise<GetTemplateResponseDto> {
         const parsedContent = this.templateParser.parse(command.content);
-        const content = await imagePathToContent(parsedContent, file);
+        const content = await imagePathToContent(parsedContent, image);
 
         return this.templateService.create(command.companyId, command.name, content);
     }
@@ -47,8 +47,8 @@ export class TemplateController {
     @HttpCode(HttpStatus.OK)
     @ApiConsumes("multipart/form-data")
     @UseInterceptors(TemplateImageInterceptor())
-    async update(@Param() param: IdParamDto, @UploadedFile() file: Express.Multer.File | undefined, @Body() command: UpdateTemplateCommandDto): Promise<GetTemplateResponseDto> {
-        if (file && command.content === undefined) {
+    async update(@Param() param: IdParamDto, @UploadedFile() image: Express.Multer.File | undefined, @Body() command: UpdateTemplateCommandDto): Promise<GetTemplateResponseDto> {
+        if (image && command.content === undefined) {
             throw new BadRequestException("Template content is required when uploading an image");
         }
 
@@ -57,7 +57,7 @@ export class TemplateController {
         if (command.content !== undefined) {
             const parsedContent = this.templateParser.parse(command.content);
 
-            content = await imagePathToContent(parsedContent, file);
+            content = await imagePathToContent(parsedContent, image);
         }
 
         return this.templateService.update(param.id, command.companyId, command.name, content);

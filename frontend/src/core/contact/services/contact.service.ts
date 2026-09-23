@@ -6,7 +6,7 @@ import axiosInstance from '../../../core/authentication/interceptors/authorizati
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
 import { PaginatedResponseDto } from '../../../shared/components/paginate/dtos/paginatedResponse.dto';
 
-const BASE_ENDPOINT: string = "list";
+const BASE_ENDPOINT: string = "contact";
 
 export const Create = async (command: CreateContactCommandDto): Promise<ContactResponseDto> => {
     const { data } = await axiosInstance.post<ContactResponseDto>(BASE_ENDPOINT, command);

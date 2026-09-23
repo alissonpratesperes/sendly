@@ -23,38 +23,56 @@ export const Drawer = styled.div<{ $open: boolean; }>`
     bottom: 30px;
     display: flex;
     flex-direction: column;
-    border-radius: 14px;
     background-color: #F0F0F5;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-radius: 14px;
     z-index: 1000;
 
     animation: ${ ({ $open }) => $open ? "drawerOpen 0.6s ease-in-out forwards" : "drawerClose 0.6s ease-in-out forwards" };
 
-        @keyframes drawerOpen {
-            0% {
-                transform: translateX(calc(100% + 30px));
-            }
-
-            70% {
-                transform: translateX(-15px);
-            }
-
-            100% {
-                transform: translateX(0);
-            }
+        &::-webkit-scrollbar {
+            width: 8px;
         }
-        @keyframes drawerClose {
-            0% {
-                transform: translateX(0);
-            }
-
-            30% {
-                transform: translateX(-15px);
-            }
-
-            100% {
-                transform: translateX(calc(100% + 30px));
-            }
+        &::-webkit-scrollbar-track {
+            margin-top: 14px;
+            margin-bottom: 14px;
+            background: transparent;
         }
+        &::-webkit-scrollbar-thumb {
+            background: #c5c5c5;
+            border-radius: 10px;
+        }
+        &::-webkit-scrollbar-thumb:hover {
+            background: #aaa;
+        }
+
+            @keyframes drawerOpen {
+                0% {
+                    transform: translateX(calc(100% + 30px));
+                }
+
+                70% {
+                    transform: translateX(-15px);
+                }
+
+                100% {
+                    transform: translateX(0);
+                }
+            }
+            @keyframes drawerClose {
+                0% {
+                    transform: translateX(0);
+                }
+
+                30% {
+                    transform: translateX(-15px);
+                }
+
+                100% {
+                    transform: translateX(calc(100% + 30px));
+                }
+            }
 `;
 
 export const Header = styled.div`
@@ -130,6 +148,26 @@ export const Form = styled.form`
     overflow-y: visible;
 `;
 
+export const Fieldset = styled.fieldset`
+    margin-bottom: 30px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    row-gap: 30px;
+    border: 2px solid #E9EAEB;
+    border-radius: 14px;
+`;
+
+export const Legend = styled.legend`
+    padding: 0px 15px;
+    font-family: "Inter";
+    font-weight: 700;
+    font-size: 18px;
+    color: #171719;
+`;
+
 export const FieldWrapper = styled.div`
     width: 100%;
     position: relative;
@@ -176,6 +214,27 @@ export const Input = styled.input`
     outline: none;
     background-color: #FFFFFF;
     border-radius: 14px;
+    z-index: 1;
+
+        &::placeholder {
+            color: #BDBDBD;
+        }
+`;
+
+export const Textarea = styled.textarea`
+    padding: 15px 15px 0px 15px;
+    height: 60px;
+    min-height: 120px;
+    width: 100%;
+    font-family: "Lato";
+    font-weight: 400;
+    font-size: 16px;
+    color: #212121;
+    border: none;
+    outline: none;
+    background-color: #FFFFFF;
+    border-radius: 14px;
+    resize: vertical;
     z-index: 1;
 
         &::placeholder {

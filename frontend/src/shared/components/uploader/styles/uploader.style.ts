@@ -2,17 +2,27 @@ import styled from 'styled-components';
 
 import { DropzoneProps } from '../interfaces/dropzoneProps.interface';
 
-export const UploaderWrapper = styled.div``;
+export const UploaderWrapper = styled.div`
+    width: 100%;
+`;
 
 export const DropzoneArea = styled.div<DropzoneProps>`
-    padding: 40px 40px 40px 40px;
+    width: 100%;
+    height: 220px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    border-radius: 8px;
-    border: 2px dashed ${props => (props.$isDragActive ? '#1C70E9' : '#D3D2D9')};
+    border-radius: 14px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    ${ ({ $isDragActive }) => $isDragActive && `border: 2px dashed #1C70E9;` };
+    border: ${ ({ $backgroundImage }) => $backgroundImage ? "none" : "2px dashed #D3D2D9" };
+    background-image: ${ ({ $backgroundImage }) => $backgroundImage ? `url("${ $backgroundImage }")` : "none" };
+    ${ ({ $isDragActive, $backgroundImage }) => $isDragActive && !$backgroundImage && `border: 2px dashed #1C70E9;` }
 `;
 
 export const DropzoneTextContainer = styled.div`
@@ -23,13 +33,13 @@ export const DropzoneTextContainer = styled.div`
 `;
 
 export const DropzoneUploadIcon = styled.div`
-    height: 40px;
-    width: 40px;
+    height: 55px;
+    width: 55px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: #F5F5F7;
+    background-color: #D3D2D9;
     border-radius: 50%;
 
         svg {
@@ -38,75 +48,61 @@ export const DropzoneUploadIcon = styled.div`
 `;
 
 export const DropzoneStrongContent = styled.h5`
-    line-height: 21px;
-    margin-top: 10px;
-    font-family: 'Lato';
+    margin-top: 15px;
+    font-family: "Lato";
     font-weight: 700;
     font-size: 14px;
     color: #171719;
 `;
 
 export const DropzoneLabel = styled.h5`
-    line-height: 18px;
-    font-family: 'Lato';
-    font-weight: 400;
-    font-size: 12px;
+    font-family: "Lato";
+    font-weight: 500;
+    font-size: 14px;
     color: #1C70E9;
 `;
 
 export const DropzoneActiveText = styled.p`
-    margin-top: 8px;
-    line-height: 18px;
-    font-family: 'Lato';
+    margin-top: 15px;
+    font-family: "Lato";
     font-weight: 400;
-    font-size: 12px;
+    font-size: 14px;
     color: #767380;
 `;
 
-export const DropzoneInactiveText = styled.p`
-    margin-top: 8px;
-    line-height: 18px;
-    font-family: 'Lato';
-    font-weight: 400;
-    font-size: 12px;
-    color: #FC9C45;
-`;
-
 export const DraggedFilesList = styled.ul`
-    padding: 0px 0px 0px 0px;
+    padding: 0;
     list-style: none;
 `;
 
-export const ListItemContainer = styled.div`
-    height: 59px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    column-gap: 20px;
-`;
-
 export const DraggedFilesListItem = styled.li`
-    margin-bottom: 5px;
+    margin: 30px 0px 30px 0px;
+    height: auto;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
 `;
 
+export const ListItemContainer = styled.div`
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    column-gap: 15px;
+`;
+
 export const DraggedFileIcon = styled.div`
-    height: 40px;
-    width: 40px;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
-    background-color: #F5F5F7;
+    color: #1C70E9;
 `;
 
 export const DraggedFileData = styled.div`
-    height: 43px;
+    margin-right: 15px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -114,28 +110,18 @@ export const DraggedFileData = styled.div`
 `;
 
 export const DraggedFileName = styled.p`
-    line-height: 21px;
-    font-family: 'Lato';
-    font-weight: 700;
+    font-family: "Lato";
+    font-weight: 500;
     font-size: 14px;
-    color: #2F2E33;
+    color: #171719;
 `;
 
 export const DraggedFileSize = styled.span`
-    line-height: 18px;
-    font-family: 'Lato';
-    font-weight: 400;
-    font-size: 12px;
-    color: #767380;
-`;
-
-export const DraggedFilesActionButton = styled.button`
-    height: 43px;
-    width: 32px;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    background-color: transparent;
+    margin-top: 7.5px;
+    font-family: "Lato";
+    font-weight: 900;
+    font-size: 14px;
+    color: #1C70E9;
 `;
 
 export const DraggedFilesActionsContainer = styled.div`
@@ -143,23 +129,45 @@ export const DraggedFilesActionsContainer = styled.div`
     flex-direction: row;
     align-items: center;
     justify-content: center;
-
-        ${DraggedFilesActionButton}:first-child {
-            padding-right: 8px;
-        }
-        ${DraggedFilesActionButton}:last-child {
-            padding-left: 8px;
-        }
+    column-gap: 7.5px;
 `;
 
-export const FileCountText = styled.p`
-    height: 34px;
+export const DraggedFilesActionButton = styled.button`
+    padding: 15px;
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: flex-start;
-    font-family: 'Lato';
-    font-weight: 400;
-    font-size: 12px;
-    color: #767380;
+    justify-content: center;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    color: #1C70E9;
+    background-color: #D3D2D9;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: color 0.3s ease, background-color 0.3s ease;
+
+        &:hover {
+            color: #FFFFFF;
+            background: #1C70E9;
+            animation: UploaderFileActionsButtonsEffect 0.6s ease-in-out;
+        }
+
+            svg {
+                stroke: currentColor;
+            }
+
+                @keyframes UploaderFileActionsButtonsEffect {
+                    0% {
+                        transform: scale(1.08);
+                    }
+
+                    50% {
+                        transform: scale(0.95);
+                    }
+
+                    100% {
+                        transform: scale(1);
+                    }
+                }
 `;

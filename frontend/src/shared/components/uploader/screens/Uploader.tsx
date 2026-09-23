@@ -1,17 +1,17 @@
 import { toast } from 'react-toastify';
-import React, { useCallback } from 'react';
 import { FileRejection, useDropzone } from 'react-dropzone';
-import { Upload, FileCheck, Download, Trash2 } from 'lucide-react';
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { Upload, ImageUp, Download, Trash2 } from 'lucide-react';
 
 import * as Styled from '../styles/uploader.style';
 import { UploaderItemType } from '../types/uploaderItemType.type';
 import { UploaderProps } from '../interfaces/UploaderProps.interface';
 import { ACCEPTED_EXCEL_CONFIG, ACCEPTED_IMAGES_CONFIG, ALLOWED_IMAGE_EXTENSIONS } from '../constants/uploaderFileTypesAndExtensions.constant';
 
-const MAX_EXCEL_FILE_SIZE = process.env.MAX_EXCEL_FILE_SIZE;
-const MAX_IMAGE_FILE_SIZE = process.env.MAX_IMAGE_FILE_SIZE;
+const MAX_EXCEL_FILE_SIZE = Number(process.env.REACT_APP_MAX_EXCEL_SIZE);
+const MAX_IMAGE_FILE_SIZE = Number(process.env.REACT_APP_MAX_IMAGE_SIZE);
 
-const Uploader: React.FC<UploaderProps> = ({ value, onChange, isExcel = false }) => {
+const Uploader: React.FC<UploaderProps> = ({ value, existingImage, onRemoveExistingImage, onChange, isExcel = false }) => {
     const accept = isExcel ? ACCEPTED_EXCEL_CONFIG : ACCEPTED_IMAGES_CONFIG;
     const maxFileSize = isExcel ? MAX_EXCEL_FILE_SIZE : MAX_IMAGE_FILE_SIZE;
 
@@ -46,22 +46,46 @@ const Uploader: React.FC<UploaderProps> = ({ value, onChange, isExcel = false })
         toast.error(`Formato de arquivo inválido. Formatos aceitos: ${ getAcceptedText() }`);
     }, [ getAcceptedText, getMaxFileSizeText ]);
     const onFileRemove = useCallback(() => {
-        onChange(undefined);
-    }, [ onChange ]);
+        if (value) {
+            onChange(undefined);
 
+            return;
+        }
+        if (existingImage) {
+            onRemoveExistingImage();
+        }
+    }, [ value, existingImage, onChange, onRemoveExistingImage, ]);
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
         onDropRejected,
+
         multiple: false,
-        disabled: !!value,
+        disabled: !!value || !!existingImage,
         accept,
         maxSize: maxFileSize,
     });
+    const getExistingFileName = (url: string): string => {
+        try {
+            return decodeURIComponent(url.split("/").pop() ?? "Imagem");
+        } catch {
+            return "Imagem";
+        }
+    };
+    const getFileName = (item?: UploaderItemType): string => {
+        if (item) {
+            return item.name;
+        }
+        if (existingImage) {
+            return getExistingFileName(existingImage);
+        }
 
-    const getFileName = (item: UploaderItemType): string => {
-        return item.name;
-    }
-    const getFileSize = (item: UploaderItemType): string => {
+        return "Imagem";
+    };
+    const getFileSize = (item?: UploaderItemType): string => {
+        if (!item) {
+            return "";
+        }
+
         const sizeInKB = item.size / 1024;
 
         if (sizeInKB >= 1024) {
@@ -69,67 +93,101 @@ const Uploader: React.FC<UploaderProps> = ({ value, onChange, isExcel = false })
         }
 
         return `${ sizeInKB.toFixed(1) } KB`;
-    }
+    };
+    const downloadFile = () => {
+        if (value) {
+            let url: string;
+            let shouldRevokeBlobURL = false;
 
-    const downloadFile = (item: UploaderItemType) => {
-        let url: string;
-        let shouldRevokeBlobURL = false;
+            if ("url" in value) {
+                url = value.url;
+            } else {
+                url = URL.createObjectURL(value);
+                shouldRevokeBlobURL = true;
+            }
 
-        if ("url" in item) {
-            url = item.url;
-        } else {
-            url = URL.createObjectURL(item);
-            shouldRevokeBlobURL = true;
+            const link = document.createElement("a");
+
+            link.href = url;
+            link.download = value.name;
+
+            document.body.appendChild(link);
+
+            link.click();
+
+            document.body.removeChild(link);
+
+            if (shouldRevokeBlobURL) {
+                setTimeout(() => URL.revokeObjectURL(url), 1000);
+            }
+
+            return;
+        }
+        if (existingImage) {
+            const link = document.createElement("a");
+
+            link.href = existingImage;
+            link.download = getExistingFileName(existingImage);
+            link.target = "_blank";
+
+            document.body.appendChild(link);
+
+            link.click();
+
+            document.body.removeChild(link);
+        }
+    };
+    const imagePreview = useMemo(() => {
+        if (value instanceof File) {
+            return URL.createObjectURL(value);
         }
 
-        const link = document.createElement("a");
+        return existingImage;
+    }, [ value, existingImage ]);
 
-        link.href = url;
-        link.download = item.name;
-
-        document.body.appendChild(link);
-
-        link.click();
-
-        document.body.removeChild(link);
-
-        if (shouldRevokeBlobURL) {
-            setTimeout(() => URL.revokeObjectURL(url), 1000);
+    useEffect(() => {
+        if (!(value instanceof File) || !imagePreview) {
+            return;
         }
-    }
+
+        return () => {
+            URL.revokeObjectURL(imagePreview);
+        };
+    }, [ value, imagePreview ]);
 
     return (
         <Styled.UploaderWrapper>
-            <Styled.DropzoneArea { ...getRootProps() } $isDragActive={ isDragActive }>
+            <Styled.DropzoneArea { ...getRootProps() } $isDragActive={ isDragActive } $hasFile={ !!value || !!existingImage } $backgroundImage={ imagePreview }>
                 <input { ...getInputProps() } />
 
-                <Styled.DropzoneTextContainer>
-                    <Styled.DropzoneUploadIcon> <Upload size={ 25 } /> </Styled.DropzoneUploadIcon>
+                { !value && !existingImage &&  (
+                    <Styled.DropzoneTextContainer>
+                        <Styled.DropzoneUploadIcon> <Upload size={ 25 } /> </Styled.DropzoneUploadIcon>
 
-                    <Styled.DropzoneStrongContent> { isDragActive ? `Solte ${ isExcel ? "o arquivo Excel" : "a imagem" } aqui` : `Arraste e solte ${ isExcel ? "o arquivo Excel" : "a imagem" }` } </Styled.DropzoneStrongContent>
+                        <Styled.DropzoneStrongContent> { isDragActive ? `Solte ${ isExcel ? "o arquivo Excel" : "a imagem" } aqui` : `Arraste e solte ${ isExcel ? "o arquivo Excel" : "a imagem" }` } </Styled.DropzoneStrongContent>
 
-                    <Styled.DropzoneLabel> ou selecione o arquivo </Styled.DropzoneLabel>
+                        <Styled.DropzoneLabel> ou selecione o arquivo </Styled.DropzoneLabel>
 
-                    <Styled.DropzoneActiveText> { isDragActive ? `Selecione apenas ${ isExcel ? "um arquivo Excel" : "uma imagem" }` : `Tipo de arquivo ${ getAcceptedText() }` } </Styled.DropzoneActiveText>
-                </Styled.DropzoneTextContainer>
+                        <Styled.DropzoneActiveText> { isDragActive ? `Somente ${ isExcel ? "um arquivo Excel é permitido" : "uma imagem é permitida" }` : `Tipo de arquivo ${ getAcceptedText() }` } </Styled.DropzoneActiveText>
+                    </Styled.DropzoneTextContainer>
+                ) }
             </Styled.DropzoneArea>
 
-            <Styled.FileCountText> { value ? 1 : 0 } de 1 arquivo </Styled.FileCountText>
-
-            { value && (
+            { (value || existingImage) && (
                 <Styled.DraggedFilesList>
                     <Styled.DraggedFilesListItem>
                         <Styled.ListItemContainer>
-                            <Styled.DraggedFileIcon> <FileCheck size={ 25 } /> </Styled.DraggedFileIcon>
+                            <Styled.DraggedFileIcon> <ImageUp size={ 25 } /> </Styled.DraggedFileIcon>
 
                             <Styled.DraggedFileData>
                                 <Styled.DraggedFileName> { getFileName(value) } </Styled.DraggedFileName>
-                                <Styled.DraggedFileSize> { getFileSize(value) } </Styled.DraggedFileSize>
+
+                                { value && ( <Styled.DraggedFileSize> { getFileSize(value) } </Styled.DraggedFileSize> ) }
                             </Styled.DraggedFileData>
                         </Styled.ListItemContainer>
 
                         <Styled.DraggedFilesActionsContainer>
-                            <Styled.DraggedFilesActionButton type="button" onClick={ () => downloadFile(value) }> <Download size={ 25 } /> </Styled.DraggedFilesActionButton>
+                            <Styled.DraggedFilesActionButton type="button" onClick={ downloadFile }> <Download size={ 25 } /> </Styled.DraggedFilesActionButton>
                             <Styled.DraggedFilesActionButton type="button" onClick={ onFileRemove }> <Trash2 size={ 25 } /> </Styled.DraggedFilesActionButton>
                         </Styled.DraggedFilesActionsContainer>
                     </Styled.DraggedFilesListItem>
