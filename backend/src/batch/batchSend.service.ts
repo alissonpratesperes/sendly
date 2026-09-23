@@ -42,23 +42,26 @@ export class BatchSendService {
     async create(tx: Prisma.TransactionClient, companyId: number, batchId: number, templateId: number, contactIds: number[]): Promise<number[]> {
         const templateSnapshot = await this.validateAndBuildTemplateSnapshot(companyId, templateId, contactIds);
 
-        const createdBatchSends = await tx.batchSend.createManyAndReturn({
-            data: contactIds.map((contactId) => ({
-                CompanyId: companyId,
-                BatchId: batchId,
-                ContactId: contactId,
-                TemplateId: templateId,
-                TemplateSnapshot: templateSnapshot,
-                Status: BatchSend_Status.WAITING,
-                ScheduledAt: new Date(),
-            })),
+        const createdBatchSends = await Promise.all(
+            contactIds.map((contactId) =>
+                tx.batchSend.create({
+                    data: {
+                        CompanyId: companyId,
+                        BatchId: batchId,
+                        ContactId: contactId,
+                        TemplateId: templateId,
+                        TemplateSnapshot: templateSnapshot,
+                        Status: BatchSend_Status.WAITING,
+                        ScheduledAt: new Date(),
+                    },
+                    select: {
+                        Id: true,
+                    },
+                }),
+            ),
+        );
 
-            select: {
-                Id: true,
-            },
-        });
-
-        return createdBatchSends.map((batchSend) => batchSend.Id);
+        return createdBatchSends.map(({ Id }) => Id);
     }
 
     async read(id: number): Promise<BatchSend> {
@@ -176,22 +179,27 @@ export class BatchSendService {
                 },
             },
         });
-        const createdBatchSends = await tx.batchSend.createManyAndReturn({
-            data: contactIds.map((contactId) => ({
-                CompanyId: companyId,
-                BatchId: batchId,
-                ContactId: contactId,
-                TemplateId: templateId,
-                TemplateSnapshot: templateSnapshot,
-                Status: BatchSend_Status.WAITING,
-            })),
 
-            select: {
-                Id: true,
-            },
-        });
+        const createdBatchSends = await Promise.all(
+            contactIds.map((contactId) =>
+                tx.batchSend.create({
+                    data: {
+                        CompanyId: companyId,
+                        BatchId: batchId,
+                        ContactId: contactId,
+                        TemplateId: templateId,
+                        TemplateSnapshot: templateSnapshot,
+                        Status: BatchSend_Status.WAITING,
+                        ScheduledAt: new Date(),
+                    },
+                    select: {
+                        Id: true,
+                    },
+                }),
+            ),
+        );
 
-        return createdBatchSends.map((batchSend) => batchSend.Id);
+        return createdBatchSends.map(({ Id }) => Id);
     }
 
     async startProcessing(id: number): Promise<boolean> {

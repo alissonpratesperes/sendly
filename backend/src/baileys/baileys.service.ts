@@ -16,6 +16,74 @@ export class BaileysService implements OnModuleDestroy {
     private sessions = new Map<number, Promise<WASocket>>();
     private readonly logger = new Logger(BaileysService.name);
 
+    private getSessionPath(companyId: number): string {
+        return path.resolve(process.cwd(), "sessions", `company_${ companyId }`);
+    }
+
+    private async hasPersistedSession(companyId: number): Promise<boolean> {
+        try {
+            const { state } = await useMultiFileAuthState(this.getSessionPath(companyId));
+
+            return state.creds.registered;
+        } catch {
+            return false;
+        }
+    }
+
+    private async getExistingSession(companyId: number): Promise<WASocket | null> {
+        const existingSession = this.sessions.get(companyId);
+
+        if (existingSession) {
+            try {
+                return await existingSession;
+            } catch {
+                if (this.sessions.get(companyId) === existingSession) {
+                    this.sessions.delete(companyId);
+                }
+            }
+        }
+        if (!(await this.hasPersistedSession(companyId))) {
+            return null;
+        }
+
+        try {
+            return await this.getOrCreateSession(companyId);
+        } catch {
+            return null;
+        }
+    }
+
+    private async initSession(companyId: number): Promise<WASocket> {
+        const sessionPath = this.getSessionPath(companyId);
+        const { state, saveCreds } = await useMultiFileAuthState(sessionPath);
+        const socket = makeWASocket({ auth: state, printQRInTerminal: false, logger: pino({ level: "silent" }), });
+
+        socket.ev.on("creds.update", saveCreds);
+
+        return this.waitForConnection(companyId, sessionPath, socket);
+    }
+
+    private async getValidatedJid(companyId: number, to: string): Promise<{ socket: WASocket; jid: string }> {
+        const socket = await this.getOrCreateSession(companyId);
+
+        if (!socket.user) {
+            throw new Error(`Connection with WhatsApp for Company: "${ companyId }" was not paired yet`);
+        }
+
+        const cleanNumber = to.replace(/\D/g, "");
+        const results = await socket.onWhatsApp(cleanNumber);
+        const result = results?.[0];
+
+        if (!result || !result.exists) {
+            throw new Error(`Number: "${ cleanNumber }" does not have an active account in WhatsApp`);
+        }
+
+        return {
+            socket,
+            jid: result.jid,
+        };
+    }
+
     private waitForConnection(companyId: number, sessionPath: string, socket: WASocket): Promise<WASocket> {
         return new Promise((resolve, reject) => {
             let isResolved = false;
@@ -83,13 +151,8 @@ export class BaileysService implements OnModuleDestroy {
     }
 
     private async createPairingSession(companyId: number, phoneNumber: string): Promise<{ socket: WASocket; pairingCode: string }> {
-        const sessionPath = path.resolve(process.cwd(), "sessions", `company_${ companyId }`);
+        const sessionPath = this.getSessionPath(companyId);
         const { state, saveCreds } = await useMultiFileAuthState(sessionPath);
-
-        if (state.creds.registered) {
-            throw new Error(`Company "${ companyId }" already has a paired WhatsApp session`);
-        }
-
         const cleanNumber = phoneNumber.replace(/\D/g, "");
 
         if (!cleanNumber) {
@@ -146,26 +209,6 @@ export class BaileysService implements OnModuleDestroy {
         };
     }
 
-    async pair(companyId: number, phoneNumber: string): Promise<string> {
-        if (this.sessions.has(companyId)) {
-            throw new Error(`A WhatsApp session already exists for Company: "${ companyId }"`);
-        }
-
-        const { socket, pairingCode } = await this.createPairingSession(companyId, phoneNumber);
-        const sessionPath = path.resolve(process.cwd(), "sessions", `company_${ companyId }`);
-        const sessionPromise = this.waitForConnection(companyId, sessionPath, socket);
-
-        this.sessions.set(companyId, sessionPromise);
-
-        sessionPromise.catch(() => {
-            if (this.sessions.get(companyId) === sessionPromise) {
-                this.sessions.delete(companyId);
-            }
-        });
-
-        return pairingCode;
-    }
-
     async getOrCreateSession(companyId: number): Promise<WASocket> {
         const existingSessionPromise = this.sessions.get(companyId);
 
@@ -186,35 +229,32 @@ export class BaileysService implements OnModuleDestroy {
         return sessionPromise;
     }
 
-    private async initSession(companyId: number): Promise<WASocket> {
-        const sessionPath = path.resolve(process.cwd(), "sessions", `company_${ companyId }`);
-        const { state, saveCreds } = await useMultiFileAuthState(sessionPath);
-        const socket = makeWASocket({ auth: state, printQRInTerminal: false, logger: pino({ level: "silent" }) });
+    async pair(companyId: number, phoneNumber: string): Promise<string> {
+        const existingSession = await this.getExistingSession(companyId);
 
-        socket.ev.on("creds.update", saveCreds);
-
-        return this.waitForConnection(companyId, sessionPath, socket);
-    }
-
-    private async getValidatedJid(companyId: number, to: string): Promise<{ socket: WASocket; jid: string }> {
-        const socket = await this.getOrCreateSession(companyId);
-
-        if (!socket.user) {
-            throw new Error(`Connection with WhatsApp for Company: "${ companyId }" was not paired yet`);
+        if (existingSession?.user) {
+            throw new Error(`Company "${ companyId }" already has a connected WhatsApp session`);
         }
 
-        const cleanNumber = to.replace(/\D/g, "");
-        const results = await socket.onWhatsApp(cleanNumber);
-        const result = results?.[0];
+        const hasPersistedSession = await this.hasPersistedSession(companyId);
 
-        if (!result || !result.exists) {
-            throw new Error(`Number: "${cleanNumber}" does not have an active account in WhatsApp`);
+        if (hasPersistedSession) {
+            throw new Error(`Company "${ companyId }" has persisted WhatsApp credentials, but the session could not be restored. Logout/cleanup is required before pairing again`);
         }
 
-        return {
-            socket,
-            jid: result.jid,
-        };
+        const sessionPath = this.getSessionPath(companyId);
+        const { socket, pairingCode } = await this.createPairingSession(companyId, phoneNumber);
+        const sessionPromise = this.waitForConnection(companyId, sessionPath, socket);
+
+        this.sessions.set(companyId, sessionPromise);
+
+        sessionPromise.catch(() => {
+            if (this.sessions.get(companyId) === sessionPromise) {
+                this.sessions.delete(companyId);
+            }
+        });
+
+        return pairingCode;
     }
 
     async sendMessage(companyId: number, to: string, text: string): Promise<proto.IWebMessageInfo> {
@@ -255,32 +295,44 @@ export class BaileysService implements OnModuleDestroy {
     }
 
     async status(companyId: number): Promise<{ connected: boolean; phone?: string }> {
-        const sessionPromise = this.sessions.get(companyId);
+        const existingSession = this.sessions.get(companyId);
 
-        if (!sessionPromise) {
-            return { connected: false };
+        if (!existingSession && !(await this.hasPersistedSession(companyId))) {
+            return {
+                connected: false,
+            };
         }
 
         try {
-            const socket = await sessionPromise;
+            const socket = await this.getOrCreateSession(companyId);
 
-            if (socket && socket.user) {
-                const cleanPhone = socket.user.id.split(':')[0] || socket.user.id.split("@")[0];
-
+            if (!socket.user) {
                 return {
-                    connected: true,
-                    phone: cleanPhone,
+                    connected: false,
                 };
             }
 
-            return { connected: false };
-        } catch {
-            return { connected: false };
+            const cleanPhone = socket.user.id.split(':')[0] || socket.user.id.split('@')[0];
+
+            return {
+                connected: true,
+                phone: cleanPhone,
+            };
+        } catch (error) {
+            this.logger.warn(
+                `Could not restore WhatsApp session for Company "${ companyId }": ${
+                    error instanceof Error ? error.message : String(error)
+                }`,
+            );
+
+            return {
+                connected: false,
+            };
         }
     }
 
     async logout(companyId: number): Promise<void> {
-        const sessionPath = path.resolve(process.cwd(), "sessions", `company_${ companyId }`);
+        const sessionPath = this.getSessionPath(companyId);
 
         try {
             let socket: WASocket | undefined;

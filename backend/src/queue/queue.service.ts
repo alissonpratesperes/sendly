@@ -12,7 +12,7 @@ export class QueueService {
         private readonly queue: Queue,
     ) {}
 
-    private readonly queueName = requireEnvironmentVariable('REDIS_QUEUE_NAME');
+    private readonly queueName = requireEnvironmentVariable("REDIS_QUEUE_NAME");
 
     async enqueueBatchSends(batchSendIds: number[]): Promise<void> {
         if (!batchSendIds.length) {
