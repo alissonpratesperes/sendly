@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bullmq';
 
 import { requireEnvironmentVariable } from '../common/utils/requireEnvironmentVariable.util';
-import { generateIntervalInMilliseconds } from '../common/utils/generateIntervalInMilliseconds.util';
+import { generateSpacedIntervalInMilliseconds } from '../common/utils/generateSpacedIntervalInMilliseconds.util';
 
 @Injectable()
 export class QueueService {
@@ -12,18 +12,25 @@ export class QueueService {
         private readonly queue: Queue,
     ) {}
 
+    private readonly queueName = requireEnvironmentVariable('REDIS_QUEUE_NAME');
+
     async enqueueBatchSends(batchSendIds: number[]): Promise<void> {
-        const jobs = batchSendIds.map((batchSendId) => ({
-            name: requireEnvironmentVariable("REDIS_QUEUE_NAME"),
+        if (!batchSendIds.length) {
+            return;
+        }
+
+        const jobs = batchSendIds.map((batchSendId, index) => ({
+            name: this.queueName,
             data: { batchSendId },
             opts: {
-                // delay: generateIntervalInMilliseconds(),
+                delay: generateSpacedIntervalInMilliseconds(index),
                 removeOnComplete: true,
+                removeOnFail: 1000,
                 attempts: 3,
-                // backoff: {
-                //     type: "exponential",
-                //     delay: 5000,
-                // },
+                backoff: {
+                    type: "exponential",
+                    delay: 5000,
+                },
             },
         }));
 

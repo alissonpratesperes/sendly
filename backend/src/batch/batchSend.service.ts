@@ -42,7 +42,7 @@ export class BatchSendService {
     async create(tx: Prisma.TransactionClient, companyId: number, batchId: number, templateId: number, contactIds: number[]): Promise<number[]> {
         const templateSnapshot = await this.validateAndBuildTemplateSnapshot(companyId, templateId, contactIds);
 
-        await tx.batchSend.createMany({
+        const createdBatchSends = await tx.batchSend.createManyAndReturn({
             data: contactIds.map((contactId) => ({
                 CompanyId: companyId,
                 BatchId: batchId,
@@ -52,22 +52,13 @@ export class BatchSendService {
                 Status: BatchSend_Status.WAITING,
                 ScheduledAt: new Date(),
             })),
-        });
 
-        const batchSends = await tx.batchSend.findMany({
-            where: {
-                BatchId: batchId,
-
-                Batch: {
-                    DeletedAt: null,
-                },
-            },
             select: {
                 Id: true,
             },
         });
 
-        return batchSends.map((batchSend) => batchSend.Id);
+        return createdBatchSends.map((batchSend) => batchSend.Id);
     }
 
     async read(id: number): Promise<BatchSend> {
@@ -178,13 +169,14 @@ export class BatchSendService {
         await tx.batchSend.deleteMany({
             where: {
                 BatchId: batchId,
+                Status: BatchSend_Status.WAITING,
 
                 Batch: {
                     DeletedAt: null,
                 },
             },
         });
-        await tx.batchSend.createMany({
+        const createdBatchSends = await tx.batchSend.createManyAndReturn({
             data: contactIds.map((contactId) => ({
                 CompanyId: companyId,
                 BatchId: batchId,
@@ -193,22 +185,13 @@ export class BatchSendService {
                 TemplateSnapshot: templateSnapshot,
                 Status: BatchSend_Status.WAITING,
             })),
-        });
 
-        const batchSends = await tx.batchSend.findMany({
-            where: {
-                BatchId: batchId,
-
-                Batch: {
-                    DeletedAt: null,
-                },
-            },
             select: {
                 Id: true,
             },
         });
 
-        return batchSends.map((batchSend) => batchSend.Id);
+        return createdBatchSends.map((batchSend) => batchSend.Id);
     }
 
     async startProcessing(id: number): Promise<boolean> {
@@ -217,7 +200,9 @@ export class BatchSendService {
         const updatedBatchSend = await this.prismaService.client.batchSend.updateMany({
             where: {
                 Id: id,
-                Status: BatchSend_Status.WAITING,
+                Status: {
+                    in: [ BatchSend_Status.WAITING, BatchSend_Status.PROCESSING ],
+                },
 
                 Batch: {
                     DeletedAt: null,

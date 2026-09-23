@@ -38,25 +38,22 @@ export class BatchSendProcessor extends WorkerHost {
             const content = (batchSend.TemplateSnapshot as any)?.content || batchSend.TemplateSnapshot;
 
             try {
-                const response = await this.baileysService.sendTemplateSingleMessage(
-                    batchSend.Batch.CompanyId,
-                    batchSend.Contact.Phone,
-                    content,
-                );
-                const messageId = response.key?.id ?? `FALLBACK_ID_${Date.now()}`;
+                const response = await this.baileysService.sendTemplateSingleMessage(batchSend.Batch.CompanyId, batchSend.Contact.Phone, content);
+                const messageId = response.key?.id ?? `FALLBACK_ID_${ Date.now() }`;
 
                 await this.batchSendService.markAsSent(batchSendId, messageId);
                 await this.batchService.finishIfCompleted(batchSend.BatchId);
             } catch (error) {
-                console.error(`[Processor] Error to send BatchSend: "${batchSendId}"`, error);
+                console.error(`[Processor] Erro ao enviar BatchSend "${ batchSendId }" (Tentativa ${ job.attemptsMade + 1 } de ${ job.opts.attempts })`, error);
 
-                await this.batchSendService.markAsFailed(
-                    batchSendId,
-                    "BAILEYS_ERROR",
-                    error instanceof Error ? error.message : "Unknown 'Baileys' error",
-                );
+                const isLastAttempt = job.attemptsMade + 1 >= (job.opts.attempts ?? 1);
 
-                await this.batchService.finishIfCompleted(batchSend.BatchId);
+                if (isLastAttempt) {
+                    await this.batchSendService.markAsFailed(batchSendId, "BAILEYS_ERROR", error instanceof Error ? error.message : "Unknown 'Baileys' error");
+                    await this.batchService.finishIfCompleted(batchSend.BatchId);
+                }
+
+                throw error;
             }
         });
     }
