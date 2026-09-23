@@ -36,7 +36,11 @@ const Contact = () => {
 
     const listsNamesRef = useRef<Record<number, ListResponseDto>>({});
 
-    const handleReadContacts = useCallback(async () => {
+    const handleCreate = () => {
+        setUpdating(null);
+        setIsDrawerOpen(true);
+    }
+    const handleRead = useCallback(async () => {
         try {
             setIsLoading(true);
 
@@ -76,11 +80,6 @@ const Contact = () => {
             setIsLoading(false);
         }
     }, [ page, limit, search ]);
-
-    const handleCreate = () => {
-        setUpdating(null);
-        setIsDrawerOpen(true);
-    }
     const handleUpdate = (id: number) => {
         const clicked = contacts.find((contact: ContactResponseDto) => contact.id === id);
 
@@ -100,6 +99,28 @@ const Contact = () => {
         });
         setIsDrawerOpen(true);
     }
+    const handleDelete = async () => {
+        if (selectedContactId === null) {
+            return;
+        }
+
+        try {
+            await Delete({ id: selectedContactId });
+
+            setIsDeleteModalOpen(false);
+            setSelectedContactId(null);
+
+            if (contacts.length === 1 && page > 1) {
+                setPage((previousPage: number) => previousPage - 1);
+            } else {
+                await handleRead();
+            }
+
+            toast.success("Contato excluído com suceso");
+        } catch (error: unknown) {
+            toast.error("Não é possível prosseguir com a solicitação");
+        } finally { }
+    }
     const handleActiveCommunication = async (id: number, status: boolean) => {
         try {
             const contact = contacts.find((contact: ContactResponseDto) => contact.id === id);
@@ -111,31 +132,6 @@ const Contact = () => {
             await Update({ id: contact.id }, { active: status });
 
             setContacts((previousContacts: ContactResponseDto[]) => previousContacts.map(contact => (contact.id === id ? { ...contact, active: status } : contact)));
-        } catch (error) {
-            toast.error(`Erro ao alterar o status da comunicação para o Contato: ${error}`);
-        } finally { }
-    }
-    const handleConfirmDelete = async () => {
-        if (selectedContactId === null) {
-            return;
-        }
-
-        try {
-            await Delete({ id: selectedContactId });
-
-            const isLastItemOnLastPage = contacts.length === 1 && page > 1;
-
-            setContacts((previousContacts: ContactResponseDto[]) => previousContacts.filter((contact: ContactResponseDto) => contact.id !== selectedContactId));
-
-            if (isLastItemOnLastPage) {
-                setPage((previousPage: number) => previousPage - 1);
-            } else {
-                handleReadContacts();
-            }
-
-            setIsDeleteModalOpen(false);
-
-            toast.success("Contato excluído com suceso");
         } catch (error: unknown) {
             toast.error("Não é possível prosseguir com a solicitação");
         } finally { }
@@ -146,11 +142,11 @@ const Contact = () => {
     }, [ listsNames ]);
     useEffect(() => {
         const timeout = setTimeout(() => {
-            handleReadContacts();
+            handleRead();
         }, 500);
 
         return () => clearTimeout(timeout);
-    }, [ handleReadContacts ]);
+    }, [ handleRead ]);
 
     return (
         <Fragment>
@@ -186,10 +182,10 @@ const Contact = () => {
                 <EmptyState message="Nenhum contato encontrado" />
             ) }
 
-            <Modal isOpen={ isDeleteModalOpen } entityName={ contacts.find((contact: ContactResponseDto) => contact.id === selectedContactId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleConfirmDelete } />
+            <Modal isOpen={ isDeleteModalOpen } entityName={ contacts.find((contact: ContactResponseDto) => contact.id === selectedContactId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleDelete } />
 
             <Drawer isOpen={ isDrawerOpen } isSubmitting={ isSubmitting } formId="contact-form" title={ updating ? "Editar contato" : "Novo contato" } mode={ updating ? "edit" : "create" } onClose={ () => { setIsDrawerOpen(false); setUpdating(null); } }>
-                <ContactForm initialValues={ updating ?? undefined } onCancel={ () => { setIsDrawerOpen(false); if (isSubmitting) { return; } setUpdating(null); } } onSubmit={ () => { setIsDrawerOpen(false); setUpdating(null); handleReadContacts(); } } onLoadingChange={ setIsSubmitting } />
+                <ContactForm initialValues={ updating ?? undefined } onCancel={ () => { setIsDrawerOpen(false); if (isSubmitting) { return; } setUpdating(null); } } onSubmit={ () => { setIsDrawerOpen(false); setUpdating(null); handleRead(); } } onLoadingChange={ setIsSubmitting } />
             </Drawer>
         </Fragment>
     );

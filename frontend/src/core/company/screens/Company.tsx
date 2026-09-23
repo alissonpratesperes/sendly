@@ -33,7 +33,11 @@ const Company = () => {
 
     const { userInformation } = getAuthenticationStorage();
 
-    const handleReadCompanies = useCallback(async () => {
+    const handleCreate = () => {
+        setUpdating(null);
+        setIsDrawerOpen(true);
+    }
+    const handleRead = useCallback(async () => {
         try {
             setIsLoading(true);
 
@@ -48,11 +52,6 @@ const Company = () => {
             setIsLoading(false);
         }
     }, [ page, limit, search ]);
-
-    const handleCreate = () => {
-        setUpdating(null);
-        setIsDrawerOpen(true);
-    }
     const handleUpdate = (id: number) => {
         const clicked = companies.find((company: CompanyResponseDto) => company.id === id);
 
@@ -68,7 +67,7 @@ const Company = () => {
         });
         setIsDrawerOpen(true);
     }
-    const handleConfirmDelete = async () => {
+    const handleDelete = async () => {
         if (selectedCompanyId === null) {
             return;
         }
@@ -76,17 +75,14 @@ const Company = () => {
         try {
             await Delete({ id: selectedCompanyId });
 
-            const isLastItemOnLastPage = companies.length === 1 && page > 1;
+            setIsDeleteModalOpen(false);
+            setSelectedCompanyId(null);
 
-            setCompanies((previousCompanies: CompanyResponseDto[]) => previousCompanies.filter((company: CompanyResponseDto) => company.id !== selectedCompanyId));
-
-            if (isLastItemOnLastPage) {
+            if (companies.length === 1 && page > 1) {
                 setPage((previousPage: number) => previousPage - 1);
             } else {
-                handleReadCompanies();
+                await handleRead();
             }
-
-            setIsDeleteModalOpen(false);
 
             toast.success("Empresa excluída com suceso");
         } catch (error: unknown) {
@@ -96,11 +92,11 @@ const Company = () => {
 
     useEffect(() => {
         const timeout = setTimeout(() => {
-            handleReadCompanies();
+            handleRead();
         }, 500);
 
         return () => clearTimeout(timeout);
-    }, [ handleReadCompanies ]);
+    }, [ handleRead ]);
 
     return (
         <Fragment>
@@ -136,10 +132,10 @@ const Company = () => {
                 <EmptyState message="Nenhuma empresa encontrada" />
             ) }
 
-            <Modal isOpen={ isDeleteModalOpen } entityName={ companies.find((company: CompanyResponseDto) => company.id === selectedCompanyId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleConfirmDelete } />
+            <Modal isOpen={ isDeleteModalOpen } entityName={ companies.find((company: CompanyResponseDto) => company.id === selectedCompanyId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleDelete } />
 
             <Drawer isOpen={ isDrawerOpen } isSubmitting={ isSubmitting } formId="company-form" title={ updating ? "Editar empresa" : "Nova empresa" } mode={ updating ? "edit" : "create" } onClose={ () => { setIsDrawerOpen(false); setUpdating(null); } }>
-                <CompanyForm initialValues={ updating ?? undefined } onCancel={ () => { setIsDrawerOpen(false); if (isSubmitting) { return; } setUpdating(null); } } onSubmit={ () => { setIsDrawerOpen(false); setUpdating(null); handleReadCompanies(); } } onLoadingChange={ setIsSubmitting } />
+                <CompanyForm initialValues={ updating ?? undefined } onCancel={ () => { setIsDrawerOpen(false); if (isSubmitting) { return; } setUpdating(null); } } onSubmit={ () => { setIsDrawerOpen(false); setUpdating(null); handleRead(); } } onLoadingChange={ setIsSubmitting } />
             </Drawer>
         </Fragment>
     );

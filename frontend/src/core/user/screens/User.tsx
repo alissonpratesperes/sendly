@@ -34,7 +34,11 @@ const User = () => {
 
     const { userInformation } = getAuthenticationStorage();
 
-    const handleReadUsers = useCallback(async () => {
+    const handleCreate = () => {
+        setUpdating(null);
+        setIsDrawerOpen(true);
+    }
+    const handleRead = useCallback(async () => {
         try {
             setIsLoading(true);
 
@@ -49,11 +53,6 @@ const User = () => {
             setIsLoading(false);
         }
     }, [ page, limit, search ]);
-
-    const handleCreate = () => {
-        setUpdating(null);
-        setIsDrawerOpen(true);
-    }
     const handleUpdate = (id: number) => {
         const clicked = users.find((user: UserResponseDto) => user.id === id);
 
@@ -69,7 +68,7 @@ const User = () => {
         });
         setIsDrawerOpen(true);
     }
-    const handleConfirmDelete = async () => {
+    const handleDelete = async () => {
         if (selectedUserId === null) {
             return;
         }
@@ -77,17 +76,14 @@ const User = () => {
         try {
             await Delete({ id: selectedUserId });
 
-            const isLastItemOnLastPage = users.length === 1 && page > 1;
+            setIsDeleteModalOpen(false);
+            setSelectedUserId(null);
 
-            setUsers((previousUsers: UserResponseDto[]) => previousUsers.filter((user: UserResponseDto) => user.id !== selectedUserId));
-
-            if (isLastItemOnLastPage) {
+            if (users.length === 1 && page > 1) {
                 setPage((previousPage: number) => previousPage - 1);
             } else {
-                handleReadUsers();
+                await handleRead();
             }
-
-            setIsDeleteModalOpen(false);
 
             toast.success("Usuário excluído com suceso");
         } catch (error: unknown) {
@@ -97,11 +93,11 @@ const User = () => {
 
     useEffect(() => {
         const timeout = setTimeout(() => {
-            handleReadUsers();
+            handleRead();
         }, 500);
 
         return () => clearTimeout(timeout);
-    }, [ handleReadUsers ]);
+    }, [ handleRead ]);
 
     return (
         <Fragment>
@@ -138,10 +134,10 @@ const User = () => {
                 <EmptyState message="Nenhum usuário encontrado" />
             ) }
 
-            <Modal isOpen={ isDeleteModalOpen } entityName={ users.find((user: UserResponseDto) => user.id === selectedUserId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleConfirmDelete } />
+            <Modal isOpen={ isDeleteModalOpen } entityName={ users.find((user: UserResponseDto) => user.id === selectedUserId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleDelete } />
 
             <Drawer isOpen={ isDrawerOpen } isSubmitting={ isSubmitting } formId="user-form" title={ updating ? "Editar usuário" : "Novo usuário" } mode={ updating ? "edit" : "create" } onClose={ () => { setIsDrawerOpen(false); setUpdating(null); } }>
-                <UserForm initialValues={ updating ?? undefined } onCancel={ () => { setIsDrawerOpen(false); if (isSubmitting) { return; } setUpdating(null); } } onSubmit={ () => { setIsDrawerOpen(false); setUpdating(null); handleReadUsers(); } } onLoadingChange={ setIsSubmitting } />
+                <UserForm initialValues={ updating ?? undefined } onCancel={ () => { setIsDrawerOpen(false); if (isSubmitting) { return; } setUpdating(null); } } onSubmit={ () => { setIsDrawerOpen(false); setUpdating(null); handleRead(); } } onLoadingChange={ setIsSubmitting } />
             </Drawer>
         </Fragment>
     );

@@ -29,7 +29,11 @@ const Lists = () => {
     const [selectedListId, setSelectedListId] = useState<number | null>(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
 
-    const handleReadLists = useCallback(async () => {
+    const handleCreate = () => {
+        setUpdating(null);
+        setIsDrawerOpen(true);
+    }
+    const handleRead = useCallback(async () => {
         try {
             setIsLoading(true);
 
@@ -44,11 +48,6 @@ const Lists = () => {
             setIsLoading(false);
         }
     }, [ page, limit, search ]);
-
-    const handleCreate = () => {
-        setUpdating(null);
-        setIsDrawerOpen(true);
-    }
     const handleUpdate = (id: number) => {
         const clicked = lists.find((list: ListResponseDto) => list.id === id);
 
@@ -65,7 +64,7 @@ const Lists = () => {
         });
         setIsDrawerOpen(true);
     }
-    const handleConfirmDelete = async () => {
+    const handleDelete = async () => {
         if (selectedListId === null) {
             return;
         }
@@ -73,17 +72,14 @@ const Lists = () => {
         try {
             await Delete({ id: selectedListId });
 
-            const isLastItemOnLastPage = lists.length === 1 && page > 1;
+            setIsDeleteModalOpen(false);
+            setSelectedListId(null);
 
-            setLists((previousLists: ListResponseDto[]) => previousLists.filter((list: ListResponseDto) => list.id !== selectedListId));
-
-            if (isLastItemOnLastPage) {
+            if (lists.length === 1 && page > 1) {
                 setPage((previousPage: number) => previousPage - 1);
             } else {
-                handleReadLists();
+                await handleRead();
             }
-
-            setIsDeleteModalOpen(false);
 
             toast.success("Lista excluída com suceso");
         } catch (error: unknown) {
@@ -93,11 +89,11 @@ const Lists = () => {
 
     useEffect(() => {
         const timeout = setTimeout(() => {
-            handleReadLists();
+            handleRead();
         }, 500);
 
         return () => clearTimeout(timeout);
-    }, [ handleReadLists ]);
+    }, [ handleRead ]);
 
     return (
         <Fragment>
@@ -133,10 +129,10 @@ const Lists = () => {
                 <EmptyState message="Nenhuma lista encontrada" />
             ) }
 
-            <Modal isOpen={ isDeleteModalOpen } entityName={ lists.find((list: ListResponseDto) => list.id === selectedListId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleConfirmDelete } />
+            <Modal isOpen={ isDeleteModalOpen } entityName={ lists.find((list: ListResponseDto) => list.id === selectedListId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleDelete } />
 
             <Drawer isOpen={ isDrawerOpen } isSubmitting={ isSubmitting } formId="list-form" title={ updating ? "Editar lista" : "Nova lista" } mode={ updating ? "edit" : "create" } onClose={ () => { setIsDrawerOpen(false); setUpdating(null); } }>
-                <ListForm initialValues={ updating ?? undefined } onCancel={ () => { setIsDrawerOpen(false); if (isSubmitting) { return; } setUpdating(null); } } onSubmit={ () => { setIsDrawerOpen(false); setUpdating(null); handleReadLists(); } } onLoadingChange={ setIsSubmitting } />
+                <ListForm initialValues={ updating ?? undefined } onCancel={ () => { setIsDrawerOpen(false); if (isSubmitting) { return; } setUpdating(null); } } onSubmit={ () => { setIsDrawerOpen(false); setUpdating(null); handleRead(); } } onLoadingChange={ setIsSubmitting } />
             </Drawer>
         </Fragment>
     );
