@@ -44,7 +44,7 @@ model Contact {
   CompanyId Int         @db.UnsignedInt
   ListId    Int         @db.UnsignedInt
   Name      String      @db.VarChar(150)
-  Phone     String      @unique(map: "UK_Contact_Phone") @db.VarChar(20)
+  Phone     String      @db.VarChar(20)
   CreatedAt DateTime    @default(now())
   UpdatedAt DateTime    @default(now())
   DeletedAt DateTime?
@@ -53,7 +53,7 @@ model Contact {
   Company   Company     @relation(fields: [CompanyId], references: [Id], map: "FK_Contact_CompanyId")
   List      List        @relation(fields: [ListId], references: [Id], map: "FK_Contact_ListId")
 
-  @@index([CompanyId], map: "FK_Contact_CompanyId")
+  @@unique([CompanyId, Phone], map: "UK_Contact_CompanyId_Phone")
   @@index([ListId], map: "FK_Contact_ListId")
 }
 
@@ -83,7 +83,7 @@ model Template {
   BatchSend BatchSend[]
   Company   Company     @relation(fields: [CompanyId], references: [Id], map: "FK_Template_CompanyId")
 
-  @@index([CompanyId], map: "FK_Template_CompanyId")
+  @@unique([CompanyId, Name], map: "UK_Template_CompanyId_Name")
 }
 
 model User {
@@ -126,7 +126,7 @@ model BatchSend {
   Contact          Contact          @relation(fields: [ContactId], references: [Id], map: "FK_BatchSend_ContactId")
   Template         Template         @relation(fields: [TemplateId], references: [Id], map: "FK_BatchSend_TemplateId")
 
-  @@unique([BatchId, ContactId], map: "UK_BatchSend_Batch_Contact")
+  @@unique([BatchId, ContactId], map: "UK_BatchSend_BatchId_ContactId")
   @@index([ContactId], map: "FK_BatchSend_ContactId")
   @@index([TemplateId], map: "FK_BatchSend_TemplateId")
   @@index([CompanyId], map: "FK_BatchSend_CompanyId")
