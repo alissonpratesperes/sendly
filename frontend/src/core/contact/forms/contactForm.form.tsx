@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { AsYouType, CountryCode, getCountries, getCountryCallingCode, parsePhoneNumberFromString } from 'libphonenumber-js';
 
 import { List } from '../../list/services/list.service';
-import { Create, Update } from '../services/contact.service';
+import { Create, ImportContactsCsv, Update } from '../services/contact.service';
 import { ListResponseDto } from '../../list/dtos/listResponse.dto';
 import Toast from '../../../shared/components/toast/screens/Toast';
 import { CreateContactCommandDto } from '../dtos/createContactCommand.dto';
@@ -15,9 +15,13 @@ import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
 import { ContactFormData, ContactFormSchema } from '../schemas/contactFormSchema.schema';
 import { getAuthenticationStorage } from '../../../shared/utils/authenticationStorage.util';
 import * as ContactFormStyled from '../../../shared/components/dropdown/styles/contactFormDropdown.style';
+import Uploader from '../../../shared/components/uploader/screens/Uploader';
 
 export const ContactForm: React.FC<FormProps<ContactFormData>> = ({ initialValues, onSubmit, onLoadingChange, }) => {
     const { userInformation } = getAuthenticationStorage();
+
+    const [csvFile, setCsvFile] = useState<File>();
+    const [isImportingCsv, setIsImportingCsv] = useState(false);
 
     const [lists, setLists] = useState<ListResponseDto[]>([]);
     const [isListsLoading, setIsListsLoading] = useState<boolean>(false);
@@ -120,6 +124,34 @@ export const ContactForm: React.FC<FormProps<ContactFormData>> = ({ initialValue
         }
     }
 
+    const handleImportCsv = async () => {
+    if (!csvFile) {
+        toast.error("Selecione um arquivo CSV");
+
+        return;
+    }
+
+    setIsImportingCsv(true);
+
+    try {
+        const formData = new FormData();
+
+        formData.append("file", csvFile);
+
+        const response = await ImportContactsCsv(formData);
+
+        console.log("IMPORT RESPONSE:", response);
+
+        toast.success("CSV enviado com sucesso");
+    } catch (error) {
+        console.error("IMPORT ERROR:", error);
+
+        toast.error("Erro ao importar CSV");
+    } finally {
+        setIsImportingCsv(false);
+    }
+};
+
     useEffect(() => {
         const progressiveListsFetch = async () => {
             try {
@@ -212,6 +244,20 @@ export const ContactForm: React.FC<FormProps<ContactFormData>> = ({ initialValue
                     )}
                 />
             </Styled.FieldWrapper>
+
+            <Uploader
+    isCsv
+    value={csvFile}
+    onChange={(file) => setCsvFile(file as File | undefined)}
+/>
+
+<button
+    type="button"
+    onClick={handleImportCsv}
+    disabled={!csvFile || isImportingCsv}
+>
+    {isImportingCsv ? "Importando..." : "Importar CSV"}
+</button>
         </Styled.Form>
     );
 }

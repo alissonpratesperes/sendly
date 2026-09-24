@@ -1,6 +1,7 @@
-export const ACCEPTED_EXCEL_CONFIG: Record<string, string[]> = {
-    "application/vnd.ms-excel": [".xls"],
-    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [".xlsx"],
+export const ACCEPTED_CSV_CONFIG: Record<string, string[]> = {
+    "text/csv": [".csv"],
+    "application/csv": [".csv"],
+    "application/vnd.ms-excel": [".csv"],
 }
 export const ACCEPTED_IMAGES_CONFIG: Record<string, string[]> = {
     "image/jpeg": [".jpg", ".jpeg"],

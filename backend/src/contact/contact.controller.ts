@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
 
 import { ContactService } from './contact.service';
 import { IdParamDto } from '../common/dtos/idParam.dto';
@@ -6,7 +7,9 @@ import { GetContactResponseDto } from './dtos/getContactResponse.dto';
 import { PaginationQueryDto } from '../common/dtos/paginationQuery.dto';
 import { CreateContactCommandDto } from './dtos/createContactCommand.dto';
 import { UpdateContactCommandDto } from './dtos/updateContactCommand.dto';
+import { ImportContactCommandDto } from './dtos/importContactCommand.dto';
 import { PaginatedResponseDto } from '../common/dtos/paginatedResponse.dto';
+import { ImportContactResponseDto } from './dtos/importContactResponse.dto';
 
 @Controller("contact")
 export class ContactController {
@@ -42,5 +45,12 @@ export class ContactController {
     @HttpCode(HttpStatus.NO_CONTENT)
     async delete(@Param() param: IdParamDto): Promise<void> {
         return this.contactService.delete(param.id);
+    }
+
+    @Post("import")
+    @HttpCode(HttpStatus.OK)
+    @UseInterceptors(FileInterceptor("file"))
+    async import(@Body() command: ImportContactCommandDto, @UploadedFile() file: Express.Multer.File): Promise<ImportContactResponseDto> {
+        return this.contactService.import(command.listId, file);
     }
 }

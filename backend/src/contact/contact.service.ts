@@ -1,17 +1,25 @@
+import { parse } from 'csv-parse/sync';
+import { ClsService } from 'nestjs-cls';
 import { Contact, Prisma } from '@prisma/client';
-import type { CountryCode } from 'libphonenumber-js';
+import { type CountryCode } from 'libphonenumber-js';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 
 import { ListService } from '../list/list.service';
 import { PrismaService } from '../prisma/prisma.service';
+import { parseContacts } from './parsers/contact.parser';
+import { ParsedContact } from './types/parsedContact.type';
 import { CompanyService } from '../company/company.service';
 import { GetContactResponseDto } from './dtos/getContactResponse.dto';
+import { ImportContactErrorDto } from './dtos/importContactError.dto';
+import { CsvContactBefore } from './interfaces/csvContactBefore.interface';
 import { PaginatedResponseDto } from '../common/dtos/paginatedResponse.dto';
+import { ImportContactResponseDto } from './dtos/importContactResponse.dto';
 import { formatContactPhoneNumber } from '../common/formatters/contactPhoneNumber.formatter';
 
 @Injectable()
 export class ContactService {
     constructor(
+        private readonly clsService: ClsService,
         private readonly listService: ListService,
         private readonly prismaService: PrismaService,
         private readonly companyService: CompanyService,
@@ -196,5 +204,126 @@ export class ContactService {
                 DeletedAt: new Date(),
             },
         });
+    }
+
+    async import(listId: number, file: Express.Multer.File): Promise<ImportContactResponseDto> {
+        const companyId = this.clsService.get<number>("companyId");
+
+        await this.companyService.read(companyId);
+        await this.listService.validateBelongsToCompany(listId, companyId);
+
+        const content = file.buffer.toString("utf-8");
+        const lines = content.split(/\r?\n/);
+        const hasSeparatorDeclaration = lines[0]?.startsWith("sep=");
+        const csvContent = hasSeparatorDeclaration ? lines.slice(1).join("\n") : content;
+        const records = parse(csvContent, { columns: true, skip_empty_lines: true, }) as CsvContactBefore[];
+
+        const contacts = records.map((record) => {
+            const name = record.Nome?.trim() ?? "";
+            const phone = record.Telefone?.trim() ?? "";
+
+            return {
+                name,
+                phone,
+            };
+        });
+
+        const parsedContacts = parseContacts(contacts);
+        const validContacts = parsedContacts.filter((contact) => contact.normalizedPhone !== null);
+        const uniqueContacts = new Map<string, ParsedContact>();
+        const duplicatedContacts: ParsedContact[] = [];
+
+        for (const contact of validContacts) {
+            const phone = contact.normalizedPhone!;
+
+            if (uniqueContacts.has(phone)) {
+                duplicatedContacts.push(contact);
+
+                continue;
+            }
+
+            uniqueContacts.set(phone, contact);
+        }
+
+        const invalidContacts = parsedContacts
+            .filter((contact: ParsedContact) => {
+                return contact.normalizedPhone === null
+            })
+            .map((contact: ParsedContact) => new ImportContactErrorDto(
+                contact.name,
+                contact.phone,
+                contact.normalizedPhone,
+                contact.country,
+                contact.error ?? "Unknown batch import error",
+            ));
+
+        const existingContacts = await this.prismaService.client.contact.findMany({
+            where: {
+                CompanyId: companyId,
+                Phone: {
+                    in: [...uniqueContacts.keys()],
+                },
+            },
+            select: {
+                Phone: true,
+            },
+        });
+
+        const existingPhones = new Set(existingContacts.map((contact: Partial<Contact>) => contact.Phone));
+        const contactsToCreate: ParsedContact[] = [];
+        const existingContactsErrors: ParsedContact[] = [];
+
+        for (const contact of uniqueContacts.values()) {
+            if (existingPhones.has(contact.normalizedPhone!)) {
+                existingContactsErrors.push(contact);
+
+                continue;
+            }
+
+            contactsToCreate.push(contact);
+        }
+
+        const duplicatedContactErrors = duplicatedContacts.map(
+            (contact: ParsedContact) =>
+                new ImportContactErrorDto(
+                    contact.name,
+                    contact.phone,
+                    contact.normalizedPhone,
+                    contact.country,
+                    "Duplicated phone number",
+                ),
+        );
+        const existingContactErrors = existingContactsErrors.map(
+            (contact: ParsedContact) =>
+                new ImportContactErrorDto(
+                    contact.name,
+                    contact.phone,
+                    contact.normalizedPhone,
+                    contact.country,
+                    "Contact already exists in this company",
+                ),
+        );
+        const errors = [
+            ...invalidContacts,
+            ...duplicatedContactErrors,
+            ...existingContactErrors,
+        ];
+
+        await this.prismaService.client.contact.createMany({
+            data: contactsToCreate.map((contact) => ({
+                CompanyId: companyId,
+                ListId: listId,
+                Name: contact.name,
+                Phone: contact.normalizedPhone!,
+                Active: true,
+            })),
+        });
+
+        return new ImportContactResponseDto(
+            parsedContacts.length,
+            contactsToCreate.length,
+            errors.length,
+            errors,
+        );
     }
 }

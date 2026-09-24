@@ -1,19 +1,19 @@
 import { toast } from 'react-toastify';
 import { FileRejection, useDropzone } from 'react-dropzone';
 import React, { useCallback, useEffect, useMemo } from 'react';
-import { Upload, ImageUp, Download, Trash2 } from 'lucide-react';
+import { Upload, ImageUp, FileSpreadsheet, Download, Trash2 } from 'lucide-react';
 
 import * as Styled from '../styles/uploader.style';
 import { UploaderItemType } from '../types/uploaderItemType.type';
 import { UploaderProps } from '../interfaces/UploaderProps.interface';
-import { ACCEPTED_EXCEL_CONFIG, ACCEPTED_IMAGES_CONFIG, ALLOWED_IMAGE_EXTENSIONS } from '../constants/uploaderFileTypesAndExtensions.constant';
+import { ACCEPTED_CSV_CONFIG, ACCEPTED_IMAGES_CONFIG, ALLOWED_IMAGE_EXTENSIONS } from '../constants/uploaderFileTypesAndExtensions.constant';
 
-const MAX_EXCEL_FILE_SIZE = Number(process.env.REACT_APP_MAX_EXCEL_SIZE);
+const MAX_CSV_FILE_SIZE = Number(process.env.REACT_APP_MAX_CSV_FILE_SIZE);
 const MAX_IMAGE_FILE_SIZE = Number(process.env.REACT_APP_MAX_IMAGE_SIZE);
 
-const Uploader: React.FC<UploaderProps> = ({ value, existingImage, onRemoveExistingImage, onChange, isExcel = false }) => {
-    const accept = isExcel ? ACCEPTED_EXCEL_CONFIG : ACCEPTED_IMAGES_CONFIG;
-    const maxFileSize = isExcel ? MAX_EXCEL_FILE_SIZE : MAX_IMAGE_FILE_SIZE;
+const Uploader: React.FC<UploaderProps> = ({ value, existingImage, onRemoveExistingImage, onChange, isCsv = false }) => {
+    const accept = isCsv ? ACCEPTED_CSV_CONFIG : ACCEPTED_IMAGES_CONFIG;
+    const maxFileSize = isCsv ? MAX_CSV_FILE_SIZE : MAX_IMAGE_FILE_SIZE;
 
     const getMaxFileSizeText = useCallback(() => {
         const maxFileSizeInMB = maxFileSize / (1024 * 1024);
@@ -21,12 +21,12 @@ const Uploader: React.FC<UploaderProps> = ({ value, existingImage, onRemoveExist
         return `${ maxFileSizeInMB } MB`;
     }, [ maxFileSize ]);
     const getAcceptedText = useCallback(() => {
-        if (isExcel) {
-            return `XLS ou XLSX de até ${ getMaxFileSizeText() }`;
+        if (isCsv) {
+            return `CSV de até ${ getMaxFileSizeText() }`;
         }
 
         return ALLOWED_IMAGE_EXTENSIONS.map((fileExtension: string) => fileExtension.replace(".", "").toUpperCase()).join(", ");
-    }, [ isExcel, getMaxFileSizeText ]);
+    }, [ isCsv, getMaxFileSizeText ]);
     const onDrop = useCallback((acceptedFiles: File[]) => {
         if (acceptedFiles.length !== 1) {
             return;
@@ -52,7 +52,7 @@ const Uploader: React.FC<UploaderProps> = ({ value, existingImage, onRemoveExist
             return;
         }
         if (existingImage) {
-            onRemoveExistingImage();
+            onRemoveExistingImage?.();
         }
     }, [ value, existingImage, onChange, onRemoveExistingImage, ]);
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -79,7 +79,7 @@ const Uploader: React.FC<UploaderProps> = ({ value, existingImage, onRemoveExist
             return getExistingFileName(existingImage);
         }
 
-        return "Imagem";
+        return isCsv ? "Arquivo CSV" : "Imagem";
     };
     const getFileSize = (item?: UploaderItemType): string => {
         if (!item) {
@@ -137,38 +137,41 @@ const Uploader: React.FC<UploaderProps> = ({ value, existingImage, onRemoveExist
             document.body.removeChild(link);
         }
     };
-    const imagePreview = useMemo(() => {
+    const filePreview = useMemo(() => {
+        if (isCsv) {
+            return undefined;
+        }
         if (value instanceof File) {
             return URL.createObjectURL(value);
         }
 
         return existingImage;
-    }, [ value, existingImage ]);
+    }, [ value, existingImage, isCsv ]);
 
     useEffect(() => {
-        if (!(value instanceof File) || !imagePreview) {
+        if (isCsv || !(value instanceof File) || !filePreview) {
             return;
         }
 
         return () => {
-            URL.revokeObjectURL(imagePreview);
+            URL.revokeObjectURL(filePreview);
         };
-    }, [ value, imagePreview ]);
+    }, [ value, filePreview, isCsv ]);
 
     return (
         <Styled.UploaderWrapper>
-            <Styled.DropzoneArea { ...getRootProps() } $isDragActive={ isDragActive } $hasFile={ !!value || !!existingImage } $backgroundImage={ imagePreview }>
+            <Styled.DropzoneArea { ...getRootProps() } $isDragActive={ isDragActive } $hasFile={ !!value || !!existingImage } $backgroundImage={ filePreview }>
                 <input { ...getInputProps() } />
 
                 { !value && !existingImage &&  (
                     <Styled.DropzoneTextContainer>
                         <Styled.DropzoneUploadIcon> <Upload size={ 25 } /> </Styled.DropzoneUploadIcon>
 
-                        <Styled.DropzoneStrongContent> { isDragActive ? `Solte ${ isExcel ? "o arquivo Excel" : "a imagem" } aqui` : `Arraste e solte ${ isExcel ? "o arquivo Excel" : "a imagem" }` } </Styled.DropzoneStrongContent>
+                        <Styled.DropzoneStrongContent> { isDragActive ? `Solte ${ isCsv ? "o arquivo CSV" : "a imagem" } aqui` : `Arraste e solte ${ isCsv ? "o arquivo CSV" : "a imagem" }` } </Styled.DropzoneStrongContent>
 
                         <Styled.DropzoneLabel> ou selecione o arquivo </Styled.DropzoneLabel>
 
-                        <Styled.DropzoneActiveText> { isDragActive ? `Somente ${ isExcel ? "um arquivo Excel é permitido" : "uma imagem é permitida" }` : `Tipo de arquivo ${ getAcceptedText() }` } </Styled.DropzoneActiveText>
+                        <Styled.DropzoneActiveText> { isDragActive ? `Somente ${ isCsv ? "um arquivo CSV é permitido" : "uma imagem é permitida" }` : `Tipo de arquivo ${ getAcceptedText() }` } </Styled.DropzoneActiveText>
                     </Styled.DropzoneTextContainer>
                 ) }
             </Styled.DropzoneArea>
@@ -177,7 +180,7 @@ const Uploader: React.FC<UploaderProps> = ({ value, existingImage, onRemoveExist
                 <Styled.DraggedFilesList>
                     <Styled.DraggedFilesListItem>
                         <Styled.ListItemContainer>
-                            <Styled.DraggedFileIcon> <ImageUp size={ 25 } /> </Styled.DraggedFileIcon>
+                            <Styled.DraggedFileIcon> { isCsv ? <FileSpreadsheet size={ 25 } /> : <ImageUp size={ 25 } /> } </Styled.DraggedFileIcon>
 
                             <Styled.DraggedFileData>
                                 <Styled.DraggedFileName> { getFileName(value) } </Styled.DraggedFileName>

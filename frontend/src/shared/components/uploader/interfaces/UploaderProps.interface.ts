@@ -1,10 +1,10 @@
 import { UploaderItemType } from '../types/uploaderItemType.type';
 
 export interface UploaderProps {
-    isExcel?: boolean;
+    isCsv?: boolean;
     value?: UploaderItemType;
     existingImage?: string;
 
-    onRemoveExistingImage: () => void;
+    onRemoveExistingImage?: () => void;
     onChange: (file?: UploaderItemType) => void;
 }

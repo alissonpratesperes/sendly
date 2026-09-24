@@ -35,3 +35,9 @@ export const Update = async (param: IdParamDto, command: UpdateContactCommandDto
 export const Delete = async (param: IdParamDto): Promise<void> => {
     await axiosInstance.delete<void>(`${ BASE_ENDPOINT }/${ param.id }`);
 }
+
+export const ImportContactsCsv = async (formData: FormData) => {
+    const { data } = await axiosInstance.post(`${ BASE_ENDPOINT }/import`, formData);
+
+    return data;
+};
