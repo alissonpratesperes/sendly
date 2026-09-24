@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 
 import User from '../../../../core/user/screens/User';
@@ -12,6 +12,8 @@ import Template from '../../../../core/template/screens/Template';
 import { navigationTabs } from '../constants/navigationTabs.constant';
 
 const Registration: React.FC = () => {
+    const [hoveredTab, setHoveredTab] = useState<string | null>(null);
+
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -26,10 +28,19 @@ const Registration: React.FC = () => {
 
                 <Styled.NavigationTabs>
                     { navigationTabs.map((tab: NavigationTab) => {
+                        const isHovered = hoveredTab === tab.path;
                         const isActive = location.pathname.endsWith(tab.path);
 
                         return (
-                            <Styled.NavigationTabButtons key={ tab.path } onClick={ () => navigate(`/registrations/${tab.path}`) } $active={ isActive }>
+                            <Styled.NavigationTabButtons
+            key={tab.path}
+            onClick={() => navigate(`/registrations/${tab.path}`)}
+            onMouseEnter={() => setHoveredTab(tab.path)}
+            onMouseLeave={() => setHoveredTab(null)}
+            $active={isActive}
+            $hovered={isHovered}
+            $anotherHovered={hoveredTab !== null && !isHovered}
+        >
                                 { tab.icon }
 
                                 <Styled.NavigationTabButtonText $active={ isActive }> { tab.label } </Styled.NavigationTabButtonText>

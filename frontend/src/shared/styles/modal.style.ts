@@ -6,7 +6,7 @@ export const ModalOverlay = styled.div<{ $open: boolean }>`
     align-items: center;
     justify-content: center;
     inset: 0;
-    background: rgba(0, 0, 0, 0.35);
+    background: rgba(0, 0, 0, 0.25);
     backdrop-filter: blur(7px);
     z-index: 1000;
     transition: opacity 0.6s ease-in-out, visibility 0.6s ease-in-out;

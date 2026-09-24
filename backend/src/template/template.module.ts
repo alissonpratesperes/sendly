@@ -6,6 +6,7 @@ import { CompanyModule } from '../company/company.module';
 import { TemplateController } from './template.controller';
 import { TemplateParser } from './parsers/templateParser.parser';
 import { TemplateBuilder } from './builders/templateBuilder.builder';
+import { TemplateInterpolator } from './interpolators/templateInterpolator.interpolator';
 
 @Module({
   imports: [
@@ -21,9 +22,11 @@ import { TemplateBuilder } from './builders/templateBuilder.builder';
 
     TemplateParser,
     TemplateBuilder,
+    TemplateInterpolator,
   ],
   exports: [
     TemplateService,
+    TemplateInterpolator,
   ],
 })
 export class TemplateModule {}

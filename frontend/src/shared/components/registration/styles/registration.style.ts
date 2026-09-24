@@ -43,11 +43,11 @@ export const NavigationTabs = styled.nav`
     flex-direction: row;
     justify-content: center;
     column-gap: 15px;
-    border-radius: 14px;
+    border-radius: 26px;
     background-color: #E6E7EC;
 `;
 
-export const NavigationTabButtons = styled.button<NavigationTabProps>`
+export const NavigationTabButtons = styled.button<{ $active: boolean; $hovered: boolean; $anotherHovered: boolean; }>`
     padding: 15px;
     height: auto;
     display: flex;
@@ -63,9 +63,9 @@ export const NavigationTabButtons = styled.button<NavigationTabProps>`
     background-color: transparent;
     transition: font-weight 0.3s, color 0.3s ease, background-color 0.3s ease;
 
-    font-weight: ${ ({ $active }) => ($active ? 700 : 400) };
-    color: ${ ({ $active }) => $active ? "#FFFFFF" : "#223463" };
-    background-color: ${ ({ $active }) => $active ? "#223463" : "#E6E7EC" };
+    font-weight: ${ ({ $active, $anotherHovered }) => $active && !$anotherHovered ? 700 : 400 };
+    color: ${ ({ $active, $anotherHovered }) => $active && !$anotherHovered ? "#FFFFFF" : "#223463" };
+    background-color: ${ ({ $active, $anotherHovered }) => $active && !$anotherHovered ? "#223463" : "#E6E7EC" };
 
         &:hover {
             ${ ({ $active }) => !$active && `
@@ -73,7 +73,7 @@ export const NavigationTabButtons = styled.button<NavigationTabProps>`
                 color: #FFFFFF;
                 background-color: #223463;
                 animation: navigationTabButtonEffect 0.6s ease-in-out;
-            ` }
+            `}
         }
 
             svg {

@@ -5,7 +5,7 @@ import { DrawerOverlayProps } from '../interfaces/drawerOverlayProps.interface';
 export const DrawerOverlay = styled.div<DrawerOverlayProps>`
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.35);
+    background: rgba(0, 0, 0, 0.25);
     backdrop-filter: blur(7px);
     z-index: 999;
     transition: opacity 0.6s ease-in-out, visibility 0.6s ease-in-out;
@@ -40,11 +40,11 @@ export const Drawer = styled.div<{ $open: boolean; }>`
             background: transparent;
         }
         &::-webkit-scrollbar-thumb {
-            background: #c5c5c5;
+            background: #C5C5C5;
             border-radius: 10px;
         }
         &::-webkit-scrollbar-thumb:hover {
-            background: #aaa;
+            background: #AAAAAA;
         }
 
             @keyframes drawerOpen {
@@ -161,11 +161,28 @@ export const Fieldset = styled.fieldset`
 `;
 
 export const Legend = styled.legend`
-    padding: 0px 15px;
+    padding: 0px 7.5px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between
     font-family: "Inter";
     font-weight: 700;
     font-size: 18px;
     color: #171719;
+`;
+
+export const Tip = styled.span`
+    margin-left: auto;
+    padding: 7.5px;
+    font-family: "Lato";
+    font-weight: 700;
+    font-size: 14px;
+    color: #1C70E9;
+    background-color: #D3D2D9;
+    border-radius: 7px;
+    pointer-events: none;
 `;
 
 export const FieldWrapper = styled.div`

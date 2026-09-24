@@ -158,7 +158,7 @@ export const TemplateForm: React.FC<FormProps<TemplateFormData>> = ({ initialVal
             </Styled.FieldWrapper>
 
             <Styled.Fieldset>
-                <Styled.Legend> Conteúdo </Styled.Legend>
+                <Styled.Legend> Conteúdo <Styled.Tip> Variáveis permitidas: {"{{name}}"} </Styled.Tip> </Styled.Legend>
 
                 <Styled.FieldWrapper>
                     <Styled.Label htmlFor="header"> Cabeçalho </Styled.Label>

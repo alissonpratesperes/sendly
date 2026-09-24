@@ -55,7 +55,7 @@ export class ListService {
                 CompanyId: companyId,
                 Name: name,
                 Subject: subject,
-                Color: color,
+                Color: color.toUpperCase(),
             },
         });
 
@@ -79,20 +79,6 @@ export class ListService {
         }
 
         return this.toListResponse(list);
-    }
-
-    private async findByCompany(id: number, companyId: number): Promise<List | null> {
-        return this.prismaService.client.list.findFirst({
-            where: {
-                Id: id,
-                CompanyId: companyId,
-                DeletedAt: null,
-
-                Company: {
-                    DeletedAt: null,
-                },
-            },
-        });
     }
 
     async validateBelongsToCompany(id: number, companyId: number): Promise<void> {
@@ -154,7 +140,7 @@ export class ListService {
                 ...(companyId !== undefined && { CompanyId: companyId, }),
                 ...(name !== undefined && { Name: name, }),
                 ...(subject !== undefined && { Subject: subject, }),
-                ...(color !== undefined && { Color: color, }),
+                ...(color !== undefined && { Color: color.toUpperCase(), }),
             },
         });
 
