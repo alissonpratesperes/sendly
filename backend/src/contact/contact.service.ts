@@ -217,7 +217,6 @@ export class ContactService {
         const hasSeparatorDeclaration = lines[0]?.startsWith("sep=");
         const csvContent = hasSeparatorDeclaration ? lines.slice(1).join("\n") : content;
         const records = parse(csvContent, { columns: true, skip_empty_lines: true, }) as CsvContactBefore[];
-
         const contacts = records.map((record) => {
             const name = record.Nome?.trim() ?? "";
             const phone = record.Telefone?.trim() ?? "";
@@ -227,7 +226,6 @@ export class ContactService {
                 phone,
             };
         });
-
         const parsedContacts = parseContacts(contacts);
         const validContacts = parsedContacts.filter((contact) => contact.normalizedPhone !== null);
         const uniqueContacts = new Map<string, ParsedContact>();
@@ -256,7 +254,6 @@ export class ContactService {
                 contact.country,
                 contact.error ?? "Unknown batch import error",
             ));
-
         const existingContacts = await this.prismaService.client.contact.findMany({
             where: {
                 CompanyId: companyId,
@@ -268,7 +265,6 @@ export class ContactService {
                 Phone: true,
             },
         });
-
         const existingPhones = new Set(existingContacts.map((contact: Partial<Contact>) => contact.Phone));
         const contactsToCreate: ParsedContact[] = [];
         const existingContactsErrors: ParsedContact[] = [];
@@ -310,7 +306,7 @@ export class ContactService {
         ];
 
         await this.prismaService.client.contact.createMany({
-            data: contactsToCreate.map((contact) => ({
+            data: contactsToCreate.map((contact: ParsedContact) => ({
                 CompanyId: companyId,
                 ListId: listId,
                 Name: contact.name,

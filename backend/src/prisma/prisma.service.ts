@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client';
 import { ForbiddenException, Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 
 import { ExtendedPrismaClient } from './types/extendedPrismaClient';
+import { prismaForbiddenOperations } from './constants/prismaForbiddenOperations.constant';
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
@@ -27,60 +28,76 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
             const isSystemRoot = clsService.get<boolean>("isSystemRoot");
             const companyId = clsService.get<number>("companyId");
 
-            if (isSystemOperation) {
-                return query(args);
-            }
-            if (isSystemRoot && [ "findMany", "findFirst", "findFirstOrThrow", "findUnique", "findUniqueOrThrow", "count", "aggregate", "groupBy", ].includes(operation)) {
-                return query(args);
-            }
-            if (model === "Company" && isSystemRoot) {
-                return query(args);
-            }
-            if (model === "User" && isSystemRoot && ["create", "update"].includes(operation)) {
+            if (isSystemOperation || isSystemRoot) {
               return query(args);
             }
             if (companyId === undefined) {
-              throw new Error(`[MultiTenant] "companyId" missing in CLS for model "${model}"`);
+              throw new Error(`[MultiTenant] "companyId" missing in CLS for model "${ model }"`);
             }
 
-            const queryArgs = (args ?? {}) as any;
+            const queryArgs = { ...(args ?? {}), };
 
             if (model === "Company") {
-              const forbiddenOperations = [ "create", "createMany", "update", "updateMany", "delete", "deleteMany", "upsert", ];
-
-              if (forbiddenOperations.includes(operation)) {
+              if (prismaForbiddenOperations.includes(operation)) {
                 throw new ForbiddenException("You do not have permission to modify the entity: 'Company'");
-              }
+              } else {
+                queryArgs.where = {
+                  ...queryArgs.where,
+                  Id: companyId,
+                }
 
-              queryArgs.where = {
-                ...queryArgs.where,
-                Id: companyId,
+                return query(queryArgs);
               }
-
-              return query(queryArgs);
             }
+            if (model === "User") {
+              if (prismaForbiddenOperations.includes(operation)) {
+                throw new ForbiddenException("You do not have permission to modify the entity: 'User'");
+              } else {
+                queryArgs.where = {
+                  ...queryArgs.where,
+                  CompanyId: companyId,
+                }
+
+                return query(queryArgs);
+              }
+            }
+
             if (operation === "create") {
               queryArgs.data = {
                 ...queryArgs.data,
                 CompanyId: companyId,
-              }
+              };
+
+              return query(queryArgs);
             }
             if (operation === "createMany") {
               if (Array.isArray(queryArgs.data)) {
-                queryArgs.data = queryArgs.data.map(
-                  (item: any) => ({
-                    ...item,
-                    CompanyId: companyId,
-                  }),
-                );
+                queryArgs.data = queryArgs.data.map((item: any) => ({
+                  ...item,
+                  CompanyId: companyId,
+                }));
               }
+
+              return query(queryArgs);
             }
-            if (operation !== "create" && operation !== "createMany") {
+            if (operation === "upsert") {
               queryArgs.where = {
                 ...queryArgs.where,
                 CompanyId: companyId,
-              }
+              };
+
+              queryArgs.create = {
+                ...queryArgs.create,
+                CompanyId: companyId,
+              };
+
+              return query(queryArgs);
             }
+
+            queryArgs.where = {
+              ...queryArgs.where,
+              CompanyId: companyId,
+            };
 
             return query(queryArgs);
           },
