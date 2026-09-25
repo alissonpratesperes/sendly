@@ -163,7 +163,8 @@ export const ContactForm: React.FC<FormProps<ContactFormData>> = ({ initialValue
                     let allFetchedLists: ListResponseDto[] = [];
 
                     do {
-                        const response = await List({ page, limit: 30, search: "" });
+                        const companyId = initialValues?.companyId ?? userInformation?.company.id;
+                        const response = await List({ page, limit: 30, search: "", companyId, });
 
                         allFetchedLists = [ ...allFetchedLists, ...response.data ];
                         totalPages = response.totalPages;

@@ -43,6 +43,7 @@ export class ContactService {
     private buildContactListWhere(search?: string): Prisma.ContactWhereInput {
         return {
             DeletedAt: null,
+
             ...(search
                 ? {
                     OR: [
@@ -50,17 +51,10 @@ export class ContactService {
                         { Phone: { contains: search } },
                     ],
                 }
-            : {}),
+                : {}),
 
-            Company: {
-                DeletedAt: null,
-            },
             List: {
                 DeletedAt: null,
-
-                Company: {
-                    DeletedAt: null,
-                },
             },
         };
     }

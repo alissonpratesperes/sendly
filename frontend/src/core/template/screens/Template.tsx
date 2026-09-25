@@ -103,7 +103,7 @@ const Template = () => {
                 <LoadingState/>
             ) }
             { !isLoading && (
-                <Finder showAddButton={ userInformation?.isSystemRoot ?? false } placeholder="Pesquise um template por nome" buttonText="Cadastrar template" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } } />
+                <Finder showAddButton={ true } placeholder="Pesquise um template por nome" buttonText="Cadastrar template" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } } />
             ) }
             { !isLoading && templates.length > 0 && (
                 <Fragment>
@@ -111,8 +111,8 @@ const Template = () => {
                         headers={[ "Nome", "Criado em", "Editado em", ]}
                         data={ templates }
                         getEntityId={ (template: TemplateResponseDto) => template.id }
-                        onEdit={ userInformation?.isSystemRoot ? handleUpdate : undefined }
-                        onDelete={ userInformation?.isSystemRoot ? (id: number) => { setSelectedTemplateId(id); setIsDeleteModalOpen(true); } : undefined }
+                        onEdit={ handleUpdate }
+                        onDelete={ (id: number) => { setSelectedTemplateId(id); setIsDeleteModalOpen(true); } }
                         renderEntityRow={ (template: TemplateResponseDto) => (
                             <Fragment>
                                 <Styled.TableListBodyRowData> <b> { template.name } </b> </Styled.TableListBodyRowData>

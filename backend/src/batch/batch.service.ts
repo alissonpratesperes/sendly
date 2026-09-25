@@ -1,4 +1,3 @@
-import { ClsService } from 'nestjs-cls';
 import { Batch, Batch_Status, BatchSend_Status, Prisma } from '@prisma/client';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 
@@ -12,7 +11,6 @@ import { PaginatedResponseDto } from '../common/dtos/paginatedResponse.dto';
 @Injectable()
 export class BatchService {
     constructor(
-        private readonly clsService: ClsService,
         private readonly queueService: QueueService,
         private readonly prismaService: PrismaService,
         private readonly companyService: CompanyService,
@@ -192,8 +190,6 @@ export class BatchService {
     }
 
     async markAsRunning(id: number): Promise<void> {
-        this.clsService.set("isSystemOperation", true);
-
         const runningBatch = await this.prismaService.client.batch.updateMany({
             where: {
                 Id: id,
@@ -216,8 +212,6 @@ export class BatchService {
     }
 
     async markAsPartial(id: number): Promise<void> {
-        this.clsService.set("isSystemOperation", true);
-
         const partialBatch = await this.prismaService.client.batch.updateMany({
             where: {
                 Id: id,
@@ -240,8 +234,6 @@ export class BatchService {
     }
 
     async markAsFailed(id: number): Promise<void> {
-        this.clsService.set("isSystemOperation", true);
-
         const failedBatch = await this.prismaService.client.batch.updateMany({
             where: {
                 Id: id,
@@ -264,8 +256,6 @@ export class BatchService {
     }
 
     async markAsCompleted(id: number): Promise<void> {
-        this.clsService.set("isSystemOperation", true);
-
         const completedBatch = await this.prismaService.client.batch.updateMany({
             where: {
                 Id: id,
@@ -288,8 +278,6 @@ export class BatchService {
     }
 
     async finishIfCompleted(id: number): Promise<void> {
-        this.clsService.set("isSystemOperation", true);
-
         const pendingCount = await this.batchSendService.countByStatus(id, [
             BatchSend_Status.WAITING,
             BatchSend_Status.PROCESSING,

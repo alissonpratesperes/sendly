@@ -29,7 +29,7 @@ export class ListController {
     @Get()
     @HttpCode(HttpStatus.OK)
     async list(@Query() query: PaginationQueryDto): Promise<PaginatedResponseDto<GetListResponseDto>> {
-        return this.listService.list(query.page, query.limit, query.search);
+        return this.listService.list(query.page, query.limit, query.search, query.companyId);
     }
 
     @Patch(":id")

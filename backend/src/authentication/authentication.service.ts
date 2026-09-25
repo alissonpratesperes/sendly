@@ -19,9 +19,10 @@ export class AuthenticationService {
   ) {}
 
   async login(command: LoginCommandDto): Promise<AuthenticatedUserResponse> {
-    this.clsService.set("isSystemOperation", true);
-
     const user = await this.userService.readByEmail(command.email, true);
+
+    this.clsService.set("companyId", user.CompanyId);
+    this.clsService.set("isSystemRoot", user.IsSystemRoot);
 
     if(user.IsFirstAccess) {
       throw new BadRequestException("It's necessary to redefine the first password");
@@ -72,8 +73,6 @@ export class AuthenticationService {
   }
 
   async forgot(command: ForgotCommandDto): Promise<void> {
-    this.clsService.set("isSystemOperation", true);
-
     const user = await this.userService.readByEmail(command.email, false);
     const generatedPasswordResetToken = await this.tokenService.generatePasswordResetToken(user.Id, user.Email);
     const hashedPasswordResetToken = await this.tokenService.generatePasswordResetTokenHash(generatedPasswordResetToken);
@@ -82,8 +81,6 @@ export class AuthenticationService {
   }
 
   async reset(query: string, command: ResetCommandDto): Promise<void> {
-    this.clsService.set("isSystemOperation", true);
-
     if (command.newPassword !== command.confirmPassword) {
       throw new BadRequestException("Passwords do not match");
     }
@@ -98,6 +95,5 @@ export class AuthenticationService {
     const newHashedPassword = await bcrypt.hash(command.newPassword, 12);
 
     await this.userService.completePasswordReset(user.Id, newHashedPassword);
-    await this.userService.updateUserRefreshToken(user.Id, null);
   }
 }

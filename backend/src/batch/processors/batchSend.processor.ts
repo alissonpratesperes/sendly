@@ -1,5 +1,4 @@
 import { Job } from 'bullmq';
-import { ClsService } from 'nestjs-cls';
 import { Processor, WorkerHost } from '@nestjs/bullmq';
 
 import { BatchService } from '../batch.service';
@@ -12,7 +11,6 @@ import { TemplateInterpolator } from '../../template/interpolators/templateInter
 @Processor(requireEnvironmentVariable("REDIS_QUEUE_NAME"))
 export class BatchSendProcessor extends WorkerHost {
     constructor(
-        private readonly clsService: ClsService,
         private readonly batchService: BatchService,
         private readonly baileysService: BaileysService,
         private readonly batchSendService: BatchSendService,
@@ -22,43 +20,39 @@ export class BatchSendProcessor extends WorkerHost {
     }
 
     async process(job: Job<{ batchSendId: number }>): Promise<void> {
-        return this.clsService.run(async () => {
-            this.clsService.set("isSystemOperation", true);
+        const { batchSendId } = job.data;
+        const started = await this.batchSendService.startProcessing(batchSendId);
 
-            const { batchSendId } = job.data;
-            const started = await this.batchSendService.startProcessing(batchSendId);
+        if (!started) {
+            return;
+        }
 
-            if (!started) {
-                return;
-            }
+        const batchSend = await this.batchSendService.readForProcessing(batchSendId);
 
-            const batchSend = await this.batchSendService.readForProcessing(batchSendId);
+        if (!batchSend) {
+            return;
+        }
 
-            if (!batchSend) {
-                return;
-            }
+        const template = batchSend.TemplateSnapshot as unknown as ParsedTemplate;
+        const interpolatedTemplate = this.templateInterpolator.interpolate(template, batchSend.Contact.Name);
 
-            const template = batchSend.TemplateSnapshot as unknown as ParsedTemplate;
-            const interpolatedTemplate = this.templateInterpolator.interpolate(template, batchSend.Contact.Name);
+        try {
+            const response = await this.baileysService.sendTemplateSingleMessage(batchSend.Batch.CompanyId, batchSend.Contact.Phone, JSON.stringify(interpolatedTemplate));
+            const messageId = response.key?.id ?? `FALLBACK_ID_${ Date.now() }`;
 
-            try {
-                const response = await this.baileysService.sendTemplateSingleMessage(batchSend.Batch.CompanyId, batchSend.Contact.Phone, JSON.stringify(interpolatedTemplate));
-                const messageId = response.key?.id ?? `FALLBACK_ID_${ Date.now() }`;
+            await this.batchSendService.markAsSent(batchSendId, messageId);
+            await this.batchService.finishIfCompleted(batchSend.BatchId);
+        } catch (error) {
+            console.error(`[Processor] Erro ao enviar BatchSend "${ batchSendId }" (Tentativa ${ job.attemptsMade + 1 } de ${ job.opts.attempts })`, error);
 
-                await this.batchSendService.markAsSent(batchSendId, messageId);
+            const isLastAttempt = job.attemptsMade + 1 >= (job.opts.attempts ?? 1);
+
+            if (isLastAttempt) {
+                await this.batchSendService.markAsFailed(batchSendId, "BAILEYS_ERROR", error instanceof Error ? error.message : "Unknown 'Baileys' error");
                 await this.batchService.finishIfCompleted(batchSend.BatchId);
-            } catch (error) {
-                console.error(`[Processor] Erro ao enviar BatchSend "${ batchSendId }" (Tentativa ${ job.attemptsMade + 1 } de ${ job.opts.attempts })`, error);
-
-                const isLastAttempt = job.attemptsMade + 1 >= (job.opts.attempts ?? 1);
-
-                if (isLastAttempt) {
-                    await this.batchSendService.markAsFailed(batchSendId, "BAILEYS_ERROR", error instanceof Error ? error.message : "Unknown 'Baileys' error");
-                    await this.batchService.finishIfCompleted(batchSend.BatchId);
-                }
-
-                throw error;
             }
-        });
+
+            throw error;
+        }
     }
 }

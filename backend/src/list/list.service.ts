@@ -1,4 +1,3 @@
-import { ClsService } from 'nestjs-cls';
 import { List, Prisma } from '@prisma/client';
 import { Injectable, NotFoundException } from '@nestjs/common';
 
@@ -10,7 +9,6 @@ import { PaginatedResponseDto } from '../common/dtos/paginatedResponse.dto';
 @Injectable()
 export class ListService {
     constructor(
-        private readonly clsService: ClsService,
         private readonly prismaService: PrismaService,
         private readonly companyService: CompanyService,
     ) {}
@@ -29,8 +27,9 @@ export class ListService {
         );
     }
 
-    private buildListListWhere(search?: string): Prisma.ListWhereInput {
+    private buildListListWhere(search?: string, companyId?: number): Prisma.ListWhereInput {
         return {
+            ...(companyId !== undefined && { CompanyId: companyId, }),
             DeletedAt: null,
             ...(search
                 ? {
@@ -82,8 +81,6 @@ export class ListService {
     }
 
     async validateBelongsToCompany(id: number, companyId: number): Promise<void> {
-        this.clsService.set("isSystemOperation", true);
-
         try {
             const list = await this.prismaService.client.list.findFirst({
                 where: {
@@ -95,13 +92,11 @@ export class ListService {
             if (!list) {
                 throw new NotFoundException("List not found");
             }
-        } finally {
-            this.clsService.set("isSystemOperation", false);
-        }
+        } finally {}
     }
 
-    async list(page: number = 1, limit: number = 10, search?: string): Promise<PaginatedResponseDto<GetListResponseDto>> {
-        const where = this.buildListListWhere(search);
+    async list(page: number = 1, limit: number = 10, search?: string, companyId?: number): Promise<PaginatedResponseDto<GetListResponseDto>> {
+        const where = this.buildListListWhere(search, companyId);
         const [total, lists] = await Promise.all([
             this.prismaService.client.list.count({
                 where,

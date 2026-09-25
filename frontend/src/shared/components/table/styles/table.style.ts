@@ -113,17 +113,30 @@ export const TableListBodyRowDataActionButton = styled.button`
 `;
 
 export const TableListColorFragment = styled.div<TableListColorFragmentProps>`
-    height: 25px;
     width: 25px;
+    height: 25px;
+    min-width: 25px;
+    min-height: 25px;
+    flex: 0 0 25px;
     border-radius: 50%;
     vertical-align: middle;
+
     background-color: ${ ({ $color }) => $color };
 `;
 
 export const TableListColorContent = styled.div`
+    min-width: 0;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
     gap: 30px;
+`;
+
+export const ContactNameSpan = styled.span `
+    min-width: 0;
+    flex: 1;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    white-space: normal;
 `;

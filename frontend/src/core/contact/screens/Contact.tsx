@@ -166,7 +166,7 @@ const Contact = () => {
                         onDelete={ (id: number) => { setSelectedContactId(id); setIsDeleteModalOpen(true); } }
                         renderEntityRow={ (contact: ContactResponseDto) => (
                             <Fragment>
-                                <Styled.TableListBodyRowData> <Styled.TableListColorContent> <Styled.TableListColorFragment $color={ listsNames[contact.listId]?.color ?? "transparent" }/> { contact.name } </Styled.TableListColorContent> </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <Styled.TableListColorContent> <Styled.TableListColorFragment $color={ listsNames[contact.listId]?.color ?? "transparent" }/> <Styled.ContactNameSpan> { contact.name } </Styled.ContactNameSpan> </Styled.TableListColorContent> </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> <b> { parsePhoneNumberFromString(contact.phone)?.formatNational() } </b> </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> <ToggleSwitch label={ contact.active ? "Active" : "Inactive" } checked={ contact.active } onChange={ (event) => handleActiveCommunication(contact.id, event.target.checked) } /> </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> { formatDate(contact.createdAt, true) } </Styled.TableListBodyRowData>

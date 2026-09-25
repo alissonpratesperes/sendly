@@ -1,4 +1,3 @@
-import { ClsService } from 'nestjs-cls';
 import { BatchSend, BatchSend_Status, Prisma } from '@prisma/client';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 
@@ -10,7 +9,6 @@ import { TemplateSnapshot } from './types/templateSnapshot.type';
 @Injectable()
 export class BatchSendService {
     constructor(
-        private readonly clsService: ClsService,
         private readonly prismaService: PrismaService,
         private readonly contactService: ContactService,
         private readonly templateService: TemplateService,
@@ -203,8 +201,6 @@ export class BatchSendService {
     }
 
     async startProcessing(id: number): Promise<boolean> {
-        this.clsService.set("isSystemOperation", true);
-
         const updatedBatchSend = await this.prismaService.client.batchSend.updateMany({
             where: {
                 Id: id,
@@ -230,8 +226,6 @@ export class BatchSendService {
     }
 
     async markAsFailed(id: number, errorCode: string, errorMessage: string): Promise<void> {
-        this.clsService.set("isSystemOperation", true);
-
         const updatedBatchSend = await this.prismaService.client.batchSend.updateMany({
             where: {
                 Id: id,
@@ -254,8 +248,6 @@ export class BatchSendService {
     }
 
     async markAsSent(id: number, messageId: string): Promise<void> {
-        this.clsService.set("isSystemOperation", true);
-
         const updatedBatchSend = await this.prismaService.client.batchSend.updateMany({
             where: {
                 Id: id,

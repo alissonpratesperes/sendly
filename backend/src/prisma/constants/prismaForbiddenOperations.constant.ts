@@ -1,9 +1,9 @@
-export const prismaForbiddenOperations = [
+export const prismaForbiddenOperations = new Set<string>([
     "create",
     "createMany",
-    "update",
-    "updateMany",
     "delete",
+    "update",
     "deleteMany",
+    "updateMany",
     "upsert",
-] as const;
+]);

@@ -1,6 +1,5 @@
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
-import { ClsService } from 'nestjs-cls';
 import { Prisma, User } from '@prisma/client';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 
@@ -15,7 +14,6 @@ import { requireEnvironmentVariable } from '../common/utils/requireEnvironmentVa
 @Injectable()
 export class UserService {
     constructor(
-        private readonly clsService: ClsService,
         private readonly mailService: MailService,
         private readonly tokenService: TokenService,
         private readonly prismaService: PrismaService,
@@ -117,6 +115,25 @@ export class UserService {
         return this.toUserResponse(user);
     }
 
+    async readForAuthentication(id: number): Promise<User> {
+        const user = await this.prismaService.authClient.user.findFirst({
+            where: {
+                Id: id,
+                DeletedAt: null,
+
+                Company: {
+                    DeletedAt: null,
+                },
+            },
+        });
+
+        if (!user) {
+            throw new NotFoundException("User not found");
+        }
+
+        return user;
+    }
+
     private async findByEmail(companyId: number, email: string): Promise<User | null> {
         return this.prismaService.client.user.findUnique({
             where: {
@@ -129,37 +146,26 @@ export class UserService {
     }
 
     async readByEmail(email: string, requireNoPasswordReset: boolean) {
-        this.clsService.set("isSystemOperation", true);
+        const user = await this.prismaService.authClient.user.findFirst({
+            where: {
+                Email: email,
+                ...(requireNoPasswordReset && { PasswordResetToken: null, }),
+                DeletedAt: null,
 
-        try {
-            const user = await this.prismaService.client.user.findFirst({
-                where: {
-                    Email: email,
-                    ...(requireNoPasswordReset && {
-                        PasswordResetToken: null,
-                    }),
+                Company: {
                     DeletedAt: null,
-
-                    Company: {
-                        DeletedAt: null,
-                    },
                 },
-                include: {
-                    Company: true,
-                },
-            });
+            },
+            include: {
+                Company: true,
+            },
+        });
 
-            if (!user) {
-                throw new NotFoundException("User not found");
-            }
-
-            this.clsService.set("companyId", user.CompanyId);
-            this.clsService.set("isSystemRoot", user.IsSystemRoot);
-
-            return user;
-        } finally {
-            this.clsService.set("isSystemOperation", false);
+        if (!user) {
+            throw new NotFoundException("User not found");
         }
+
+        return user;
     }
 
     async list(page: number = 1, limit: number = 10, search?: string): Promise<PaginatedResponseDto<GetUserResponseDto>> {
@@ -215,11 +221,9 @@ export class UserService {
     }
 
     async updateUserRefreshToken(id: number, hashedRefreshToken: string | null): Promise<void> {
-        const user = await this.read(id);
-
-        await this.prismaService.client.user.update({
+        await this.prismaService.authClient.user.update({
             where: {
-                Id: user.id,
+                Id: id,
             },
             data: {
                 HashedRefreshToken: hashedRefreshToken,
@@ -228,11 +232,11 @@ export class UserService {
     }
 
     async startPasswordReset(id: number, generatedPasswordResetToken: string, hashedPasswordResetToken: string): Promise<void> {
-        const user = await this.read(id);
+        const user = await this.readForAuthentication(id);
 
-        await this.prismaService.client.user.update({
+        await this.prismaService.authClient.user.update({
             where: {
-                Id: user.id,
+                Id: user.Id,
             },
             data: {
                 HashedRefreshToken: null,
@@ -240,20 +244,20 @@ export class UserService {
             },
         });
         await this.mailService.sendForgotPasswordEmail(
-            user.email,
+            user.Email,
             {
-                name: user.name,
+                name: user.Name,
                 url: `${ requireEnvironmentVariable("BASE_FRONTEND_URL") }/authentication/reset?passwordResetToken=${ generatedPasswordResetToken }`,
             },
         );
     }
 
     async completePasswordReset(id: number, hashedPassword: string): Promise<void> {
-        const user = await this.read(id);
+        const user = await this.readForAuthentication(id);
 
-        await this.prismaService.client.user.update({
+        await this.prismaService.authClient.user.update({
             where: {
-                Id: user.id,
+                Id: user.Id,
             },
             data: {
                 Password: hashedPassword,

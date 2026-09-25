@@ -13,6 +13,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
     super();
   }
 
+  public authClient!: PrismaClient;
   public client!: ExtendedPrismaClient<this>;
 
   async onModuleInit() {
@@ -20,25 +21,31 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
 
     const clsService = this.clsService;
 
+    this.authClient = this;
     this.client = this.$extends({
       query: {
         $allModels: {
           async $allOperations({ model, operation, args, query }) {
-            const isSystemOperation = clsService.get<boolean>("isSystemOperation");
             const isSystemRoot = clsService.get<boolean>("isSystemRoot");
             const companyId = clsService.get<number>("companyId");
-
-            if (isSystemOperation || isSystemRoot) {
+ console.log("PRISMA", {
+        model,
+        operation,
+        isSystemRoot,
+        companyId,
+        args,
+    });
+            if (isSystemRoot) {
               return query(args);
             }
             if (companyId === undefined) {
               throw new Error(`[MultiTenant] "companyId" missing in CLS for model "${ model }"`);
             }
 
-            const queryArgs = { ...(args ?? {}), };
+            const queryArgs = (args ?? {}) as any;
 
             if (model === "Company") {
-              if (prismaForbiddenOperations.includes(operation)) {
+              if (prismaForbiddenOperations.has(operation)) {
                 throw new ForbiddenException("You do not have permission to modify the entity: 'Company'");
               } else {
                 queryArgs.where = {
@@ -50,7 +57,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
               }
             }
             if (model === "User") {
-              if (prismaForbiddenOperations.includes(operation)) {
+              if (prismaForbiddenOperations.has(operation)) {
                 throw new ForbiddenException("You do not have permission to modify the entity: 'User'");
               } else {
                 queryArgs.where = {
