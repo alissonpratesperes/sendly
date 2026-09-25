@@ -5,6 +5,7 @@ import { QueueService } from '../queue/queue.service';
 import { BatchSendService } from './batchSend.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { CompanyService } from '../company/company.service';
+import { ContactService } from 'src/contact/contact.service';
 import { GetBatchResponseDto } from './dtos/getBatchResponse.dto';
 import { PaginatedResponseDto } from '../common/dtos/paginatedResponse.dto';
 
@@ -14,6 +15,7 @@ export class BatchService {
         private readonly queueService: QueueService,
         private readonly prismaService: PrismaService,
         private readonly companyService: CompanyService,
+        private readonly contactService: ContactService,
         private readonly batchSendService: BatchSendService,
     ) {}
 
@@ -50,9 +52,11 @@ export class BatchService {
         };
     }
 
-    async create(companyId: number, name: string, templateId: number, contactIds: number[]): Promise<GetBatchResponseDto> {
+    async create(companyId: number, name: string, templateId: number, listId: number): Promise<GetBatchResponseDto> {
         await this.companyService.read(companyId);
 
+        const contacts = await this.contactService.findForBatch(companyId, listId);
+        const contactIds: number[] = contacts.map(contact => contact.id);
         const { batch, batchSendIds } = await this.prismaService.client.$transaction(async (tx) => {
             const batch = await tx.batch.create({
                 data: {
@@ -125,7 +129,9 @@ export class BatchService {
         );
     }
 
-    async update(id: number, name?: string, templateId?: number, contactIds?: number[]): Promise<GetBatchResponseDto> {
+    async update(id: number, name?: string, templateId?: number, listId?: number): Promise<GetBatchResponseDto> {
+        const contacts = await this.contactService.findForBatch(companyId, listId);
+        const contactIds: number[] = contacts.map(contact => contact.id);
         const { batch, batchSendIds } = await this.prismaService.client.$transaction(async (tx) => {
             const foundBatch = await tx.batch.findFirst({
                 where: {

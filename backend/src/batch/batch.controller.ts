@@ -17,7 +17,7 @@ export class BatchController {
     @Post()
     @HttpCode(HttpStatus.CREATED)
     async create(@Body() command: CreateBatchCommandDto): Promise<GetBatchResponseDto> {
-        return this.batchService.create(command.companyId, command.name, command.templateId, command.contactIds);
+        return this.batchService.create(command.companyId, command.name, command.templateId, command.listId);
     }
 
     @Get(":id")
@@ -35,7 +35,7 @@ export class BatchController {
     @Patch(":id")
     @HttpCode(HttpStatus.OK)
     async update(@Param() param: IdParamDto, @Body() command: UpdateBatchCommandDto): Promise<GetBatchResponseDto> {
-        return this.batchService.update(param.id, command.name, command.templateId, command.contactIds);
+        return this.batchService.update(param.id, command.name, command.templateId, command.listId);
     }
 
     @Delete(":id")

@@ -125,6 +125,25 @@ export class ContactService {
         });
     }
 
+    async findForBatch(companyId: number, listId: number): Promise<Contact[]> {
+        const contacts = await this.prismaService.client.contact.findMany({
+            where: {
+                List: {
+                    id: listId,
+                    companyId,
+                },
+
+                active: true,
+            },
+        });
+
+        if (contacts.length === 0) {
+            throw new BadRequestException("Contact list has no active contacts to communicate");
+        }
+
+        return contacts;
+    }
+
     async list(page: number = 1, limit: number = 10, search?: string): Promise<PaginatedResponseDto<GetContactResponseDto>> {
         const where = this.buildContactListWhere(search);
         const [total, contacts] = await Promise.all([
