@@ -6,7 +6,7 @@ import { EyeIcon, EyeOffIcon, UserLock } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import * as Styled from '../styles/reset.style';
-import { reset } from '../services/authentication.service';
+import { Reset as ResetPassword } from '../services/authentication.service';
 import { Decal } from '../../../shared/elements/decal/screens/Decal';
 import { Brand } from '../../../shared/elements/brand/screens/Brand';
 import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
@@ -43,7 +43,7 @@ const Reset: React.FC = () => {
         try {
             setIsLoading(true);
 
-            await reset(passwordResetToken, { newPassword, confirmPassword });
+            await ResetPassword(passwordResetToken, { newPassword, confirmPassword });
 
             toast.success("Nova senha definida com sucesso");
 

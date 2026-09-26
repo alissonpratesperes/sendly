@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const Decal = styled.div`
-    height: 200px;
+    height: 100px;
     width: 500px;
     display: flex;
     flex-direction: row;

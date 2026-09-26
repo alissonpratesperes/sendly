@@ -6,7 +6,7 @@ import React, { useState, Fragment } from 'react';
 import { EyeIcon, EyeOffIcon, LogInIcon, LockKeyhole } from 'lucide-react';
 
 import * as Styled from '../styles/login.style';
-import { login } from '../services/authentication.service';
+import { Login } from '../services/authentication.service';
 import { Decal } from '../../../shared/elements/decal/screens/Decal';
 import { Brand } from '../../../shared/elements/brand/screens/Brand';
 import { setAuthenticationStorage } from '../../../shared/utils/authenticationStorage.util';
@@ -29,7 +29,7 @@ const Authentication: React.FC = () => {
         try {
             setIsLoading(true);
 
-            const response = await login({ email, password });
+            const response = await Login({ email, password });
 
             setAuthenticationStorage(response);
 

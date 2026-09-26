@@ -2,7 +2,6 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 
-import { verifyExpiredToken } from '../../../utils/verifyExpiredToken.util';
 import { PrivateRouteProps } from '../interfaces/privateRouteProps.interface';
 import { clearAuthenticationStorage, getAuthenticationStorage } from '../../../utils/authenticationStorage.util';
 
@@ -12,9 +11,9 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ element }) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const { accessToken } = getAuthenticationStorage();
+        const { accessToken, refreshToken } = getAuthenticationStorage();
 
-        if (accessToken && !verifyExpiredToken(accessToken)) {
+        if (accessToken && refreshToken) {
             setIsAuthorized(true);
         } else {
             clearAuthenticationStorage();
@@ -28,7 +27,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ element }) => {
 
             navigate("/authentication", { replace: true });
         }
-    }, [isAuthorized, navigate]);
+    }, [ isAuthorized, navigate ]);
 
     if (isAuthorized === null) {
         return null;

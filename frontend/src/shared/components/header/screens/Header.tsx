@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Power, WifiCog } from 'lucide-react';
@@ -6,6 +7,7 @@ import * as Styled from '../styles/header.style';
 import Connection from '../../../components/connection/screens/Connection';
 import { HeaderMenuLinksProps } from '../interfaces/headerMenuLinksProps.interface';
 import { HEADER_MENU_ICONS_CONFIG } from '../constants/headerMenuIconsConfig.constant';
+import { Logout } from '../../../../core/authentication/services/authentication.service';
 import { clearAuthenticationStorage, getAuthenticationStorage } from '../../../utils/authenticationStorage.util';
 
 const Header: React.FC<HeaderMenuLinksProps> = ({ links }) => {
@@ -15,8 +17,12 @@ const Header: React.FC<HeaderMenuLinksProps> = ({ links }) => {
 
     const { userInformation } = getAuthenticationStorage();
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
+        await Logout();
+
         clearAuthenticationStorage();
+
+        toast.info("Logout realizado com sucesso");
 
         navigate("/authentication");
     }
@@ -33,7 +39,7 @@ const Header: React.FC<HeaderMenuLinksProps> = ({ links }) => {
 
                     return (
                         <Styled.NavItem key={ path } to={ path }>
-                            { Icon && <Icon size={ 25 } />}
+                            { Icon && <Icon size={ 25 } /> }
                             { label }
                         </Styled.NavItem>
                     );

@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import * as Styled from '../styles/forgot.style';
-import { forgot } from '../services/authentication.service';
 import { Decal } from '../../../shared/elements/decal/screens/Decal';
 import { Brand } from '../../../shared/elements/brand/screens/Brand';
+import { Forgot as ForgotPassword } from '../services/authentication.service';
 import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
 
 const Forgot: React.FC = () => {
@@ -21,7 +21,7 @@ const Forgot: React.FC = () => {
         try {
             setIsLoading(true);
 
-            await forgot({ email });
+            await ForgotPassword({ email });
 
             toast.success("Solicitação realizada com sucesso, verifique seu e-mail");
 

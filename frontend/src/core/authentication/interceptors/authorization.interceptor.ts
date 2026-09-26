@@ -1,7 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
 import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 
-import { refresh } from '../services/authentication.service';
+import { Refresh } from '../services/authentication.service';
 import { AuthenticationTokenPair } from '../types/authenticationTokenPair.type';
 import { RetryableAxiosRequestConfig } from '../types/retryableRequestAxiosConfig.type';
 import { clearAuthenticationStorage, getAuthenticationStorage, setAuthenticationStorage } from '../../../shared/utils/authenticationStorage.util';
@@ -9,6 +9,7 @@ import { clearAuthenticationStorage, getAuthenticationStorage, setAuthentication
 const authenticatedApi = axios.create({
     baseURL: process.env.REACT_APP_API_URL,
 });
+
 const handleLogout = (): void => {
     clearAuthenticationStorage();
 
@@ -54,7 +55,7 @@ authenticatedApi.interceptors.response.use(
 
         try {
             if(!refreshPromise) {
-                refreshPromise = refresh(refreshToken).then((response: AuthenticationTokenPair) => {
+                refreshPromise = Refresh(refreshToken).then((response: AuthenticationTokenPair) => {
                     setAuthenticationStorage(response);
 
                     if (!response?.accessToken) {

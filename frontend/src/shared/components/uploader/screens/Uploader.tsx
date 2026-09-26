@@ -8,14 +8,14 @@ import { UploaderItemType } from '../types/uploaderItemType.type';
 import { UploaderProps } from '../interfaces/UploaderProps.interface';
 import { ACCEPTED_CSV_CONFIG, ACCEPTED_IMAGES_CONFIG, ALLOWED_IMAGE_EXTENSIONS } from '../constants/uploaderFileTypesAndExtensions.constant';
 
-const MAX_CSV_FILE_SIZE = Number(process.env.REACT_APP_MAX_CSV_FILE_SIZE);
-const MAX_IMAGE_FILE_SIZE = Number(process.env.REACT_APP_MAX_IMAGE_SIZE);
+const REACT_APP_MAX_CSV_SIZE = Number(process.env.REACT_APP_REACT_APP_MAX_CSV_SIZE);
+const REACT_APP_MAX_IMAGE_SIZE = Number(process.env.REACT_APP_MAX_IMAGE_SIZE);
 
 const Uploader: React.FC<UploaderProps> = ({ value, existingImage, onRemoveExistingImage, onChange, isCsv = false }) => {
     const hasFile = !!value || !!existingImage;
     const shouldShowDropzone = !isCsv || !hasFile;
     const accept = isCsv ? ACCEPTED_CSV_CONFIG : ACCEPTED_IMAGES_CONFIG;
-    const maxFileSize = isCsv ? MAX_CSV_FILE_SIZE : MAX_IMAGE_FILE_SIZE;
+    const maxFileSize = isCsv ? REACT_APP_MAX_CSV_SIZE : REACT_APP_MAX_IMAGE_SIZE;
 
     const getMaxFileSizeText = useCallback(() => {
         const maxFileSizeInMB = maxFileSize / (1024 * 1024);

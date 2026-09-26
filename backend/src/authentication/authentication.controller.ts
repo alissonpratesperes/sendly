@@ -26,10 +26,11 @@ export class AuthenticationController {
 
   @Post("logout")
   @HttpCode(HttpStatus.OK)
-  async logout(@GetCurrentUser(["id"]) id: number): Promise<void> {
-    return this.authenticationService.logout(id);
+  async logout(@GetCurrentUser(["id"]) currentUser: { id: number }): Promise<void> {
+    return this.authenticationService.logout(currentUser.id);
   }
 
+  @IsPublic()
   @Post("refresh")
   @HttpCode(HttpStatus.OK)
   @UseGuards(RefreshTokenGuard)
