@@ -1,7 +1,7 @@
 import { toast } from 'react-toastify';
 import { FileRejection, useDropzone } from 'react-dropzone';
 import React, { useCallback, useEffect, useMemo } from 'react';
-import { Upload, ImageUp, FileSpreadsheet, Download, Trash2 } from 'lucide-react';
+import { Upload, ImageUp, FileUp, ImageDown, Eraser, FileDown } from 'lucide-react';
 
 import * as Styled from '../styles/uploader.style';
 import { UploaderItemType } from '../types/uploaderItemType.type';
@@ -12,6 +12,8 @@ const MAX_CSV_FILE_SIZE = Number(process.env.REACT_APP_MAX_CSV_FILE_SIZE);
 const MAX_IMAGE_FILE_SIZE = Number(process.env.REACT_APP_MAX_IMAGE_SIZE);
 
 const Uploader: React.FC<UploaderProps> = ({ value, existingImage, onRemoveExistingImage, onChange, isCsv = false }) => {
+    const hasFile = !!value || !!existingImage;
+    const shouldShowDropzone = !isCsv || !hasFile;
     const accept = isCsv ? ACCEPTED_CSV_CONFIG : ACCEPTED_IMAGES_CONFIG;
     const maxFileSize = isCsv ? MAX_CSV_FILE_SIZE : MAX_IMAGE_FILE_SIZE;
 
@@ -160,27 +162,28 @@ const Uploader: React.FC<UploaderProps> = ({ value, existingImage, onRemoveExist
 
     return (
         <Styled.UploaderWrapper>
-            <Styled.DropzoneArea { ...getRootProps() } $isDragActive={ isDragActive } $hasFile={ !!value || !!existingImage } $backgroundImage={ filePreview }>
-                <input { ...getInputProps() } />
+            { shouldShowDropzone && (
+                <Styled.DropzoneArea { ...getRootProps() } $isDragActive={ isDragActive } $hasFile={ !!value || !!existingImage } $backgroundImage={ filePreview }>
+                    <input { ...getInputProps() } />
 
-                { !value && !existingImage &&  (
-                    <Styled.DropzoneTextContainer>
-                        <Styled.DropzoneUploadIcon> <Upload size={ 25 } /> </Styled.DropzoneUploadIcon>
+                    { !hasFile && (
+                        <Styled.DropzoneTextContainer>
+                            <Styled.DropzoneUploadIcon> <Upload size={ 25 } /> </Styled.DropzoneUploadIcon>
 
-                        <Styled.DropzoneStrongContent> { isDragActive ? `Solte ${ isCsv ? "o arquivo CSV" : "a imagem" } aqui` : `Arraste e solte ${ isCsv ? "o arquivo CSV" : "a imagem" }` } </Styled.DropzoneStrongContent>
+                            <Styled.DropzoneStrongContent> { isDragActive ? `Solte ${ isCsv ? "o arquivo CSV" : "a imagem" } aqui` : `Arraste e solte ${ isCsv ? "o arquivo CSV" : "a imagem" }` } </Styled.DropzoneStrongContent>
 
-                        <Styled.DropzoneLabel> ou selecione o arquivo </Styled.DropzoneLabel>
+                            <Styled.DropzoneLabel> ou selecione o arquivo </Styled.DropzoneLabel>
 
-                        <Styled.DropzoneActiveText> { isDragActive ? `Somente ${ isCsv ? "um arquivo CSV é permitido" : "uma imagem é permitida" }` : `Tipo de arquivo ${ getAcceptedText() }` } </Styled.DropzoneActiveText>
-                    </Styled.DropzoneTextContainer>
-                ) }
-            </Styled.DropzoneArea>
-
-            { (value || existingImage) && (
+                            <Styled.DropzoneActiveText> { isDragActive ? `Somente ${ isCsv ? "um arquivo CSV é permitido" : "uma imagem é permitida" }` : `Tipo de arquivo ${ getAcceptedText() }` } </Styled.DropzoneActiveText>
+                        </Styled.DropzoneTextContainer>
+                    ) }
+                </Styled.DropzoneArea>
+            ) }
+            { hasFile && (
                 <Styled.DraggedFilesList>
                     <Styled.DraggedFilesListItem>
                         <Styled.ListItemContainer>
-                            <Styled.DraggedFileIcon> { isCsv ? <FileSpreadsheet size={ 25 } /> : <ImageUp size={ 25 } /> } </Styled.DraggedFileIcon>
+                            <Styled.DraggedFileIcon> { isCsv ? <FileUp size={ 25 } /> : <ImageUp size={ 25 } /> } </Styled.DraggedFileIcon>
 
                             <Styled.DraggedFileData>
                                 <Styled.DraggedFileName> { getFileName(value) } </Styled.DraggedFileName>
@@ -190,8 +193,8 @@ const Uploader: React.FC<UploaderProps> = ({ value, existingImage, onRemoveExist
                         </Styled.ListItemContainer>
 
                         <Styled.DraggedFilesActionsContainer>
-                            <Styled.DraggedFilesActionButton type="button" onClick={ downloadFile }> <Download size={ 25 } /> </Styled.DraggedFilesActionButton>
-                            <Styled.DraggedFilesActionButton type="button" onClick={ onFileRemove }> <Trash2 size={ 25 } /> </Styled.DraggedFilesActionButton>
+                            <Styled.DraggedFilesActionButton type="button" onClick={ downloadFile }> { isCsv ? <FileDown size={ 25 } /> : <ImageDown size={ 25 } /> } </Styled.DraggedFilesActionButton>
+                            <Styled.DraggedFilesActionButton type="button" onClick={ onFileRemove }> <Eraser size={ 25 } /> </Styled.DraggedFilesActionButton>
                         </Styled.DraggedFilesActionsContainer>
                     </Styled.DraggedFilesListItem>
                 </Styled.DraggedFilesList>

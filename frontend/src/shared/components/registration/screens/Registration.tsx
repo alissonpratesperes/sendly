@@ -32,15 +32,7 @@ const Registration: React.FC = () => {
                         const isActive = location.pathname.endsWith(tab.path);
 
                         return (
-                            <Styled.NavigationTabButtons
-            key={tab.path}
-            onClick={() => navigate(`/registrations/${tab.path}`)}
-            onMouseEnter={() => setHoveredTab(tab.path)}
-            onMouseLeave={() => setHoveredTab(null)}
-            $active={isActive}
-            $hovered={isHovered}
-            $anotherHovered={hoveredTab !== null && !isHovered}
-        >
+                            <Styled.NavigationTabButtons key={ tab.path } onClick={ () => navigate(`/registrations/${tab.path}`) } onMouseEnter={ () => setHoveredTab(tab.path) } onMouseLeave={ () => setHoveredTab(null) } $active={ isActive } $hovered={ isHovered } $anotherHovered={ hoveredTab !== null && !isHovered }>
                                 { tab.icon }
 
                                 <Styled.NavigationTabButtonText $active={ isActive }> { tab.label } </Styled.NavigationTabButtonText>

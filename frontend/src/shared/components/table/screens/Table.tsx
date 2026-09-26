@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pen, Trash } from 'lucide-react';
+import { SquarePen, Trash } from 'lucide-react';
 
 import * as Styled from '../styles/table.style';
 import { TableProps } from '../interfaces/tableProps.interface';
@@ -28,7 +28,7 @@ export const Table = <T,>({ headers, data, getEntityId, onEdit, onDelete, render
                                                 <Styled.TableListBodyRowDataActions>
                                                     { onEdit && (
                                                         <Styled.TableListBodyRowDataActionButton type="button" onClick={ () => onEdit(id) }>
-                                                            <Pen size={ 25 } color="#238636" />
+                                                            <SquarePen size={ 25 } color="#238636" />
                                                         </Styled.TableListBodyRowDataActionButton>
                                                     ) }
                                                     { onDelete && (

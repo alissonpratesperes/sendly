@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Power, RadioTower } from 'lucide-react';
+import { Power, WifiCog } from 'lucide-react';
 
 import * as Styled from '../styles/header.style';
 import Connection from '../../../components/connection/screens/Connection';
@@ -48,7 +48,7 @@ const Header: React.FC<HeaderMenuLinksProps> = ({ links }) => {
 
                 <Styled.UserActionContainer>
                     <Styled.WhatsAppButton type="button" onClick={ () => setIsConnectionOpen(true) }>
-                        <RadioTower size={ 25 } />
+                        <WifiCog size={ 25 } />
                     </Styled.WhatsAppButton>
                     <Styled.LogOutButton type="button" onClick={ () => handleLogout() }>
                         <Power size={ 25 } />

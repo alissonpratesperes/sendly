@@ -1,5 +1,5 @@
 import React from 'react';
-import { CirclePlus, Search } from 'lucide-react';
+import { DatabasePlus, Search } from 'lucide-react';
 
 import * as Styled from '../styles/finder.style';
 import { FinderProps } from '../interfaces/finderProps.interface';
@@ -15,7 +15,7 @@ export const Finder: React.FC<FinderProps> = ({ showAddButton = false, placehold
 
             { showAddButton && (
                 <Styled.AddButton type="button" onClick={ onAdd }>
-                    <CirclePlus size={ 25 } />
+                    <DatabasePlus size={ 25 } />
 
                     <Styled.SearchInputSubmitText> { buttonText } </Styled.SearchInputSubmitText>
                 </Styled.AddButton>
