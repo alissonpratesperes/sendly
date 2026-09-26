@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react';
-import { X, Ban, SquarePen, Save } from 'lucide-react';
+import { X, Ban, SquarePen, Save, HardDriveUpload } from 'lucide-react';
 
 import * as Styled from '../styles/drawer.style';
 import { DrawerProps } from '../interfaces/drawerProps.interface';
@@ -34,9 +34,9 @@ export const Drawer: React.FC<DrawerProps> = ({ isOpen, isSubmitting = false, fo
                                         <Styled.FooterButtonText> Cancelar </Styled.FooterButtonText>
                                     </Styled.FooterButton>
                                     <Styled.FooterButton type="submit" $variant="primary" className="primary" form={ formId }>
-                                        { mode === "edit"? <SquarePen size={ 25 } /> : <Save size={ 25 } /> }
+                                        { mode === "create" ? <Save size={ 25 } /> : mode === "edit"? <SquarePen size={ 25 } /> : <HardDriveUpload size={ 25 }/> }
 
-                                        <Styled.FooterButtonText> { mode === "edit" ? "Atualizar" : "Cadastrar" } </Styled.FooterButtonText>
+                                        <Styled.FooterButtonText> { mode === "create" ? "Cadastrar" : mode === "edit" ? "Atualizar" : "Importar" } </Styled.FooterButtonText>
                                     </Styled.FooterButton>
                                 </Fragment>
                             ) }

@@ -4,7 +4,7 @@ export interface DrawerProps {
     formId?: string;
     title: string;
     children: React.ReactNode;
-    mode?: "create" | "edit";
+    mode?: "create" | "edit" | "import";
 
     onClose: () => void;
 }

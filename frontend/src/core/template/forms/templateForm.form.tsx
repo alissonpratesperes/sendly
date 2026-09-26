@@ -174,7 +174,7 @@ export const TemplateForm: React.FC<FormProps<TemplateFormData>> = ({ initialVal
                     <Styled.Input id="footer" name="footer" placeholder="Digite o rodapé do template" value={ templateFields.footer } onChange={ (event) => handleChange(event, setTemplateFields) } />
                 </Styled.FieldWrapper>
 
-                <Uploader value={ templateImage } existingImage={ existingImage }  onRemoveExistingImage={ () => { setExistingImage(undefined); } } onChange={ (file) => { if (file instanceof File) { setTemplateImage(file); } else { setTemplateImage(undefined); } } } />
+                <Uploader value={ templateImage } existingImage={ existingImage } onRemoveExistingImage={ () => { setExistingImage(undefined); } } onChange={ (file) => { if (file instanceof File) { setTemplateImage(file); } else { setTemplateImage(undefined); } } } />
             </Styled.Fieldset>
         </Styled.Form>
     );

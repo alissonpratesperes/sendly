@@ -9,6 +9,7 @@ import { List, Update, Delete } from '../services/contact.service';
 import { formatDate } from '../../../shared/utils/formatDate.util';
 import Modal from '../../../shared/components/modal/screens/Modal';
 import { ListResponseDto } from '../../list/dtos/listResponse.dto';
+import { ContactImportForm } from '../forms/contactImportForm.form';
 import { ContactFormData } from '../schemas/contactFormSchema.schema';
 import { Table } from '../../../shared/components/table/screens/Table';
 import { Finder } from '../../../shared/components/finder/screen/Finder';
@@ -31,11 +32,15 @@ const Contact = () => {
     const [contacts, setContacts] = useState<ContactResponseDto[]>([]);
     const [updating, setUpdating] = useState<ContactFormData | null>(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+    const [isImportDrawerOpen, setIsImportDrawerOpen] = useState<boolean>(false);
     const [selectedContactId, setSelectedContactId] = useState<number | null>(null);
     const [listsNames, setListsNames] = useState<Record<number, ListResponseDto>>({});
 
     const listsNamesRef = useRef<Record<number, ListResponseDto>>({});
 
+    const handleImport = () => {
+        setIsImportDrawerOpen(true);
+    };
     const handleCreate = () => {
         setUpdating(null);
         setIsDrawerOpen(true);
@@ -154,7 +159,7 @@ const Contact = () => {
                 <LoadingState/>
             ) }
             { !isLoading && (
-                <Finder showAddButton={ true } placeholder="Pesquise um contato por nome ou telefone" buttonText="Cadastrar contato" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } } />
+                <Finder showImportButton={ true } importButtonText="Importar contatos" showAddButton={ true } placeholder="Pesquise um contato por nome ou telefone" buttonText="Cadastrar contato" search={ search } onAdd={ handleCreate } onImport={ handleImport } onSearchChange={ (value) => { setSearch(value); setPage(1); } } />
             ) }
             { !isLoading && contacts.length > 0 && (
                 <Fragment>
@@ -184,6 +189,9 @@ const Contact = () => {
 
             <Modal isOpen={ isDeleteModalOpen } entityName={ contacts.find((contact: ContactResponseDto) => contact.id === selectedContactId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleDelete } />
 
+            <Drawer isOpen={ isImportDrawerOpen } isSubmitting={ isSubmitting } formId="contact-import-form" title={ "Importar contatos" } mode="import" onClose={ () => { setIsImportDrawerOpen(false); } }>
+                <ContactImportForm onCancel={ () => { setIsImportDrawerOpen(false); if (isSubmitting) { return; } } } onSubmit={ () => { setIsImportDrawerOpen(false); handleRead(); } } onLoadingChange={ setIsSubmitting } />
+            </Drawer>
             <Drawer isOpen={ isDrawerOpen } isSubmitting={ isSubmitting } formId="contact-form" title={ updating ? "Editar contato" : "Novo contato" } mode={ updating ? "edit" : "create" } onClose={ () => { setIsDrawerOpen(false); setUpdating(null); } }>
                 <ContactForm initialValues={ updating ?? undefined } onCancel={ () => { setIsDrawerOpen(false); if (isSubmitting) { return; } setUpdating(null); } } onSubmit={ () => { setIsDrawerOpen(false); setUpdating(null); handleRead(); } } onLoadingChange={ setIsSubmitting } />
             </Drawer>

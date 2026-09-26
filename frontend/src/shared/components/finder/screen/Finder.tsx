@@ -1,10 +1,10 @@
 import React from 'react';
-import { DatabasePlus, Search } from 'lucide-react';
+import { DatabaseArrowUp, DatabasePlus, Search } from 'lucide-react';
 
 import * as Styled from '../styles/finder.style';
 import { FinderProps } from '../interfaces/finderProps.interface';
 
-export const Finder: React.FC<FinderProps> = ({ showAddButton = false, placeholder, buttonText, search, onAdd, onSearchChange }) => {
+export const Finder: React.FC<FinderProps> = ({ showImportButton = false, importButtonText, showAddButton = false, placeholder, buttonText, search, onAdd, onImport, onSearchChange }) => {
     return (
         <Styled.SearchInputWrapper>
             <Styled.SearchInputContainer>
@@ -13,6 +13,13 @@ export const Finder: React.FC<FinderProps> = ({ showAddButton = false, placehold
                 <Styled.SearchInputField type="text" placeholder={ placeholder } value={ search } onChange={ (event) => onSearchChange(event.target.value) } />
             </Styled.SearchInputContainer>
 
+            { showImportButton && (
+                <Styled.AddButton type="button" onClick={ onImport }>
+                    <DatabaseArrowUp size={ 25 } />
+
+                    <Styled.SearchInputSubmitText> { importButtonText } </Styled.SearchInputSubmitText>
+                </Styled.AddButton>
+            ) }
             { showAddButton && (
                 <Styled.AddButton type="button" onClick={ onAdd }>
                     <DatabasePlus size={ 25 } />
