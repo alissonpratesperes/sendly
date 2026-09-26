@@ -21,11 +21,27 @@ export const ConnectionBadgeContainer = styled.span<ConnectionBadgeProps>`
     justify-content: center;
     column-gap: 15px;
     font-family: "Inter";
-    font-weight: 500;
+    font-weight: 700;
     font-size: 16px;
-    border-radius: 50px;
+    border-radius: 14px;
 
     color: ${ ({ variant }) => CONNECTION_BADGE_CONFIG[variant].fontColor };
     margin-bottom: ${ ({ variant }) => variant === ConnectionBadgeVariant.CONNECTED ? "0px" : "30px" };
     background-color: ${ ({ variant }) => CONNECTION_BADGE_CONFIG[variant].backgroundColor };
+`;
+
+export const ConnectionLabel = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 7.5px;
+`;
+
+export const ConnectionPhone = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 7.5px;
 `;

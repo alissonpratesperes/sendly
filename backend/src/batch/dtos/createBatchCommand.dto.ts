@@ -18,7 +18,6 @@ export class CreateBatchCommandDto {
     @ApiProperty({ example: 10 })
     templateId!: number;
 
-
     @Min(1)
     @IsInt()
     @ApiProperty({ example: 1 })

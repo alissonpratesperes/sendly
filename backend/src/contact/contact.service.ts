@@ -128,12 +128,13 @@ export class ContactService {
     async findForBatch(companyId: number, listId: number): Promise<Contact[]> {
         const contacts = await this.prismaService.client.contact.findMany({
             where: {
-                List: {
-                    id: listId,
-                    companyId,
-                },
+                Active: true,
+                DeletedAt: null,
 
-                active: true,
+                List: {
+                    Id: listId,
+                    CompanyId: companyId,
+                },
             },
         });
 

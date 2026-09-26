@@ -1,5 +1,5 @@
 import { toast } from 'react-toastify';
-import { Ban, GlobeOff, WifiSync, X } from 'lucide-react';
+import { Ban, GlobeOff, GlobeCode, X } from 'lucide-react';
 import React, { useState, useEffect, Fragment } from 'react';
 
 import * as Styled from '../../../styles/modal.style';
@@ -16,6 +16,7 @@ const Connection: React.FC<ConnectionProps> = ({ onPairingSuccess, isOpen, compa
     const [isClosing, setIsClosing] = useState(false);
     const [loadingStatus, setLoadingStatus] = useState(false);
     const [pairingCode, setPairingCode] = useState<string | null>(null);
+    const [connectedPhone, setConnectedPhone] = useState<string | null>(null);
     const [status, setStatus] = useState<BaileysStatusResponseDto | null>(null);
 
     const handleDisconnect = async () => {
@@ -64,6 +65,7 @@ const Connection: React.FC<ConnectionProps> = ({ onPairingSuccess, isOpen, compa
                 const response = await Status({ id: companyId });
 
                 setStatus(response);
+                setConnectedPhone(response.phone ?? null);
             } catch (error) {
                 toast.error("Erro ao carregar status da sessão do WhatsApp");
 
@@ -91,7 +93,7 @@ const Connection: React.FC<ConnectionProps> = ({ onPairingSuccess, isOpen, compa
                             { loadingStatus ? (
                                 <LoadingState />
                             ) : status?.connected ? (
-                                <ConnectionBadge variant={ ConnectionBadgeVariant.CONNECTED }/>
+                                <ConnectionBadge variant={ ConnectionBadgeVariant.CONNECTED } phone={ connectedPhone ?? undefined }/>
                             ) : (
                                 <Fragment>
                                     { pairingCode ? (
@@ -120,7 +122,7 @@ const Connection: React.FC<ConnectionProps> = ({ onPairingSuccess, isOpen, compa
 
                             { !status?.connected && !pairingCode && (
                                 <Styled.ModalTertiaryButton type="submit" form="baileys-form" disabled={ loadingStatus }>
-                                  <WifiSync size={ 25 } />
+                                  <GlobeCode size={ 25 } />
 
                                   <Styled.ModalFooterButtonText> Gerar código </Styled.ModalFooterButtonText>
                                 </Styled.ModalTertiaryButton>

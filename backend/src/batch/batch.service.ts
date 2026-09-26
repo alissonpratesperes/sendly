@@ -56,7 +56,7 @@ export class BatchService {
         await this.companyService.read(companyId);
 
         const contacts = await this.contactService.findForBatch(companyId, listId);
-        const contactIds: number[] = contacts.map(contact => contact.id);
+        const contactIds: number[] = contacts.map(contact => contact.Id);
         const { batch, batchSendIds } = await this.prismaService.client.$transaction(async (tx) => {
             const batch = await tx.batch.create({
                 data: {
@@ -130,8 +130,6 @@ export class BatchService {
     }
 
     async update(id: number, name?: string, templateId?: number, listId?: number): Promise<GetBatchResponseDto> {
-        const contacts = await this.contactService.findForBatch(companyId, listId);
-        const contactIds: number[] = contacts.map(contact => contact.id);
         const { batch, batchSendIds } = await this.prismaService.client.$transaction(async (tx) => {
             const foundBatch = await tx.batch.findFirst({
                 where: {
@@ -173,13 +171,22 @@ export class BatchService {
                     DeletedAt: null,
                 },
             });
+
+            let contactIds = currentBatchSend.currentContactIds;
+
+            if (listId !== undefined) {
+                const contacts = await this.contactService.findForBatch(batch.CompanyId, listId);
+
+                contactIds = contacts.map(contact => contact.Id);
+            }
+
             const batchSendIds = await this.batchSendService.update(
                 tx,
 
                 batch.CompanyId,
                 batch.Id,
                 templateId ?? currentBatchSend.currentTemplateId,
-                contactIds ?? currentBatchSend.currentContactIds,
+                contactIds,
             );
 
             return {

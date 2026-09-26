@@ -1,4 +1,4 @@
-import { Wifi, WifiCog, WifiOff, } from 'lucide-react';
+import { GlobeCheck, GlobeLock, GlobeX, } from 'lucide-react';
 
 import { ConnectionBadgeVariant } from '../enums/connectionBadgeVariant.enum';
 import { ConnectionBadgeConfigItemProps } from '../interfaces/connectionBadgeConfigItemProps.interface';
@@ -8,18 +8,18 @@ export const CONNECTION_BADGE_CONFIG: Record<ConnectionBadgeVariant, ConnectionB
         label: "Conectado",
         fontColor: "#10CF67",
         backgroundColor: "#ECFDF3",
-        icon: Wifi,
+        icon: GlobeCheck,
     },
     [ConnectionBadgeVariant.WAITING]: {
         label: "Aguardando conexão",
         fontColor: "#B54708",
         backgroundColor: "#FFFAEB",
-        icon: WifiCog,
+        icon: GlobeLock,
     },
     [ConnectionBadgeVariant.DISCONNECTED]: {
         label: "Desconectado",
         fontColor: "#DC143C",
         backgroundColor: "#FDECEF",
-        icon: WifiOff,
+        icon: GlobeX,
     },
 }

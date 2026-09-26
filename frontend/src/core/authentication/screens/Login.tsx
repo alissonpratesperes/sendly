@@ -7,9 +7,8 @@ import { EyeIcon, EyeOffIcon, LogInIcon, LockKeyhole } from 'lucide-react';
 
 import * as Styled from '../styles/login.style';
 import { login } from '../services/authentication.service';
-import { Wave } from '../../../shared/elements/wave/screens/Wave';
-import { Brand } from '../../../shared/elements/brand/screens/brand';
-import { Copyright } from '../../../shared/elements/copyright/screens/Copyright';
+import { Decal } from '../../../shared/elements/decal/screens/Decal';
+import { Brand } from '../../../shared/elements/brand/screens/Brand';
 import { setAuthenticationStorage } from '../../../shared/utils/authenticationStorage.util';
 import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
 
@@ -58,8 +57,6 @@ const Authentication: React.FC = () => {
 
     return (
         <Styled.AuthFormContainer>
-            <Wave/>
-
             <Styled.LoginForm onSubmit={ handleSubmit }>
                 <Brand/>
 
@@ -98,9 +95,9 @@ const Authentication: React.FC = () => {
                         </Fragment>
                     ) }
                 </Styled.LoginButtonsContainer>
-
-                <Copyright/>
             </Styled.LoginForm>
+
+            <Decal/>
         </Styled.AuthFormContainer>
     );
 }

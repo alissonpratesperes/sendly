@@ -28,13 +28,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
           async $allOperations({ model, operation, args, query }) {
             const isSystemRoot = clsService.get<boolean>("isSystemRoot");
             const companyId = clsService.get<number>("companyId");
- console.log("PRISMA", {
-        model,
-        operation,
-        isSystemRoot,
-        companyId,
-        args,
-    });
+
             if (isSystemRoot) {
               return query(args);
             }

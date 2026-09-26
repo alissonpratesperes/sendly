@@ -7,9 +7,8 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import * as Styled from '../styles/reset.style';
 import { reset } from '../services/authentication.service';
-import { Wave } from '../../../shared/elements/wave/screens/Wave';
-import { Brand } from '../../../shared/elements/brand/screens/brand';
-import { Copyright } from '../../../shared/elements/copyright/screens/Copyright';
+import { Decal } from '../../../shared/elements/decal/screens/Decal';
+import { Brand } from '../../../shared/elements/brand/screens/Brand';
 import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
 
 const Reset: React.FC = () => {
@@ -72,13 +71,11 @@ const Reset: React.FC = () => {
 
     return (
         <Styled.ResetFormContainer>
-            <Wave />
-
             <Styled.ResetForm onSubmit={ handleSubmit }>
                 <Brand/>
 
                 <Styled.FormTitle> Definir uma nova senha </Styled.FormTitle>
-                <Styled.FormSubtitle> Para redefinir sua senha, utilize os campos abaixo </Styled.FormSubtitle>
+                <Styled.FormSubtitle> Para configurar sua nova senha, utilize os dois campos abaixo </Styled.FormSubtitle>
 
                 <Styled.InputWrapper>
                     <Styled.Label htmlFor="newPassword"> NOVA SENHA </Styled.Label>
@@ -105,9 +102,9 @@ const Reset: React.FC = () => {
                         <Styled.PasswordButtonText> Criar senha </Styled.PasswordButtonText>
                     </Styled.PasswordButton>
                 ) }
-
-                <Copyright/>
             </Styled.ResetForm>
+
+            <Decal />
         </Styled.ResetFormContainer>
     )
 }

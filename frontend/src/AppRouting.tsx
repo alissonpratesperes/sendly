@@ -12,7 +12,7 @@ import PrivateRoute from './shared/components/private/screens/PrivateRoute';
 import { AppRoutes } from './shared/components/header/enums/appRoutes.enum';
 import Registration from './shared/components/registration/screens/Registration';
 
-const PATHS_WITHOUT_APP_LAYOUT = [ "/authentication", "/authentication/forgot", "/authentication/reset", ];
+const PATHS_WITHOUT_APP_LAYOUT = [ "/authentication", "/authentication/", "/authentication/forgot", "/authentication/reset", ];
 
 export const AppRouting: React.FC = () => {
     const location = useLocation();

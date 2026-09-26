@@ -25,7 +25,7 @@ export const FormTitle = styled.h4`
     margin-bottom: 15px;
     align-self: flex-start;
     font-family: "Inter";
-    font-weight: 700;
+    font-weight: 900;
     font-size: 25px;
     color: #171719;
 `;
@@ -34,8 +34,8 @@ export const FormSubtitle = styled.span`
     margin-bottom: 30px;
     align-self: flex-start;
     font-family: "Inter";
-    font-weight: 400;
-    font-size: 14px;
+    font-weight: 500;
+    font-size: 18px;
     color: #525059;
 `;
 

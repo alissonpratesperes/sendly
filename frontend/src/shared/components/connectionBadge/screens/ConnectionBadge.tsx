@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { Fragment } from 'react';
+import { Smartphone } from 'lucide-react';
+import parsePhoneNumberFromString from 'libphonenumber-js';
 
 import * as Styled from '../styles/connectionBadge.style';
 import { ConnectionBadgeProps } from '../interfaces/connectionBadgeProps.interface';
 import { CONNECTION_BADGE_CONFIG } from '../constants/connectionBadgeConfig.constant';
 
-const ConnectionBadge: React.FC<ConnectionBadgeProps> = ({ variant }) => {
+const ConnectionBadge: React.FC<ConnectionBadgeProps> = ({ variant, phone }) => {
     const badgeConfig = CONNECTION_BADGE_CONFIG[variant];
 
     if (!badgeConfig) {
@@ -15,9 +17,23 @@ const ConnectionBadge: React.FC<ConnectionBadgeProps> = ({ variant }) => {
 
     return (
         <Styled.ConnectionBadgeContainer variant={ variant }>
-            <Icon size={ 25 } />
+            <Styled.ConnectionLabel>
+                <Icon size={ 30 } />
 
-            { badgeConfig.label }
+                { badgeConfig.label }
+            </Styled.ConnectionLabel>
+
+            { phone && (
+                <Fragment>
+                    •
+
+                    <Styled.ConnectionPhone>
+                        <Smartphone size={ 30 } />
+
+                        { phone ? parsePhoneNumberFromString(`+${ phone }`)?.formatNational() ?? '—' : "" }
+                    </Styled.ConnectionPhone>
+                </Fragment>
+            ) }
         </Styled.ConnectionBadgeContainer>
     );
 }

@@ -13,6 +13,6 @@ export const BrandContainer = styled.div`
 export const BrandLogotype = styled.p`
     font-family: "Alien Block";
     font-weight: 400;
-    font-size: 85px;
+    font-size: 95px;
     color: #9CA3AF;
 `;

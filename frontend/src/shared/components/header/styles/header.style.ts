@@ -19,7 +19,7 @@ export const ApplicationBrandContainer = styled.div`
 export const ApplicationBrandMark = styled.p`
   font-family: "Alien Block";
   font-weight: 400;
-  font-size: 55px;
+  font-size: 60px;
   color: #FFFFFF;
 `;
 

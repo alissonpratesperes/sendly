@@ -5,9 +5,8 @@ import { useNavigate } from 'react-router-dom';
 
 import * as Styled from '../styles/forgot.style';
 import { forgot } from '../services/authentication.service';
-import { Wave } from '../../../shared/elements/wave/screens/Wave';
-import { Brand } from '../../../shared/elements/brand/screens/brand';
-import { Copyright } from '../../../shared/elements/copyright/screens/Copyright';
+import { Decal } from '../../../shared/elements/decal/screens/Decal';
+import { Brand } from '../../../shared/elements/brand/screens/Brand';
 import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
 
 const Forgot: React.FC = () => {
@@ -42,8 +41,6 @@ const Forgot: React.FC = () => {
 
     return (
         <Styled.ForgotFormContainer>
-            <Wave/>
-
             <Styled.ForgotForm onSubmit={ handleSubmit }>
                 <Brand/>
 
@@ -66,9 +63,9 @@ const Forgot: React.FC = () => {
                         <Styled.ForgotButtonText> Solicitar link </Styled.ForgotButtonText>
                     </Styled.ForgotButton>
                 ) }
-
-                <Copyright/>
             </Styled.ForgotForm>
+
+            <Decal/>
         </Styled.ForgotFormContainer>
     )
 }
