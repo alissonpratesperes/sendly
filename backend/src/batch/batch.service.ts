@@ -306,8 +306,8 @@ export class BatchService {
             return;
         }
 
-        const failedCount = await this.batchSendService.countByStatus(batch.CompanyId, id, [BatchSend_Status.FAILED]);
-        const successCount = await this.batchSendService.countByStatus(batch.CompanyId, id, [ BatchSend_Status.SENT, BatchSend_Status.DELIVERED, BatchSend_Status.READ, ]);
+        const failedCount = await this.batchSendService.countByStatus(batch.CompanyId, id, [BatchSend_Status.FAILED, ]);
+        const successCount = await this.batchSendService.countByStatus(batch.CompanyId, id, [ BatchSend_Status.SENT, ]);
 
         if (failedCount > 0 && successCount === 0) {
             await this.markAsFailed(batch.CompanyId, id);

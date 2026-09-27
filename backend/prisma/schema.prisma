@@ -132,15 +132,6 @@ model BatchSend {
   @@index([CompanyId], map: "FK_BatchSend_CompanyId")
 }
 
-enum BatchSend_Status {
-  WAITING
-  PROCESSING
-  SENT
-  DELIVERED
-  READ
-  FAILED
-}
-
 enum Batch_Status {
   PENDING
   RUNNING
@@ -148,4 +139,11 @@ enum Batch_Status {
   FINISHED
   FAILED
   PARTIAL
+}
+
+enum BatchSend_Status {
+  WAITING
+  PROCESSING
+  SENT
+  FAILED
 }
