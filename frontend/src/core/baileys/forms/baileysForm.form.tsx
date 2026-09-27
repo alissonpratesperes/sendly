@@ -70,7 +70,7 @@ export const BaileysForm: React.FC<FormProps<BaileysFormData>> = ({ initialValue
             onSubmit();
         } catch (error: unknown) {
             if (error instanceof z.ZodError) {
-                toast.error(<Toast errors={error.issues} />);
+                toast.error(<Toast errors={ error.issues }/>);
             } else if (error instanceof Error) {
                 toast.error(error.message);
             } else {
@@ -96,7 +96,7 @@ export const BaileysForm: React.FC<FormProps<BaileysFormData>> = ({ initialValue
             <Styled.FieldWrapper>
                 <Styled.Label htmlFor="phone"> Telefone </Styled.Label>
 
-                <Styled.Input id="phone" name="phone" placeholder="Digite o número do WhatsApp (com DDD)" value={ formData.phone } onChange={ handleChange } />
+                <Styled.Input id="phone" name="phone" placeholder="Digite o número do WhatsApp (com DDD)" value={ formData.phone } onChange={ handleChange }/>
             </Styled.FieldWrapper>
         </Styled.Form>
     );

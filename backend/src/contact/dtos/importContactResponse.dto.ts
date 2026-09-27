@@ -5,6 +5,7 @@ export class ImportContactResponseDto {
         public total: number,
         public valid: number,
         public invalid: number,
+
         public errors: ImportContactErrorDto[],
     ) {}
 }

@@ -103,7 +103,7 @@ const Template = () => {
                 <LoadingState/>
             ) }
             { !isLoading && (
-                <Finder showAddButton={ true } placeholder="Pesquise um template por nome" buttonText="Cadastrar template" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } } />
+                <Finder showAddButton={ true } placeholder="Pesquise um template por nome" buttonText="Cadastrar template" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } }/>
             ) }
             { !isLoading && templates.length > 0 && (
                 <Fragment>
@@ -122,17 +122,17 @@ const Template = () => {
                         ) }
                     />
 
-                    <Paginate page={ page } total={ total } limit={ limit } onPageChange={ setPage } onLimitChange={ (newLimit: number) => { setLimit(newLimit); setPage(1); } } />
+                    <Paginate page={ page } total={ total } limit={ limit } onPageChange={ setPage } onLimitChange={ (newLimit: number) => { setLimit(newLimit); setPage(1); } }/>
                 </Fragment>
             ) }
             { !isLoading && templates.length === 0 && (
                 <EmptyState message="Nenhum template encontrado" />
             ) }
 
-            <Modal isOpen={ isDeleteModalOpen } entityName={ templates.find((template: TemplateResponseDto) => template.id === selectedTemplateId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleDelete } />
+            <Modal isOpen={ isDeleteModalOpen } entityName={ templates.find((template: TemplateResponseDto) => template.id === selectedTemplateId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleDelete }/>
 
             <Drawer isOpen={ isDrawerOpen } isSubmitting={ isSubmitting } formId="template-form" title={ updating ? "Editar template" : "Novo template" } mode={ updating ? "edit" : "create" } onClose={ () => { setIsDrawerOpen(false); setUpdating(null); } }>
-                <TemplateForm initialValues={ updating ?? undefined } onCancel={ () => { setIsDrawerOpen(false); if (isSubmitting) { return; } setUpdating(null); } } onSubmit={ () => { setIsDrawerOpen(false); setUpdating(null); handleRead(); } } onLoadingChange={ setIsSubmitting } />
+                <TemplateForm initialValues={ updating ?? undefined } onCancel={ () => { setIsDrawerOpen(false); if (isSubmitting) { return; } setUpdating(null); } } onSubmit={ () => { setIsDrawerOpen(false); setUpdating(null); handleRead(); } } onLoadingChange={ setIsSubmitting }/>
             </Drawer>
         </Fragment>
     );

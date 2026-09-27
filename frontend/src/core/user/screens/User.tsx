@@ -105,7 +105,7 @@ const User = () => {
                 <LoadingState/>
             ) }
             { !isLoading && (
-                <Finder showAddButton={ userInformation?.isSystemRoot ?? false } placeholder="Pesquise um usuário por nome ou e-mail" buttonText="Cadastrar usuário" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } } />
+                <Finder showAddButton={ userInformation?.isSystemRoot ?? false } placeholder="Pesquise um usuário por nome ou e-mail" buttonText="Cadastrar usuário" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } }/>
             ) }
             { !isLoading && users.length > 0 && (
                 <Fragment>
@@ -119,25 +119,25 @@ const User = () => {
                             <Fragment>
                                 <Styled.TableListBodyRowData> { user.name } </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> <b> { user.email } </b> </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> <UserBadge variant={ user.isFirstAccess ? UserBadgeVariant.FIRST_ACCESS : UserBadgeVariant.NOT_FIRST_ACCESS } /> </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> <UserBadge variant={ user.isSystemRoot ? UserBadgeVariant.SYSTEM_ROOT : UserBadgeVariant.NOT_SYSTEM_ROOT } /> </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <UserBadge variant={ user.isFirstAccess ? UserBadgeVariant.FIRST_ACCESS : UserBadgeVariant.NOT_FIRST_ACCESS }/> </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <UserBadge variant={ user.isSystemRoot ? UserBadgeVariant.SYSTEM_ROOT : UserBadgeVariant.NOT_SYSTEM_ROOT }/> </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> { formatDate(user.createdAt, true) } </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> { formatDate(user.updatedAt, true) } </Styled.TableListBodyRowData>
                             </Fragment>
                         ) }
                     />
 
-                    <Paginate page={ page } total={ total } limit={ limit } onPageChange={ setPage } onLimitChange={ (newLimit: number) => { setLimit(newLimit); setPage(1); } } />
+                    <Paginate page={ page } total={ total } limit={ limit } onPageChange={ setPage } onLimitChange={ (newLimit: number) => { setLimit(newLimit); setPage(1); } }/>
                 </Fragment>
             ) }
             { !isLoading && users.length === 0 && (
                 <EmptyState message="Nenhum usuário encontrado" />
             ) }
 
-            <Modal isOpen={ isDeleteModalOpen } entityName={ users.find((user: UserResponseDto) => user.id === selectedUserId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleDelete } />
+            <Modal isOpen={ isDeleteModalOpen } entityName={ users.find((user: UserResponseDto) => user.id === selectedUserId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleDelete }/>
 
             <Drawer isOpen={ isDrawerOpen } isSubmitting={ isSubmitting } formId="user-form" title={ updating ? "Editar usuário" : "Novo usuário" } mode={ updating ? "edit" : "create" } onClose={ () => { setIsDrawerOpen(false); setUpdating(null); } }>
-                <UserForm initialValues={ updating ?? undefined } onCancel={ () => { setIsDrawerOpen(false); if (isSubmitting) { return; } setUpdating(null); } } onSubmit={ () => { setIsDrawerOpen(false); setUpdating(null); handleRead(); } } onLoadingChange={ setIsSubmitting } />
+                <UserForm initialValues={ updating ?? undefined } onCancel={ () => { setIsDrawerOpen(false); if (isSubmitting) { return; } setUpdating(null); } } onSubmit={ () => { setIsDrawerOpen(false); setUpdating(null); handleRead(); } } onLoadingChange={ setIsSubmitting }/>
             </Drawer>
         </Fragment>
     );

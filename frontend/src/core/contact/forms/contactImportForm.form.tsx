@@ -1,11 +1,12 @@
 import { toast } from 'react-toastify';
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 
 import { List } from '../../list/services/list.service';
 import { ImportContactsCsv } from '../services/contact.service';
 import { ListResponseDto } from '../../list/dtos/listResponse.dto';
 import Dropdown from '../../../shared/components/dropdown/screens/Dropdown';
 import Uploader from '../../../shared/components/uploader/screens/Uploader';
+import { ImportContactResponseDto } from '../dtos/importContactResponse.dto';
 import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
 import { ImportFormProps } from '../../../shared/interfaces/importFormProps.interface';
 import { getAuthenticationStorage } from '../../../shared/utils/authenticationStorage.util';
@@ -18,6 +19,7 @@ export const ContactImportForm: React.FC<ImportFormProps> = ({ onCancel, onSubmi
     const [listId, setListId] = useState<number>(0);
     const [lists, setLists] = useState<ListResponseDto[]>([]);
     const [isListsLoading, setIsListsLoading] = useState<boolean>(false);
+    const [importResult, setImportResult] = useState<ImportContactResponseDto | null>(null);
 
     const optionsForLists = lists
         .filter(
@@ -40,7 +42,7 @@ export const ContactImportForm: React.FC<ImportFormProps> = ({ onCancel, onSubmi
             return;
         }
         if (!listId) {
-            toast.warning('Selecione uma lista');
+            toast.warning("Selecione uma lista");
 
             return;
         }
@@ -53,11 +55,11 @@ export const ContactImportForm: React.FC<ImportFormProps> = ({ onCancel, onSubmi
             formData.append("file", csvFile);
             formData.append("listId", String(listId));
 
-            await ImportContactsCsv(formData);
+            const response = await ImportContactsCsv(formData);
+
+            setImportResult(response);
 
             toast.success("Importação realizada com sucesso");
-
-            onSubmit();
         } catch (error) {
             toast.error("Não é possível prosseguir com a solicitação");
         } finally {
@@ -95,27 +97,56 @@ export const ContactImportForm: React.FC<ImportFormProps> = ({ onCancel, onSubmi
     }, []);
 
     return (
-        <Styled.Form id="contact-import-form" onSubmit={ handleSubmit }>
-            <Styled.FieldWrapper>
-                <Dropdown
-                    inputId="listId"
-                    isLoading={ isListsLoading }
-                    options={ optionsForLists }
-                    placeholder="Vincule a uma lista"
-                    value={ optionsForLists.find((option) => option.value === listId) ?? null }
-                    onChange={ (selectedOption) => setListId(selectedOption?.value ?? 0) }
+        <Fragment>
+            { !importResult ? (
+                <Styled.Form id="contact-import-form" onSubmit={ handleSubmit }>
+                    <Styled.FieldWrapper>
+                        <Dropdown
+                            inputId="listId"
+                            isLoading={isListsLoading}
+                            options={optionsForLists}
+                            placeholder="Vincule a uma lista"
+                            value={ optionsForLists.find((option) => option.value === listId) ?? null }
+                            onChange={ (selectedOption) => setListId(selectedOption?.value ?? 0) }
+                            formatOptionLabel={ (option) => (
+                                <ContactFormStyled.OptionContent>
+                                    <ContactFormStyled.ListColor $color={ option.color }/>
 
-                    formatOptionLabel={ (option) => (
-                        <ContactFormStyled.OptionContent>
-                            <ContactFormStyled.ListColor $color={ option.color } />
+                                    <span> { option.label } </span>
+                                </ContactFormStyled.OptionContent>
+                            ) }
+                        />
+                    </Styled.FieldWrapper>
 
-                            <span> { option.label } </span>
-                        </ContactFormStyled.OptionContent>
-                    ) }
-                />
-            </Styled.FieldWrapper>
+                    <Uploader isCsv={ true } value={ csvFile } onChange={ (file) => setCsvFile(file as File | undefined) }/>
+                </Styled.Form>
+            ) : (
+                <div>
+                    <h3>Resultado da importação</h3>
 
-            <Uploader isCsv value={ csvFile } onChange={ (file) => setCsvFile(file as File | undefined) } />
-        </Styled.Form>
+                    <p>
+                        {importResult.valid} contatos importados com sucesso.
+                    </p>
+
+                    <p>
+                        {importResult.invalid} contatos não foram importados.
+                    </p>
+
+                    {importResult.errors.length > 0 && (
+                        <div>
+                            <h4>Erros</h4>
+
+                            {importResult.errors.map((error, index) => (
+                                <div key={index}>
+                                    <strong>{error.name}</strong>
+                                    <span>{error.phone}</span>
+                                    <span>{error.error}</span>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            )}
+        </Fragment>
     );
 }

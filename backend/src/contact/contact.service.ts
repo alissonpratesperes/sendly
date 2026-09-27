@@ -228,9 +228,10 @@ export class ContactService {
 
         const content = file.buffer.toString("utf-8");
         const lines = content.split(/\r?\n/);
-        const hasSeparatorDeclaration = lines[0]?.startsWith("sep=");
-        const csvContent = hasSeparatorDeclaration ? lines.slice(1).join("\n") : content;
-        const records = parse(csvContent, { columns: true, skip_empty_lines: true, }) as CsvContactBefore[];
+        const separatorDeclaration = lines[0]?.match(/^sep=(.)\s*$/);
+        const delimiter = separatorDeclaration?.[1] ?? ",";
+        const csvContent = separatorDeclaration ? lines.slice(1).join("\n") : content;
+        const records = parse(csvContent, { columns: true, skip_empty_lines: true, delimiter, }) as CsvContactBefore[];
         const contacts = records.map((record) => {
             const name = record.Nome?.trim() ?? "";
             const phone = record.Telefone?.trim() ?? "";
@@ -327,6 +328,7 @@ export class ContactService {
                 Phone: contact.normalizedPhone!,
                 Active: true,
             })),
+            skipDuplicates: true,
         });
 
         return new ImportContactResponseDto(

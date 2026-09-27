@@ -56,7 +56,7 @@ export const CompanyForm: React.FC<FormProps<CompanyFormData>> = ({ initialValue
             onSubmit();
         } catch (error: unknown) {
             if (error instanceof z.ZodError) {
-                toast.error(<Toast errors={ error.issues } />);
+                toast.error(<Toast errors={ error.issues }/>);
             } else {
                 toast.error("Não é possível prosseguir com a solicitação");
             }
@@ -83,17 +83,17 @@ export const CompanyForm: React.FC<FormProps<CompanyFormData>> = ({ initialValue
             <Styled.FieldWrapper>
                 <Styled.Label htmlFor="name"> Nome </Styled.Label>
 
-                <Styled.Input id="name" name="name" placeholder="Digite o nome da empresa" value={ formData.name } onChange={ handleChange } />
+                <Styled.Input id="name" name="name" placeholder="Digite o nome da empresa" value={ formData.name } onChange={ handleChange }/>
             </Styled.FieldWrapper>
             <Styled.FieldWrapper>
                 <Styled.Label htmlFor="document"> CNPJ </Styled.Label>
 
-                <Styled.Input id="document" name="document" placeholder="Digite o cnpj da empresa" value={ formatCompanyDocument(formData.document) } onChange={ handleChange } />
+                <Styled.Input id="document" name="document" placeholder="Digite o cnpj da empresa" value={ formatCompanyDocument(formData.document) } onChange={ handleChange }/>
             </Styled.FieldWrapper>
             <Styled.FieldWrapper>
                 <Styled.Label htmlFor="description"> Descrição </Styled.Label>
 
-                <Styled.Input id="description" name="description" placeholder="Digite uma descrição para a empresa" value={ formData.description } onChange={ handleChange } />
+                <Styled.Input id="description" name="description" placeholder="Digite uma descrição para a empresa" value={ formData.description } onChange={ handleChange }/>
             </Styled.FieldWrapper>
         </Styled.Form>
     );

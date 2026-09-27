@@ -1,4 +1,4 @@
-import { AtSign } from 'lucide-react';
+import { Inbox } from 'lucide-react';
 import { toast } from 'react-toastify';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -58,7 +58,7 @@ const Forgot: React.FC = () => {
                 ) }
                 { !isLoading && (
                     <Styled.ForgotButton type="submit">
-                        <AtSign size={ 25 } color="#FFFFFF" />
+                        <Inbox size={ 25 } color="#FFFFFF" />
 
                         <Styled.ForgotButtonText> Solicitar link </Styled.ForgotButtonText>
                     </Styled.ForgotButton>

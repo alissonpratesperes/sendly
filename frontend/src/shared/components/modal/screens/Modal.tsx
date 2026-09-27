@@ -13,9 +13,9 @@ const Modal: React.FC<ModalProps> = ({ isOpen, entityName, onClose, onConfirm })
                 <Styled.ModalWrapper $open={ !isClosing } onClick={ (event) => event.stopPropagation() } onAnimationEnd={ (event) => { if (event.animationName === "modalClose") { onClose(); setIsClosing(false); } } }>
                 <Styled.ModalContainer>
                     <Styled.ModalHeader>
-                        <Styled.ModalTitle> Exclusão de registro </Styled.ModalTitle>
+                        <Styled.ModalTitle> Exclusão de cadastro </Styled.ModalTitle>
 
-                        <Styled.ModalDismissButton type="button" onClick={ () => setIsClosing(true) }> <X size={ 25 } /> </Styled.ModalDismissButton>
+                        <Styled.ModalDismissButton type="button" onClick={ () => setIsClosing(true) }> <X size={ 25 }/> </Styled.ModalDismissButton>
                     </Styled.ModalHeader>
 
                     <Styled.ModalBody>
@@ -24,12 +24,12 @@ const Modal: React.FC<ModalProps> = ({ isOpen, entityName, onClose, onConfirm })
 
                     <Styled.ModalFooter>
                         <Styled.ModalPrimaryButton onClick={ () => setIsClosing(true) }>
-                            <Ban size={ 25 } />
+                            <Ban size={ 25 }/>
 
                             <Styled.ModalFooterButtonText> Cancelar </Styled.ModalFooterButtonText>
                         </Styled.ModalPrimaryButton>
                         <Styled.ModalSecondaryButton onClick={ onConfirm }>
-                            <Trash size={ 25 } />
+                            <Trash size={ 25 }/>
 
                             <Styled.ModalFooterButtonText> Excluir </Styled.ModalFooterButtonText>
                         </Styled.ModalSecondaryButton>

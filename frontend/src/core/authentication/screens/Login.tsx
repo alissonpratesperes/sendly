@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { StatusCodes } from 'http-status-codes';
 import React, { useState, Fragment } from 'react';
-import { EyeIcon, EyeOffIcon, LogInIcon, LockKeyhole } from 'lucide-react';
+import { EyeIcon, EyeOffIcon, LockOpen, Power } from 'lucide-react';
 
 import * as Styled from '../styles/login.style';
 import { Login } from '../services/authentication.service';
@@ -83,12 +83,12 @@ const Authentication: React.FC = () => {
                     { !isLoading && (
                         <Fragment>
                             <Styled.ForgotButton to="/authentication/forgot">
-                                <LockKeyhole size={ 25 } color="#FFFFFF" />
+                                <LockOpen size={ 25 } color="#FFFFFF"/>
 
                                 <Styled.ForgotButtonText> Recuperar senha </Styled.ForgotButtonText>
                             </Styled.ForgotButton>
                             <Styled.LoginButton type="submit">
-                                <LogInIcon size={ 25 } />
+                                <Power size={ 25 }/>
 
                                 <Styled.LoginButtonText> Fazer login </Styled.LoginButtonText>
                             </Styled.LoginButton>

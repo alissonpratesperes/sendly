@@ -59,7 +59,7 @@ export const ListForm: React.FC<FormProps<ListFormData>> = ({ initialValues, onS
             onSubmit();
         } catch (error: unknown) {
             if (error instanceof z.ZodError) {
-                toast.error(<Toast errors={ error.issues } />);
+                toast.error(<Toast errors={ error.issues }/>);
             } else {
                 toast.error("Não é possível prosseguir com a solicitação");
             }
@@ -87,17 +87,17 @@ export const ListForm: React.FC<FormProps<ListFormData>> = ({ initialValues, onS
             <Styled.FieldWrapper>
                 <Styled.Label htmlFor="name"> Nome </Styled.Label>
 
-                <Styled.Input id="name" name="name" placeholder="Digite o nome da lista" value={ formData.name } onChange={ handleChange } />
+                <Styled.Input id="name" name="name" placeholder="Digite o nome da lista" value={ formData.name } onChange={ handleChange }/>
             </Styled.FieldWrapper>
             <Styled.FieldWrapper>
                 <Styled.Label htmlFor="subject"> Assunto </Styled.Label>
 
-                <Styled.Input id="subject" name="subject" placeholder="Digite o assunto da lista" value={ formData.subject } onChange={ handleChange } />
+                <Styled.Input id="subject" name="subject" placeholder="Digite o assunto da lista" value={ formData.subject } onChange={ handleChange }/>
             </Styled.FieldWrapper>
             <Styled.FieldWrapper>
                 <Styled.Label htmlFor="color"> Cor </Styled.Label>
 
-                <Styled.ColorInput type="color" id="color" name="color" placeholder="" value={ formData.color } onChange={ handleChange } />
+                <Styled.ColorInput type="color" id="color" name="color" placeholder="" value={ formData.color } onChange={ handleChange }/>
             </Styled.FieldWrapper>
         </Styled.Form>
     );

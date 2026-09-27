@@ -17,7 +17,8 @@ export const ModalOverlay = styled.div<{ $open: boolean }>`
 
 export const ModalWrapper = styled.div<{ $open: boolean }>`
     min-height: 208px;
-    width: 800px;
+    min-width: 500px;
+    width: auto;
     background-color: #F0F0F5;
     border-radius: 14px;
     box-sizing: border-box;

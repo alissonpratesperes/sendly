@@ -18,7 +18,7 @@ const ConnectionBadge: React.FC<ConnectionBadgeProps> = ({ variant, phone }) => 
     return (
         <Styled.ConnectionBadgeContainer variant={ variant }>
             <Styled.ConnectionLabel>
-                <Icon size={ 30 } />
+                <Icon size={ 30 }/>
 
                 { badgeConfig.label }
             </Styled.ConnectionLabel>
@@ -28,7 +28,7 @@ const ConnectionBadge: React.FC<ConnectionBadgeProps> = ({ variant, phone }) => 
                     •
 
                     <Styled.ConnectionPhone>
-                        <Smartphone size={ 30 } />
+                        <Smartphone size={ 30 }/>
 
                         { phone ? parsePhoneNumberFromString(`+${ phone }`)?.formatNational() ?? '—' : "" }
                     </Styled.ConnectionPhone>

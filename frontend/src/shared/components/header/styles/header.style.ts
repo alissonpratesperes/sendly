@@ -80,7 +80,7 @@ export const NavItem = styled(NavLink)`
 
 export const UserContainer = styled.div`
   height: 80px;
-  width: 500px;
+  width: 450px;
   display: flex;
   align-items: center;
   flex-wrap: wrap;

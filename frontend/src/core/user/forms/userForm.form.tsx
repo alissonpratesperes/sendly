@@ -68,7 +68,7 @@ export const UserForm: React.FC<FormProps<UserFormData>> = ({ initialValues, onS
             onSubmit();
         } catch (error: unknown) {
             if (error instanceof z.ZodError) {
-                toast.error(<Toast errors={ error.issues } />);
+                toast.error(<Toast errors={ error.issues }/>);
             } else {
                 toast.error("Não é possível prosseguir com a solicitação");
             }
@@ -131,12 +131,12 @@ export const UserForm: React.FC<FormProps<UserFormData>> = ({ initialValues, onS
             <Styled.FieldWrapper>
                 <Styled.Label htmlFor="name"> Nome </Styled.Label>
 
-                <Styled.Input id="name" name="name" placeholder="Digite o nome do usuário" value={ formData.name } onChange={ handleChange } />
+                <Styled.Input id="name" name="name" placeholder="Digite o nome do usuário" value={ formData.name } onChange={ handleChange }/>
             </Styled.FieldWrapper>
             <Styled.FieldWrapper>
                 <Styled.Label htmlFor="email"> Email </Styled.Label>
 
-                <Styled.Input id="email" name="email" placeholder="Digite o e-mail do usuário" value={ formData.email } onChange={ handleChange } />
+                <Styled.Input id="email" name="email" placeholder="Digite o e-mail do usuário" value={ formData.email } onChange={ handleChange }/>
             </Styled.FieldWrapper>
         </Styled.Form>
     );

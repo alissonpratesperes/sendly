@@ -97,9 +97,9 @@ export default function Paginate({ page, total, limit, onPageChange, onLimitChan
             <Styled.PagesArrayContainer>
                 { pages.map((pageNumber, index) =>
                     pageNumber === "..." ? (
-                        <Styled.EllipsisIcon key={ `ellipsis-${index}` } />
+                        <Styled.EllipsisIcon key={ `ellipsis-${ index }` }/>
                     ) : (
-                        <Styled.PageButton key={ `page-${pageNumber}` } $active={ page === pageNumber } onClick={ () => goToPage(pageNumber as number) }> { pageNumber } </Styled.PageButton>
+                        <Styled.PageButton key={ `page-${ pageNumber }` } $active={ page === pageNumber } onClick={ () => goToPage(pageNumber as number) }> { pageNumber } </Styled.PageButton>
                     )
                 ) }
 

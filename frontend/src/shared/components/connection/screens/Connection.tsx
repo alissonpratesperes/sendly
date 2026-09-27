@@ -84,9 +84,9 @@ const Connection: React.FC<ConnectionProps> = ({ onPairingSuccess, isOpen, compa
                 <Styled.ModalWrapper $open={ !isClosing } onClick={ (event) => event.stopPropagation() } onAnimationEnd={ (event) => { if (event.animationName === "modalClose") { onClose(); setIsClosing(false); } } }>
                     <Styled.ModalContainer>
                         <Styled.ModalHeader>
-                            <Styled.ModalTitle> Status da sessão do WhatsApp </Styled.ModalTitle>
+                            <Styled.ModalTitle> Sessão do WhatsApp </Styled.ModalTitle>
 
-                            <Styled.ModalDismissButton type="button" onClick={ () => setIsClosing(true) }> <X size={ 25 } /> </Styled.ModalDismissButton>
+                            <Styled.ModalDismissButton type="button" onClick={ () => setIsClosing(true) }> <X size={ 25 }/> </Styled.ModalDismissButton>
                         </Styled.ModalHeader>
 
                         <Styled.ModalBody>
@@ -104,9 +104,9 @@ const Connection: React.FC<ConnectionProps> = ({ onPairingSuccess, isOpen, compa
 
                                     <Styled.ModalInnerBodyContainer>
                                         { !pairingCode ? (
-                                            <BaileysForm onCancel={ () => {} } onSubmit={ () => {} } onLoadingChange={ setLoadingStatus } onPairingSuccess={ (pairingCode) => setPairingCode(pairingCode) } />
+                                            <BaileysForm onCancel={ () => {} } onSubmit={ () => {} } onLoadingChange={ setLoadingStatus } onPairingSuccess={ (pairingCode) => setPairingCode(pairingCode) }/>
                                         ) : (
-                                            <PairingCode pairingCode={ pairingCode } />
+                                            <PairingCode pairingCode={ pairingCode }/>
                                         ) }
                                     </Styled.ModalInnerBodyContainer>
                                 </Fragment>
@@ -115,21 +115,21 @@ const Connection: React.FC<ConnectionProps> = ({ onPairingSuccess, isOpen, compa
 
                         <Styled.ModalFooter>
                             <Styled.ModalPrimaryButton onClick={ () => setIsClosing(true) }>
-                                <Ban size={ 25 } />
+                                <Ban size={ 25 }/>
 
                                 <Styled.ModalFooterButtonText> Fechar </Styled.ModalFooterButtonText>
                             </Styled.ModalPrimaryButton>
 
                             { !status?.connected && !pairingCode && (
                                 <Styled.ModalTertiaryButton type="submit" form="baileys-form" disabled={ loadingStatus }>
-                                  <GlobeCode size={ 25 } />
+                                  <GlobeCode size={ 25 }/>
 
                                   <Styled.ModalFooterButtonText> Gerar código </Styled.ModalFooterButtonText>
                                 </Styled.ModalTertiaryButton>
                             ) }
                             { status?.connected && (
                                 <Styled.ModalSecondaryButton onClick={ handleDisconnect }>
-                                    <GlobeOff size={ 25 } />
+                                    <GlobeOff size={ 25 }/>
 
                                     <Styled.ModalFooterButtonText> Desconectar </Styled.ModalFooterButtonText>
                                 </Styled.ModalSecondaryButton>

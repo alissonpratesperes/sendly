@@ -111,7 +111,7 @@ export const ContactForm: React.FC<FormProps<ContactFormData>> = ({ initialValue
             onSubmit();
         } catch (error: unknown) {
             if (error instanceof z.ZodError) {
-                toast.error(<Toast errors={ error.issues } />);
+                toast.error(<Toast errors={ error.issues }/>);
             } else {
                 toast.error("Não é possível prosseguir com a solicitação");
             }
@@ -181,7 +181,7 @@ export const ContactForm: React.FC<FormProps<ContactFormData>> = ({ initialValue
 
                     formatOptionLabel={ (option) => (
                         <ContactFormStyled.OptionContent>
-                            <ContactFormStyled.ListColor $color={ option.color } />
+                            <ContactFormStyled.ListColor $color={ option.color }/>
 
                             <span> { option.label } </span>
                         </ContactFormStyled.OptionContent>
@@ -191,12 +191,12 @@ export const ContactForm: React.FC<FormProps<ContactFormData>> = ({ initialValue
             <Styled.FieldWrapper>
                 <Styled.Label htmlFor="name"> Nome </Styled.Label>
 
-                <Styled.Input id="name" name="name" placeholder="Digite o nome do contato" value={ formData.name } onChange={ handleChange } />
+                <Styled.Input id="name" name="name" placeholder="Digite o nome do contato" value={ formData.name } onChange={ handleChange }/>
             </Styled.FieldWrapper>
             <Styled.FieldWrapper>
                 <Styled.Label htmlFor="phone"> Telefone </Styled.Label>
 
-                <Styled.Input id="phone" name="phone" placeholder="Digite o telefone do contato" value={ formData.phone } onChange={ handleChange } />
+                <Styled.Input id="phone" name="phone" placeholder="Digite o telefone do contato" value={ formData.phone } onChange={ handleChange }/>
             </Styled.FieldWrapper>
             <Styled.FieldWrapper>
                 <Dropdown

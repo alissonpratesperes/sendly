@@ -159,7 +159,7 @@ const Contact = () => {
                 <LoadingState/>
             ) }
             { !isLoading && (
-                <Finder showImportButton={ true } importButtonText="Importar contatos" showAddButton={ true } placeholder="Pesquise um contato por nome ou telefone" buttonText="Cadastrar contato" search={ search } onAdd={ handleCreate } onImport={ handleImport } onSearchChange={ (value) => { setSearch(value); setPage(1); } } />
+                <Finder showImportButton={ true } importButtonText="Importar contatos" showAddButton={ true } placeholder="Pesquise um contato por nome ou telefone" buttonText="Cadastrar contato" search={ search } onAdd={ handleCreate } onImport={ handleImport } onSearchChange={ (value) => { setSearch(value); setPage(1); } }/>
             ) }
             { !isLoading && contacts.length > 0 && (
                 <Fragment>
@@ -173,27 +173,27 @@ const Contact = () => {
                             <Fragment>
                                 <Styled.TableListBodyRowData> <Styled.TableListColorContent> <Styled.TableListColorFragment $color={ listsNames[contact.listId]?.color ?? "transparent" }/> <Styled.ContactNameSpan> { contact.name } </Styled.ContactNameSpan> </Styled.TableListColorContent> </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> <b> { parsePhoneNumberFromString(contact.phone)?.formatNational() } </b> </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> <ToggleSwitch label={ contact.active ? "Active" : "Inactive" } checked={ contact.active } onChange={ (event) => handleActiveCommunication(contact.id, event.target.checked) } /> </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <ToggleSwitch label={ contact.active ? "Active" : "Inactive" } checked={ contact.active } onChange={ (event) => handleActiveCommunication(contact.id, event.target.checked) }/> </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> { formatDate(contact.createdAt, true) } </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> { formatDate(contact.updatedAt, true) } </Styled.TableListBodyRowData>
                             </Fragment>
                         ) }
                     />
 
-                    <Paginate page={ page } total={ total } limit={ limit } onPageChange={ setPage } onLimitChange={ (newLimit: number) => { setLimit(newLimit); setPage(1); } } />
+                    <Paginate page={ page } total={ total } limit={ limit } onPageChange={ setPage } onLimitChange={ (newLimit: number) => { setLimit(newLimit); setPage(1); } }/>
                 </Fragment>
             ) }
             { !isLoading && contacts.length === 0 && (
                 <EmptyState message="Nenhum contato encontrado" />
             ) }
 
-            <Modal isOpen={ isDeleteModalOpen } entityName={ contacts.find((contact: ContactResponseDto) => contact.id === selectedContactId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleDelete } />
+            <Modal isOpen={ isDeleteModalOpen } entityName={ contacts.find((contact: ContactResponseDto) => contact.id === selectedContactId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleDelete }/>
 
-            <Drawer isOpen={ isImportDrawerOpen } isSubmitting={ isSubmitting } formId="contact-import-form" title={ "Importar contatos" } mode="import" onClose={ () => { setIsImportDrawerOpen(false); } }>
-                <ContactImportForm onCancel={ () => { setIsImportDrawerOpen(false); if (isSubmitting) { return; } } } onSubmit={ () => { setIsImportDrawerOpen(false); handleRead(); } } onLoadingChange={ setIsSubmitting } />
+            <Drawer isOpen={ isImportDrawerOpen } isSubmitting={ isSubmitting } formId="contact-import-form" title={ "Importação em lote" } mode="import" onClose={ () => { setIsImportDrawerOpen(false); } }>
+                <ContactImportForm onCancel={ () => { setIsImportDrawerOpen(false); if (isSubmitting) { return; } } } onSubmit={ () => { setIsImportDrawerOpen(false); handleRead(); } } onLoadingChange={ setIsSubmitting }/>
             </Drawer>
             <Drawer isOpen={ isDrawerOpen } isSubmitting={ isSubmitting } formId="contact-form" title={ updating ? "Editar contato" : "Novo contato" } mode={ updating ? "edit" : "create" } onClose={ () => { setIsDrawerOpen(false); setUpdating(null); } }>
-                <ContactForm initialValues={ updating ?? undefined } onCancel={ () => { setIsDrawerOpen(false); if (isSubmitting) { return; } setUpdating(null); } } onSubmit={ () => { setIsDrawerOpen(false); setUpdating(null); handleRead(); } } onLoadingChange={ setIsSubmitting } />
+                <ContactForm initialValues={ updating ?? undefined } onCancel={ () => { setIsDrawerOpen(false); if (isSubmitting) { return; } setUpdating(null); } } onSubmit={ () => { setIsDrawerOpen(false); setUpdating(null); handleRead(); } } onLoadingChange={ setIsSubmitting }/>
             </Drawer>
         </Fragment>
     );

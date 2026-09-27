@@ -1,7 +1,7 @@
 import { toast } from 'react-toastify';
 import React, { useState } from 'react';
+import { PowerOff, Phone } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { Power, WifiCog } from 'lucide-react';
 
 import * as Styled from '../styles/header.style';
 import Connection from '../../../components/connection/screens/Connection';
@@ -39,7 +39,7 @@ const Header: React.FC<HeaderMenuLinksProps> = ({ links }) => {
 
                     return (
                         <Styled.NavItem key={ path } to={ path }>
-                            { Icon && <Icon size={ 25 } /> }
+                            { Icon && <Icon size={ 25 }/> }
                             { label }
                         </Styled.NavItem>
                     );
@@ -54,10 +54,10 @@ const Header: React.FC<HeaderMenuLinksProps> = ({ links }) => {
 
                 <Styled.UserActionContainer>
                     <Styled.WhatsAppButton type="button" onClick={ () => setIsConnectionOpen(true) }>
-                        <WifiCog size={ 25 } />
+                        <Phone size={ 25 }/>
                     </Styled.WhatsAppButton>
                     <Styled.LogOutButton type="button" onClick={ () => handleLogout() }>
-                        <Power size={ 25 } />
+                        <PowerOff size={ 25 }/>
                     </Styled.LogOutButton>
                 </Styled.UserActionContainer>
             </Styled.UserContainer>

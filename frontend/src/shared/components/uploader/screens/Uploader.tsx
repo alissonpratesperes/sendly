@@ -8,8 +8,8 @@ import { UploaderItemType } from '../types/uploaderItemType.type';
 import { UploaderProps } from '../interfaces/UploaderProps.interface';
 import { ACCEPTED_CSV_CONFIG, ACCEPTED_IMAGES_CONFIG, ALLOWED_IMAGE_EXTENSIONS } from '../constants/uploaderFileTypesAndExtensions.constant';
 
-const REACT_APP_MAX_CSV_SIZE = Number(process.env.REACT_APP_REACT_APP_MAX_CSV_SIZE);
 const REACT_APP_MAX_IMAGE_SIZE = Number(process.env.REACT_APP_MAX_IMAGE_SIZE);
+const REACT_APP_MAX_CSV_SIZE = Number(process.env.REACT_APP_MAX_CSV_SIZE);
 
 const Uploader: React.FC<UploaderProps> = ({ value, existingImage, onRemoveExistingImage, onChange, isCsv = false }) => {
     const hasFile = !!value || !!existingImage;
@@ -27,7 +27,7 @@ const Uploader: React.FC<UploaderProps> = ({ value, existingImage, onRemoveExist
             return `CSV de até ${ getMaxFileSizeText() }`;
         }
 
-        return ALLOWED_IMAGE_EXTENSIONS.map((fileExtension: string) => fileExtension.replace(".", "").toUpperCase()).join(", ");
+        return `${ ALLOWED_IMAGE_EXTENSIONS.map((fileExtension: string) => fileExtension.replace(".", "").toUpperCase()).join(", ") } de até ${ getMaxFileSizeText() }`;
     }, [ isCsv, getMaxFileSizeText ]);
     const onDrop = useCallback((acceptedFiles: File[]) => {
         if (acceptedFiles.length !== 1) {
@@ -164,17 +164,17 @@ const Uploader: React.FC<UploaderProps> = ({ value, existingImage, onRemoveExist
         <Styled.UploaderWrapper>
             { shouldShowDropzone && (
                 <Styled.DropzoneArea { ...getRootProps() } $isDragActive={ isDragActive } $hasFile={ !!value || !!existingImage } $backgroundImage={ filePreview }>
-                    <input { ...getInputProps() } />
+                    <input { ...getInputProps() }/>
 
                     { !hasFile && (
                         <Styled.DropzoneTextContainer>
-                            <Styled.DropzoneUploadIcon> <Upload size={ 25 } /> </Styled.DropzoneUploadIcon>
+                            <Styled.DropzoneUploadIcon> <Upload size={ 25 }/> </Styled.DropzoneUploadIcon>
 
                             <Styled.DropzoneStrongContent> { isDragActive ? `Solte ${ isCsv ? "o arquivo CSV" : "a imagem" } aqui` : `Arraste e solte ${ isCsv ? "o arquivo CSV" : "a imagem" }` } </Styled.DropzoneStrongContent>
 
                             <Styled.DropzoneLabel> ou selecione o arquivo </Styled.DropzoneLabel>
 
-                            <Styled.DropzoneActiveText> { isDragActive ? `Somente ${ isCsv ? "um arquivo CSV é permitido" : "uma imagem é permitida" }` : `Tipo de arquivo ${ getAcceptedText() }` } </Styled.DropzoneActiveText>
+                            <Styled.DropzoneActiveText> { isDragActive ? `Somente ${ isCsv ? "um arquivo CSV é permitido" : "uma imagem é permitida" }` : `Tipos aceitos: ${ getAcceptedText() }` } </Styled.DropzoneActiveText>
                         </Styled.DropzoneTextContainer>
                     ) }
                 </Styled.DropzoneArea>
@@ -183,7 +183,7 @@ const Uploader: React.FC<UploaderProps> = ({ value, existingImage, onRemoveExist
                 <Styled.DraggedFilesList>
                     <Styled.DraggedFilesListItem>
                         <Styled.ListItemContainer>
-                            <Styled.DraggedFileIcon> { isCsv ? <FileUp size={ 25 } /> : <ImageUp size={ 25 } /> } </Styled.DraggedFileIcon>
+                            <Styled.DraggedFileIcon> { isCsv ? <FileUp size={ 25 }/> : <ImageUp size={ 25 }/> } </Styled.DraggedFileIcon>
 
                             <Styled.DraggedFileData>
                                 <Styled.DraggedFileName> { getFileName(value) } </Styled.DraggedFileName>
@@ -193,8 +193,8 @@ const Uploader: React.FC<UploaderProps> = ({ value, existingImage, onRemoveExist
                         </Styled.ListItemContainer>
 
                         <Styled.DraggedFilesActionsContainer>
-                            <Styled.DraggedFilesActionButton type="button" onClick={ downloadFile }> { isCsv ? <FileDown size={ 25 } /> : <ImageDown size={ 25 } /> } </Styled.DraggedFilesActionButton>
-                            <Styled.DraggedFilesActionButton type="button" onClick={ onFileRemove }> <Eraser size={ 25 } /> </Styled.DraggedFilesActionButton>
+                            <Styled.DraggedFilesActionButton type="button" onClick={ downloadFile }> { isCsv ? <FileDown size={ 25 }/> : <ImageDown size={ 25 }/> } </Styled.DraggedFilesActionButton>
+                            <Styled.DraggedFilesActionButton type="button" onClick={ onFileRemove }> <Eraser size={ 25 }/> </Styled.DraggedFilesActionButton>
                         </Styled.DraggedFilesActionsContainer>
                     </Styled.DraggedFilesListItem>
                 </Styled.DraggedFilesList>

@@ -104,7 +104,7 @@ const Company = () => {
                 <LoadingState/>
             ) }
             { !isLoading && (
-                <Finder showAddButton={ userInformation?.isSystemRoot ?? false } placeholder="Pesquise uma empresa por nome ou cnpj" buttonText="Cadastrar empresa" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } } />
+                <Finder showAddButton={ userInformation?.isSystemRoot ?? false } placeholder="Pesquise uma empresa por nome ou cnpj" buttonText="Cadastrar empresa" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } }/>
             ) }
             { !isLoading && companies.length > 0 && (
                 <Fragment>
@@ -125,17 +125,17 @@ const Company = () => {
                         ) }
                     />
 
-                    <Paginate page={ page } total={ total } limit={ limit } onPageChange={ setPage } onLimitChange={ (newLimit: number) => { setLimit(newLimit); setPage(1); } } />
+                    <Paginate page={ page } total={ total } limit={ limit } onPageChange={ setPage } onLimitChange={ (newLimit: number) => { setLimit(newLimit); setPage(1); } }/>
                 </Fragment>
             ) }
             { !isLoading && companies.length === 0 && (
                 <EmptyState message="Nenhuma empresa encontrada" />
             ) }
 
-            <Modal isOpen={ isDeleteModalOpen } entityName={ companies.find((company: CompanyResponseDto) => company.id === selectedCompanyId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleDelete } />
+            <Modal isOpen={ isDeleteModalOpen } entityName={ companies.find((company: CompanyResponseDto) => company.id === selectedCompanyId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleDelete }/>
 
             <Drawer isOpen={ isDrawerOpen } isSubmitting={ isSubmitting } formId="company-form" title={ updating ? "Editar empresa" : "Nova empresa" } mode={ updating ? "edit" : "create" } onClose={ () => { setIsDrawerOpen(false); setUpdating(null); } }>
-                <CompanyForm initialValues={ updating ?? undefined } onCancel={ () => { setIsDrawerOpen(false); if (isSubmitting) { return; } setUpdating(null); } } onSubmit={ () => { setIsDrawerOpen(false); setUpdating(null); handleRead(); } } onLoadingChange={ setIsSubmitting } />
+                <CompanyForm initialValues={ updating ?? undefined } onCancel={ () => { setIsDrawerOpen(false); if (isSubmitting) { return; } setUpdating(null); } } onSubmit={ () => { setIsDrawerOpen(false); setUpdating(null); handleRead(); } } onLoadingChange={ setIsSubmitting }/>
             </Drawer>
         </Fragment>
     );

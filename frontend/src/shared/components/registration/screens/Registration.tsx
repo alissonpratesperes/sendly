@@ -43,13 +43,13 @@ const Registration: React.FC = () => {
             </Styled.HeaderWrapper>
 
             <Routes>
-                <Route path="/" element={ <Navigate to="company" replace /> } />
+                <Route path="/" element={ <Navigate to="company" replace /> }/>
 
-                <Route path="/company" element={ <PrivateRoute element={ <Company /> }/> } />
-                <Route path="/user" element={ <PrivateRoute element={ <User /> }/> } />
-                <Route path="/list" element={ <PrivateRoute element={ <Lists /> }/> } />
-                <Route path="/contact" element={ <PrivateRoute element={ <Contact /> }/> } />
-                <Route path="/template" element={ <PrivateRoute element={ <Template /> }/> } />
+                <Route path="/company" element={ <PrivateRoute element={ <Company /> }/> }/>
+                <Route path="/user" element={ <PrivateRoute element={ <User /> }/> }/>
+                <Route path="/list" element={ <PrivateRoute element={ <Lists /> }/> }/>
+                <Route path="/contact" element={ <PrivateRoute element={ <Contact /> }/> }/>
+                <Route path="/template" element={ <PrivateRoute element={ <Template /> }/> }/>
             </Routes>
         </Fragment>
     );

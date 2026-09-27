@@ -114,7 +114,7 @@ export const TemplateForm: React.FC<FormProps<TemplateFormData>> = ({ initialVal
             onSubmit();
         } catch (error: unknown) {
             if (error instanceof z.ZodError) {
-                toast.error(<Toast errors={ error.issues } />);
+                toast.error(<Toast errors={ error.issues }/>);
             } else {
                 toast.error("Não é possível prosseguir com a solicitação");
             }
@@ -154,7 +154,7 @@ export const TemplateForm: React.FC<FormProps<TemplateFormData>> = ({ initialVal
             <Styled.FieldWrapper>
                 <Styled.Label htmlFor="name"> Nome </Styled.Label>
 
-                <Styled.Input id="name" name="name" placeholder="Digite o nome do template" value={ formData.name } onChange={ (event) => handleChange(event, setFormData) } />
+                <Styled.Input id="name" name="name" placeholder="Digite o nome do template" value={ formData.name } onChange={ (event) => handleChange(event, setFormData) }/>
             </Styled.FieldWrapper>
 
             <Styled.Fieldset>
@@ -163,18 +163,18 @@ export const TemplateForm: React.FC<FormProps<TemplateFormData>> = ({ initialVal
                 <Styled.FieldWrapper>
                     <Styled.Label htmlFor="header"> Cabeçalho </Styled.Label>
 
-                    <Styled.Input id="header" name="header" placeholder="Digite o cabeçalho do template" value={ templateFields.header } onChange={ (event) => handleChange(event, setTemplateFields) } />
+                    <Styled.Input id="header" name="header" placeholder="Digite o cabeçalho do template" value={ templateFields.header } onChange={ (event) => handleChange(event, setTemplateFields) }/>
                 </Styled.FieldWrapper>
                 <Styled.FieldWrapper>
-                    <Styled.Textarea id="body" name="body" placeholder="Digite o corpo do template" value={ templateFields.body } onChange={ (event) => handleChange(event, setTemplateFields) } />
+                    <Styled.Textarea id="body" name="body" placeholder="Digite o corpo do template" value={ templateFields.body } onChange={ (event) => handleChange(event, setTemplateFields) }/>
                 </Styled.FieldWrapper>
                 <Styled.FieldWrapper>
                     <Styled.Label htmlFor="footer"> Rodapé </Styled.Label>
 
-                    <Styled.Input id="footer" name="footer" placeholder="Digite o rodapé do template" value={ templateFields.footer } onChange={ (event) => handleChange(event, setTemplateFields) } />
+                    <Styled.Input id="footer" name="footer" placeholder="Digite o rodapé do template" value={ templateFields.footer } onChange={ (event) => handleChange(event, setTemplateFields) }/>
                 </Styled.FieldWrapper>
 
-                <Uploader value={ templateImage } existingImage={ existingImage } onRemoveExistingImage={ () => { setExistingImage(undefined); } } onChange={ (file) => { if (file instanceof File) { setTemplateImage(file); } else { setTemplateImage(undefined); } } } />
+                <Uploader value={ templateImage } existingImage={ existingImage } onRemoveExistingImage={ () => { setExistingImage(undefined); } } onChange={ (file) => { if (file instanceof File) { setTemplateImage(file); } else { setTemplateImage(undefined); } } }/>
             </Styled.Fieldset>
         </Styled.Form>
     );

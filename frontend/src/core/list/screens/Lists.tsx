@@ -101,7 +101,7 @@ const Lists = () => {
                 <LoadingState/>
             ) }
             { !isLoading && (
-                <Finder showAddButton={ true } placeholder="Pesquise uma lista por nome ou assunto" buttonText="Cadastrar lista" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } } />
+                <Finder showAddButton={ true } placeholder="Pesquise uma lista por nome ou assunto" buttonText="Cadastrar lista" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } }/>
             ) }
             { !isLoading && lists.length > 0 && (
                 <Fragment>
@@ -115,24 +115,24 @@ const Lists = () => {
                             <Fragment>
                                 <Styled.TableListBodyRowData> <b> { list.name } </b> </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> { list.subject } </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> <Styled.TableListColorContent> <Styled.TableListColorFragment $color={ list.color } /> </Styled.TableListColorContent> </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <Styled.TableListColorContent> <Styled.TableListColorFragment $color={ list.color }/> </Styled.TableListColorContent> </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> { formatDate(list.createdAt, true) } </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> { formatDate(list.updatedAt, true) } </Styled.TableListBodyRowData>
                             </Fragment>
                         ) }
                     />
 
-                    <Paginate page={ page } total={ total } limit={ limit } onPageChange={ setPage } onLimitChange={ (newLimit: number) => { setLimit(newLimit); setPage(1); } } />
+                    <Paginate page={ page } total={ total } limit={ limit } onPageChange={ setPage } onLimitChange={ (newLimit: number) => { setLimit(newLimit); setPage(1); } }/>
                 </Fragment>
             ) }
             { !isLoading && lists.length === 0 && (
                 <EmptyState message="Nenhuma lista encontrada" />
             ) }
 
-            <Modal isOpen={ isDeleteModalOpen } entityName={ lists.find((list: ListResponseDto) => list.id === selectedListId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleDelete } />
+            <Modal isOpen={ isDeleteModalOpen } entityName={ lists.find((list: ListResponseDto) => list.id === selectedListId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleDelete }/>
 
             <Drawer isOpen={ isDrawerOpen } isSubmitting={ isSubmitting } formId="list-form" title={ updating ? "Editar lista" : "Nova lista" } mode={ updating ? "edit" : "create" } onClose={ () => { setIsDrawerOpen(false); setUpdating(null); } }>
-                <ListForm initialValues={ updating ?? undefined } onCancel={ () => { setIsDrawerOpen(false); if (isSubmitting) { return; } setUpdating(null); } } onSubmit={ () => { setIsDrawerOpen(false); setUpdating(null); handleRead(); } } onLoadingChange={ setIsSubmitting } />
+                <ListForm initialValues={ updating ?? undefined } onCancel={ () => { setIsDrawerOpen(false); if (isSubmitting) { return; } setUpdating(null); } } onSubmit={ () => { setIsDrawerOpen(false); setUpdating(null); handleRead(); } } onLoadingChange={ setIsSubmitting }/>
             </Drawer>
         </Fragment>
     );
