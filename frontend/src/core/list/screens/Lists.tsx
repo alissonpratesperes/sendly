@@ -47,7 +47,7 @@ const Lists = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [ page, limit, search ]);
+    }, [ page, limit, search ])
     const handleUpdate = (id: number) => {
         const clicked = lists.find((list: ListResponseDto) => list.id === id);
 

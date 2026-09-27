@@ -52,7 +52,7 @@ const User = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [ page, limit, search ]);
+    }, [ page, limit, search ])
     const handleUpdate = (id: number) => {
         const clicked = users.find((user: UserResponseDto) => user.id === id);
 

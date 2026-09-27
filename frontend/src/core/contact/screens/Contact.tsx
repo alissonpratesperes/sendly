@@ -41,7 +41,7 @@ const Contact = () => {
 
     const handleImport = () => {
         setIsImportDrawerOpen(true);
-    };
+    }
     const handleCreate = () => {
         setUpdating(null);
         setIsDrawerOpen(true);
@@ -85,7 +85,7 @@ const Contact = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [ page, limit, search ]);
+    }, [ page, limit, search ])
     const handleUpdate = (id: number) => {
         const clicked = contacts.find((contact: ContactResponseDto) => contact.id === id);
 

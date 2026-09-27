@@ -4,6 +4,7 @@ import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-
 import User from '../../../../core/user/screens/User';
 import * as Styled from '../styles/registration.style';
 import Lists from '../../../../core/list/screens/Lists';
+import Batch from '../../../../core/batch/screens/Batch';
 import { NavigationTab } from '../types/navigationTab.type';
 import PrivateRoute from '../../private/screens/PrivateRoute';
 import Company from '../../../../core/company/screens/Company';
@@ -50,6 +51,7 @@ const Registration: React.FC = () => {
                 <Route path="/list" element={ <PrivateRoute element={ <Lists /> }/> }/>
                 <Route path="/contact" element={ <PrivateRoute element={ <Contact /> }/> }/>
                 <Route path="/template" element={ <PrivateRoute element={ <Template /> }/> }/>
+                <Route path="/batch" element={ <PrivateRoute element={ <Batch /> }/> }/>
             </Routes>
         </Fragment>
     );

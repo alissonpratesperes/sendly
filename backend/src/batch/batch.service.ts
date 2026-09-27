@@ -56,7 +56,7 @@ export class BatchService {
         await this.companyService.read(companyId);
 
         const contacts = await this.contactService.findForBatch(companyId, listId);
-        const contactIds: number[] = contacts.map(contact => contact.Id);
+        const contactIds = contacts.map(contact => contact.Id);
         const { batch, batchSendIds } = await this.prismaService.client.$transaction(async (tx) => {
             const batch = await tx.batch.create({
                 data: {
@@ -66,8 +66,7 @@ export class BatchService {
             });
             const batchSendIds = await this.batchSendService.create(
                 tx,
-
-                batch.CompanyId,
+                companyId,
                 batch.Id,
                 templateId,
                 contactIds,
@@ -79,7 +78,7 @@ export class BatchService {
             };
         });
 
-        await this.markAsRunning(batch.Id);
+        await this.markAsRunning(batch.CompanyId, batch.Id);
         await this.queueService.enqueueBatchSends(batchSendIds);
 
         return this.toBatchResponse(batch);
@@ -149,10 +148,11 @@ export class BatchService {
                 throw new BadRequestException("Only pending batches can be updated");
             }
 
-            const currentBatchSend = await this.batchSendService.readByBatchId(tx, id);
+            const currentBatchSend = await this.batchSendService.readByBatchId(tx, foundBatch.CompanyId, foundBatch.Id,);
             const updatedBatch = await tx.batch.updateMany({
                 where: {
                     Id: id,
+                    CompanyId: foundBatch.CompanyId,
                     Status: Batch_Status.PENDING,
                     DeletedAt: null,
                 },
@@ -195,17 +195,17 @@ export class BatchService {
             };
         });
 
-        await this.markAsRunning(batch.Id);
-
+        await this.markAsRunning(batch.CompanyId, batch.Id);
         await this.queueService.enqueueBatchSends(batchSendIds);
 
         return this.toBatchResponse(batch);
     }
 
-    async markAsRunning(id: number): Promise<void> {
+    async markAsRunning(companyId: number, id: number): Promise<void> {
         const runningBatch = await this.prismaService.client.batch.updateMany({
             where: {
                 Id: id,
+                CompanyId: companyId,
                 Status: Batch_Status.PENDING,
                 DeletedAt: null,
 
@@ -224,10 +224,11 @@ export class BatchService {
         }
     }
 
-    async markAsPartial(id: number): Promise<void> {
-        const partialBatch = await this.prismaService.client.batch.updateMany({
+    async markAsPartial(companyId: number, id: number): Promise<void> {
+        await this.prismaService.client.batch.updateMany({
             where: {
                 Id: id,
+                CompanyId: companyId,
                 Status: Batch_Status.RUNNING,
                 DeletedAt: null,
 
@@ -240,16 +241,13 @@ export class BatchService {
                 EndedAt: new Date(),
             },
         });
-
-        if (partialBatch.count === 0) {
-            return;
-        }
     }
 
-    async markAsFailed(id: number): Promise<void> {
-        const failedBatch = await this.prismaService.client.batch.updateMany({
+    async markAsFailed(companyId: number, id: number): Promise<void> {
+        await this.prismaService.client.batch.updateMany({
             where: {
                 Id: id,
+                CompanyId: companyId,
                 Status: Batch_Status.RUNNING,
                 DeletedAt: null,
 
@@ -262,16 +260,13 @@ export class BatchService {
                 EndedAt: new Date(),
             },
         });
-
-        if (failedBatch.count === 0) {
-            return;
-        }
     }
 
-    async markAsCompleted(id: number): Promise<void> {
-        const completedBatch = await this.prismaService.client.batch.updateMany({
+    async markAsCompleted(companyId: number, id: number): Promise<void> {
+        await this.prismaService.client.batch.updateMany({
             where: {
                 Id: id,
+                CompanyId: companyId,
                 Status: Batch_Status.RUNNING,
                 DeletedAt: null,
 
@@ -284,37 +279,42 @@ export class BatchService {
                 EndedAt: new Date(),
             },
         });
-
-        if (completedBatch.count === 0) {
-            return;
-        }
     }
 
     async finishIfCompleted(id: number): Promise<void> {
-        const pendingCount = await this.batchSendService.countByStatus(id, [
-            BatchSend_Status.WAITING,
-            BatchSend_Status.PROCESSING,
-        ]);
+        const batch = await this.prismaService.client.batch.findFirst({
+            where: {
+                Id: id,
+                DeletedAt: null,
+
+                Company: {
+                    DeletedAt: null,
+                },
+            },
+            select: {
+                CompanyId: true,
+            },
+        });
+
+        if (!batch) {
+            throw new NotFoundException("Batch not found");
+        }
+
+        const pendingCount = await this.batchSendService.countByStatus(batch.CompanyId, id, [ BatchSend_Status.WAITING, BatchSend_Status.PROCESSING, ]);
 
         if (pendingCount > 0) {
             return;
         }
 
-        const failedCount = await this.batchSendService.countByStatus(id, [
-            BatchSend_Status.FAILED,
-        ]);
-        const successCount = await this.batchSendService.countByStatus(id, [
-            BatchSend_Status.SENT,
-            BatchSend_Status.DELIVERED,
-            BatchSend_Status.READ,
-        ]);
+        const failedCount = await this.batchSendService.countByStatus(batch.CompanyId, id, [BatchSend_Status.FAILED]);
+        const successCount = await this.batchSendService.countByStatus(batch.CompanyId, id, [ BatchSend_Status.SENT, BatchSend_Status.DELIVERED, BatchSend_Status.READ, ]);
 
         if (failedCount > 0 && successCount === 0) {
-            await this.markAsFailed(id);
+            await this.markAsFailed(batch.CompanyId, id);
         } else if (failedCount > 0 && successCount > 0) {
-            await this.markAsPartial(id);
+            await this.markAsPartial(batch.CompanyId, id);
         } else {
-            await this.markAsCompleted(id);
+            await this.markAsCompleted(batch.CompanyId, id);
         }
     }
 
@@ -328,6 +328,7 @@ export class BatchService {
         const result = await this.prismaService.client.batch.updateMany({
             where: {
                 Id: batch.id,
+                CompanyId: batch.companyId,
                 Status: Batch_Status.PENDING,
                 DeletedAt: null,
             },

@@ -14,7 +14,6 @@ import Paginate from '../../../shared/components/paginate/screens/Paginate';
 import * as Styled from '../../../shared/components/table/styles/table.style';
 import { EmptyState } from '../../../shared/components/emptyState/screens/EmpyState';
 import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
-import { getAuthenticationStorage } from '../../../shared/utils/authenticationStorage.util';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
 
 const Template = () => {
@@ -29,8 +28,6 @@ const Template = () => {
     const [updating, setUpdating] = useState<TemplateFormData | null>(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
     const [selectedTemplateId, setSelectedTemplateId] = useState<number | null>(null);
-
-    const { userInformation } = getAuthenticationStorage();
 
     const handleCreate = () => {
         setUpdating(null);
@@ -50,7 +47,7 @@ const Template = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [ page, limit, search ]);
+    }, [ page, limit, search ])
     const handleUpdate = (id: number) => {
         const clicked = templates.find((template: TemplateResponseDto) => template.id === id);
 

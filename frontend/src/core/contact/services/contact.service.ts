@@ -40,4 +40,4 @@ export const ImportContactsCsv = async (formData: FormData) => {
     const { data } = await axiosInstance.post(`${ BASE_ENDPOINT }/import`, formData);
 
     return data;
-};
+}

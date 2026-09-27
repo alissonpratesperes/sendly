@@ -51,7 +51,7 @@ const Company = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [ page, limit, search ]);
+    }, [ page, limit, search ])
     const handleUpdate = (id: number) => {
         const clicked = companies.find((company: CompanyResponseDto) => company.id === id);
 
