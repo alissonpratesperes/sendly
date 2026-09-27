@@ -5,6 +5,7 @@ export interface DrawerProps {
     title: string;
     children: React.ReactNode;
     mode?: "create" | "edit" | "import";
+    hideFooter?: boolean;
 
     onClose: () => void;
 }

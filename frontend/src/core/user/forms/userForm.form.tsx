@@ -100,7 +100,7 @@ export const UserForm: React.FC<FormProps<UserFormData>> = ({ initialValues, onS
 
                 await fetchAllCompanies();
             } catch (error) {
-                toast.error(`Erro ao listar as opções de Listas: ${error}`);
+                toast.error(`Erro ao listar as opções de Listas: ${ error }`);
             } finally {
                 setIsCompaniesLoading(false);
             }

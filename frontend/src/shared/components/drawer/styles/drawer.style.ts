@@ -351,3 +351,118 @@ export const FooterButton = styled.button<{ $variant?: "primary" | "secondary"; 
 export const FooterButtonText = styled.span`
     margin-left: 7.5px;
 `;
+
+export const ContactImportResultContainer = styled.div`
+    // border: 1px solid black;
+`;
+
+export const ImportResultTitle = styled.p`
+    margin-bottom: 30px;
+    padding: 15px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    column-gap: 7.5px;
+    font-weight: bold;
+    font-size: 18px;
+    color: #1C70E9;
+    background-color: #FFFFFF;
+    border-radius: 14px;
+`;
+
+export const ImportResultInformations = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    column-gap: 30px;
+`;
+
+export const ImportResultSucceededTitle = styled.p`
+    padding: 7.5px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    column-gap: 7.5px;
+    font-weight: bold;
+    font-size: 18px;
+    color: #81C995;
+`;
+
+export const ImportResultUnsucceededTitle = styled(ImportResultSucceededTitle)`
+    color: #DC143C;
+`;
+
+export const ImportResultErrorListTitle = styled.span`
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    column-gap: 7.5px;
+    font-weight: bold;
+    font-size: 18px;
+    color: #171719;
+    background-color: #D9DEE7;
+    border-bottom: 2px solid #E9EAEB;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+`;
+
+export const ImportResultErrorList = styled.ul`
+    margin: 30px 0px 30px 0px;
+    padding: 15px;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 15px;
+    background-color: #D9DEE7;
+    border-radius: 14px;
+`;
+
+export const ImportResultErrorListItem = styled.li`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    column-gap: 7.5px;
+`;
+
+export const ImportResultLeftContainer = styled.div`
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+`;
+
+export const ImportResultRightContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+`;
+
+export const ImportResultErrorName = styled.p`
+    font-family: "Inter";
+    font-style: italic;
+    font-weight: 500;
+    font-size: 14px;
+    color: #171719;
+`;
+
+export const ImportResultErrorMessage = styled.span`
+    font-family: "Inter";
+    font-style: italic;
+    font-weight: 400;
+    font-size: 12px;
+    color: #223463;
+`;

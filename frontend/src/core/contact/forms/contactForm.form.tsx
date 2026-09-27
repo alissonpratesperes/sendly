@@ -144,7 +144,7 @@ export const ContactForm: React.FC<FormProps<ContactFormData>> = ({ initialValue
 
                 await fetchAllLists();
             } catch (error) {
-                toast.error(`Erro ao listar as opções de Listas: ${error}`);
+                toast.error(`Erro ao listar as opções de Listas: ${ error }`);
             } finally {
                 setIsListsLoading(false);
             }

@@ -1,4 +1,5 @@
 import { toast } from 'react-toastify';
+import { AlertCircle, CircleAlert, CircleCheck, DatabaseCheck, Dot, ScrollText } from 'lucide-react';
 import React, { Fragment, useEffect, useState } from 'react';
 
 import { List } from '../../list/services/list.service';
@@ -7,12 +8,13 @@ import { ListResponseDto } from '../../list/dtos/listResponse.dto';
 import Dropdown from '../../../shared/components/dropdown/screens/Dropdown';
 import Uploader from '../../../shared/components/uploader/screens/Uploader';
 import { ImportContactResponseDto } from '../dtos/importContactResponse.dto';
+import { importErrorMessages } from '../mappings/importErrorMessages.mapping';
 import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
 import { ImportFormProps } from '../../../shared/interfaces/importFormProps.interface';
 import { getAuthenticationStorage } from '../../../shared/utils/authenticationStorage.util';
 import * as ContactFormStyled from '../../../shared/components/dropdown/styles/contactFormDropdown.style';
 
-export const ContactImportForm: React.FC<ImportFormProps> = ({ onCancel, onSubmit, onLoadingChange, }) => {
+export const ContactImportForm: React.FC<ImportFormProps> = ({ onCancel, onSubmit, onLoadingChange, onResultChange, }) => {
     const { userInformation } = getAuthenticationStorage();
 
     const [csvFile, setCsvFile] = useState<File>();
@@ -58,8 +60,15 @@ export const ContactImportForm: React.FC<ImportFormProps> = ({ onCancel, onSubmi
             const response = await ImportContactsCsv(formData);
 
             setImportResult(response);
+            onResultChange?.(response.errors.length > 0);
 
-            toast.success("Importação realizada com sucesso");
+            if (response.errors.length === 0) {
+                onSubmit();
+
+                toast.success("Importação realizada com sucesso");
+            } else {
+                toast.warning("A importação foi concluída com erros, verifique o log");
+            }
         } catch (error) {
             toast.error("Não é possível prosseguir com a solicitação");
         } finally {
@@ -87,7 +96,7 @@ export const ContactImportForm: React.FC<ImportFormProps> = ({ onCancel, onSubmi
 
                 setLists(allFetchedLists);
             } catch (error) {
-                toast.error(`Erro ao listar as opções de Listas: ${error}`);
+                toast.error(`Erro ao listar as opções de Listas: ${ error }`);
             } finally {
                 setIsListsLoading(false);
             }
@@ -103,8 +112,8 @@ export const ContactImportForm: React.FC<ImportFormProps> = ({ onCancel, onSubmi
                     <Styled.FieldWrapper>
                         <Dropdown
                             inputId="listId"
-                            isLoading={isListsLoading}
-                            options={optionsForLists}
+                            isLoading={ isListsLoading }
+                            options={ optionsForLists }
                             placeholder="Vincule a uma lista"
                             value={ optionsForLists.find((option) => option.value === listId) ?? null }
                             onChange={ (selectedOption) => setListId(selectedOption?.value ?? 0) }
@@ -121,31 +130,31 @@ export const ContactImportForm: React.FC<ImportFormProps> = ({ onCancel, onSubmi
                     <Uploader isCsv={ true } value={ csvFile } onChange={ (file) => setCsvFile(file as File | undefined) }/>
                 </Styled.Form>
             ) : (
-                <div>
-                    <h3>Resultado da importação</h3>
+                <Styled.ContactImportResultContainer>
+                    <Styled.ImportResultTitle> <DatabaseCheck size={ 25 }/> Resultado da importação </Styled.ImportResultTitle>
 
-                    <p>
-                        {importResult.valid} contatos importados com sucesso.
-                    </p>
+                    <Styled.ImportResultInformations>
+                        <Styled.ImportResultSucceededTitle> <CircleCheck size={ 25 } /> { importResult.valid } </Styled.ImportResultSucceededTitle>
+                        <Styled.ImportResultUnsucceededTitle> <CircleAlert size={ 25 } /> { importResult.invalid } </Styled.ImportResultUnsucceededTitle>
+                    </Styled.ImportResultInformations>
 
-                    <p>
-                        {importResult.invalid} contatos não foram importados.
-                    </p>
+                    { importResult.errors.length > 0 && (
+                        <Styled.ImportResultErrorList>
+                            <Styled.ImportResultErrorListTitle> <ScrollText size={ 25 } /> Log do processamento </Styled.ImportResultErrorListTitle>
 
-                    {importResult.errors.length > 0 && (
-                        <div>
-                            <h4>Erros</h4>
+                            { importResult.errors.map((error, index) => (
+                                <Styled.ImportResultErrorListItem key={ index }>
+                                    <Styled.ImportResultLeftContainer> <AlertCircle size={ 25 } color="#DC143C"/> </Styled.ImportResultLeftContainer>
 
-                            {importResult.errors.map((error, index) => (
-                                <div key={index}>
-                                    <strong>{error.name}</strong>
-                                    <span>{error.phone}</span>
-                                    <span>{error.error}</span>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                </div>
+                                    <Styled.ImportResultRightContainer>
+                                        <Styled.ImportResultErrorName> { error.name } </Styled.ImportResultErrorName>
+                                        <Styled.ImportResultErrorMessage> { importErrorMessages[error.error] ?? "Erro desconhecido" } </Styled.ImportResultErrorMessage>
+                                    </Styled.ImportResultRightContainer>
+                                </Styled.ImportResultErrorListItem>
+                            )) }
+                        </Styled.ImportResultErrorList>
+                    ) }
+                </Styled.ContactImportResultContainer>
             )}
         </Fragment>
     );

@@ -5,7 +5,7 @@ import * as Styled from '../styles/drawer.style';
 import { DrawerProps } from '../interfaces/drawerProps.interface';
 import { LoadingState } from '../../loadingState/screens/LoadingState';
 
-export const Drawer: React.FC<DrawerProps> = ({ isOpen, isSubmitting = false, formId, title, children, mode = "create", onClose }) => {
+export const Drawer: React.FC<DrawerProps> = ({ isOpen, isSubmitting = false, formId, title, children, mode = "create", hideFooter = false, onClose }) => {
     const [isClosing, setIsClosing] = useState(false);
 
     return (
@@ -22,25 +22,27 @@ export const Drawer: React.FC<DrawerProps> = ({ isOpen, isSubmitting = false, fo
 
                         <Styled.Content> { children } </Styled.Content>
 
-                        <Styled.Footer>
-                            { isSubmitting && (
-                                <LoadingState/>
-                            ) }
-                            { !isSubmitting && (
-                                <Fragment>
-                                    <Styled.FooterButton type="button" $variant="secondary" className="secondary" onClick={ () => setIsClosing(true) }>
-                                        <Ban size={ 25 }/>
+                        { !hideFooter && (
+                            <Styled.Footer>
+                                { isSubmitting && (
+                                    <LoadingState/>
+                                ) }
+                                { !isSubmitting && (
+                                    <Fragment>
+                                        <Styled.FooterButton type="button" $variant="secondary" className="secondary" onClick={ () => setIsClosing(true) }>
+                                            <Ban size={ 25 }/>
 
-                                        <Styled.FooterButtonText> Cancelar </Styled.FooterButtonText>
-                                    </Styled.FooterButton>
-                                    <Styled.FooterButton type="submit" $variant="primary" className="primary" form={ formId }>
-                                        { mode === "create" ? <Save size={ 25 }/> : mode === "edit"? <SquarePen size={ 25 }/> : <HardDriveUpload size={ 25 }/> }
+                                            <Styled.FooterButtonText> Cancelar </Styled.FooterButtonText>
+                                        </Styled.FooterButton>
+                                        <Styled.FooterButton type="submit" $variant="primary" className="primary" form={ formId }>
+                                            { mode === "create" ? <Save size={ 25 }/> : mode === "edit"? <SquarePen size={ 25 }/> : <HardDriveUpload size={ 25 }/> }
 
-                                        <Styled.FooterButtonText> { mode === "create" ? "Cadastrar" : mode === "edit" ? "Atualizar" : "Importar" } </Styled.FooterButtonText>
-                                    </Styled.FooterButton>
-                                </Fragment>
-                            ) }
-                        </Styled.Footer>
+                                            <Styled.FooterButtonText> { mode === "create" ? "Cadastrar" : mode === "edit" ? "Atualizar" : "Importar" } </Styled.FooterButtonText>
+                                        </Styled.FooterButton>
+                                    </Fragment>
+                                ) }
+                            </Styled.Footer>
+                        ) }
                     </Styled.Drawer>
                 ) }
         </Fragment>

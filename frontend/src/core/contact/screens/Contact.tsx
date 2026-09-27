@@ -31,6 +31,7 @@ const Contact = () => {
     const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
     const [contacts, setContacts] = useState<ContactResponseDto[]>([]);
     const [updating, setUpdating] = useState<ContactFormData | null>(null);
+    const [hasImportErrors, setHasImportErrors] = useState<boolean>(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
     const [isImportDrawerOpen, setIsImportDrawerOpen] = useState<boolean>(false);
     const [selectedContactId, setSelectedContactId] = useState<number | null>(null);
@@ -189,8 +190,8 @@ const Contact = () => {
 
             <Modal isOpen={ isDeleteModalOpen } entityName={ contacts.find((contact: ContactResponseDto) => contact.id === selectedContactId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleDelete }/>
 
-            <Drawer isOpen={ isImportDrawerOpen } isSubmitting={ isSubmitting } formId="contact-import-form" title={ "Importação em lote" } mode="import" onClose={ () => { setIsImportDrawerOpen(false); } }>
-                <ContactImportForm onCancel={ () => { setIsImportDrawerOpen(false); if (isSubmitting) { return; } } } onSubmit={ () => { setIsImportDrawerOpen(false); handleRead(); } } onLoadingChange={ setIsSubmitting }/>
+            <Drawer isOpen={ isImportDrawerOpen } isSubmitting={ isSubmitting } formId="contact-import-form" title={ "Importação em lote" } mode="import" onClose={ () => { setIsImportDrawerOpen(false); setIsImportDrawerOpen(false); setHasImportErrors(false); handleRead(); } } hideFooter={ hasImportErrors }>
+                <ContactImportForm onCancel={ () => { setIsImportDrawerOpen(false); if (isSubmitting) { return; } } } onSubmit={ () => { setIsImportDrawerOpen(false); handleRead(); } } onLoadingChange={ setIsSubmitting } onResultChange={ setHasImportErrors }/>
             </Drawer>
             <Drawer isOpen={ isDrawerOpen } isSubmitting={ isSubmitting } formId="contact-form" title={ updating ? "Editar contato" : "Novo contato" } mode={ updating ? "edit" : "create" } onClose={ () => { setIsDrawerOpen(false); setUpdating(null); } }>
                 <ContactForm initialValues={ updating ?? undefined } onCancel={ () => { setIsDrawerOpen(false); if (isSubmitting) { return; } setUpdating(null); } } onSubmit={ () => { setIsDrawerOpen(false); setUpdating(null); handleRead(); } } onLoadingChange={ setIsSubmitting }/>
