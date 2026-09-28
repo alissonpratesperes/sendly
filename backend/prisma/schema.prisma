@@ -8,17 +8,19 @@ datasource db {
 }
 
 model Batch {
-  Id        Int          @id @default(autoincrement()) @db.UnsignedInt
-  CompanyId Int          @db.UnsignedInt
-  Name      String       @db.VarChar(150)
-  StartedAt DateTime?
-  EndedAt   DateTime?
-  Status    Batch_Status @default(PENDING)
-  CreatedAt DateTime     @default(now())
-  UpdatedAt DateTime     @default(now())
-  DeletedAt DateTime?
-  Company   Company      @relation(fields: [CompanyId], references: [Id], map: "FK_Batch_CompanyId")
-  BatchSend BatchSend[]
+  Id         Int          @id @default(autoincrement()) @db.UnsignedInt
+  CompanyId  Int          @db.UnsignedInt
+  Name       String       @db.VarChar(150)
+  StartedAt  DateTime?
+  EndedAt    DateTime?
+  Status     Batch_Status @default(PENDING)
+  CreatedAt  DateTime     @default(now())
+  UpdatedAt  DateTime     @default(now())
+  DeletedAt  DateTime?
+  TemplateId Int          @db.UnsignedInt
+  ListId     Int          @db.UnsignedInt
+  Company    Company      @relation(fields: [CompanyId], references: [Id], map: "FK_Batch_CompanyId")
+  BatchSend  BatchSend[]
 
   @@index([CompanyId], map: "FK_Batch_CompanyId")
 }
@@ -73,15 +75,14 @@ model List {
 }
 
 model Template {
-  Id        Int         @id @default(autoincrement()) @db.UnsignedInt
-  CompanyId Int         @db.UnsignedInt
-  Name      String      @db.VarChar(150)
+  Id        Int       @id @default(autoincrement()) @db.UnsignedInt
+  CompanyId Int       @db.UnsignedInt
+  Name      String    @db.VarChar(150)
   Content   Json
-  CreatedAt DateTime    @default(now())
-  UpdatedAt DateTime    @default(now())
+  CreatedAt DateTime  @default(now())
+  UpdatedAt DateTime  @default(now())
   DeletedAt DateTime?
-  BatchSend BatchSend[]
-  Company   Company     @relation(fields: [CompanyId], references: [Id], map: "FK_Template_CompanyId")
+  Company   Company   @relation(fields: [CompanyId], references: [Id], map: "FK_Template_CompanyId")
 
   @@unique([CompanyId, Name], map: "UK_Template_CompanyId_Name")
 }
@@ -109,7 +110,6 @@ model BatchSend {
   CompanyId        Int              @db.UnsignedInt
   BatchId          Int              @db.UnsignedInt
   ContactId        Int              @db.UnsignedInt
-  TemplateId       Int              @db.UnsignedInt
   TemplateSnapshot Json
   Status           BatchSend_Status @default(WAITING)
   Attempts         Int              @default(0) @db.UnsignedInt
@@ -124,11 +124,9 @@ model BatchSend {
   Batch            Batch            @relation(fields: [BatchId], references: [Id], map: "FK_BatchSend_BatchId")
   Company          Company          @relation(fields: [CompanyId], references: [Id], map: "FK_BatchSend_CompanyId")
   Contact          Contact          @relation(fields: [ContactId], references: [Id], map: "FK_BatchSend_ContactId")
-  Template         Template         @relation(fields: [TemplateId], references: [Id], map: "FK_BatchSend_TemplateId")
 
   @@unique([BatchId, ContactId], map: "UK_BatchSend_BatchId_ContactId")
   @@index([ContactId], map: "FK_BatchSend_ContactId")
-  @@index([TemplateId], map: "FK_BatchSend_TemplateId")
   @@index([CompanyId], map: "FK_BatchSend_CompanyId")
 }
 

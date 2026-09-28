@@ -4,6 +4,8 @@ export class GetBatchResponseDto {
     constructor(
         public id: number,
         public companyId: number,
+        public templateId: number,
+        public listId: number,
 
         public name: string,
         public startedAt: Date | null,

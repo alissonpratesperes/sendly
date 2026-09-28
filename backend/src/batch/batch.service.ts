@@ -23,6 +23,8 @@ export class BatchService {
         return new GetBatchResponseDto(
             batch.Id,
             batch.CompanyId,
+            batch.TemplateId,
+            batch.ListId,
 
             batch.Name,
             batch.StartedAt,
@@ -62,6 +64,8 @@ export class BatchService {
                 data: {
                     CompanyId: companyId,
                     Name: name,
+                    TemplateId: templateId,
+                    ListId: listId,
                 },
             });
             const batchSendIds = await this.batchSendService.create(
@@ -158,6 +162,8 @@ export class BatchService {
                 },
                 data: {
                     ...(name !== undefined && { Name: name, }),
+                    ...(templateId !== undefined && { TemplateId: templateId, }),
+                    ...(listId !== undefined && { ListId: listId, }),
                 },
             });
 
@@ -185,7 +191,7 @@ export class BatchService {
 
                 batch.CompanyId,
                 batch.Id,
-                templateId ?? currentBatchSend.currentTemplateId,
+                templateId ?? batch.TemplateId,
                 contactIds,
             );
 

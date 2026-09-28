@@ -63,7 +63,6 @@ export class BatchSendService {
                     CompanyId: companyId,
                     BatchId: batchId,
                     ContactId: contact.Id,
-                    TemplateId: templateId,
                     TemplateSnapshot: templateSnapshot as unknown as Prisma.InputJsonValue,
                     Status: BatchSend_Status.WAITING,
                     ScheduledAt: new Date(),
@@ -99,7 +98,7 @@ export class BatchSendService {
         return batchSend;
     }
 
-    async readByBatchId(tx: Prisma.TransactionClient, companyId: number, batchId: number): Promise<{ currentTemplateId: number; currentContactIds: number[]; }> {
+    async readByBatchId(tx: Prisma.TransactionClient, companyId: number, batchId: number): Promise<{ currentContactIds: number[]; }> {
         const batchSends = await tx.batchSend.findMany({
             where: {
                 CompanyId: companyId,
@@ -112,7 +111,6 @@ export class BatchSendService {
             },
             select: {
                 ContactId: true,
-                TemplateId: true,
             },
         });
 
@@ -121,9 +119,8 @@ export class BatchSendService {
         }
 
         return {
-            currentTemplateId: batchSends[0].TemplateId,
             currentContactIds: batchSends.map((batchSend) => batchSend.ContactId),
-        };
+        }
     }
 
     async readForProcessingSystem(id: number): Promise<Prisma.BatchSendGetPayload<{ include: { Batch: true; Contact: true; }; }> | null> {
@@ -187,7 +184,6 @@ export class BatchSendService {
                     CompanyId: companyId,
                     BatchId: batchId,
                     ContactId: contact.Id,
-                    TemplateId: templateId,
                     TemplateSnapshot: templateSnapshot as unknown as Prisma.InputJsonValue,
                     Status: BatchSend_Status.WAITING,
                     ScheduledAt: new Date(),

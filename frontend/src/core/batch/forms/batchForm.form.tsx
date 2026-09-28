@@ -97,7 +97,7 @@ export const BatchForm: React.FC<FormProps<BatchFormData>> = ({ initialValues, o
     useEffect(() => {
         const progressiveTemplatesFetch = async () => {
             try {
-                setIsListsLoading(true);
+                setIsTemplatesLoading(true);
 
                 const fetchAllTemplates = async () => {
                     let page = 1;
@@ -119,7 +119,7 @@ export const BatchForm: React.FC<FormProps<BatchFormData>> = ({ initialValues, o
             } catch (error) {
                 toast.error(`Erro ao listar as opções de Templates: ${ error }`);
             } finally {
-                setIsListsLoading(false);
+                setIsTemplatesLoading(false);
             }
         };
         const progressiveListsFetch = async () => {
@@ -162,7 +162,7 @@ export const BatchForm: React.FC<FormProps<BatchFormData>> = ({ initialValues, o
                 name: initialValues.name,
                 templateId: initialValues.templateId,
                 listId: initialValues.listId,
-            });
+            }); console.log("initialValues", initialValues)
         } else {
             setFormData({ companyId: 0, name: "", templateId: 0, listId: 0, });
         }
