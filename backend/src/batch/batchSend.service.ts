@@ -241,7 +241,7 @@ export class BatchSendService {
                 },
             },
             data: {
-                Status: BatchSend_Status.FAILED,
+                Status: BatchSend_Status.ERROR,
                 ErrorCode: errorCode,
                 ErrorMessage: errorMessage,
             },

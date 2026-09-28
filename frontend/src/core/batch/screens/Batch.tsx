@@ -17,6 +17,7 @@ import * as Styled from '../../../shared/components/table/styles/table.style';
 import { TemplateResponseDto } from '../../template/dtos/templateResponse.dto';
 import { Read as ReadTemplate } from '../../template/services/template.service';
 import { EmptyState } from '../../../shared/components/emptyState/screens/EmpyState';
+import StatusBadge from '../../../shared/components/statusBadge/screens/StatusBadge';
 import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
 
@@ -35,8 +36,8 @@ const Batch = () => {
     const [listsNames, setListsNames] = useState<Record<number, ListResponseDto>>({});
     const [templatesNames, setTemplatesNames] = useState<Record<number, TemplateResponseDto>>({});
 
-     const listsNamesRef = useRef<Record<number, ListResponseDto>>({});
-     const templatesNamesRef = useRef<Record<number, TemplateResponseDto>>({});
+    const listsNamesRef = useRef<Record<number, ListResponseDto>>({});
+    const templatesNamesRef = useRef<Record<number, TemplateResponseDto>>({});
 
     const handleCreate = () => {
         setUpdating(null);
@@ -174,7 +175,7 @@ const Batch = () => {
                                 <Styled.TableListBodyRowData> { templatesNames[batch.templateId]?.name ?? "" } </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> { batch.startedAt ? formatDate(batch.startedAt, true) : "" } </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> { batch.endedAt ? formatDate(batch.endedAt, true) : "" } </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> { batch.status } </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <StatusBadge variant={ batch.status }/> </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> { formatDate(batch.createdAt, true) } </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> { formatDate(batch.updatedAt, true) } </Styled.TableListBodyRowData>
                             </Fragment>

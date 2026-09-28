@@ -12,12 +12,12 @@ import { Finder } from '../../../shared/components/finder/screen/Finder';
 import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
 import Paginate from '../../../shared/components/paginate/screens/Paginate';
 import * as Styled from '../../../shared/components/table/styles/table.style';
-import UserBadge from '../../../shared/components/userBadge/screens/UserBadge';
+import StatusBadge from '../../../shared/components/statusBadge/screens/StatusBadge';
 import { EmptyState } from '../../../shared/components/emptyState/screens/EmpyState';
 import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
 import { getAuthenticationStorage } from '../../../shared/utils/authenticationStorage.util';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
-import { UserBadgeVariant } from '../../../shared/components/userBadge/enums/userBadgeVariant.enum';
+import { UserBadgeVariant } from '../../../shared/components/statusBadge/enums/userBadgeVariant.enum';
 
 const User = () => {
     const [page, setPage] = useState<number>(1);
@@ -119,8 +119,8 @@ const User = () => {
                             <Fragment>
                                 <Styled.TableListBodyRowData> { user.name } </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> <b> { user.email } </b> </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> <UserBadge variant={ user.isFirstAccess ? UserBadgeVariant.FIRST_ACCESS : UserBadgeVariant.NOT_FIRST_ACCESS }/> </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> <UserBadge variant={ user.isSystemRoot ? UserBadgeVariant.SYSTEM_ROOT : UserBadgeVariant.NOT_SYSTEM_ROOT }/> </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <StatusBadge variant={ user.isFirstAccess ? UserBadgeVariant.FIRST_ACCESS : UserBadgeVariant.NOT_FIRST_ACCESS }/> </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <StatusBadge variant={ user.isSystemRoot ? UserBadgeVariant.SYSTEM_ROOT : UserBadgeVariant.NOT_SYSTEM_ROOT }/> </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> { formatDate(user.createdAt, true) } </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> { formatDate(user.updatedAt, true) } </Styled.TableListBodyRowData>
                             </Fragment>
