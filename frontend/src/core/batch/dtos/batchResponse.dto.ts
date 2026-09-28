@@ -1,4 +1,4 @@
-import { BatchBadgeVariant } from '../../../shared/components/statusBadge/enums/batchBadgeVariant.enum';
+import { BatchStatus } from '../enums/batchStatus.enum';
 
 export interface BatchResponseDto {
     id: number;
@@ -10,7 +10,7 @@ export interface BatchResponseDto {
     startedAt: string | null;
     endedAt: string | null;
 
-    status: BatchBadgeVariant
+    status: BatchStatus;
 
     createdAt: string;
     updatedAt: string;

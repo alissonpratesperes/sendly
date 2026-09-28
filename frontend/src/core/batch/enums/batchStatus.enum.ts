@@ -1,7 +1,7 @@
 export enum BatchStatus {
     PENDING = "PENDING",
     RUNNING = "RUNNING",
-    CANCELLED = "CANCELLED",
-    FINISHED = "FINISHED",
+    PARTIAL = "PARTIAL",
     FAILED = "FAILED",
+    FINISHED = "FINISHED",
 }

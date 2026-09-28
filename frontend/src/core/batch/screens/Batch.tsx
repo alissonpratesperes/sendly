@@ -2,6 +2,7 @@ import { toast } from 'react-toastify';
 import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 
 import { BatchForm } from '../forms/batchForm.form';
+import { BatchStatus } from '../enums/batchStatus.enum';
 import { List, Delete } from '../services/batch.service';
 import { BatchResponseDto } from '../dtos/batchResponse.dto';
 import { BatchFormData } from '../schemas/batchFormSchema.schema';
@@ -109,7 +110,7 @@ const Batch = () => {
     const handleUpdate = (id: number) => {
         const clicked = batches.find((batch: BatchResponseDto) => batch.id === id);
 
-        if (!clicked) {
+        if (!clicked || clicked.status !== BatchStatus.PENDING) {
             return;
         }
 
@@ -124,6 +125,12 @@ const Batch = () => {
     }
     const handleDelete = async () => {
         if (selectedBatchId === null) {
+            return;
+        }
+
+        const selectedBatch = batches.find((batch: BatchResponseDto) => batch.id === selectedBatchId);
+
+        if (!selectedBatch || selectedBatch.status !== BatchStatus.PENDING) {
             return;
         }
 
@@ -180,6 +187,8 @@ const Batch = () => {
                                 <Styled.TableListBodyRowData> { formatDate(batch.updatedAt, true) } </Styled.TableListBodyRowData>
                             </Fragment>
                         ) }
+                        canEdit={ (batch: BatchResponseDto) => batch.status === BatchStatus.PENDING }
+                        canDelete={ (batch: BatchResponseDto) => batch.status === BatchStatus.PENDING }
                     />
 
                     <Paginate page={ page } total={ total } limit={ limit } onPageChange={ setPage } onLimitChange={ (newLimit: number) => { setLimit(newLimit); setPage(1); } }/>

@@ -1,4 +1,4 @@
-export enum BatchSendBadgeVariant {
+export enum BatchSendStatus {
     WAITING = "WAITING",
     PROCESSING = "PROCESSING",
     SENT = "SENT",

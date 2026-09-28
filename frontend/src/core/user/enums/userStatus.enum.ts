@@ -1,4 +1,4 @@
-export enum UserBadgeVariant {
+export enum UserStatus {
     FIRST_ACCESS = "isFirstAccess",
     NOT_FIRST_ACCESS = "notIsFirstAccess",
     SYSTEM_ROOT = "isSystemRoot",

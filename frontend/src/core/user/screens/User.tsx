@@ -2,6 +2,7 @@ import { toast } from 'react-toastify';
 import React, { Fragment, useCallback, useEffect, useState } from 'react';
 
 import { UserForm } from '../forms/userForm.form';
+import { UserStatus } from '../enums/userStatus.enum';
 import { List, Delete } from '../services/user.service';
 import { UserResponseDto } from '../dtos/userResponse.dto';
 import { UserFormData } from '../schemas/userFormSchema.schema';
@@ -17,7 +18,6 @@ import { EmptyState } from '../../../shared/components/emptyState/screens/EmpySt
 import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
 import { getAuthenticationStorage } from '../../../shared/utils/authenticationStorage.util';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
-import { UserBadgeVariant } from '../../../shared/components/statusBadge/enums/userBadgeVariant.enum';
 
 const User = () => {
     const [page, setPage] = useState<number>(1);
@@ -119,8 +119,8 @@ const User = () => {
                             <Fragment>
                                 <Styled.TableListBodyRowData> { user.name } </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> <b> { user.email } </b> </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> <StatusBadge variant={ user.isFirstAccess ? UserBadgeVariant.FIRST_ACCESS : UserBadgeVariant.NOT_FIRST_ACCESS }/> </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> <StatusBadge variant={ user.isSystemRoot ? UserBadgeVariant.SYSTEM_ROOT : UserBadgeVariant.NOT_SYSTEM_ROOT }/> </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <StatusBadge variant={ user.isFirstAccess ? UserStatus.FIRST_ACCESS : UserStatus.NOT_FIRST_ACCESS }/> </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <StatusBadge variant={ user.isSystemRoot ? UserStatus.SYSTEM_ROOT : UserStatus.NOT_SYSTEM_ROOT }/> </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> { formatDate(user.createdAt, true) } </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> { formatDate(user.updatedAt, true) } </Styled.TableListBodyRowData>
                             </Fragment>

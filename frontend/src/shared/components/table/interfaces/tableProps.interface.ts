@@ -6,4 +6,7 @@ export interface TableProps<T> {
     onEdit?: (id: number) => void;
     onDelete?: (id: number) => void;
     renderEntityRow: (item: T) => React.ReactNode;
+
+    canEdit?: (entity: T) => boolean;
+    canDelete?: (entity: T) => boolean;
 }

@@ -1,7 +1,7 @@
-import { UserBadgeVariant } from '../enums/userBadgeVariant.enum';
-import { BatchBadgeVariant } from '../enums/batchBadgeVariant.enum';
-import { BatchSendBadgeVariant } from '../enums/batchSendBadgeVariant.enum';
+import { UserStatus } from '../../../../core/user/enums/userStatus.enum';
+import { BatchStatus } from '../../../../core/batch/enums/batchStatus.enum';
+import { BatchSendStatus } from '../../../../core/batch/enums/batchSendStatus.enum';
 
 export interface StatusBadgeProps {
-    variant: UserBadgeVariant | BatchBadgeVariant | BatchSendBadgeVariant;
+    variant: UserStatus | BatchStatus | BatchSendStatus;
 }

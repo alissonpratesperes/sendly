@@ -1,72 +1,72 @@
-import { UserBadgeVariant } from '../enums/userBadgeVariant.enum';
-import { BatchBadgeVariant } from '../enums/batchBadgeVariant.enum';
-import { BatchSendBadgeVariant } from '../enums/batchSendBadgeVariant.enum';
+import { UserStatus } from '../../../../core/user/enums/userStatus.enum';
+import { BatchStatus } from '../../../../core/batch/enums/batchStatus.enum';
+import { BatchSendStatus } from '../../../../core/batch/enums/batchSendStatus.enum';
 import { StatusBadgeConfigItemProps } from '../interfaces/statusBadgeConfigItemProps.interface';
 
-export const STATUS_BADGE_CONFIG: Record<UserBadgeVariant | BatchBadgeVariant | BatchSendBadgeVariant, StatusBadgeConfigItemProps> = {
-    [UserBadgeVariant.FIRST_ACCESS]: {
+export const STATUS_BADGE_CONFIG: Record<UserStatus | BatchStatus | BatchSendStatus, StatusBadgeConfigItemProps> = {
+    [UserStatus.FIRST_ACCESS]: {
         label: "INATIVO",
         fontColor: "#DC143C",
         backgroundColor: "#FDECEF",
     },
-    [UserBadgeVariant.NOT_FIRST_ACCESS]: {
+    [UserStatus.NOT_FIRST_ACCESS]: {
         label: "ATIVO",
         fontColor: "#10CF67",
         backgroundColor: "#ECFDF3",
     },
-    [UserBadgeVariant.SYSTEM_ROOT]: {
+    [UserStatus.SYSTEM_ROOT]: {
         label: "ADMINISTRADOR",
         fontColor: "#6941C6",
         backgroundColor: "#F9F5FF",
     },
-    [UserBadgeVariant.NOT_SYSTEM_ROOT]: {
+    [UserStatus.NOT_SYSTEM_ROOT]: {
         label: "USUÁRIO",
         fontColor: "#1C70E9",
         backgroundColor: "#EAF2FF",
     },
 
-    [BatchBadgeVariant.PENDING]: {
+    [BatchStatus.PENDING]: {
         label: "PENDENTE",
         fontColor: "#6941C6",
         backgroundColor: "#F9F5FF",
     },
-    [BatchBadgeVariant.RUNNING]: {
+    [BatchStatus.RUNNING]: {
         label: "EXECUTANDO",
         fontColor: "#1C70E9",
         backgroundColor: "#EAF2FF",
     },
-    [BatchBadgeVariant.PARTIAL]: {
+    [BatchStatus.PARTIAL]: {
         label: "PARCIAL",
         fontColor: "#FF6B00",
         backgroundColor: "#FFF4E8",
     },
-    [BatchBadgeVariant.FAILED]: {
+    [BatchStatus.FAILED]: {
         label: "FALHA",
         fontColor: "#DC143C",
         backgroundColor: "#FDECEF",
     },
-    [BatchBadgeVariant.FINISHED]: {
+    [BatchStatus.FINISHED]: {
         label: "PROCESSADO",
         fontColor: "#10CF67",
         backgroundColor: "#ECFDF3",
     },
 
-    [BatchSendBadgeVariant.WAITING]: {
+    [BatchSendStatus.WAITING]: {
         label: "AGUARDANDO",
         fontColor: "#FF6B00",
         backgroundColor: "#FFF4E8",
     },
-    [BatchSendBadgeVariant.PROCESSING]: {
+    [BatchSendStatus.PROCESSING]: {
         label: "PROCESSANDO",
         fontColor: "#1C70E9",
         backgroundColor: "#EAF2FF",
     },
-    [BatchSendBadgeVariant.SENT]: {
+    [BatchSendStatus.SENT]: {
         label: "ENVIADO",
         fontColor: "#10CF67",
         backgroundColor: "#ECFDF3",
     },
-    [BatchSendBadgeVariant.ERROR]: {
+    [BatchSendStatus.ERROR]: {
         label: "FALHA",
         fontColor: "#DC143C",
         backgroundColor: "#FDECEF",
