@@ -5,9 +5,8 @@ import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { BatchService } from '../batch.service';
 import { BatchSendService } from '../batchSend.service';
 import { BaileysService } from '../../baileys/baileys.service';
-import { ParsedTemplate } from 'src/template/interfaces/parsedTemplate.interface';
+import { TemplateSnapshot } from '../types/templateSnapshot.type';
 import { requireEnvironmentVariable } from '../../common/utils/requireEnvironmentVariable.util';
-import { TemplateInterpolator } from '../../template/interpolators/templateInterpolator.interpolator';
 
 @Processor(requireEnvironmentVariable("REDIS_QUEUE_NAME"))
 export class BatchSendProcessor extends WorkerHost {
@@ -16,7 +15,6 @@ export class BatchSendProcessor extends WorkerHost {
         private readonly batchService: BatchService,
         private readonly baileysService: BaileysService,
         private readonly batchSendService: BatchSendService,
-        private readonly templateInterpolator: TemplateInterpolator,
     ) {
         super();
     }
@@ -39,12 +37,9 @@ export class BatchSendProcessor extends WorkerHost {
                 return;
             }
 
-            const templateSnapshot = batchSend.TemplateSnapshot as unknown as { id: number; name: string; content: ParsedTemplate; };
-            const template = templateSnapshot.content;
-            const interpolatedTemplate = this.templateInterpolator.interpolate(template, batchSend.Contact.Name);
-
             try {
-                const response = await this.baileysService.sendTemplateSingleMessage(batchSend.Batch.CompanyId, batchSend.Contact.Phone, JSON.stringify(interpolatedTemplate));
+                const templateSnapshot = batchSend.TemplateSnapshot as unknown as TemplateSnapshot;
+                const response = await this.baileysService.sendTemplateSingleMessage(batchSend.Batch.CompanyId, batchSend.Contact.Phone, JSON.stringify(templateSnapshot.content));
                 const messageId = response.key?.id ?? `FALLBACK_ID_${ Date.now() }`;
 
                 await this.batchSendService.markAsSent(batchSend.Batch.CompanyId, batchSendId, messageId);

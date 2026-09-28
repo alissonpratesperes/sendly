@@ -1,16 +1,19 @@
-import { BatchSend, BatchSend_Status, Prisma } from '@prisma/client';
+import { BatchSend, BatchSend_Status, Contact, Prisma } from '@prisma/client';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
 import { TemplateSnapshot } from './types/templateSnapshot.type';
+import { ParsedTemplate } from 'src/template/interfaces/parsedTemplate.interface';
+import { TemplateInterpolator } from '../template/interpolators/templateInterpolator.interpolator';
 
 @Injectable()
 export class BatchSendService {
     constructor(
         private readonly prismaService: PrismaService,
+        private readonly templateInterpolator: TemplateInterpolator,
     ) {}
 
-    private async validateAndBuildTemplateSnapshot(tx: Prisma.TransactionClient, companyId: number, templateId: number, contactIds: number[]): Promise<TemplateSnapshot> {
+    private async validateAndBuildTemplateSnapshot(tx: Prisma.TransactionClient, companyId: number, templateId: number, contactIds: number[]): Promise<{template: TemplateSnapshot, contacts: Contact[]; }> {
         const template = await tx.template.findFirst({
             where: {
                 Id: templateId,
@@ -37,33 +40,39 @@ export class BatchSendService {
             throw new BadRequestException("One or more contacts do not belong to the batch company");
         }
 
-        return {
+        const templateSnapshot: TemplateSnapshot = {
             id: template.Id,
             name: template.Name,
             content: template.Content as unknown as Prisma.InputJsonValue,
+        }
+
+        return {
+            template: templateSnapshot,
+            contacts,
         };
     }
 
     async create(tx: Prisma.TransactionClient, companyId: number, batchId: number, templateId: number, contactIds: number[]): Promise<number[]> {
-        const templateSnapshot = await this.validateAndBuildTemplateSnapshot(tx, companyId, templateId, contactIds);
-        const createdBatchSends = await Promise.all(
-            contactIds.map((contactId) =>
-                tx.batchSend.create({
-                    data: {
-                        CompanyId: companyId,
-                        BatchId: batchId,
-                        ContactId: contactId,
-                        TemplateId: templateId,
-                        TemplateSnapshot: templateSnapshot,
-                        Status: BatchSend_Status.WAITING,
-                        ScheduledAt: new Date(),
-                    },
-                    select: {
-                        Id: true,
-                    },
-                }),
-            ),
-        );
+        const { template, contacts } = await this.validateAndBuildTemplateSnapshot(tx, companyId, templateId, contactIds);
+        const createdBatchSends = await Promise.all(contacts.map((contact) => {
+            const interpolatedTemplate = this.templateInterpolator.interpolate(template.content as unknown as ParsedTemplate, contact.Name);
+            const templateSnapshot = { id: template.id, name: template.name, content: interpolatedTemplate, }
+
+            return tx.batchSend.create({
+                data: {
+                    CompanyId: companyId,
+                    BatchId: batchId,
+                    ContactId: contact.Id,
+                    TemplateId: templateId,
+                    TemplateSnapshot: templateSnapshot as unknown as Prisma.InputJsonValue,
+                    Status: BatchSend_Status.WAITING,
+                    ScheduledAt: new Date(),
+                },
+                select: {
+                    Id: true,
+                },
+            });
+        } ));
 
         return createdBatchSends.map(({ Id }) => Id);
     }
@@ -154,7 +163,7 @@ export class BatchSendService {
     }
 
     async update(tx: Prisma.TransactionClient, companyId: number, batchId: number, templateId: number, contactIds: number[]): Promise<number[]> {
-        const templateSnapshot = await this.validateAndBuildTemplateSnapshot(tx, companyId, templateId, contactIds);
+        const { template, contacts } = await this.validateAndBuildTemplateSnapshot(tx, companyId, templateId, contactIds);
 
         await tx.batchSend.deleteMany({
             where: {
@@ -169,24 +178,25 @@ export class BatchSendService {
             },
         });
 
-        const createdBatchSends = await Promise.all(
-            contactIds.map((contactId) =>
-                tx.batchSend.create({
-                    data: {
-                        CompanyId: companyId,
-                        BatchId: batchId,
-                        ContactId: contactId,
-                        TemplateId: templateId,
-                        TemplateSnapshot: templateSnapshot,
-                        Status: BatchSend_Status.WAITING,
-                        ScheduledAt: new Date(),
-                    },
-                    select: {
-                        Id: true,
-                    },
-                }),
-            ),
-        );
+        const createdBatchSends = await Promise.all(contacts.map((contact) => {
+            const interpolatedTemplate = this.templateInterpolator.interpolate(template.content as unknown as ParsedTemplate, contact.Name);
+            const templateSnapshot = { id: template.id, name: template.name, content: interpolatedTemplate, }
+
+            return tx.batchSend.create({
+                data: {
+                    CompanyId: companyId,
+                    BatchId: batchId,
+                    ContactId: contact.Id,
+                    TemplateId: templateId,
+                    TemplateSnapshot: templateSnapshot as unknown as Prisma.InputJsonValue,
+                    Status: BatchSend_Status.WAITING,
+                    ScheduledAt: new Date(),
+                },
+                select: {
+                    Id: true,
+                },
+            });
+        } ));
 
         return createdBatchSends.map(({ Id }) => Id);
     }
