@@ -9,6 +9,7 @@ import { NavigationTab } from '../types/navigationTab.type';
 import PrivateRoute from '../../private/screens/PrivateRoute';
 import Company from '../../../../core/company/screens/Company';
 import Contact from '../../../../core/contact/screens/Contact';
+import BatchSend from '../../../../core/batch/screens/BatchSend';
 import Template from '../../../../core/template/screens/Template';
 import { navigationTabs } from '../constants/navigationTabs.constant';
 
@@ -52,6 +53,7 @@ const Registration: React.FC = () => {
                 <Route path="/contact" element={ <PrivateRoute element={ <Contact /> }/> }/>
                 <Route path="/template" element={ <PrivateRoute element={ <Template /> }/> }/>
                 <Route path="/batch" element={ <PrivateRoute element={ <Batch /> }/> }/>
+                <Route path="/send" element={ <PrivateRoute element={ <BatchSend /> }/> }/>
             </Routes>
         </Fragment>
     );

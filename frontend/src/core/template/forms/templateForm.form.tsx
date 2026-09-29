@@ -13,7 +13,7 @@ import { TemplateContentFields } from '../interfaces/templateContentFields.inter
 import { TemplateFormData, TemplateFormSchema } from '../schemas/templateFormSchema.schema';
 import { getAuthenticationStorage } from '../../../shared/utils/authenticationStorage.util';
 
-export const TemplateForm: React.FC<FormProps<TemplateFormData>> = ({ initialValues, onSubmit, onLoadingChange, }) => {
+export const TemplateForm: React.FC<FormProps<TemplateFormData>> = ({ initialValues, disabled = false, onSubmit, onLoadingChange, }) => {
     const { userInformation } = getAuthenticationStorage();
 
     const [templateImage, setTemplateImage] = useState<File | undefined>();
@@ -154,27 +154,27 @@ export const TemplateForm: React.FC<FormProps<TemplateFormData>> = ({ initialVal
             <Styled.FieldWrapper>
                 <Styled.Label htmlFor="name"> Nome </Styled.Label>
 
-                <Styled.Input id="name" name="name" placeholder="Digite o nome do template" value={ formData.name } onChange={ (event) => handleChange(event, setFormData) }/>
+                <Styled.Input id="name" name="name" placeholder="Digite o nome do template" value={ formData.name } onChange={ (event) => handleChange(event, setFormData) } disabled={ disabled }/>
             </Styled.FieldWrapper>
 
             <Styled.Fieldset>
-                <Styled.Legend> Conteúdo <Styled.Tip> Variáveis permitidas: {"{{ nome }}"} </Styled.Tip> </Styled.Legend>
+                <Styled.Legend> Conteúdo { !disabled && (<Styled.Tip> Variáveis permitidas: { "{{ nome }}" } </Styled.Tip>) } </Styled.Legend>
 
                 <Styled.FieldWrapper>
                     <Styled.Label htmlFor="header"> Cabeçalho </Styled.Label>
 
-                    <Styled.Input id="header" name="header" placeholder="Digite o cabeçalho do template" value={ templateFields.header } onChange={ (event) => handleChange(event, setTemplateFields) }/>
+                    <Styled.Input id="header" name="header" placeholder="Digite o cabeçalho do template" value={ templateFields.header } onChange={ (event) => handleChange(event, setTemplateFields) } disabled={ disabled }/>
                 </Styled.FieldWrapper>
                 <Styled.FieldWrapper>
-                    <Styled.Textarea id="body" name="body" placeholder="Digite o corpo do template" value={ templateFields.body } onChange={ (event) => handleChange(event, setTemplateFields) }/>
+                    <Styled.Textarea id="body" name="body" placeholder="Digite o corpo do template" value={ templateFields.body } onChange={ (event) => handleChange(event, setTemplateFields) } disabled={ disabled }/>
                 </Styled.FieldWrapper>
                 <Styled.FieldWrapper>
                     <Styled.Label htmlFor="footer"> Rodapé </Styled.Label>
 
-                    <Styled.Input id="footer" name="footer" placeholder="Digite o rodapé do template" value={ templateFields.footer } onChange={ (event) => handleChange(event, setTemplateFields) }/>
+                    <Styled.Input id="footer" name="footer" placeholder="Digite o rodapé do template" value={ templateFields.footer } onChange={ (event) => handleChange(event, setTemplateFields) } disabled={ disabled }/>
                 </Styled.FieldWrapper>
 
-                <Uploader value={ templateImage } existingImage={ existingImage } onRemoveExistingImage={ () => { setExistingImage(undefined); } } onChange={ (file) => { if (file instanceof File) { setTemplateImage(file); } else { setTemplateImage(undefined); } } }/>
+                <Uploader value={ templateImage } existingImage={ existingImage } onRemoveExistingImage={ () => { setExistingImage(undefined); } } onChange={ (file) => { if (file instanceof File) { setTemplateImage(file); } else { setTemplateImage(undefined); } } } shouldEdit={ disabled }/>
             </Styled.Fieldset>
         </Styled.Form>
     );

@@ -11,7 +11,7 @@ import { ACCEPTED_CSV_CONFIG, ACCEPTED_IMAGES_CONFIG, ALLOWED_IMAGE_EXTENSIONS }
 const REACT_APP_MAX_IMAGE_SIZE = Number(process.env.REACT_APP_MAX_IMAGE_SIZE);
 const REACT_APP_MAX_CSV_SIZE = Number(process.env.REACT_APP_MAX_CSV_SIZE);
 
-const Uploader: React.FC<UploaderProps> = ({ value, existingImage, onRemoveExistingImage, onChange, isCsv = false }) => {
+const Uploader: React.FC<UploaderProps> = ({ value, existingImage, shouldEdit = true, onRemoveExistingImage, onChange, isCsv = false }) => {
     const hasFile = !!value || !!existingImage;
     const shouldShowDropzone = !isCsv || !hasFile;
     const accept = isCsv ? ACCEPTED_CSV_CONFIG : ACCEPTED_IMAGES_CONFIG;
@@ -194,7 +194,8 @@ const Uploader: React.FC<UploaderProps> = ({ value, existingImage, onRemoveExist
 
                         <Styled.DraggedFilesActionsContainer>
                             <Styled.DraggedFilesActionButton type="button" onClick={ downloadFile }> { isCsv ? <FileDown size={ 25 }/> : <ImageDown size={ 25 }/> } </Styled.DraggedFilesActionButton>
-                            <Styled.DraggedFilesActionButton type="button" onClick={ onFileRemove }> <Eraser size={ 25 }/> </Styled.DraggedFilesActionButton>
+
+                            { !shouldEdit && (<Styled.DraggedFilesActionButton type="button" onClick={ onFileRemove }> <Eraser size={ 25 }/> </Styled.DraggedFilesActionButton>) }
                         </Styled.DraggedFilesActionsContainer>
                     </Styled.DraggedFilesListItem>
                 </Styled.DraggedFilesList>

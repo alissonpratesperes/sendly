@@ -92,6 +92,17 @@ export const TableListBodyRowDataActionButton = styled.button`
             color: #FFFFFF;
             background-color: #DC143C;
         }
+        &:only-child {
+            color: #223463;
+            background-color: #E8EEF8;
+            border-radius: 14px;
+        }
+        &:only-child:hover {
+            color: #FFFFFF;
+            background-color: #223463;
+            border-radius: 14px;
+
+        }
 
             @keyframes tableButtonEffect {
                 0% {
@@ -135,4 +146,8 @@ export const ContactNameSpan = styled.span`
     overflow-wrap: break-word;
     word-break: break-word;
     white-space: normal;
+`;
+
+export const BatchFilterWrapper = styled.div`
+    margin-bottom: 30px;
 `;

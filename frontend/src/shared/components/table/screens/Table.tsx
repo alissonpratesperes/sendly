@@ -1,10 +1,10 @@
 import React from 'react';
-import { SquarePen, Trash } from 'lucide-react';
+import { Info, SquarePen, Trash } from 'lucide-react';
 
 import * as Styled from '../styles/table.style';
 import { TableProps } from '../interfaces/tableProps.interface';
 
-export const Table = <T,>({ headers, data, getEntityId, onEdit, onDelete, renderEntityRow, canEdit, canDelete, }: TableProps<T>) => {
+export const Table = <T,>({ headers, data, getEntityId, onView, onEdit, onDelete, renderEntityRow, canView = false, canEdit, canDelete, }: TableProps<T>) => {
     return (
             <Styled.TableWrapper>
                 <Styled.TableListWrapper>
@@ -19,6 +19,7 @@ export const Table = <T,>({ headers, data, getEntityId, onEdit, onDelete, render
                         <tbody>
                             { data.map((entity) => {
                                 const id = getEntityId(entity);
+                                const shouldShowView = Boolean(onView && canView !== undefined && (typeof canView === "boolean" ? canView : canView(entity)));
                                 const shouldShowEdit = Boolean(onEdit && canEdit !== undefined && (typeof canEdit === "boolean" ? canEdit : canEdit(entity)));
                                 const shouldShowDelete = Boolean(onDelete && canDelete !== undefined && (typeof canDelete === "boolean" ? canDelete : canDelete(entity)));
 
@@ -27,8 +28,11 @@ export const Table = <T,>({ headers, data, getEntityId, onEdit, onDelete, render
                                         { renderEntityRow(entity) }
 
                                         <Styled.TableListBodyRowData>
-                                            { (shouldShowEdit || shouldShowDelete) && (
+                                            { (shouldShowView || shouldShowEdit || shouldShowDelete) && (
                                                 <Styled.TableListBodyRowDataActions>
+                                                    { shouldShowView && (
+                                                        <Styled.TableListBodyRowDataActionButton type="button" onClick={ () => onView?.(id) }> <Info size={ 25 } /> </Styled.TableListBodyRowDataActionButton>
+                                                    ) }
                                                     { shouldShowEdit && (
                                                         <Styled.TableListBodyRowDataActionButton type="button" onClick={ () => onEdit?.(id) }> <SquarePen size={ 25 } /> </Styled.TableListBodyRowDataActionButton>
                                                     ) }

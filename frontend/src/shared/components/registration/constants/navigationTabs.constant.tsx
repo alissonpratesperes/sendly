@@ -1,4 +1,4 @@
-import { Building2, ContactRound, List, MessageSquareText, Layers, UsersRound } from 'lucide-react';
+import { Building2, ContactRound, Layers, List, MessageSquareText, Send, UsersRound } from 'lucide-react';
 
 import { NavigationTab } from '../types/navigationTab.type';
 
@@ -32,5 +32,10 @@ export const navigationTabs = [
         icon: <Layers size={ 25 }/>,
         label: "Lotes",
         path: "batch",
+    },
+    {
+        icon: <Send size={ 25 }/>,
+        label: "Envios",
+        path: "send",
     },
 ] satisfies NavigationTab[];

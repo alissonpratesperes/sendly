@@ -78,7 +78,7 @@ export const DraggedFilesList = styled.ul`
 `;
 
 export const DraggedFilesListItem = styled.li`
-    margin: 30px 0px 30px 0px;
+    margin: 30px 0px 0px 0px;
     height: auto;
     display: flex;
     flex-direction: row;
@@ -174,6 +174,9 @@ export const DraggedFilesActionButton = styled.button`
                 border-radius: 0px;
                 border-top-right-radius: 14px;
                 border-bottom-right-radius: 14px;
+            }
+            &:only-child {
+                border-radius: 14px;
             }
 
                 svg {

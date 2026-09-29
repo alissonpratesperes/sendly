@@ -1,5 +1,14 @@
-export const formatDate = (date: string, multiline: boolean = false) => {
+export const formatDate = (date: string | null | undefined, multiline: boolean = false) => {
+    if (!date) {
+        return "-";
+    }
+
     const parsedDate = new Date(date);
+
+    if (Number.isNaN(parsedDate.getTime())) {
+        return "-";
+    }
+
     const datePart = parsedDate.toLocaleDateString("pt-BR", {
         day: "2-digit",
         month: "2-digit",
@@ -11,5 +20,5 @@ export const formatDate = (date: string, multiline: boolean = false) => {
         second: "2-digit",
     });
 
-    return multiline ? `${datePart}\n${timePart}` : `${datePart}, ${timePart}`;
+    return multiline ? `${ datePart }\n${ timePart }` : `${ datePart }, ${ timePart }`;
 }

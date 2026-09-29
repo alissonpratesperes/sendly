@@ -4,6 +4,7 @@ import { BatchSend, BatchSend_Status, Contact, Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { TemplateSnapshot } from './types/templateSnapshot.type';
 import { GetBatchSendResponseDto } from './dtos/getBatchSendResponseDto';
+import { PaginatedResponseDto } from 'src/common/dtos/paginatedResponse.dto';
 import { ParsedTemplate } from 'src/template/interfaces/parsedTemplate.interface';
 import { TemplateInterpolator } from '../template/interpolators/templateInterpolator.interpolator';
 
@@ -38,6 +39,19 @@ export class BatchSendService {
             batchSend.CreatedAt,
             batchSend.UpdatedAt,
         );
+    }
+
+    private buildBatchSendListWhere(batchId: number): Prisma.BatchSendWhereInput {
+        return {
+            BatchId: batchId,
+
+            Batch: {
+                DeletedAt: null,
+            },
+            Company: {
+                DeletedAt: null,
+            },
+        };
     }
 
     private async validateAndBuildTemplateSnapshot(tx: Prisma.TransactionClient, companyId: number, templateId: number, contactIds: number[]): Promise<{template: TemplateSnapshot, contacts: Contact[]; }> {
@@ -103,21 +117,29 @@ export class BatchSendService {
         return createdBatchSends.map(({ Id }) => Id);
     }
 
-    async listByBatchId(batchId: number): Promise<GetBatchSendResponseDto[]> {
-        const batchSends = await this.prismaService.client.batchSend.findMany({
-            where: {
-                BatchId: batchId,
-
-                Batch: {
-                    DeletedAt: null,
+    async listByBatchId(batchId: number, page: number = 1, limit: number = 10): Promise<PaginatedResponseDto<GetBatchSendResponseDto>> {
+        const where = this.buildBatchSendListWhere(batchId);
+        const [total, batchSends] = await Promise.all([
+            this.prismaService.client.batchSend.count({
+                where,
+            }),
+            this.prismaService.client.batchSend.findMany({
+                where,
+                skip: (page - 1) * limit,
+                take: limit,
+                orderBy: {
+                    CreatedAt: "desc",
                 },
-            },
-            orderBy: {
-                Id: "desc",
-            },
-        });
+            }),
+        ]);
 
-        return batchSends.map((batchSend) => this.toBatchSendResponse(batchSend));
+        return new PaginatedResponseDto(
+            page,
+            limit,
+            total,
+
+            batchSends.map((batchSend) => this.toBatchSendResponse(batchSend))
+        );
     }
 
     async readForProcessingSystem(id: number): Promise<Prisma.BatchSendGetPayload<{ include: { Batch: true; Contact: true; }; }> | null> {

@@ -3,7 +3,6 @@ import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react
 
 import { List } from '../services/batch.service';
 import { BatchForm } from '../forms/batchForm.form';
-import { BatchStatus } from '../enums/batchStatus.enum';
 import { BatchResponseDto } from '../dtos/batchResponse.dto';
 import { BatchFormData } from '../schemas/batchFormSchema.schema';
 import { formatDate } from '../../../shared/utils/formatDate.util';
@@ -31,8 +30,6 @@ const Batch = () => {
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
     const [updating, setUpdating] = useState<BatchFormData | null>(null);
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
-    const [selectedBatchId, setSelectedBatchId] = useState<number | null>(null);
     const [listsNames, setListsNames] = useState<Record<number, ListResponseDto>>({});
     const [templatesNames, setTemplatesNames] = useState<Record<number, TemplateResponseDto>>({});
 
@@ -101,27 +98,11 @@ const Batch = () => {
                 setTemplatesNames((previousTemplatesNames: Record<number, TemplateResponseDto>) => ({ ...previousTemplatesNames, ...newTemplates, }));
             }
         } catch (error) {
-            toast.error(`Erro ao listar Envios: ${ error }`);
+            toast.error(`Erro ao listar Lotes: ${ error }`);
         } finally {
             setIsLoading(false);
         }
     }, [ page, limit, search ])
-    const handleUpdate = (id: number) => {
-        const clicked = batches.find((batch: BatchResponseDto) => batch.id === id);
-
-        if (!clicked || clicked.status !== BatchStatus.PENDING) {
-            return;
-        }
-
-        setUpdating({
-            id: clicked.id,
-            companyId: clicked.companyId,
-            name: clicked.name,
-            templateId: clicked.templateId,
-            listId: clicked.listId,
-        });
-        setIsDrawerOpen(true);
-    }
 
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -145,8 +126,6 @@ const Batch = () => {
                         headers={[ "Nome", "Template", "Iniciado em", "Finalizado em", "Status", "Criado em", "Editado em", ]}
                         data={ batches }
                         getEntityId={ (batch: BatchResponseDto) => batch.id }
-                        onEdit={ handleUpdate }
-                        onDelete={ (id: number) => { setSelectedBatchId(id); setIsDeleteModalOpen(true); } }
                         renderEntityRow={ (batch: BatchResponseDto) => (
                             <Fragment>
                                 <Styled.TableListBodyRowData> <Styled.TableListColorContent> <Styled.TableListColorFragment $color={ listsNames[batch.listId]?.color ?? "" }/> <Styled.ContactNameSpan> <b> { batch.name } </b> </Styled.ContactNameSpan> </Styled.TableListColorContent> </Styled.TableListBodyRowData>
@@ -166,7 +145,7 @@ const Batch = () => {
                 </Fragment>
             ) }
             { !isLoading && batches.length === 0 && (
-                <EmptyState message="Nenhum envio encontrado" />
+                <EmptyState message="Nenhum lote encontrado" />
             ) }
 
             <Drawer isOpen={ isDrawerOpen } isSubmitting={ isSubmitting } formId="batch-form" title={ updating ? "Editar lote" : "Novo lote" } mode={ updating ? "edit" : "create" } onClose={ () => { setIsDrawerOpen(false); setUpdating(null); } }>

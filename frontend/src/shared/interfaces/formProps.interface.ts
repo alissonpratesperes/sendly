@@ -1,5 +1,6 @@
 export interface FormProps<T> {
     initialValues?: T;
+    disabled?: boolean;
 
     onCancel: () => void;
     onSubmit: () => void;

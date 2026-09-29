@@ -1,5 +1,6 @@
 import { BatchResponseDto } from '../dtos/batchResponse.dto';
 import { IdParamDto } from '../../../shared/dtos/idParam.dto';
+import { BatchSendResponseDto } from '../dtos/batchSendResponse.dto';
 import { CreateBatchCommandDto } from '../dtos/createBatchCommand.dto';
 import axiosInstance from '../../../core/authentication/interceptors/authorization.interceptor';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
@@ -13,14 +14,14 @@ export const Create = async (command: CreateBatchCommandDto): Promise<BatchRespo
     return data;
 }
 
-export const Read = async (param: IdParamDto): Promise<BatchResponseDto> => {
-    const { data } = await axiosInstance.get<BatchResponseDto>(`${ BASE_ENDPOINT }/${ param.id }`);
+export const List = async (query: PaginatedQueryDto): Promise<PaginatedResponseDto<BatchResponseDto>> => {
+    const { data } = await axiosInstance.get<PaginatedResponseDto<BatchResponseDto>>(BASE_ENDPOINT, { params: query, });
 
     return data;
 }
 
-export const List = async (query: PaginatedQueryDto): Promise<PaginatedResponseDto<BatchResponseDto>> => {
-    const { data } = await axiosInstance.get<PaginatedResponseDto<BatchResponseDto>>(BASE_ENDPOINT, { params: query });
+export const ListSends = async (param: IdParamDto, query: PaginatedQueryDto): Promise<PaginatedResponseDto<BatchSendResponseDto>> => {
+    const { data } = await axiosInstance.get<PaginatedResponseDto<BatchSendResponseDto>>(`${ BASE_ENDPOINT }/${ param.id }/sends`, { params: query, });
 
     return data;
 }
