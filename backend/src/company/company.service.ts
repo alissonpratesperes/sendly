@@ -76,7 +76,7 @@ export class CompanyService {
         return this.toCompanyResponse(company);
     }
 
-    async list(page: number = 1, limit: number = 10, search?: string): Promise<PaginatedResponseDto<GetCompanyResponseDto>> {
+    async list(page: number = 1, limit: number = 15, search?: string): Promise<PaginatedResponseDto<GetCompanyResponseDto>> {
         const where = this.buildCompanyListWhere(search);
         const [total, companies] = await Promise.all([
             this.prismaService.client.company.count({

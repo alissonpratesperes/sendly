@@ -117,7 +117,7 @@ export class BatchSendService {
         return createdBatchSends.map(({ Id }) => Id);
     }
 
-    async listByBatchId(batchId: number, page: number = 1, limit: number = 10): Promise<PaginatedResponseDto<GetBatchSendResponseDto>> {
+    async listByBatchId(batchId: number, page: number = 1, limit: number = 15): Promise<PaginatedResponseDto<GetBatchSendResponseDto>> {
         const where = this.buildBatchSendListWhere(batchId);
         const [total, batchSends] = await Promise.all([
             this.prismaService.client.batchSend.count({

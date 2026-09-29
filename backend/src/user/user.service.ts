@@ -168,7 +168,7 @@ export class UserService {
         return user;
     }
 
-    async list(page: number = 1, limit: number = 10, search?: string): Promise<PaginatedResponseDto<GetUserResponseDto>> {
+    async list(page: number = 1, limit: number = 15, search?: string): Promise<PaginatedResponseDto<GetUserResponseDto>> {
         const where = this.buildUserListWhere(search);
         const [total, users] = await Promise.all([
             this.prismaService.client.user.count({

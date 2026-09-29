@@ -88,7 +88,7 @@ export class BatchService {
         return this.toBatchResponse(batch);
     }
 
-    async list(page: number = 1, limit: number = 10, search?: string): Promise<PaginatedResponseDto<GetBatchResponseDto>> {
+    async list(page: number = 1, limit: number = 15, search?: string): Promise<PaginatedResponseDto<GetBatchResponseDto>> {
         const where = this.buildBatchListWhere(search);
         const [total, batches] = await Promise.all([
             this.prismaService.client.batch.count({
@@ -113,7 +113,7 @@ export class BatchService {
         );
     }
 
-    async listSends(batchId: number, page: number = 1, limit: number = 10): Promise<PaginatedResponseDto<GetBatchSendResponseDto>> {
+    async listSends(batchId: number, page: number = 1, limit: number = 15): Promise<PaginatedResponseDto<GetBatchSendResponseDto>> {
         return this.batchSendService.listByBatchId(batchId, page, limit);
     }
 

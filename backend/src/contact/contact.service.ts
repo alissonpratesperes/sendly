@@ -145,7 +145,7 @@ export class ContactService {
         return contacts;
     }
 
-    async list(page: number = 1, limit: number = 10, search?: string): Promise<PaginatedResponseDto<GetContactResponseDto>> {
+    async list(page: number = 1, limit: number = 15, search?: string): Promise<PaginatedResponseDto<GetContactResponseDto>> {
         const where = this.buildContactListWhere(search);
         const [total, contacts] = await Promise.all([
             this.prismaService.client.contact.count({

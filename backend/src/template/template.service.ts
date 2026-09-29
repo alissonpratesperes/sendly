@@ -92,7 +92,7 @@ export class TemplateService {
         return this.toTemplateResponse(template);
     }
 
-    async list(page: number = 1, limit: number = 10, search?: string): Promise<PaginatedResponseDto<GetTemplateResponseDto>> {
+    async list(page: number = 1, limit: number = 15, search?: string): Promise<PaginatedResponseDto<GetTemplateResponseDto>> {
         const where = this.buildTemplateListWhere(search);
         const [total, templates] = await Promise.all([
             this.prismaService.client.template.count({
