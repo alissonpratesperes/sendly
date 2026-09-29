@@ -1,5 +1,5 @@
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Batch, Batch_Status, BatchSend_Status, Prisma } from '@prisma/client';
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 
 import { QueueService } from '../queue/queue.service';
 import { BatchSendService } from './batchSend.service';
@@ -7,6 +7,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { CompanyService } from '../company/company.service';
 import { ContactService } from 'src/contact/contact.service';
 import { GetBatchResponseDto } from './dtos/getBatchResponse.dto';
+import { GetBatchSendResponseDto } from './dtos/getBatchSendResponseDto';
 import { PaginatedResponseDto } from '../common/dtos/paginatedResponse.dto';
 
 @Injectable()
@@ -87,25 +88,6 @@ export class BatchService {
         return this.toBatchResponse(batch);
     }
 
-    async read(id: number): Promise<GetBatchResponseDto> {
-        const batch = await this.prismaService.client.batch.findFirst({
-            where: {
-                Id: id,
-                DeletedAt: null,
-
-                Company: {
-                    DeletedAt: null,
-                },
-            },
-        });
-
-        if(!batch) {
-            throw new NotFoundException("Batch not found");
-        }
-
-        return this.toBatchResponse(batch);
-    }
-
     async list(page: number = 1, limit: number = 10, search?: string): Promise<PaginatedResponseDto<GetBatchResponseDto>> {
         const where = this.buildBatchListWhere(search);
         const [total, batches] = await Promise.all([
@@ -129,6 +111,10 @@ export class BatchService {
 
             batches.map((batch: Batch) => this.toBatchResponse(batch)),
         );
+    }
+
+    async listSends(batchId: number): Promise<GetBatchSendResponseDto[]> {
+        return this.batchSendService.listByBatchId(batchId);
     }
 
     async markAsRunning(companyId: number, id: number): Promise<void> {

@@ -1,8 +1,9 @@
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { BatchSend, BatchSend_Status, Contact, Prisma } from '@prisma/client';
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
 import { TemplateSnapshot } from './types/templateSnapshot.type';
+import { GetBatchSendResponseDto } from './dtos/getBatchSendResponseDto';
 import { ParsedTemplate } from 'src/template/interfaces/parsedTemplate.interface';
 import { TemplateInterpolator } from '../template/interpolators/templateInterpolator.interpolator';
 
@@ -12,6 +13,32 @@ export class BatchSendService {
         private readonly prismaService: PrismaService,
         private readonly templateInterpolator: TemplateInterpolator,
     ) {}
+
+    private toBatchSendResponse(batchSend: BatchSend): GetBatchSendResponseDto {
+        return new GetBatchSendResponseDto(
+            batchSend.Id,
+            batchSend.CompanyId,
+            batchSend.BatchId,
+            batchSend.ContactId,
+
+            batchSend.TemplateSnapshot as unknown as TemplateSnapshot,
+
+            batchSend.Status,
+
+            batchSend.Attempts,
+            batchSend.ErrorCode,
+            batchSend.ErrorMessage,
+
+            batchSend.ScheduledAt,
+            batchSend.StartedAt,
+            batchSend.CompletedAt,
+
+            batchSend.MessageId,
+
+            batchSend.CreatedAt,
+            batchSend.UpdatedAt,
+        );
+    }
 
     private async validateAndBuildTemplateSnapshot(tx: Prisma.TransactionClient, companyId: number, templateId: number, contactIds: number[]): Promise<{template: TemplateSnapshot, contacts: Contact[]; }> {
         const template = await tx.template.findFirst({
@@ -76,51 +103,21 @@ export class BatchSendService {
         return createdBatchSends.map(({ Id }) => Id);
     }
 
-    async read(id: number): Promise<BatchSend> {
-        const batchSend = await this.prismaService.client.batchSend.findFirst({
+    async listByBatchId(batchId: number): Promise<GetBatchSendResponseDto[]> {
+        const batchSends = await this.prismaService.client.batchSend.findMany({
             where: {
-                Id: id,
-
-                Batch: {
-                    DeletedAt: null,
-
-                    Company: {
-                        DeletedAt: null,
-                    },
-                },
-            },
-        });
-
-        if(!batchSend) {
-            throw new NotFoundException("BatchSend not found");
-        }
-
-        return batchSend;
-    }
-
-    async readByBatchId(tx: Prisma.TransactionClient, companyId: number, batchId: number): Promise<{ currentContactIds: number[]; }> {
-        const batchSends = await tx.batchSend.findMany({
-            where: {
-                CompanyId: companyId,
                 BatchId: batchId,
 
                 Batch: {
-                    CompanyId: companyId,
                     DeletedAt: null,
                 },
             },
-            select: {
-                ContactId: true,
+            orderBy: {
+                Id: "desc",
             },
         });
 
-        if (batchSends.length === 0) {
-            throw new BadRequestException("Batch has no sends");
-        }
-
-        return {
-            currentContactIds: batchSends.map((batchSend) => batchSend.ContactId),
-        }
+        return batchSends.map((batchSend) => this.toBatchSendResponse(batchSend));
     }
 
     async readForProcessingSystem(id: number): Promise<Prisma.BatchSendGetPayload<{ include: { Batch: true; Contact: true; }; }> | null> {
@@ -157,44 +154,6 @@ export class BatchSendService {
                 },
             },
         });
-    }
-
-    async update(tx: Prisma.TransactionClient, companyId: number, batchId: number, templateId: number, contactIds: number[]): Promise<number[]> {
-        const { template, contacts } = await this.validateAndBuildTemplateSnapshot(tx, companyId, templateId, contactIds);
-
-        await tx.batchSend.deleteMany({
-            where: {
-                CompanyId: companyId,
-                BatchId: batchId,
-                Status: BatchSend_Status.WAITING,
-
-                Batch: {
-                    CompanyId: companyId,
-                    DeletedAt: null,
-                },
-            },
-        });
-
-        const createdBatchSends = await Promise.all(contacts.map((contact) => {
-            const interpolatedTemplate = this.templateInterpolator.interpolate(template.content as unknown as ParsedTemplate, contact.Name);
-            const templateSnapshot = { id: template.id, name: template.name, content: interpolatedTemplate, }
-
-            return tx.batchSend.create({
-                data: {
-                    CompanyId: companyId,
-                    BatchId: batchId,
-                    ContactId: contact.Id,
-                    TemplateSnapshot: templateSnapshot as unknown as Prisma.InputJsonValue,
-                    Status: BatchSend_Status.WAITING,
-                    ScheduledAt: new Date(),
-                },
-                select: {
-                    Id: true,
-                },
-            });
-        } ));
-
-        return createdBatchSends.map(({ Id }) => Id);
     }
 
     async startProcessing(companyId: number, id: number): Promise<boolean> {
