@@ -123,6 +123,8 @@ const Company = () => {
                                 <Styled.TableListBodyRowData> { formatDate(company.updatedAt, true) } </Styled.TableListBodyRowData>
                             </Fragment>
                         ) }
+                        canEdit={ true }
+                        canDelete={ true }
                     />
 
                     <Paginate page={ page } total={ total } limit={ limit } onPageChange={ setPage } onLimitChange={ (newLimit: number) => { setLimit(newLimit); setPage(1); } }/>

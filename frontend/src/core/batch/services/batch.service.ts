@@ -1,7 +1,6 @@
 import { BatchResponseDto } from '../dtos/batchResponse.dto';
 import { IdParamDto } from '../../../shared/dtos/idParam.dto';
 import { CreateBatchCommandDto } from '../dtos/createBatchCommand.dto';
-import { UpdateBatchCommandDto } from '../dtos/updateBatchCommand.dto';
 import axiosInstance from '../../../core/authentication/interceptors/authorization.interceptor';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
 import { PaginatedResponseDto } from '../../../shared/components/paginate/dtos/paginatedResponse.dto';
@@ -24,14 +23,4 @@ export const List = async (query: PaginatedQueryDto): Promise<PaginatedResponseD
     const { data } = await axiosInstance.get<PaginatedResponseDto<BatchResponseDto>>(BASE_ENDPOINT, { params: query });
 
     return data;
-}
-
-export const Update = async (param: IdParamDto, command: UpdateBatchCommandDto): Promise<BatchResponseDto> => {
-    const { data } = await axiosInstance.patch<BatchResponseDto>(`${ BASE_ENDPOINT }/${ param.id }`, command);
-
-    return data;
-}
-
-export const Delete = async (param: IdParamDto): Promise<void> => {
-    await axiosInstance.delete<void>(`${ BASE_ENDPOINT }/${ param.id }`);
 }

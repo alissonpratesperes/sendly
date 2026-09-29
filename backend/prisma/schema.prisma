@@ -133,15 +133,14 @@ model BatchSend {
 enum Batch_Status {
   PENDING
   RUNNING
-  CANCELLED
-  FINISHED
-  FAILED
   PARTIAL
+  FAILED
+  FINISHED
 }
 
 enum BatchSend_Status {
   WAITING
   PROCESSING
   SENT
-  FAILED
+  ERROR
 }

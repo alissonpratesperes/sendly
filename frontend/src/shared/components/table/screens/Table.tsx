@@ -19,28 +19,25 @@ export const Table = <T,>({ headers, data, getEntityId, onEdit, onDelete, render
                         <tbody>
                             { data.map((entity) => {
                                 const id = getEntityId(entity);
-                                const shouldShowEdit = Boolean(onEdit && (!canEdit || canEdit(entity)));
-                                const shouldShowDelete = Boolean(onDelete && (!canDelete || canDelete(entity)));
+                                const shouldShowEdit = Boolean(onEdit && canEdit !== undefined && (typeof canEdit === "boolean" ? canEdit : canEdit(entity)));
+                                const shouldShowDelete = Boolean(onDelete && canDelete !== undefined && (typeof canDelete === "boolean" ? canDelete : canDelete(entity)));
 
                                 return (
                                     <Styled.TableListBodyRow key={ id }>
                                         { renderEntityRow(entity) }
-                                        { (shouldShowEdit || shouldShowDelete) && (
-                                            <Styled.TableListBodyRowData>
+
+                                        <Styled.TableListBodyRowData>
+                                            { (shouldShowEdit || shouldShowDelete) && (
                                                 <Styled.TableListBodyRowDataActions>
                                                     { shouldShowEdit && (
-                                                        <Styled.TableListBodyRowDataActionButton type="button" onClick={ () => onEdit(id) }>
-                                                            <SquarePen size={ 25 } color="#238636" />
-                                                        </Styled.TableListBodyRowDataActionButton>
+                                                        <Styled.TableListBodyRowDataActionButton type="button" onClick={ () => onEdit?.(id) }> <SquarePen size={ 25 } /> </Styled.TableListBodyRowDataActionButton>
                                                     ) }
                                                     { shouldShowDelete && (
-                                                        <Styled.TableListBodyRowDataActionButton type="button" onClick={ () => onDelete(id) } >
-                                                            <Trash size={ 25 } color="#DC143C" />
-                                                        </Styled.TableListBodyRowDataActionButton>
+                                                        <Styled.TableListBodyRowDataActionButton type="button" onClick={ () => onDelete?.(id) }> <Trash size={ 25 } /> </Styled.TableListBodyRowDataActionButton>
                                                     ) }
                                                 </Styled.TableListBodyRowDataActions>
-                                            </Styled.TableListBodyRowData>
-                                        ) }
+                                            ) }
+                                        </Styled.TableListBodyRowData>
                                     </Styled.TableListBodyRow>
                                 );
                             }) }

@@ -106,20 +106,22 @@ const Lists = () => {
             { !isLoading && lists.length > 0 && (
                 <Fragment>
                     <Table<ListResponseDto>
-                        headers={[ "Nome", "Assunto", "Cor", "Criada em", "Editada em", ]}
+                        headers={[ "Cor", "Nome", "Assunto", "Criada em", "Editada em", ]}
                         data={ lists }
                         getEntityId={ (list: ListResponseDto) => list.id }
                         onEdit={ handleUpdate }
                         onDelete={ (id: number) => { setSelectedListId(id); setIsDeleteModalOpen(true); } }
                         renderEntityRow={ (list: ListResponseDto) => (
                             <Fragment>
+                                <Styled.TableListBodyRowData> <Styled.TableListColorContent> <Styled.TableListColorFragment $color={ list.color }/> </Styled.TableListColorContent> </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> <b> { list.name } </b> </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> { list.subject } </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> <Styled.TableListColorContent> <Styled.TableListColorFragment $color={ list.color }/> </Styled.TableListColorContent> </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> { formatDate(list.createdAt, true) } </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> { formatDate(list.updatedAt, true) } </Styled.TableListBodyRowData>
                             </Fragment>
                         ) }
+                        canEdit={ true }
+                        canDelete={ true }
                     />
 
                     <Paginate page={ page } total={ total } limit={ limit } onPageChange={ setPage } onLimitChange={ (newLimit: number) => { setLimit(newLimit); setPage(1); } }/>

@@ -5,70 +5,57 @@ import { StatusBadgeConfigItemProps } from '../interfaces/statusBadgeConfigItemP
 
 export const STATUS_BADGE_CONFIG: Record<UserStatus | BatchStatus | BatchSendStatus, StatusBadgeConfigItemProps> = {
     [UserStatus.FIRST_ACCESS]: {
-        label: "INATIVO",
+        label: "Inativo",
         fontColor: "#DC143C",
-        backgroundColor: "#FDECEF",
     },
     [UserStatus.NOT_FIRST_ACCESS]: {
-        label: "ATIVO",
+        label: "Ativo",
         fontColor: "#10CF67",
-        backgroundColor: "#ECFDF3",
     },
     [UserStatus.SYSTEM_ROOT]: {
-        label: "ADMINISTRADOR",
+        label: "Administrador",
         fontColor: "#6941C6",
-        backgroundColor: "#F9F5FF",
     },
     [UserStatus.NOT_SYSTEM_ROOT]: {
-        label: "USUÁRIO",
+        label: "Usuário",
         fontColor: "#1C70E9",
-        backgroundColor: "#EAF2FF",
     },
 
     [BatchStatus.PENDING]: {
-        label: "PENDENTE",
+        label: "Pendente",
         fontColor: "#6941C6",
-        backgroundColor: "#F9F5FF",
     },
     [BatchStatus.RUNNING]: {
-        label: "EXECUTANDO",
+        label: "Executando",
         fontColor: "#1C70E9",
-        backgroundColor: "#EAF2FF",
     },
     [BatchStatus.PARTIAL]: {
-        label: "PARCIAL",
+        label: "Parcial",
         fontColor: "#FF6B00",
-        backgroundColor: "#FFF4E8",
     },
     [BatchStatus.FAILED]: {
-        label: "FALHA",
+        label: "Falha",
         fontColor: "#DC143C",
-        backgroundColor: "#FDECEF",
     },
     [BatchStatus.FINISHED]: {
-        label: "PROCESSADO",
+        label: "Finalizado",
         fontColor: "#10CF67",
-        backgroundColor: "#ECFDF3",
     },
 
     [BatchSendStatus.WAITING]: {
-        label: "AGUARDANDO",
+        label: "Aguardando",
         fontColor: "#FF6B00",
-        backgroundColor: "#FFF4E8",
     },
     [BatchSendStatus.PROCESSING]: {
-        label: "PROCESSANDO",
+        label: "Processando",
         fontColor: "#1C70E9",
-        backgroundColor: "#EAF2FF",
     },
     [BatchSendStatus.SENT]: {
-        label: "ENVIADO",
+        label: "Enviado",
         fontColor: "#10CF67",
-        backgroundColor: "#ECFDF3",
     },
     [BatchSendStatus.ERROR]: {
-        label: "FALHA",
+        label: "Erro",
         fontColor: "#DC143C",
-        backgroundColor: "#FDECEF",
     },
 }

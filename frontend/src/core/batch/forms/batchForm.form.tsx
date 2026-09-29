@@ -2,12 +2,11 @@ import * as z from 'zod';
 import { toast } from 'react-toastify';
 import React, { useState, useEffect } from 'react';
 
-import { Create, Update } from '../services/batch.service';
+import { Create } from '../services/batch.service';
 import Toast from '../../../shared/components/toast/screens/Toast';
 import { ListResponseDto } from '../../list/dtos/listResponse.dto';
 import { List as ListLists } from '../../list/services/list.service';
 import { CreateBatchCommandDto } from '../dtos/createBatchCommand.dto';
-import { UpdateBatchCommandDto } from '../dtos/updateBatchCommand.dto';
 import { FormProps } from '../../../shared/interfaces/formProps.interface';
 import Dropdown from '../../../shared/components/dropdown/screens/Dropdown';
 import { TemplateResponseDto } from '../../template/dtos/templateResponse.dto';
@@ -70,16 +69,6 @@ export const BatchForm: React.FC<FormProps<BatchFormData>> = ({ initialValues, o
                 await Create(command);
 
                 toast.success("Envio criado com sucesso");
-            } else {
-                const command: UpdateBatchCommandDto = {
-                    name: validatedFormData.name,
-                    templateId: validatedFormData.templateId,
-                    listId: validatedFormData.listId,
-                }
-
-                await Update({ id: initialValues.id }, command);
-
-                toast.success("Envio editado com sucesso");
             }
 
             onSubmit();

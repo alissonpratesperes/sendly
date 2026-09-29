@@ -178,9 +178,9 @@ export const Tip = styled.span`
     padding: 7.5px;
     font-family: "Lato";
     font-weight: 700;
-    font-size: 14px;
-    color: #1C70E9;
-    background-color: #D3D2D9;
+    font-size: 15px;
+    color: #FF6B00;
+    background: rgba(255, 107, 0, 0.25);
     border-radius: 7px;
     pointer-events: none;
 `;
@@ -352,9 +352,7 @@ export const FooterButtonText = styled.span`
     margin-left: 7.5px;
 `;
 
-export const ContactImportResultContainer = styled.div`
-    // border: 1px solid black;
-`;
+export const ContactImportResultContainer = styled.div``;
 
 export const ImportResultTitle = styled.p`
     margin-bottom: 30px;

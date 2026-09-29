@@ -5,7 +5,7 @@ import { ParsedTemplate } from '../interfaces/parsedTemplate.interface';
 @Injectable()
 export class TemplateInterpolator {
     private interpolateText(text: string, name: string): string {
-        return text.replace(/\{\{name\}\}/g, name);
+        return text.replace(/\{\{name\}\}/g, name.trim());
     }
 
     interpolate(template: ParsedTemplate, name: string): ParsedTemplate {

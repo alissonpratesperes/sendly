@@ -37,6 +37,8 @@ export class BatchSendProcessor extends WorkerHost {
                 return;
             }
 
+            await this.batchService.markAsRunning(batchSend.Batch.CompanyId, batchSend.BatchId);
+
             try {
                 const templateSnapshot = batchSend.TemplateSnapshot as unknown as TemplateSnapshot;
                 const response = await this.baileysService.sendTemplateSingleMessage(batchSend.Batch.CompanyId, batchSend.Contact.Phone, JSON.stringify(templateSnapshot.content));

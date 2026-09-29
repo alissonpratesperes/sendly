@@ -165,7 +165,7 @@ const Contact = () => {
             { !isLoading && contacts.length > 0 && (
                 <Fragment>
                     <Table<ContactResponseDto>
-                        headers={[ "Nome", "Telefone", "Comunicação", "Criada em", "Editada em", ]}
+                        headers={[ "Nome", "Telefone", "Comunicação", "Criado em", "Editado em", ]}
                         data={ contacts }
                         getEntityId={ (contact: ContactResponseDto) => contact.id }
                         onEdit={ handleUpdate }
@@ -179,6 +179,8 @@ const Contact = () => {
                                 <Styled.TableListBodyRowData> { formatDate(contact.updatedAt, true) } </Styled.TableListBodyRowData>
                             </Fragment>
                         ) }
+                        canEdit={ true }
+                        canDelete={ true }
                     />
 
                     <Paginate page={ page } total={ total } limit={ limit } onPageChange={ setPage } onLimitChange={ (newLimit: number) => { setLimit(newLimit); setPage(1); } }/>
