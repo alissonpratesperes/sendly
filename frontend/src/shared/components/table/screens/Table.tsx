@@ -4,7 +4,7 @@ import { Info, SquarePen, Trash } from 'lucide-react';
 import * as Styled from '../styles/table.style';
 import { TableProps } from '../interfaces/tableProps.interface';
 
-export const Table = <T,>({ headers, data, getEntityId, onView, onEdit, onDelete, renderEntityRow, canView = false, canEdit, canDelete, }: TableProps<T>) => {
+export const Table = <T,>({ headers, data, isInBatchScreen, getEntityId, onView, onEdit, onDelete, renderEntityRow, canView = false, canEdit, canDelete, }: TableProps<T>) => {
     return (
             <Styled.TableWrapper>
                 <Styled.TableListWrapper>
@@ -27,7 +27,7 @@ export const Table = <T,>({ headers, data, getEntityId, onView, onEdit, onDelete
                                     <Styled.TableListBodyRow key={ id }>
                                         { renderEntityRow(entity) }
 
-                                        <Styled.TableListBodyRowData>
+                                        <Styled.TableListBodyRowData $isInBatchScreen={ isInBatchScreen }>
                                             { (shouldShowView || shouldShowEdit || shouldShowDelete) && (
                                                 <Styled.TableListBodyRowDataActions>
                                                     { shouldShowView && (

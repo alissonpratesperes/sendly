@@ -6,6 +6,7 @@ import { DropdownProps } from '../interfaces/dropdownProps.interface';
 export default function Dropdown<Option>({
     width = "100%",
     isInPagination,
+    isInBatchSendScreen,
     onChange,
     components,
     menuPosition = "fixed",
@@ -23,7 +24,7 @@ export default function Dropdown<Option>({
             closeMenuOnSelect={ closeMenuOnSelect }
             hideSelectedOptions={ hideSelectedOptions }
             menuPortalTarget={ menuPortalTarget }
-            styles={ SelectCommonStyles({ width, isInPagination, }) }
+            styles={ SelectCommonStyles({ width, isInPagination, isInBatchSendScreen, }) }
             components={ { IndicatorSeparator: () => null, ...components, } }
         />
     );

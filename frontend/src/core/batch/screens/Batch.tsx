@@ -125,6 +125,7 @@ const Batch = () => {
                     <Table<BatchResponseDto>
                         headers={[ "Nome", "Template", "Iniciado em", "Finalizado em", "Status", "Criado em", "Editado em", ]}
                         data={ batches }
+                        isInBatchScreen={ true }
                         getEntityId={ (batch: BatchResponseDto) => batch.id }
                         renderEntityRow={ (batch: BatchResponseDto) => (
                             <Fragment>

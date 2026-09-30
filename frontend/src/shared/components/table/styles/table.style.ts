@@ -29,17 +29,19 @@ export const TableListHeaderRowColumn = styled.th`
     text-align: left;
 `;
 
-export const TableListBodyRowData = styled.td`
+export const TableListBodyRowData = styled.td<{ $isInBatchScreen?: boolean }>`
     padding: 20px;
     white-space: pre-line;
     vertical-align: middle;
     background: #FFFFFF;
 
-        &:last-of-type {
-            width: 110px;
-            min-width: 110px;
-            text-align: center;
-        }
+        ${({ $isInBatchScreen }) => !$isInBatchScreen && `
+            &:last-of-type {
+                width: 110px;
+                min-width: 110px;
+                text-align: center;
+            }
+        `}
 `;
 
 export const TableListBodyRowDataActions = styled.div`

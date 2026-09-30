@@ -127,7 +127,7 @@ export const ContactImportForm: React.FC<ImportFormProps> = ({ onCancel, onSubmi
                         />
                     </Styled.FieldWrapper>
 
-                    <Uploader isCsv={ true } value={ csvFile } onChange={ (file) => setCsvFile(file as File | undefined) }/>
+                    <Uploader isCsv={ true } value={ csvFile } onChange={ (file) => setCsvFile(file as File | undefined) } blockRemove={ false }/>
                 </Styled.Form>
             ) : (
                 <Styled.ContactImportResultContainer>

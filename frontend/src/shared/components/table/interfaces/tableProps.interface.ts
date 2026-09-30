@@ -1,6 +1,7 @@
 export interface TableProps<T> {
     headers: string[];
     data: T[];
+    isInBatchScreen?: boolean;
 
     getEntityId: (item: T) => number;
     onView?: (id: number) => void;

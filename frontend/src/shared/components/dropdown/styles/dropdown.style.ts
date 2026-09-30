@@ -1,12 +1,12 @@
 import { ControlProps, CSSObjectWithLabel, GroupBase, StylesConfig } from 'react-select';
 
-export const SelectCommonStyles = <Option,>(custom?: { width?: string; isInPagination?: boolean; }): StylesConfig<Option, false, GroupBase<Option>> => ({
+export const SelectCommonStyles = <Option,>(custom?: { width?: string; isInPagination?: boolean; isInBatchSendScreen?: boolean }): StylesConfig<Option, false, GroupBase<Option>> => ({
     control: (base: CSSObjectWithLabel, state: ControlProps<Option, false>) => ({
         ...base,
 
         marginLeft: custom?.isInPagination ? "30px" : "0px",
         padding: "0px 15px",
-        height: custom?.isInPagination ? "55px" : "60px",
+        height: custom?.isInPagination || custom?.isInBatchSendScreen ? "55px" : "60px",
         width: custom?.width || "120px",
         display: "flex",
         flexDirection: "row",

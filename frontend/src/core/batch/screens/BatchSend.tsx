@@ -155,6 +155,7 @@ const BatchSend = () => {
                 <Styled.BatchFilterWrapper>
                     <Dropdown
                         inputId="batchId"
+                        isInBatchSendScreen={ true }
                         isLoading={isBatchesLoading}
                         isClearable={true}
                         options={optionsForBatches}
