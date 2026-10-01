@@ -14,12 +14,11 @@ export class MailService implements OnModuleInit {
     private transporter!: nodemailer.Transporter;
 
     async onModuleInit(): Promise<void> {
-        const port = Number(requireEnvironmentVariable("SMTP_PORT"));
-
         this.transporter = nodemailer.createTransport({
             host: requireEnvironmentVariable("SMTP_HOST"),
-            port,
-            secure: port === 465,
+            port: Number(requireEnvironmentVariable("SMTP_PORT")),
+            secure: false,
+            requireTLS: true,
 
             auth: {
                 user: requireEnvironmentVariable("SMTP_USER"),

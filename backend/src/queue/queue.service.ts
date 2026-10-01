@@ -23,7 +23,7 @@ export class QueueService {
             name: this.queueName,
             data: { batchSendId },
             opts: {
-                delay: generateSpacedIntervalInMilliseconds(index),
+                // delay: generateSpacedIntervalInMilliseconds(index),
                 removeOnComplete: true,
                 removeOnFail: 1000,
                 attempts: 3,
