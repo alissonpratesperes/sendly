@@ -7,8 +7,9 @@ export const UploaderWrapper = styled.div`
 `;
 
 export const DropzoneArea = styled.div<DropzoneProps>`
-    width: 100%;
     height: 220px;
+    width: 100%;
+    margin-bottom: 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -78,7 +79,7 @@ export const DraggedFilesList = styled.ul`
 `;
 
 export const DraggedFilesListItem = styled.li`
-    margin: 30px 0px 0px 0px;
+    margin-bottom: 30px;
     height: auto;
     display: flex;
     flex-direction: row;

@@ -162,7 +162,7 @@ const Uploader: React.FC<UploaderProps> = ({ value, existingImage, blockRemove =
 
     return (
         <Styled.UploaderWrapper>
-            { shouldShowDropzone && (
+            { shouldShowDropzone && (!blockRemove || hasFile) && (
                 <Styled.DropzoneArea { ...getRootProps() } $isDragActive={ isDragActive } $hasFile={ !!value || !!existingImage } $backgroundImage={ filePreview }>
                     <input { ...getInputProps() }/>
 

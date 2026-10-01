@@ -150,7 +150,7 @@ export const Form = styled.form`
 
 export const Fieldset = styled.fieldset`
     margin-bottom: 30px;
-    padding: 30px;
+    padding: 30px 30px 0px 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
