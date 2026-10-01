@@ -25,11 +25,7 @@ export const ContactForm: React.FC<FormProps<ContactFormData>> = ({ initialValue
 
     const optionsForLists = lists
         .filter((list: ListResponseDto) => list.id !== undefined && list.id !== null)
-        .map((list: ListResponseDto) => ({
-            value: Number(list.id),
-            label: list.name,
-            color: list.color,
-        }))
+        .map((list: ListResponseDto) => ({ value: Number(list.id), label: list.name, color: list.color, }))
         .sort((a, b) => a.label.localeCompare(b.label));
     const regionNames = new Intl.DisplayNames(["pt-BR"], { type: "region", } );
     const optionsForCountries = getCountries()

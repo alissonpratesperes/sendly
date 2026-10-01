@@ -51,7 +51,7 @@ const BatchSend = () => {
         try {
             setIsLoading(true);
 
-            const params: PaginatedQueryDto = { page, limit, search: "", };
+            const params: PaginatedQueryDto = { page, limit, search, };
             const response = await ListSends({ id: selectedBatchId }, params);
 
             setBatchSends(response.data);
@@ -152,7 +152,7 @@ const BatchSend = () => {
                 <LoadingState/>
             ) }
             { !isLoading && (
-                <Styled.BatchFilterWrapper>
+                <Styled.WhenInAnotherScreenWrapper>
                     <Dropdown
                         inputId="batchId"
                         isInBatchSendScreen={ true }
@@ -163,7 +163,7 @@ const BatchSend = () => {
                         value={ optionsForBatches.find((option) => option.value === selectedBatchId) ?? null }
                         onChange={ (selectedOption) => { setSelectedBatchId(selectedOption?.value ?? null); setBatchSends([]); setTotal(0); setPage(1); } }
                     />
-                </Styled.BatchFilterWrapper>
+                </Styled.WhenInAnotherScreenWrapper>
             ) }
             { !isLoading && batchSends.length > 0 && (
                 <Fragment>

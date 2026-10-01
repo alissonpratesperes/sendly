@@ -1,11 +1,12 @@
 import { toast } from 'react-toastify';
 import parsePhoneNumberFromString from 'libphonenumber-js';
-import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react';
+import React, { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { ContactForm } from '../forms/contactForm.form';
 import { Read } from '../../list/services/list.service';
 import { ContactResponseDto } from '../dtos/contactResponse.dto';
 import { List, Update, Delete } from '../services/contact.service';
+import { List as ListLits} from '../../list/services/list.service';
 import { formatDate } from '../../../shared/utils/formatDate.util';
 import Modal from '../../../shared/components/modal/screens/Modal';
 import { ListResponseDto } from '../../list/dtos/listResponse.dto';
@@ -14,30 +15,45 @@ import { ContactFormData } from '../schemas/contactFormSchema.schema';
 import { Table } from '../../../shared/components/table/screens/Table';
 import { Finder } from '../../../shared/components/finder/screen/Finder';
 import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
+import Dropdown from '../../../shared/components/dropdown/screens/Dropdown';
 import Paginate from '../../../shared/components/paginate/screens/Paginate';
 import * as Styled from '../../../shared/components/table/styles/table.style';
 import { EmptyState } from '../../../shared/components/emptyState/screens/EmpyState';
 import ToggleSwitch from '../../../shared/components/toggleSwitch/screens/ToggleSwitch';
 import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
+import * as ContactFormStyled from '../../../shared/components/dropdown/styles/contactFormDropdown.style';
 
 const Contact = () => {
     const [page, setPage] = useState<number>(1);
     const [total, setTotal] = useState<number>(0);
     const [limit, setLimit] = useState<number>(15);
     const [search, setSearch] = useState<string>("");
+    const [lists, setLists] = useState<ListResponseDto[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
     const [contacts, setContacts] = useState<ContactResponseDto[]>([]);
+    const [isListsLoading, setIsListsLoading] = useState<boolean>(false);
     const [updating, setUpdating] = useState<ContactFormData | null>(null);
     const [hasImportErrors, setHasImportErrors] = useState<boolean>(false);
+    const [selectedListId, setSelectedListId] = useState<number | null>(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
     const [isImportDrawerOpen, setIsImportDrawerOpen] = useState<boolean>(false);
     const [selectedContactId, setSelectedContactId] = useState<number | null>(null);
     const [listsNames, setListsNames] = useState<Record<number, ListResponseDto>>({});
 
     const listsNamesRef = useRef<Record<number, ListResponseDto>>({});
+
+    const optionsForLists = useMemo(() => {
+        return lists
+            .filter((list) => list.id !== undefined && list.id !== null)
+            .map((list) => ({ value: Number(list.id), label: list.name, color: list.color, }))
+            .sort((a, b) => a.label.localeCompare(b.label));
+    }, [ lists ]);
+    const selectedListOption = useMemo(() => {
+        return optionsForLists.find((option) => option.value === selectedListId) ?? null;
+    }, [ optionsForLists, selectedListId ]);
 
     const handleImport = () => {
         setIsImportDrawerOpen(true);
@@ -50,7 +66,7 @@ const Contact = () => {
         try {
             setIsLoading(true);
 
-            const params: PaginatedQueryDto = { page, limit, search };
+            const params: PaginatedQueryDto = { page, limit, search, listId: selectedListId ?? undefined, };
             const response = await List(params);
 
             setContacts(response.data);
@@ -85,7 +101,7 @@ const Contact = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [ page, limit, search ])
+    }, [ selectedListId, page, limit, search ])
     const handleUpdate = (id: number) => {
         const clicked = contacts.find((contact: ContactResponseDto) => contact.id === id);
 
@@ -144,6 +160,37 @@ const Contact = () => {
     }
 
     useEffect(() => {
+        const progressiveListsFetch = async () => {
+            try {
+                setIsListsLoading(true);
+
+                const fetchAllLists = async () => {
+                    let page = 1;
+                    let totalPages = 0;
+                    let allFetchedLists: ListResponseDto[] = [];
+
+                    do {
+                        const response = await ListLits({ page, limit: 30, search: "", });
+
+                        allFetchedLists = [ ...allFetchedLists, ...response.data ];
+                        totalPages = response.totalPages;
+                        page++;
+                    } while (page <= totalPages);
+
+                    setLists(allFetchedLists);
+                }
+
+                await fetchAllLists();
+            } catch (error) {
+                toast.error(`Erro ao listar as opções de Listas: ${ error }`);
+            } finally {
+                setIsListsLoading(false);
+            }
+        }
+
+        progressiveListsFetch();
+    }, []);
+    useEffect(() => {
         listsNamesRef.current = listsNames;
     }, [ listsNames ]);
     useEffect(() => {
@@ -160,7 +207,31 @@ const Contact = () => {
                 <LoadingState/>
             ) }
             { !isLoading && (
-                <Finder showImportButton={ true } importButtonText="Importar contatos" showAddButton={ true } placeholder="Pesquise um contato por nome ou telefone" buttonText="Cadastrar contato" search={ search } onAdd={ handleCreate } onImport={ handleImport } onSearchChange={ (value) => { setSearch(value); setPage(1); } }/>
+                <Styled.WhenInMultiSearchContainer>
+                    <Styled.WhenInAnotherScreenWrapper>
+                        <Dropdown
+                            inputId="listId"
+                            isInBatchSendScreen={true}
+                            isLoading={isListsLoading}
+                            isSearchable={false}
+                            isClearable={true}
+                            options={optionsForLists}
+                            placeholder="Filtre por uma lista"
+                            value={selectedListOption}
+                            onChange={(selectedOption) => { setSelectedListId(selectedOption?.value ?? null); setPage(1); }}
+
+                            formatOptionLabel={ (option) => (
+                                <ContactFormStyled.OptionContent>
+                                    <ContactFormStyled.ListColor $color={ option.color }/>
+
+                                    <span> { option.label } </span>
+                                </ContactFormStyled.OptionContent>
+                            ) }
+                        />
+                    </Styled.WhenInAnotherScreenWrapper>
+
+                    <Finder showImportButton={ true } importButtonText="Importar contatos" showAddButton={ true } placeholder="Pesquise um contato por nome ou telefone" buttonText="Cadastrar contato" search={ search } onAdd={ handleCreate } onImport={ handleImport } onSearchChange={ (value) => { setSearch(value); setPage(1); } }/>
+               </Styled.WhenInMultiSearchContainer>
             ) }
             { !isLoading && contacts.length > 0 && (
                 <Fragment>

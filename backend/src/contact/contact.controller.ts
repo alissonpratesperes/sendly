@@ -32,7 +32,7 @@ export class ContactController {
     @Get()
     @HttpCode(HttpStatus.OK)
     async list(@Query() query: PaginationQueryDto): Promise<PaginatedResponseDto<GetContactResponseDto>> {
-        return this.contactService.list(query.page, query.limit, query.search);
+        return this.contactService.list(query.page, query.limit, query.search, query.listId);
     }
 
     @Patch(":id")

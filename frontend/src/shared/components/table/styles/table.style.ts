@@ -150,6 +150,22 @@ export const ContactNameSpan = styled.span`
     white-space: normal;
 `;
 
-export const BatchFilterWrapper = styled.div`
+export const WhenInAnotherScreenWrapper = styled.div`
     margin-bottom: 30px;
+`;
+
+export const WhenInMultiSearchContainer = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 30px;
+
+        > ${ WhenInAnotherScreenWrapper } {
+            width: calc(20% - 15px);
+        }
+        > *:last-child {
+            width: calc(80% - 15px);
+        }
 `;

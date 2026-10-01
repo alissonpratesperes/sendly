@@ -28,6 +28,13 @@ export class PaginationQueryDto {
     @IsInt()
     @IsOptional()
     @Type(() => Number)
+    @ApiPropertyOptional({ example: 39 })
+    listId?: number;
+
+    @Min(1)
+    @IsInt()
+    @IsOptional()
+    @Type(() => Number)
     @ApiPropertyOptional({ example: 1 })
-    companyId?: number;
+    companyId?: number
 }
