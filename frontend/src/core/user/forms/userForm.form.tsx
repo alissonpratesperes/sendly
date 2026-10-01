@@ -14,6 +14,8 @@ import { UserFormData, UserFormSchema } from '../schemas/userFormSchema.schema';
 import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
 
 export const UserForm: React.FC<FormProps<UserFormData>> = ({ initialValues, onSubmit, onLoadingChange, }) => {
+    const [limit, setLimit] = useState<number>(15);
+    const [search, setSearch] = useState<string>("");
     const [companies, setCompanies] = useState<CompanyResponseDto[]>([]);
     const [isCompaniesLoading, setIsCompaniesLoading] = useState<boolean>(false);
     const [formData, setFormData] = useState<UserFormData>({ companyId: 0, name: "", email: "", });
@@ -88,7 +90,7 @@ export const UserForm: React.FC<FormProps<UserFormData>> = ({ initialValues, onS
                     let allFetchedCompanies: CompanyResponseDto[] = [];
 
                     do {
-                        const response = await List({ page, limit: 30, search: "" });
+                        const response = await List({ page, limit, search });
 
                         allFetchedCompanies = [ ...allFetchedCompanies, ...response.data ];
                         totalPages = response.totalPages;

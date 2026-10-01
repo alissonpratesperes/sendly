@@ -17,8 +17,10 @@ import * as ContactFormStyled from '../../../shared/components/dropdown/styles/c
 export const ContactImportForm: React.FC<ImportFormProps> = ({ onCancel, onSubmit, onLoadingChange, onResultChange, }) => {
     const { userInformation } = getAuthenticationStorage();
 
+    const [limit, setLimit] = useState<number>(15);
     const [csvFile, setCsvFile] = useState<File>();
     const [listId, setListId] = useState<number>(0);
+    const [search, setSearch] = useState<string>("");
     const [lists, setLists] = useState<ListResponseDto[]>([]);
     const [isListsLoading, setIsListsLoading] = useState<boolean>(false);
     const [importResult, setImportResult] = useState<ImportContactResponseDto | null>(null);
@@ -86,7 +88,7 @@ export const ContactImportForm: React.FC<ImportFormProps> = ({ onCancel, onSubmi
                 let allFetchedLists: ListResponseDto[] = [];
 
                 do {
-                    const response = await List({ page, limit: 30, search: "", companyId: userInformation?.company.id ?? 0, });
+                    const response = await List({ page, limit, search, companyId: userInformation?.company.id ?? 0, });
 
                     allFetchedLists = [ ...allFetchedLists, ...response.data ];
 

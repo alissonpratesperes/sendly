@@ -19,6 +19,8 @@ import * as ContactFormStyled from '../../../shared/components/dropdown/styles/c
 export const BatchForm: React.FC<FormProps<BatchFormData>> = ({ initialValues, onSubmit, onLoadingChange, }) => {
     const { userInformation } = getAuthenticationStorage();
 
+    const [limit, setLimit] = useState<number>(15);
+    const [search, setSearch] = useState<string>("");
     const [lists, setLists] = useState<ListResponseDto[]>([]);
     const [isListsLoading, setIsListsLoading] = useState<boolean>(false);
     const [templates, setTemplates] = useState<TemplateResponseDto[]>([]);
@@ -94,7 +96,7 @@ export const BatchForm: React.FC<FormProps<BatchFormData>> = ({ initialValues, o
                     let allFetchedTemplates: TemplateResponseDto[] = [];
 
                     do {
-                        const response = await ListTemplates({ page, limit: 30, search: "", });
+                        const response = await ListTemplates({ page, limit, search, });
 
                         allFetchedTemplates = [ ...allFetchedTemplates, ...response.data ];
                         totalPages = response.totalPages;
@@ -122,7 +124,7 @@ export const BatchForm: React.FC<FormProps<BatchFormData>> = ({ initialValues, o
 
                     do {
                         const companyId = initialValues?.companyId ?? userInformation?.company.id;
-                        const response = await ListLists({ page, limit: 30, search: "", companyId, });
+                        const response = await ListLists({ page, limit, search, companyId, });
 
                         allFetchedLists = [ ...allFetchedLists, ...response.data ];
                         totalPages = response.totalPages;

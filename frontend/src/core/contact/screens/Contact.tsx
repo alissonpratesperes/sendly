@@ -170,7 +170,7 @@ const Contact = () => {
                     let allFetchedLists: ListResponseDto[] = [];
 
                     do {
-                        const response = await ListLits({ page, limit: 30, search: "", });
+                        const response = await ListLits({ page, limit, search, });
 
                         allFetchedLists = [ ...allFetchedLists, ...response.data ];
                         totalPages = response.totalPages;

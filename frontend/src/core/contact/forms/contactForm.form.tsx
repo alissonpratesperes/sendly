@@ -19,6 +19,8 @@ import * as ContactFormStyled from '../../../shared/components/dropdown/styles/c
 export const ContactForm: React.FC<FormProps<ContactFormData>> = ({ initialValues, onSubmit, onLoadingChange, }) => {
     const { userInformation } = getAuthenticationStorage();
 
+    const [limit, setLimit] = useState<number>(15);
+    const [search, setSearch] = useState<string>("");
     const [lists, setLists] = useState<ListResponseDto[]>([]);
     const [isListsLoading, setIsListsLoading] = useState<boolean>(false);
     const [formData, setFormData] = useState<ContactFormData>({ companyId: 0, listId: 0, name: "", phone: "", country: "", });
@@ -128,7 +130,7 @@ export const ContactForm: React.FC<FormProps<ContactFormData>> = ({ initialValue
 
                     do {
                         const companyId = initialValues?.companyId ?? userInformation?.company.id;
-                        const response = await List({ page, limit: 30, search: "", companyId, });
+                        const response = await List({ page, limit, search, companyId, });
 
                         allFetchedLists = [ ...allFetchedLists, ...response.data ];
                         totalPages = response.totalPages;

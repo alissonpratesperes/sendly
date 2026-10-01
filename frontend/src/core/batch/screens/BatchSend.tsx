@@ -125,7 +125,7 @@ const BatchSend = () => {
                     let allFetchedBatches: BatchResponseDto[] = [];
 
                     do {
-                        const response = await List({ page, limit: 30, search: "", });
+                        const response = await List({ page, limit, search, });
 
                         allFetchedBatches = [ ...allFetchedBatches, ...response.data ];
                         totalPages = response.totalPages;
