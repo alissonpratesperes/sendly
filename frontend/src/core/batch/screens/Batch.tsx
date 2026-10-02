@@ -1,5 +1,5 @@
 import { toast } from 'react-toastify';
-import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react';
+import React, { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { List } from '../services/batch.service';
 import { BatchForm } from '../forms/batchForm.form';
@@ -12,9 +12,11 @@ import { Table } from '../../../shared/components/table/screens/Table';
 import { Finder } from '../../../shared/components/finder/screen/Finder';
 import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
 import Paginate from '../../../shared/components/paginate/screens/Paginate';
+import Dropdown from '../../../shared/components/dropdown/screens/Dropdown';
 import * as Styled from '../../../shared/components/table/styles/table.style';
 import { TemplateResponseDto } from '../../template/dtos/templateResponse.dto';
 import { Read as ReadTemplate } from '../../template/services/template.service';
+import { List as ListTemplates } from '../../template/services/template.service';
 import { EmptyState } from '../../../shared/components/emptyState/screens/EmpyState';
 import StatusBadge from '../../../shared/components/statusBadge/screens/StatusBadge';
 import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
@@ -30,11 +32,24 @@ const Batch = () => {
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
     const [updating, setUpdating] = useState<BatchFormData | null>(null);
+    const [templates, setTemplates] = useState<TemplateResponseDto[]>([]);
+    const [isTemplatesLoading, setIsTemplatesLoading] = useState<boolean>(false);
+    const [selectedTemplateId, setSelectedTemplateId] = useState<number | null>(null);
     const [listsNames, setListsNames] = useState<Record<number, ListResponseDto>>({});
     const [templatesNames, setTemplatesNames] = useState<Record<number, TemplateResponseDto>>({});
 
     const listsNamesRef = useRef<Record<number, ListResponseDto>>({});
     const templatesNamesRef = useRef<Record<number, TemplateResponseDto>>({});
+
+    const optionsForTemplates = useMemo(() => {
+        return templates
+            .filter((template) => template.id !== undefined && template.id !== null)
+            .map((template) => ({ value: Number(template.id), label: template.name, }))
+            .sort((a, b) => a.label.localeCompare(b.label));
+    }, [ templates ]);
+    const selectedTemplateOption = useMemo(() => {
+        return optionsForTemplates.find((option) => option.value === selectedTemplateId) ?? null;
+    }, [ optionsForTemplates, selectedTemplateId ]);
 
     const handleCreate = () => {
         setUpdating(null);
@@ -44,7 +59,7 @@ const Batch = () => {
         try {
             setIsLoading(true);
 
-            const params: PaginatedQueryDto = { page, limit, search, };
+            const params: PaginatedQueryDto = { page, limit, search, templateId: selectedTemplateId ?? undefined, };
             const response = await List(params);
 
             setBatches(response.data);
@@ -102,8 +117,39 @@ const Batch = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [ page, limit, search ])
+    }, [ page, limit, search, selectedTemplateId ])
 
+    useEffect(() => {
+        const progressiveTemplatesFetch = async () => {
+            try {
+                setIsTemplatesLoading(true);
+
+                const fetchAllTemplates = async () => {
+                    let page = 1;
+                    let totalPages = 0;
+                    let allFetchedTemplates: TemplateResponseDto[] = [];
+
+                    do {
+                        const response = await ListTemplates({ page, limit, search, });
+
+                        allFetchedTemplates = [ ...allFetchedTemplates, ...response.data ];
+                        totalPages = response.totalPages;
+                        page++;
+                    } while (page <= totalPages);
+
+                    setTemplates(allFetchedTemplates);
+                }
+
+                await fetchAllTemplates();
+            } catch (error) {
+                toast.error(`Erro ao listar as opções de Templates: ${ error }`);
+            } finally {
+                setIsTemplatesLoading(false);
+            }
+        }
+
+        progressiveTemplatesFetch();
+    }, []);
     useEffect(() => {
         const timeout = setTimeout(() => {
             handleRead();
@@ -118,7 +164,23 @@ const Batch = () => {
                 <LoadingState/>
             ) }
             { !isLoading && (
-                <Finder showAddButton={ true } placeholder="Pesquise um lote por nome" buttonText="Cadastrar lote" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } }/>
+                <Styled.WhenInMultiSearchContainer>
+                    <Styled.WhenInAnotherScreenWrapper>
+                        <Dropdown
+                            inputId="templateId"
+                            isInBatchSendScreen={ true }
+                            isLoading={ isTemplatesLoading }
+                            isSearchable={ true }
+                            isClearable={ true }
+                            options={ optionsForTemplates }
+                            placeholder="Filtre por um template"
+                            value={ selectedTemplateOption }
+                            onChange={ (selectedOption) => { setSelectedTemplateId(selectedOption?.value ?? null); setPage(1); } }
+                        />
+                    </Styled.WhenInAnotherScreenWrapper>
+
+                    <Finder showAddButton={ true } placeholder="Pesquise um lote por nome" buttonText="Cadastrar lote" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } }/>
+                </Styled.WhenInMultiSearchContainer>
             ) }
             { !isLoading && batches.length > 0 && (
                 <Fragment>
