@@ -53,10 +53,13 @@ const Header: React.FC<HeaderMenuLinksProps> = ({ links }) => {
                 </Styled.UserInformation>
 
                 <Styled.UserActionContainer>
-                    <Styled.WhatsAppButton type="button" onClick={ () => setIsConnectionOpen(true) }>
-                        <Phone size={ 25 }/>
-                    </Styled.WhatsAppButton>
-                    <Styled.LogOutButton type="button" onClick={ () => handleLogout() }>
+                    { !userInformation?.isSystemRoot && (
+                        <Styled.WhatsAppButton type="button" onClick={ () => setIsConnectionOpen(true) }>
+                            <Phone size={ 25 }/>
+                        </Styled.WhatsAppButton>
+                    ) }
+
+                    <Styled.LogOutButton type="button" onClick={ () => handleLogout() } isOnlyAction={ userInformation?.isSystemRoot }>
                         <PowerOff size={ 25 }/>
                     </Styled.LogOutButton>
                 </Styled.UserActionContainer>

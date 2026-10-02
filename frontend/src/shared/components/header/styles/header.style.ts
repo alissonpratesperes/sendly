@@ -162,7 +162,7 @@ export const WhatsAppButton = styled.button`
         }
 `;
 
-export const LogOutButton = styled.button`
+export const LogOutButton = styled.button<{ isOnlyAction?: boolean }>`
   width: 55px;
   height: 55px;
   display: flex;
@@ -172,8 +172,7 @@ export const LogOutButton = styled.button`
   outline: none;
   color: #FF6B00;
   background: rgba(255, 107, 0, 0.25);
-  border-top-right-radius: 14px;
-  border-bottom-right-radius: 14px;
+  border-radius: ${ ({ isOnlyAction }) => isOnlyAction ? "14px" : "0 14px 14px 0" };
   cursor: pointer;
   transition: background 0.3s ease, color 0.3s ease;
 
