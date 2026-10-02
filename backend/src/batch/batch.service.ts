@@ -5,7 +5,7 @@ import { QueueService } from '../queue/queue.service';
 import { BatchSendService } from './batchSend.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { CompanyService } from '../company/company.service';
-import { ContactService } from 'src/contact/contact.service';
+import { ContactService } from '../contact/contact.service';
 import { GetBatchResponseDto } from './dtos/getBatchResponse.dto';
 import { GetBatchSendResponseDto } from './dtos/getBatchSendResponseDto';
 import { PaginatedResponseDto } from '../common/dtos/paginatedResponse.dto';

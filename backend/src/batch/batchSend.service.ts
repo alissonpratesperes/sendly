@@ -4,8 +4,8 @@ import { BatchSend, BatchSend_Status, Contact, Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { TemplateSnapshot } from './types/templateSnapshot.type';
 import { GetBatchSendResponseDto } from './dtos/getBatchSendResponseDto';
-import { PaginatedResponseDto } from 'src/common/dtos/paginatedResponse.dto';
-import { ParsedTemplate } from 'src/template/interfaces/parsedTemplate.interface';
+import { PaginatedResponseDto } from '../common/dtos/paginatedResponse.dto';
+import { ParsedTemplate } from '../template/interfaces/parsedTemplate.interface';
 import { TemplateInterpolator } from '../template/interpolators/templateInterpolator.interpolator';
 
 @Injectable()

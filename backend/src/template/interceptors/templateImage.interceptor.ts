@@ -3,7 +3,7 @@ import { memoryStorage } from 'multer';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { NestInterceptor, BadRequestException, mixin, Type } from '@nestjs/common';
 
-import { requireEnvironmentVariable } from 'src/common/utils/requireEnvironmentVariable.util';
+import { requireEnvironmentVariable } from '../common/utils/requireEnvironmentVariable.util';
 import { ALLOWED_IMAGE_MIME_TYPES, AllowedImageMimeTypes } from '../../common/types/allowedImageMimeTypes.type';
 import { ALLOWED_IMAGE_EXTENSIONS, AllowedImageExtensions } from '../../common/types/allowedImageExtensions.type';
 

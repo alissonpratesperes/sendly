@@ -1,7 +1,7 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Query } from '@nestjs/common';
 
 import { BatchService } from './batch.service';
-import { IdParamDto } from 'src/common/dtos/idParam.dto';
+import { IdParamDto } from '../common/dtos/idParam.dto';
 import { GetBatchResponseDto } from './dtos/getBatchResponse.dto';
 import { CreateBatchCommandDto } from './dtos/createBatchCommand.dto';
 import { PaginationQueryDto } from '../common/dtos/paginationQuery.dto';

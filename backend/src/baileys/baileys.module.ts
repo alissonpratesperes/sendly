@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 
 import { BaileysService } from './baileys.service';
 import { BaileysController } from './baileys.controller';
-import { TemplateModule } from 'src/template/template.module';
+import { TemplateModule } from '../template/template.module';
 import { BaileysPairingService } from './baileysPairing.service';
 import { BaileysSessionService } from './baileysSession.service';
 import { BaileysMessagingService } from './baileysMessaging.service';

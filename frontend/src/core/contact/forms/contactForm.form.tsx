@@ -11,6 +11,7 @@ import { CreateContactCommandDto } from '../dtos/createContactCommand.dto';
 import { UpdateContactCommandDto } from '../dtos/updateContactCommand.dto';
 import { FormProps } from '../../../shared/interfaces/formProps.interface';
 import Dropdown from '../../../shared/components/dropdown/screens/Dropdown';
+import { AVAILABLE_COUNTRIES } from '../constants/availableCountries.constant';
 import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
 import { ContactFormData, ContactFormSchema } from '../schemas/contactFormSchema.schema';
 import { getAuthenticationStorage } from '../../../shared/utils/authenticationStorage.util';
@@ -30,7 +31,7 @@ export const ContactForm: React.FC<FormProps<ContactFormData>> = ({ initialValue
         .map((list: ListResponseDto) => ({ value: Number(list.id), label: list.name, color: list.color, }))
         .sort((a, b) => a.label.localeCompare(b.label));
     const regionNames = new Intl.DisplayNames(["pt-BR"], { type: "region", } );
-    const optionsForCountries = getCountries()
+    const optionsForCountries = AVAILABLE_COUNTRIES
         .map((country) => ({
             value: country,
             label: `${ regionNames.of(country) } +${ getCountryCallingCode(country) }`,

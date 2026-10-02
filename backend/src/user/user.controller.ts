@@ -8,7 +8,7 @@ import { UpdateUserCommandDto } from './dtos/updateUserCommand.dto';
 import { PaginationQueryDto } from '../common/dtos/paginationQuery.dto';
 import { PaginatedResponseDto } from '../common/dtos/paginatedResponse.dto';
 import { IsSystemRoot } from '../authentication/decorators/isSystemRoot.decorator';
-import { GetCurrentUser } from 'src/authentication/decorators/getCurrentUser.decorator';
+import { GetCurrentUser } from '../authentication/decorators/getCurrentUser.decorator';
 
 @Controller("user")
 export class UserController {
