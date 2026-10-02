@@ -71,7 +71,7 @@ export const CompanyForm: React.FC<FormProps<CompanyFormData>> = ({ initialValue
         } else {
             setFormData({ ...formData, });
         }
-    }, [ initialValues ]);
+    }, [ initialValues, ]);
 
     return (
         <Styled.Form id="company-form" onSubmit={ handleSubmit }>

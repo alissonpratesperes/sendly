@@ -101,7 +101,7 @@ const Contact = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [ page, limit, search, selectedListId ])
+    }, [ page, limit, search, selectedListId, ])
     const handleUpdate = (id: number) => {
         const clicked = contacts.find((contact: ContactResponseDto) => contact.id === id);
 
@@ -192,14 +192,14 @@ const Contact = () => {
     }, []);
     useEffect(() => {
         listsNamesRef.current = listsNames;
-    }, [ listsNames ]);
+    }, [ listsNames, ]);
     useEffect(() => {
         const timeout = setTimeout(() => {
             handleRead();
         }, 500);
 
         return () => clearTimeout(timeout);
-    }, [ handleRead ]);
+    }, [ handleRead, ]);
 
     return (
         <Fragment>

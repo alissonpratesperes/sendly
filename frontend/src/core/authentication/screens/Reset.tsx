@@ -29,7 +29,7 @@ const Reset: React.FC = () => {
 
             navigate('/authentication', { replace: true });
         }
-    }, [passwordResetToken, navigate]);
+    }, [ passwordResetToken, navigate, ]);
 
     const handleSubmit = async (formEvent: React.FormEvent) => {
         formEvent.preventDefault();

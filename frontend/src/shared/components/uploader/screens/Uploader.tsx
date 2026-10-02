@@ -158,7 +158,7 @@ const Uploader: React.FC<UploaderProps> = ({ value, existingImage, blockRemove =
         return () => {
             URL.revokeObjectURL(filePreview);
         };
-    }, [ value, filePreview, isCsv ]);
+    }, [ value, filePreview, isCsv, ]);
 
     return (
         <Styled.UploaderWrapper>

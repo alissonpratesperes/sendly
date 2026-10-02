@@ -47,7 +47,7 @@ const Template = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [ page, limit, search ])
+    }, [ page, limit, search, ])
     const handleUpdate = (id: number) => {
         const clicked = templates.find((template: TemplateResponseDto) => template.id === id);
 
@@ -92,7 +92,7 @@ const Template = () => {
         }, 500);
 
         return () => clearTimeout(timeout);
-    }, [ handleRead ]);
+    }, [ handleRead, ]);
 
     return (
         <Fragment>

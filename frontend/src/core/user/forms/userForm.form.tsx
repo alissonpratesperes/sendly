@@ -116,7 +116,7 @@ export const UserForm: React.FC<FormProps<UserFormData>> = ({ initialValues, onS
         } else {
             setFormData({ ...formData, });
         }
-    }, [ initialValues ]);
+    }, [ initialValues, ]);
 
     return (
         <Styled.Form id="user-form" onSubmit={ handleSubmit }>

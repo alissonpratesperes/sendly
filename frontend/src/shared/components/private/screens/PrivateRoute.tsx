@@ -27,7 +27,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ element }) => {
 
             navigate("/authentication", { replace: true });
         }
-    }, [ isAuthorized, navigate ]);
+    }, [ isAuthorized, navigate, ]);
 
     if (isAuthorized === null) {
         return null;

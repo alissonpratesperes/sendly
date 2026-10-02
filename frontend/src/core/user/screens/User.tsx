@@ -68,7 +68,7 @@ const User = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [ page, limit, search, selectedCompanyId ])
+    }, [ page, limit, search, selectedCompanyId, ])
     const handleUpdate = (id: number) => {
         const clicked = users.find((user: UserResponseDto) => user.id === id);
 
@@ -144,7 +144,7 @@ const User = () => {
         }, 500);
 
         return () => clearTimeout(timeout);
-    }, [ handleRead ]);
+    }, [ handleRead, ]);
 
     return (
         <Fragment>

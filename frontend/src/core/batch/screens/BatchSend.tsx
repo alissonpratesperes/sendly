@@ -112,7 +112,7 @@ const BatchSend = () => {
         }, 500);
 
         return () => clearTimeout(timeout);
-    }, [ handleRead ]);
+    }, [ handleRead, ]);
 
     useEffect(() => {
         const progressiveBatchesFetch = async () => {

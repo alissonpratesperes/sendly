@@ -76,7 +76,7 @@ const Connection: React.FC<ConnectionProps> = ({ onPairingSuccess, isOpen, compa
         }
 
         fetchStatus();
-    }, [ isOpen, companyId ]);
+    }, [ isOpen, companyId, ]);
 
     return (
         <Styled.ModalOverlay $open={ isOpen && !isClosing } onClick={ () => setIsClosing(true) }>

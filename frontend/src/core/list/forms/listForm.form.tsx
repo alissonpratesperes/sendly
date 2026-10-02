@@ -74,7 +74,7 @@ export const ListForm: React.FC<FormProps<ListFormData>> = ({ initialValues, onS
         } else {
             setFormData({ ...formData, color: "#FFFFFF", });
         }
-    }, [ initialValues ]);
+    }, [ initialValues, ]);
 
     return (
         <Styled.Form id="list-form" onSubmit={ handleSubmit }>

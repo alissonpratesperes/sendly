@@ -159,7 +159,7 @@ export const ContactForm: React.FC<FormProps<ContactFormData>> = ({ initialValue
         } else {
             setFormData({ ...formData, country: "BR", });
         }
-    }, [ initialValues ]);
+    }, [ initialValues, ]);
 
     return (
         <Styled.Form id="contact-form" onSubmit={ handleSubmit }>

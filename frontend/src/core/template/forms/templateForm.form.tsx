@@ -137,7 +137,7 @@ export const TemplateForm: React.FC<FormProps<TemplateFormData>> = ({ initialVal
             setFormData({ ...formData, });
             setTemplateFields({ ...templateFields, });
         }
-    }, [ initialValues ]);
+    }, [ initialValues, ]);
 
     return (
         <Styled.Form id="template-form" onSubmit={ handleSubmit }>

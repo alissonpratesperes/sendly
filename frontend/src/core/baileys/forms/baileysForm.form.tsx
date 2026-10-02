@@ -89,7 +89,7 @@ export const BaileysForm: React.FC<FormProps<BaileysFormData>> = ({ initialValue
         } else {
             setFormData({ ...formData, });
         }
-    }, [ initialValues ]);
+    }, [ initialValues, ]);
 
     return (
         <Styled.Form id="baileys-form" onSubmit={ handleSubmit }>

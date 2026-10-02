@@ -151,7 +151,7 @@ export const BatchForm: React.FC<FormProps<BatchFormData>> = ({ initialValues, o
         } else {
             setFormData({ ...formData, });
         }
-    }, [ initialValues ]);
+    }, [ initialValues, ]);
 
     return (
         <Styled.Form id="batch-form" onSubmit={ handleSubmit }>

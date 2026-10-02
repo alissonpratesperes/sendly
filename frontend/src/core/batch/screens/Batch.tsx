@@ -117,7 +117,7 @@ const Batch = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [ page, limit, search, selectedTemplateId ])
+    }, [ page, limit, search, selectedTemplateId, ])
 
     useEffect(() => {
         const progressiveTemplatesFetch = async () => {
@@ -156,7 +156,7 @@ const Batch = () => {
         }, 500);
 
         return () => clearTimeout(timeout);
-    }, [ handleRead ]);
+    }, [ handleRead, ]);
 
     return (
         <Fragment>

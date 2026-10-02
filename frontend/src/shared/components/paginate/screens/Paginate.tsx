@@ -84,7 +84,7 @@ export default function Paginate({ page, total, limit, onPageChange, onLimitChan
         if (page > totalPages) {
             onPageChange(totalPages);
         }
-    }, [ page, totalPages, onPageChange ])
+    }, [ page, totalPages, onPageChange, ])
 
     return (
         <Styled.PaginateContainer>
