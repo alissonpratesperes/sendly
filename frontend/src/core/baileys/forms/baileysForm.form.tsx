@@ -87,7 +87,7 @@ export const BaileysForm: React.FC<FormProps<BaileysFormData>> = ({ initialValue
 
             setFormData({ phone: parsedContactPhone?.formatNational() ?? initialValues.phone, country: "BR", });
         } else {
-            setFormData({ phone: "", country: "BR" });
+            setFormData({ ...formData, });
         }
     }, [ initialValues ]);
 

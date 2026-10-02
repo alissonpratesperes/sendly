@@ -114,7 +114,7 @@ export const UserForm: React.FC<FormProps<UserFormData>> = ({ initialValues, onS
         if (initialValues) {
             setFormData(initialValues);
         } else {
-            setFormData({ companyId: 0, name: "", email: "", });
+            setFormData({ ...formData, });
         }
     }, [ initialValues ]);
 

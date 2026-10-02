@@ -147,15 +147,9 @@ export const BatchForm: React.FC<FormProps<BatchFormData>> = ({ initialValues, o
     }, []);
     useEffect(() => {
         if (initialValues) {
-            setFormData({
-                id: initialValues.id,
-                companyId: initialValues.companyId,
-                name: initialValues.name,
-                templateId: initialValues.templateId,
-                listId: initialValues.listId,
-            }); console.log("initialValues", initialValues)
+            setFormData(initialValues);
         } else {
-            setFormData({ companyId: 0, name: "", templateId: 0, listId: 0, });
+            setFormData({ ...formData, });
         }
     }, [ initialValues ]);
 

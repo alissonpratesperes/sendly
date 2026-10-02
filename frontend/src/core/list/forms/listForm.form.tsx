@@ -70,15 +70,9 @@ export const ListForm: React.FC<FormProps<ListFormData>> = ({ initialValues, onS
 
     useEffect(() => {
         if (initialValues) {
-            setFormData({
-                id: initialValues.id,
-                companyId: initialValues.companyId,
-                name: initialValues.name,
-                subject: initialValues.subject,
-                color: initialValues.color,
-            });
+            setFormData(initialValues);
         } else {
-            setFormData({ companyId: 0, name: "", subject: "", color: "#FFFFFF", });
+            setFormData({ ...formData, color: "#FFFFFF", });
         }
     }, [ initialValues ]);
 

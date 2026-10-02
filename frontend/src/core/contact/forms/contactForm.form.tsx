@@ -155,15 +155,9 @@ export const ContactForm: React.FC<FormProps<ContactFormData>> = ({ initialValue
         if (initialValues) {
             const parsedContactPhone = parsePhoneNumberFromString(initialValues.phone);
 
-            setFormData({
-                companyId: initialValues.companyId,
-                listId: initialValues.listId,
-                name: initialValues.name,
-                phone: parsedContactPhone?.formatNational() ?? "",
-                country: parsedContactPhone?.country ?? "",
-            });
+            setFormData({ ...initialValues, phone: parsedContactPhone?.formatNational() ?? "", country: parsedContactPhone?.country ?? "", });
         } else {
-            setFormData({ companyId: 0, listId: 0, name: "", phone: "", country: "BR", });
+            setFormData({ ...formData, country: "BR", });
         }
     }, [ initialValues ]);
 

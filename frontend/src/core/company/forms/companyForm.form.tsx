@@ -67,14 +67,9 @@ export const CompanyForm: React.FC<FormProps<CompanyFormData>> = ({ initialValue
 
     useEffect(() => {
         if (initialValues) {
-            setFormData({
-                id: initialValues.id,
-                name: initialValues.name,
-                document: initialValues.document.replace(/\D/g, "").slice(0, 14),
-                description: initialValues.description ?? "",
-            });
+            setFormData({ ...initialValues, document: initialValues.document.replace(/\D/g, "").slice(0, 14), });
         } else {
-            setFormData({ name: "", document: "", description: "", });
+            setFormData({ ...formData, });
         }
     }, [ initialValues ]);
 

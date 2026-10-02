@@ -125,27 +125,17 @@ export const TemplateForm: React.FC<FormProps<TemplateFormData>> = ({ initialVal
 
     useEffect(() => {
         if (initialValues) {
-            setFormData({
-                id: initialValues.id,
-                companyId: initialValues.companyId,
-                name: initialValues.name,
-                content: initialValues.content,
-            });
+            setFormData(initialValues);
             setTemplateFields({
                 header: initialValues.content.header?.title ?? "",
                 body: initialValues.content.body.find(block => block.type === "text")?.text ?? "",
                 footer: initialValues.content.footer?.text ?? "",
             });
-
-            const imageBlock = initialValues.content.body.find(
-                block => block.type === "image"
-            );
-
-            setExistingImage(imageBlock?.path);
+            setExistingImage(initialValues.content.body.find(block => block.type === "image")?.path);
             setTemplateImage(undefined);
         } else {
-            setFormData({ companyId: 0, name: "", content: { body: [], }, });
-            setTemplateFields({ header: "", body: "", footer: "", });
+            setFormData({ ...formData, });
+            setTemplateFields({ ...templateFields, });
         }
     }, [ initialValues ]);
 
