@@ -32,7 +32,7 @@ export class UserController {
     @Get()
     @HttpCode(HttpStatus.OK)
     async list(@Query() query: PaginationQueryDto): Promise<PaginatedResponseDto<GetUserResponseDto>> {
-        return this.userService.list(query.page, query.limit, query.search);
+        return this.userService.list(query.page, query.limit, query.search, query.companyId);
     }
 
     @Patch(":id")

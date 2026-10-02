@@ -1,5 +1,5 @@
 import { toast } from 'react-toastify';
-import React, { Fragment, useCallback, useEffect, useState } from 'react';
+import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { UserForm } from '../forms/userForm.form';
 import { UserStatus } from '../enums/userStatus.enum';
@@ -12,7 +12,10 @@ import { Table } from '../../../shared/components/table/screens/Table';
 import { Finder } from '../../../shared/components/finder/screen/Finder';
 import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
 import Paginate from '../../../shared/components/paginate/screens/Paginate';
+import Dropdown from '../../../shared/components/dropdown/screens/Dropdown';
+import { CompanyResponseDto } from '../../company/dtos/companyResponse.dto';
 import * as Styled from '../../../shared/components/table/styles/table.style';
+import { List as ListCompanies } from '../../company/services/company.service';
 import StatusBadge from '../../../shared/components/statusBadge/screens/StatusBadge';
 import { EmptyState } from '../../../shared/components/emptyState/screens/EmpyState';
 import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
@@ -29,10 +32,23 @@ const User = () => {
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
     const [updating, setUpdating] = useState<UserFormData | null>(null);
+    const [companies, setCompanies] = useState<CompanyResponseDto[]>([]);
     const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+    const [isCompaniesLoading, setIsCompaniesLoading] = useState<boolean>(false);
+    const [selectedCompanyId, setSelectedCompanyId] = useState<number | null>(null);
 
     const { userInformation } = getAuthenticationStorage();
+
+    const optionsForCompanies = useMemo(() => {
+        return companies
+            .filter((company) => company.id !== undefined && company.id !== null)
+            .map((company) => ({ value: Number(company.id), label: company.name, }))
+            .sort((a, b) => a.label.localeCompare(b.label));
+    }, [ companies ]);
+    const selectedCompanyOption = useMemo(() => {
+        return optionsForCompanies.find((option) => option.value === selectedCompanyId) ?? null;
+    }, [ optionsForCompanies, selectedCompanyId ]);
 
     const handleCreate = () => {
         setUpdating(null);
@@ -42,7 +58,7 @@ const User = () => {
         try {
             setIsLoading(true);
 
-            const params: PaginatedQueryDto = { page, limit, search };
+            const params: PaginatedQueryDto = { page, limit, search, companyId: selectedCompanyId ?? undefined, };
             const response = await List(params);
 
             setUsers(response.data);
@@ -52,7 +68,7 @@ const User = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [ page, limit, search ])
+    }, [ page, limit, search, selectedCompanyId ])
     const handleUpdate = (id: number) => {
         const clicked = users.find((user: UserResponseDto) => user.id === id);
 
@@ -92,6 +108,37 @@ const User = () => {
     }
 
     useEffect(() => {
+        const progressiveCompaniesFetch = async () => {
+            try {
+                setIsCompaniesLoading(true);
+
+                const fetchAllCompanies = async () => {
+                    let page = 1;
+                    let totalPages = 0;
+                    let allFetchedCompanies: CompanyResponseDto[] = [];
+
+                    do {
+                        const response = await ListCompanies({ page, limit, search, });
+
+                        allFetchedCompanies = [ ...allFetchedCompanies, ...response.data ];
+                        totalPages = response.totalPages;
+                        page++;
+                    } while (page <= totalPages);
+
+                    setCompanies(allFetchedCompanies);
+                }
+
+                await fetchAllCompanies();
+            } catch (error) {
+                toast.error(`Erro ao listar as opções de Empresas: ${ error }`);
+            } finally {
+                setIsCompaniesLoading(false);
+            }
+        }
+
+        progressiveCompaniesFetch();
+    }, []);
+    useEffect(() => {
         const timeout = setTimeout(() => {
             handleRead();
         }, 500);
@@ -105,7 +152,23 @@ const User = () => {
                 <LoadingState/>
             ) }
             { !isLoading && (
-                <Finder showAddButton={ userInformation?.isSystemRoot ?? false } placeholder="Pesquise um usuário por nome ou e-mail" buttonText="Cadastrar usuário" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } }/>
+                <Styled.WhenInMultiSearchContainer>
+                    <Styled.WhenInAnotherScreenWrapper>
+                        <Dropdown
+                            inputId="companyId"
+                            isInBatchSendScreen={ true }
+                            isLoading={ isCompaniesLoading }
+                            isSearchable={ true }
+                            isClearable={ true }
+                            options={ optionsForCompanies }
+                            placeholder="Filtre por uma empresa"
+                            value={ selectedCompanyOption }
+                            onChange={ (selectedOption) => { setSelectedCompanyId(selectedOption?.value ?? null); setPage(1); } }
+                        />
+                    </Styled.WhenInAnotherScreenWrapper>
+
+                    <Finder showAddButton={ userInformation?.isSystemRoot ?? false } placeholder="Pesquise um usuário por nome ou e-mail" buttonText="Cadastrar usuário" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } }/>
+                </Styled.WhenInMultiSearchContainer>
             ) }
             { !isLoading && users.length > 0 && (
                 <Fragment>

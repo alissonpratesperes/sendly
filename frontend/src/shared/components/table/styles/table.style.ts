@@ -163,9 +163,9 @@ export const WhenInMultiSearchContainer = styled.div`
     column-gap: 30px;
 
         > ${ WhenInAnotherScreenWrapper } {
-            width: calc(20% - 15px);
+            width: calc(30% - 15px);
         }
         > *:last-child {
-            width: calc(80% - 15px);
+            width: calc(70% - 15px);
         }
 `;

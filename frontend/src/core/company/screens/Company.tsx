@@ -41,7 +41,7 @@ const Company = () => {
         try {
             setIsLoading(true);
 
-            const params: PaginatedQueryDto = { page, limit, search };
+            const params: PaginatedQueryDto = { page, limit, search, };
             const response = await List(params);
 
             setCompanies(response.data);

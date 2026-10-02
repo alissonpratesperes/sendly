@@ -38,9 +38,12 @@ export class UserService {
         );
     }
 
-    private buildUserListWhere(search?: string): Prisma.UserWhereInput {
+    private buildUserListWhere(search?: string, companyId?: number): Prisma.UserWhereInput {
         return {
             DeletedAt: null,
+
+            ...(companyId !== undefined && { CompanyId: companyId, }),
+
             ...(search
                 ? {
                     OR: [
@@ -168,8 +171,8 @@ export class UserService {
         return user;
     }
 
-    async list(page: number = 1, limit: number = 15, search?: string): Promise<PaginatedResponseDto<GetUserResponseDto>> {
-        const where = this.buildUserListWhere(search);
+    async list(page: number = 1, limit: number = 15, search?: string, companyId?: number): Promise<PaginatedResponseDto<GetUserResponseDto>> {
+        const where = this.buildUserListWhere(search, companyId);
         const users = await this.prismaService.client.user.findMany({
             where,
             skip: (page - 1) * limit,

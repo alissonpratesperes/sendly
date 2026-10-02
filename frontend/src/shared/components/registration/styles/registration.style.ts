@@ -44,7 +44,7 @@ export const NavigationTabs = styled.nav`
     justify-content: center;
     column-gap: 15px;
     border-radius: 26px;
-    background-color: #E6E7EC;
+    background-color: #F0F0F5;
 `;
 
 export const NavigationTabButtons = styled.button<{ $active: boolean; $hovered: boolean; $anotherHovered: boolean; }>`
@@ -65,7 +65,7 @@ export const NavigationTabButtons = styled.button<{ $active: boolean; $hovered: 
 
     font-weight: ${ ({ $active, $anotherHovered }) => $active && !$anotherHovered ? 700 : 400 };
     color: ${ ({ $active, $anotherHovered }) => $active && !$anotherHovered ? "#FFFFFF" : "#223463" };
-    background-color: ${ ({ $active, $anotherHovered }) => $active && !$anotherHovered ? "#223463" : "#E6E7EC" };
+    background-color: ${ ({ $active, $anotherHovered }) => $active && !$anotherHovered ? "#223463" : "#F0F0F5" };
 
         &:hover {
             ${ ({ $active }) => !$active && `

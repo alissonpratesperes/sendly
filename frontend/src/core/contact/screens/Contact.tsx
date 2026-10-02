@@ -101,7 +101,7 @@ const Contact = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [ selectedListId, page, limit, search ])
+    }, [ page, limit, search, selectedListId ])
     const handleUpdate = (id: number) => {
         const clicked = contacts.find((contact: ContactResponseDto) => contact.id === id);
 
