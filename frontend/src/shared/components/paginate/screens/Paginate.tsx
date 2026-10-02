@@ -102,7 +102,6 @@ export default function Paginate({ page, total, limit, onPageChange, onLimitChan
                         <Styled.PageButton key={ `page-${ pageNumber }` } $active={ page === pageNumber } onClick={ () => goToPage(pageNumber as number) }> { pageNumber } </Styled.PageButton>
                     )
                 ) }
-
                 { onLimitChange && (
                     <Dropdown
                         width="120px"

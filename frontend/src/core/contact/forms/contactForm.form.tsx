@@ -205,12 +205,13 @@ export const ContactForm: React.FC<FormProps<ContactFormData>> = ({ initialValue
                     value={ optionsForCountries.find((option) => option.value === formData.country) ?? null }
                     onChange={ (selectedOption) => setFormData((previous) => ({ ...previous, country: selectedOption?.value ?? "" })) }
 
-                    formatOptionLabel={(option) => (
+                    formatOptionLabel={ (option) => (
                         <ContactFormStyled.OptionContent>
                             <ContactFormStyled.CountryFlag> { option.flag } </ContactFormStyled.CountryFlag>
+
                             <span> { option.label } </span>
                         </ContactFormStyled.OptionContent>
-                    )}
+                    ) }
                 />
             </Styled.FieldWrapper>
         </Styled.Form>

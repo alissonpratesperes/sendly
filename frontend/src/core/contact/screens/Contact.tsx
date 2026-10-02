@@ -211,14 +211,14 @@ const Contact = () => {
                     <Styled.WhenInAnotherScreenWrapper>
                         <Dropdown
                             inputId="listId"
-                            isInBatchSendScreen={true}
-                            isLoading={isListsLoading}
-                            isSearchable={false}
-                            isClearable={true}
-                            options={optionsForLists}
+                            isInBatchSendScreen={ true }
+                            isLoading={ isListsLoading }
+                            isSearchable={ true }
+                            isClearable={ true }
+                            options={ optionsForLists }
                             placeholder="Filtre por uma lista"
-                            value={selectedListOption}
-                            onChange={(selectedOption) => { setSelectedListId(selectedOption?.value ?? null); setPage(1); }}
+                            value={ selectedListOption }
+                            onChange={ (selectedOption) => { setSelectedListId(selectedOption?.value ?? null); setPage(1); } }
 
                             formatOptionLabel={ (option) => (
                                 <ContactFormStyled.OptionContent>

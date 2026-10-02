@@ -156,9 +156,9 @@ const BatchSend = () => {
                     <Dropdown
                         inputId="batchId"
                         isInBatchSendScreen={ true }
-                        isLoading={isBatchesLoading}
-                        isClearable={true}
-                        options={optionsForBatches}
+                        isLoading={ isBatchesLoading }
+                        isClearable={ true }
+                        options={ optionsForBatches }
                         placeholder="Selecione um lote"
                         value={ optionsForBatches.find((option) => option.value === selectedBatchId) ?? null }
                         onChange={ (selectedOption) => { setSelectedBatchId(selectedOption?.value ?? null); setBatchSends([]); setTotal(0); setPage(1); } }

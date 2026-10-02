@@ -119,6 +119,7 @@ export const ContactImportForm: React.FC<ImportFormProps> = ({ onCancel, onSubmi
                             placeholder="Vincule a uma lista"
                             value={ optionsForLists.find((option) => option.value === listId) ?? null }
                             onChange={ (selectedOption) => setListId(selectedOption?.value ?? 0) }
+
                             formatOptionLabel={ (option) => (
                                 <ContactFormStyled.OptionContent>
                                     <ContactFormStyled.ListColor $color={ option.color }/>
