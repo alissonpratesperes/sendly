@@ -3,7 +3,7 @@ import * as fs from 'fs/promises';
 import { BadRequestException } from '@nestjs/common';
 
 import { ParsedTemplate } from '../interfaces/parsedTemplate.interface';
-import { requireEnvironmentVariable } from '../common/utils/requireEnvironmentVariable.util';
+import { requireEnvironmentVariable } from '../../common/utils/requireEnvironmentVariable.util';
 
 export async function imagePathToContent(content: ParsedTemplate, image?: Express.Multer.File): Promise<ParsedTemplate> {
     const imageBlock = content.body.find(block => block.type === "image");

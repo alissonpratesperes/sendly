@@ -119,19 +119,18 @@ export class BatchSendService {
 
     async listByBatchId(batchId: number, page: number = 1, limit: number = 15): Promise<PaginatedResponseDto<GetBatchSendResponseDto>> {
         const where = this.buildBatchSendListWhere(batchId);
-        const [total, batchSends] = await Promise.all([
-            this.prismaService.client.batchSend.count({
-                where,
-            }),
-            this.prismaService.client.batchSend.findMany({
-                where,
-                skip: (page - 1) * limit,
-                take: limit,
-                orderBy: {
-                    CreatedAt: "desc",
-                },
-            }),
-        ]);
+        const batchSends = await this.prismaService.client.batchSend.findMany({
+            where,
+            skip: (page - 1) * limit,
+            take: limit,
+            orderBy: [
+                { CreatedAt: "desc" },
+                { Id: "desc" },
+            ],
+        });
+        const total = await this.prismaService.client.batchSend.count({
+            where,
+        });
 
         return new PaginatedResponseDto(
             page,

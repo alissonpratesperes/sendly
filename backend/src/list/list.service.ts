@@ -97,19 +97,18 @@ export class ListService {
 
     async list(page: number = 1, limit: number = 15, search?: string, companyId?: number): Promise<PaginatedResponseDto<GetListResponseDto>> {
         const where = this.buildListListWhere(search, companyId);
-        const [total, lists] = await Promise.all([
-            this.prismaService.client.list.count({
-                where,
-            }),
-            this.prismaService.client.list.findMany({
-                where,
-                skip: (page - 1) * limit,
-                take: limit,
-                orderBy: {
-                    CreatedAt: "desc",
-                },
-            }),
-        ]);
+        const lists = await this.prismaService.client.list.findMany({
+            where,
+            skip: (page - 1) * limit,
+            take: limit,
+            orderBy: [
+                { CreatedAt: "desc" },
+                { Id: "desc" },
+            ],
+        });
+        const total = await this.prismaService.client.list.count({
+            where,
+        });
 
         return new PaginatedResponseDto(
             page,

@@ -170,19 +170,18 @@ export class UserService {
 
     async list(page: number = 1, limit: number = 15, search?: string): Promise<PaginatedResponseDto<GetUserResponseDto>> {
         const where = this.buildUserListWhere(search);
-        const [total, users] = await Promise.all([
-            this.prismaService.client.user.count({
-                where,
-            }),
-            this.prismaService.client.user.findMany({
-                where,
-                skip: (page - 1) * limit,
-                take: limit,
-                orderBy: {
-                    CreatedAt: "desc",
-                },
-            }),
-        ]);
+        const users = await this.prismaService.client.user.findMany({
+            where,
+            skip: (page - 1) * limit,
+            take: limit,
+            orderBy: [
+                { CreatedAt: "desc" },
+                { Id: "desc" },
+            ],
+        });
+        const total = await this.prismaService.client.user.count({
+            where,
+        });
 
         return new PaginatedResponseDto(
             page,

@@ -149,19 +149,18 @@ export class ContactService {
 
     async list(page: number = 1, limit: number = 15, search?: string, listId?: number): Promise<PaginatedResponseDto<GetContactResponseDto>> {
         const where = this.buildContactListWhere(search, listId);
-        const [total, contacts] = await Promise.all([
-            this.prismaService.client.contact.count({
-                where,
-            }),
-            this.prismaService.client.contact.findMany({
-                where,
-                skip: (page - 1) * limit,
-                take: limit,
-                orderBy: {
-                    CreatedAt: "desc",
-                },
-            }),
-        ]);
+        const contacts = await this.prismaService.client.contact.findMany({
+            where,
+            skip: (page - 1) * limit,
+            take: limit,
+            orderBy: [
+                { CreatedAt: "desc" },
+                { Id: "desc" },
+            ],
+        });
+        const total = await this.prismaService.client.contact.count({
+            where,
+        });
 
         return new PaginatedResponseDto(
             page,
