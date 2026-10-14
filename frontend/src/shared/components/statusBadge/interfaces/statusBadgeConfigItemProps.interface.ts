@@ -1,4 +1,6 @@
+import { LucideIcon } from 'lucide-react';
+
 export interface StatusBadgeConfigItemProps {
-    label: string;
-    fontColor: string;
+    icon: LucideIcon;
+    iconColor: string;
 }

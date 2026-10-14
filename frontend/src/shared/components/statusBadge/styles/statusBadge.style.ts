@@ -8,10 +8,6 @@ export const StatusBadgeContainer = styled.span<StatusBadgeProps>`
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-    font-family: "Lato";
-    font-weight: 600;
-    font-size: 15px;
-    text-transform: uppercase;
 
-    color: ${ ({ variant }) => STATUS_BADGE_CONFIG[variant].fontColor };
+    color: ${ ({ variant }) => STATUS_BADGE_CONFIG[variant].iconColor };
 `;

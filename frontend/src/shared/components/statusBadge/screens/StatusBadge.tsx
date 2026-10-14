@@ -6,9 +6,10 @@ import { STATUS_BADGE_CONFIG } from '../constants/statusBadgeConfig.constant';
 
 const StatusBadge: React.FC<StatusBadgeProps> = ({ variant }) => {
     const badgeConfig = STATUS_BADGE_CONFIG[variant];
+    const Icon = badgeConfig.icon;
 
     return (
-        <Styled.StatusBadgeContainer variant={ variant }> { badgeConfig.label } </Styled.StatusBadgeContainer>
+        <Styled.StatusBadgeContainer variant={ variant }> <Icon size={ 25 } color={ badgeConfig.iconColor } /> </Styled.StatusBadgeContainer>
     );
 }
 
