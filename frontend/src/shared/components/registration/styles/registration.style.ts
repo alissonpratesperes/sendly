@@ -63,7 +63,7 @@ export const NavigationTabButtons = styled.button<{ $active: boolean; $hovered: 
     background-color: transparent;
     transition: font-weight 0.3s, color 0.3s ease, background-color 0.3s ease;
 
-    font-weight: ${ ({ $active, $anotherHovered }) => $active && !$anotherHovered ? 700 : 400 };
+    font-weight: ${ ({ $active, $anotherHovered }) => $active && !$anotherHovered ? 700 : 500 };
     color: ${ ({ $active, $anotherHovered }) => $active && !$anotherHovered ? "#FFFFFF" : "#223463" };
     background-color: ${ ({ $active, $anotherHovered }) => $active && !$anotherHovered ? "#223463" : "#F0F0F5" };
 

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import * as Styled from '../styles/paginate.style';
 import { PageOption } from '../types/pageOption.type';
@@ -6,6 +6,9 @@ import Dropdown from '../../dropdown/screens/Dropdown';
 import { PaginateParams } from '../types/paginateParams.type';
 
 export default function Paginate({ page, total, limit, onPageChange, onLimitChange, }: PaginateParams) {
+    const [hoveredPage, setHoveredPage] = useState<number | null>(null);
+    const [disableTransition, setDisableTransition] = useState(false);
+
     const pageOptions: PageOption[] = [
         { value: 5, label: "5" },
         { value: 15, label: "15" },
@@ -23,10 +26,14 @@ export default function Paginate({ page, total, limit, onPageChange, onLimitChan
     }, [ page, totalPages, onPageChange ]);
 
     const nextPage = useCallback(() => {
+        setDisableTransition(true);
+        setHoveredPage(null);
         goToPage(page + 1);
     }, [ page, goToPage ]);
 
     const previousPage = useCallback(() => {
+        setDisableTransition(true);
+        setHoveredPage(null);
         goToPage(page - 1);
     }, [ page, goToPage ]);
 
@@ -99,7 +106,7 @@ export default function Paginate({ page, total, limit, onPageChange, onLimitChan
                     pageNumber === "..." ? (
                         <Styled.EllipsisIcon key={ `ellipsis-${ index }` }/>
                     ) : (
-                        <Styled.PageButton key={ `page-${ pageNumber }` } $active={ page === pageNumber } onClick={ () => goToPage(pageNumber as number) }> { pageNumber } </Styled.PageButton>
+                        <Styled.PageButton key={ `page-${ pageNumber }` } $active={ page === pageNumber } $anotherHovered={ hoveredPage !== null && hoveredPage !== pageNumber } $disableTransition={ disableTransition } onMouseEnter={ () => setHoveredPage(pageNumber as number) } onMouseLeave={ () => setHoveredPage(null) } onClick={ () => { setDisableTransition(false); goToPage(pageNumber as number); } }> { pageNumber } </Styled.PageButton>
                     )
                 ) }
                 { onLimitChange && (

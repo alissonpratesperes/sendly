@@ -29,13 +29,13 @@ export const PaginateButton = styled.button`
     outline: none;
     cursor: pointer;
     border-radius: 14px;
-    color: #1C70E9;
+    color: #223463;
     transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
 
         &:hover:not(:disabled) {
             font-weight: 700;
             color: #FFFFFF;
-            background-color: #1C70E9;
+            background-color: #223463;
             animation: paginateButtonEffect 0.6s ease-in-out;
         }
         &:disabled {
@@ -80,18 +80,18 @@ export const PagesArrayContainer = styled.div`
     width: auto;
     display: flex;
     align-items: center;
-    gap: 7.5px;
 `;
 
 export const EllipsisIcon = styled(Ellipsis)`
-    margin-left: 30px;
-    margin-right: 30px;
+    margin-left: 15px;
+    margin-right: 15px;
     height: 25px;
     width: 25px;
-    color: #171719;
+    color: #535862;
+    opacity: 0.5;
 `;
 
-export const PageButton = styled.button<{ $active?: boolean }>`
+export const PageButton = styled.button<{ $active?: boolean; $anotherHovered: boolean; $disableTransition: boolean; }>`
     padding: 15px;
     height: 55px;
     width: 55px;
@@ -103,37 +103,43 @@ export const PageButton = styled.button<{ $active?: boolean }>`
     outline: none;
     cursor: pointer;
     opacity: 1;
-    transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
 
-    font-weight: ${ ({ $active }) => ($active ? 700 : 500) };
     cursor: ${ ({ $active }) => ($active ? "default" : "pointer") };
-    color: ${ ({ $active }) => ($active ? "#FFFFFF" : "#1C70E9") };
-    background: ${ ({ $active }) => ($active ? "#1C70E9" : "transparent") };
+    font-weight: ${ ({ $active, $anotherHovered }) => $active && !$anotherHovered ? 700 : 500 };
+    color: ${ ({ $active, $anotherHovered }) => $active && !$anotherHovered ? "#FFFFFF" : "#223463" };
+    background-color: ${ ({ $active, $anotherHovered }) => $active && !$anotherHovered ? "#223463" : "transparent" };
+    transition: ${ ({ $disableTransition }) => $disableTransition ? "none" : "font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease" };
 
         &:hover {
-            font-weight: 700;
-            color: #FFFFFF;
-            background-color: #1C70E9;
-            animation: paginateButtonEffect 0.6s ease-in-out;
+            animation: none;
         }
 
-            svg {
-                stroke: currentColor;
-            }
-
-                @keyframes paginateButtonEffect {
-                    0% {
-                        transform: scale(1.08);
-                    }
-
-                    50% {
-                        transform: scale(0.95);
-                    }
-
-                    100% {
-                        transform: scale(1);
-                    }
+            ${ ({ $active }) => !$active && `
+                &:hover {
+                    font-weight: 700;
+                    color: #FFFFFF;
+                    background-color: #223463;
+                    animation: paginateButtonEffect 0.6s ease-in-out;
                 }
+            ` }
+
+                svg {
+                    stroke: currentColor;
+                }
+
+                    @keyframes pageButtonEffect {
+                        0% {
+                            transform: scale(1.08);
+                        }
+
+                        50% {
+                            transform: scale(0.95);
+                        }
+
+                        100% {
+                            transform: scale(1);
+                        }
+                    }
 `;
 
 export const NextButtonText = styled.span`
