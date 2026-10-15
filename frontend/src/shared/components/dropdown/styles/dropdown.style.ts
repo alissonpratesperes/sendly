@@ -5,6 +5,7 @@ export const SelectCommonStyles = <Option,>(custom?: { width?: string; isInPagin
         ...base,
 
         marginLeft: custom?.isInPagination ? "30px" : "0px",
+        padding: custom?.isInPagination? "0px 15px" : "0px",
         height: custom?.isInPagination || custom?.isInBatchSendScreen ? "55px" : "60px",
         width: custom?.width || "120px",
         display: "flex",
