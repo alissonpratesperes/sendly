@@ -156,7 +156,9 @@ export const TemplateForm: React.FC<FormProps<TemplateFormData>> = ({ initialVal
                     <Styled.Input id="header" name="header" placeholder="Digite o cabeçalho do template" value={ templateFields.header } onChange={ (event) => handleChange(event, setTemplateFields) } disabled={ disabled }/>
                 </Styled.FieldWrapper>
                 <Styled.FieldWrapper>
-                    <Styled.Textarea id="body" name="body" placeholder="Digite o corpo do template" value={ templateFields.body } onChange={ (event) => handleChange(event, setTemplateFields) } disabled={ disabled }/>
+                    <Styled.TextareaWrapper>
+                        <Styled.Textarea id="body" name="body" placeholder="Digite o corpo do template" value={ templateFields.body } onChange={ (event) => handleChange(event, setTemplateFields) } disabled={ disabled }/>
+                    </Styled.TextareaWrapper>
                 </Styled.FieldWrapper>
                 <Styled.FieldWrapper>
                     <Styled.Label htmlFor="footer"> Rodapé </Styled.Label>

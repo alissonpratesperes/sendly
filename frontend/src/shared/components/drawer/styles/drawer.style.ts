@@ -32,7 +32,7 @@ export const Drawer = styled.div<{ $open: boolean; }>`
     animation: ${ ({ $open }) => $open ? "drawerOpen 0.6s ease-in-out forwards" : "drawerClose 0.6s ease-in-out forwards" };
 
         &::-webkit-scrollbar {
-            width: 8px;
+            width: 10px;
         }
         &::-webkit-scrollbar-track {
             margin-top: 14px;
@@ -238,11 +238,22 @@ export const Input = styled.input`
         }
 `;
 
+export const TextareaWrapper = styled.div`
+    width: 100%;
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+    background-color: #FFFFFF;
+`;
+
 export const Textarea = styled.textarea`
-    padding: 15px 15px 0px 15px;
-    height: 60px;
+    padding: 15px;
     min-height: 120px;
     width: 100%;
+    display: block;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-sizing: border-box;
     font-family: "Lato";
     font-weight: 400;
     font-size: 16px;
@@ -252,11 +263,25 @@ export const Textarea = styled.textarea`
     background-color: #FFFFFF;
     border-radius: 14px;
     resize: vertical;
-    z-index: 1;
 
         &::placeholder {
             color: #BDBDBD;
         }
+
+            &::-webkit-scrollbar {
+                width: 10px;
+            }
+            &::-webkit-scrollbar-track {
+                margin: 14px 0px;
+                background: transparent;
+            }
+            &::-webkit-scrollbar-thumb {
+                background: #C5C5C5;
+                border-radius: 10px;
+            }
+            &::-webkit-scrollbar-thumb:hover {
+                background: #AAAAAA;
+            }
 `;
 
 export const ColorInput = styled.input`
