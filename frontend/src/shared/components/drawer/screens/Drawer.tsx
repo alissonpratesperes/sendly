@@ -37,7 +37,7 @@ export const Drawer: React.FC<DrawerProps> = ({ isOpen, isSubmitting = false, fo
                                         <Styled.FooterButton type="submit" $variant="primary" className="primary" form={ formId }>
                                             { mode === "create" ? <Save size={ 25 }/> : mode === "edit"? <SquarePen size={ 25 }/> : <HardDriveUpload size={ 25 }/> }
 
-                                            <Styled.FooterButtonText> { mode === "create" ? "Cadastrar" : mode === "edit" ? "Atualizar" : "Importar" } </Styled.FooterButtonText>
+                                            <Styled.FooterButtonText> { mode === "create" ? "Salvar" : mode === "edit" ? "Atualizar" : "Importar" } </Styled.FooterButtonText>
                                         </Styled.FooterButton>
                                     </Fragment>
                                 ) }
