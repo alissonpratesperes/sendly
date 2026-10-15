@@ -106,6 +106,8 @@ const BatchSend = () => {
         setIsDrawerOpen(true);
     }
 
+    const hasErrors = batchSends.some((batchSend: BatchSendResponseDto) => !!batchSend.errorMessage?.trim());
+
     useEffect(() => {
         const timeout = setTimeout(() => {
             handleRead();
@@ -168,7 +170,7 @@ const BatchSend = () => {
             { !isLoading && batchSends.length > 0 && (
                 <Fragment>
                     <Table<BatchSendResponseDto>
-                        headers={[ "Contato", "Status", "Tentativas", "Erro", "Agendado em", "Iniciado em", "Completado em", "Criado em", "Editado em" ]}
+                        headers={[ "Contato", "Status", ...(hasErrors ? [ "Erro" ] : []), "Agendamento", "Execução", "Atualização", ]}
                         data={ batchSends }
                         getEntityId={ (batchSend: BatchSendResponseDto) => batchSend.id }
                         onView={ handleViewBatchSend }
@@ -176,13 +178,10 @@ const BatchSend = () => {
                             <Fragment>
                                 <Styled.TableListBodyRowData> { contactsNames[batchSend.contactId]?.name ?? "" } </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> <StatusBadge variant={ batchSend.status }/> </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> { batchSend.attempts } </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> { batchSend.errorMessage ?? "-" } </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> { formatDate(batchSend.scheduledAt, true) } </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> { formatDate(batchSend.startedAt, true) } </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> { formatDate(batchSend.completedAt, true) } </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> { formatDate(batchSend.createdAt, true) } </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> { formatDate(batchSend.updatedAt, true) } </Styled.TableListBodyRowData>
+                                { hasErrors && ( <Styled.TableListBodyRowData> { batchSend.errorMessage?.trim() || "-" } </Styled.TableListBodyRowData> ) }
+                                <Styled.TableListBodyRowData> <i> { formatDate(batchSend.scheduledAt, false) } </i> </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <b> Início: </b> <i> { batchSend.startedAt ? formatDate(batchSend.startedAt, false) : "-" } </i> <br/> <b> Fim: </b> <i> { batchSend.completedAt ? formatDate(batchSend.completedAt, false) : "-" } </i> </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <i> { formatDate(batchSend.updatedAt, false) } </i> </Styled.TableListBodyRowData>
                             </Fragment>
                         ) }
                         canView={ true }

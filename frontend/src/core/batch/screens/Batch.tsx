@@ -185,19 +185,16 @@ const Batch = () => {
             { !isLoading && batches.length > 0 && (
                 <Fragment>
                     <Table<BatchResponseDto>
-                        headers={[ "Nome", "Template", "Iniciado em", "Finalizado em", "Status", "Criado em", "Editado em", ]}
+                        headers={[ "Nome", "Template", "Execução", "Atualização", ]}
                         data={ batches }
                         isInBatchScreen={ true }
                         getEntityId={ (batch: BatchResponseDto) => batch.id }
                         renderEntityRow={ (batch: BatchResponseDto) => (
                             <Fragment>
-                                <Styled.TableListBodyRowData> <Styled.TableListMultiContent> <Styled.TableListColorFragment $color={ listsNames[batch.listId]?.color ?? "" }/> <Styled.ContactNameSpan> <b> { batch.name } </b> </Styled.ContactNameSpan> </Styled.TableListMultiContent> </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <Styled.TableListMultiContent $useSpecificPadding={ true }> <StatusBadge variant={ batch.status }/> <Styled.TableListColorFragment $color={ listsNames[batch.listId]?.color ?? "" }/> <Styled.ContactNameSpan> <b> { batch.name } </b> </Styled.ContactNameSpan> </Styled.TableListMultiContent> </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> { templatesNames[batch.templateId]?.name ?? "" } </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> { batch.startedAt ? formatDate(batch.startedAt, true) : "-" } </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> { batch.endedAt ? formatDate(batch.endedAt, true) : "-" } </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> <StatusBadge variant={ batch.status }/> </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> { formatDate(batch.createdAt, true) } </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> { formatDate(batch.updatedAt, true) } </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <b> Início: </b> <i> { batch.startedAt ? formatDate(batch.startedAt, false) : "-" } </i> <br/> <b> Fim: </b> <i> { batch.endedAt ? formatDate(batch.endedAt, false) : "-" } </i> </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <i> { formatDate(batch.updatedAt, false) } </i> </Styled.TableListBodyRowData>
                             </Fragment>
                         ) }
                         canEdit={ false }

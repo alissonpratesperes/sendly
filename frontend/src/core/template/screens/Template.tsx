@@ -105,7 +105,7 @@ const Template = () => {
             { !isLoading && templates.length > 0 && (
                 <Fragment>
                     <Table<TemplateResponseDto>
-                        headers={[ "Nome", "Criado em", "Editado em", ]}
+                        headers={[ "Nome", "Atualização", ]}
                         data={ templates }
                         getEntityId={ (template: TemplateResponseDto) => template.id }
                         onEdit={ handleUpdate }
@@ -113,8 +113,7 @@ const Template = () => {
                         renderEntityRow={ (template: TemplateResponseDto) => (
                             <Fragment>
                                 <Styled.TableListBodyRowData> <b> { template.name } </b> </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> { formatDate(template.createdAt, true) } </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> { formatDate(template.updatedAt, true) } </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <i> { formatDate(template.updatedAt, false) } </i> </Styled.TableListBodyRowData>
                             </Fragment>
                         ) }
                         canEdit={ true }

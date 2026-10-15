@@ -236,7 +236,7 @@ const Contact = () => {
             { !isLoading && contacts.length > 0 && (
                 <Fragment>
                     <Table<ContactResponseDto>
-                        headers={[ "Nome", "Telefone", "Comunicação", "Criado em", "Editado em", ]}
+                        headers={[ "Nome", "Telefone", "Comunicação", "Atualização", ]}
                         data={ contacts }
                         getEntityId={ (contact: ContactResponseDto) => contact.id }
                         onEdit={ handleUpdate }
@@ -246,8 +246,7 @@ const Contact = () => {
                                 <Styled.TableListBodyRowData> <Styled.TableListMultiContent> <Styled.TableListColorFragment $color={ listsNames[contact.listId]?.color ?? "transparent" }/> <Styled.ContactNameSpan> { contact.name } </Styled.ContactNameSpan> </Styled.TableListMultiContent> </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> <b> { parsePhoneNumberFromString(contact.phone)?.formatNational() } </b> </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> <ToggleSwitch label={ contact.active ? "Active" : "Inactive" } checked={ contact.active } onChange={ (event) => handleActiveCommunication(contact.id, event.target.checked) }/> </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> { formatDate(contact.createdAt, true) } </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> { formatDate(contact.updatedAt, true) } </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <i> { formatDate(contact.updatedAt, false) } </i> </Styled.TableListBodyRowData>
                             </Fragment>
                         ) }
                         canEdit={ true }

@@ -1,4 +1,5 @@
 import { toast } from 'react-toastify';
+import { Pen, Plus } from 'lucide-react';
 import React, { Fragment, useCallback, useEffect, useState } from 'react';
 
 import { CompanyForm } from '../forms/companyForm.form';
@@ -109,7 +110,7 @@ const Company = () => {
             { !isLoading && companies.length > 0 && (
                 <Fragment>
                     <Table<CompanyResponseDto>
-                        headers={[ "Nome", "Documento", "Descrição", "Criada em", "Editada em", ]}
+                        headers={[ "Nome", "Documento", "Descrição", "Atualização", ]}
                         data={ companies }
                         getEntityId={ (company: CompanyResponseDto) => company.id }
                         onEdit={ userInformation?.isSystemRoot ? handleUpdate : undefined }
@@ -119,8 +120,7 @@ const Company = () => {
                                 <Styled.TableListBodyRowData> { company.name } </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> <b> { formatCompanyDocument(company.document) } </b> </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> { company.description } </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> { formatDate(company.createdAt, true) } </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> { formatDate(company.updatedAt, true) } </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <i> { formatDate(company.updatedAt, false) } </i> </Styled.TableListBodyRowData>
                             </Fragment>
                         ) }
                         canEdit={ true }

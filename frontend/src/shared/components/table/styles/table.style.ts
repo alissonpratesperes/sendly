@@ -133,16 +133,16 @@ export const TableListColorFragment = styled.div<TableListColorFragmentProps>`
     background-color: ${ ({ $color }) => $color };
 `;
 
-export const TableListMultiContent = styled.div<{ $isInUsersPage?: boolean }>`
+export const TableListMultiContent = styled.div<{ $useSpecificPadding?: boolean }>`
     min-width: 0;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
 
-    gap: ${ ({ $isInUsersPage }) => ($isInUsersPage ? "0px" : "30px") };
-    ${ ({ $isInUsersPage }) =>
-        $isInUsersPage && `
+    gap: ${ ({ $useSpecificPadding }) => ($useSpecificPadding ? "0px" : "30px") };
+    ${ ({ $useSpecificPadding }) =>
+        $useSpecificPadding && `
             & > :nth-child(1) {
                 margin-right: 7.5px;
             }

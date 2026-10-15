@@ -106,7 +106,7 @@ const Lists = () => {
             { !isLoading && lists.length > 0 && (
                 <Fragment>
                     <Table<ListResponseDto>
-                        headers={[ "Nome", "Assunto", "Criada em", "Editada em", ]}
+                        headers={[ "Nome", "Assunto", "Atualização", ]}
                         data={ lists }
                         getEntityId={ (list: ListResponseDto) => list.id }
                         onEdit={ handleUpdate }
@@ -115,8 +115,7 @@ const Lists = () => {
                             <Fragment>
                                 <Styled.TableListBodyRowData> <Styled.TableListMultiContent> <Styled.TableListColorFragment $color={ list.color }/> <b> { list.name } </b> </Styled.TableListMultiContent> </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> { list.subject } </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> { formatDate(list.createdAt, true) } </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> { formatDate(list.updatedAt, true) } </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <i> { formatDate(list.updatedAt, false) } </i> </Styled.TableListBodyRowData>
                             </Fragment>
                         ) }
                         canEdit={ true }
