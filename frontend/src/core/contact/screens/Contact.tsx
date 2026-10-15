@@ -43,6 +43,7 @@ const Contact = () => {
     const [selectedContactId, setSelectedContactId] = useState<number | null>(null);
     const [listsNames, setListsNames] = useState<Record<number, ListResponseDto>>({});
 
+    const scrollPositionRef = useRef<number>(0);
     const listsNamesRef = useRef<Record<number, ListResponseDto>>({});
 
     const optionsForLists = useMemo(() => {
@@ -144,6 +145,8 @@ const Contact = () => {
         } finally { }
     }
     const handleActiveCommunication = async (id: number, status: boolean) => {
+        scrollPositionRef.current = window.scrollY;
+
         try {
             const contact = contacts.find((contact: ContactResponseDto) => contact.id === id);
 
@@ -154,11 +157,21 @@ const Contact = () => {
             await Update({ id: contact.id }, { active: status });
 
             setContacts((previousContacts: ContactResponseDto[]) => previousContacts.map(contact => (contact.id === id ? { ...contact, active: status } : contact)));
+
+            await handleRead();
+
+            toast.success("Comunicação atualizada com sucesso");
         } catch (error: unknown) {
             toast.error("Não é possível prosseguir com a solicitação");
         } finally { }
     }
 
+    useEffect(() => {
+        window.scrollTo({
+            top: scrollPositionRef.current,
+            behavior: "instant",
+        });
+    }, [ contacts ]);
     useEffect(() => {
         const progressiveListsFetch = async () => {
             try {
