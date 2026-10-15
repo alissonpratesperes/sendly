@@ -113,7 +113,7 @@ const Lists = () => {
                         onDelete={ (id: number) => { setSelectedListId(id); setIsDeleteModalOpen(true); } }
                         renderEntityRow={ (list: ListResponseDto) => (
                             <Fragment>
-                                <Styled.TableListBodyRowData> <Styled.TableListColorContent> <Styled.TableListColorFragment $color={ list.color }/> <b> { list.name } </b> </Styled.TableListColorContent> </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <Styled.TableListMultiContent> <Styled.TableListColorFragment $color={ list.color }/> <b> { list.name } </b> </Styled.TableListMultiContent> </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> { list.subject } </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> { formatDate(list.createdAt, true) } </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> { formatDate(list.updatedAt, true) } </Styled.TableListBodyRowData>

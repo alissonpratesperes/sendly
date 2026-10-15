@@ -133,13 +133,24 @@ export const TableListColorFragment = styled.div<TableListColorFragmentProps>`
     background-color: ${ ({ $color }) => $color };
 `;
 
-export const TableListColorContent = styled.div`
+export const TableListMultiContent = styled.div<{ $isInUsersPage?: boolean }>`
     min-width: 0;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-    gap: 30px;
+
+    gap: ${ ({ $isInUsersPage }) => ($isInUsersPage ? "0px" : "30px") };
+    ${ ({ $isInUsersPage }) =>
+        $isInUsersPage && `
+            & > :nth-child(1) {
+                margin-right: 7.5px;
+            }
+            & > :nth-child(2) {
+                margin-right: 30px;
+            }
+        `
+    }
 `;
 
 export const ContactNameSpan = styled.span`

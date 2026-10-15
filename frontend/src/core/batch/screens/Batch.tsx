@@ -191,7 +191,7 @@ const Batch = () => {
                         getEntityId={ (batch: BatchResponseDto) => batch.id }
                         renderEntityRow={ (batch: BatchResponseDto) => (
                             <Fragment>
-                                <Styled.TableListBodyRowData> <Styled.TableListColorContent> <Styled.TableListColorFragment $color={ listsNames[batch.listId]?.color ?? "" }/> <Styled.ContactNameSpan> <b> { batch.name } </b> </Styled.ContactNameSpan> </Styled.TableListColorContent> </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <Styled.TableListMultiContent> <Styled.TableListColorFragment $color={ listsNames[batch.listId]?.color ?? "" }/> <Styled.ContactNameSpan> <b> { batch.name } </b> </Styled.ContactNameSpan> </Styled.TableListMultiContent> </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> { templatesNames[batch.templateId]?.name ?? "" } </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> { batch.startedAt ? formatDate(batch.startedAt, true) : "-" } </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> { batch.endedAt ? formatDate(batch.endedAt, true) : "-" } </Styled.TableListBodyRowData>

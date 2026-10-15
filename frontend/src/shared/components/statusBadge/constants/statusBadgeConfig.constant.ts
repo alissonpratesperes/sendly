@@ -1,4 +1,4 @@
-import { UserKey, UserCheck, UserShield, User, Flame, Rocket, ChartPie, Bomb, Trophy, RotateCwFadingClock, CheckCheck, AlertTriangle } from 'lucide-react';
+import { UserRoundKey, UserRoundCheck, UserRoundCog, UserRound, Flame, Rocket, ChartPie, Bomb, Trophy, RotateCwFadingClock, CheckCheck, AlertTriangle } from 'lucide-react';
 
 import { UserStatus } from '../../../../core/user/enums/userStatus.enum';
 import { BatchStatus } from '../../../../core/batch/enums/batchStatus.enum';
@@ -7,19 +7,19 @@ import { StatusBadgeConfigItemProps } from '../interfaces/statusBadgeConfigItemP
 
 export const STATUS_BADGE_CONFIG: Record<UserStatus | BatchStatus | BatchSendStatus, StatusBadgeConfigItemProps> = {
     [UserStatus.FIRST_ACCESS]: {
-        icon: UserKey,
+        icon: UserRoundKey,
         iconColor: "#FF6B00",
     },
     [UserStatus.NOT_FIRST_ACCESS]: {
-        icon: UserCheck,
+        icon: UserRoundCheck,
         iconColor: "#10CF67",
     },
     [UserStatus.SYSTEM_ROOT]: {
-        icon: UserShield,
+        icon: UserRoundCog,
         iconColor: "#6941C6",
     },
     [UserStatus.NOT_SYSTEM_ROOT]: {
-        icon: User,
+        icon: UserRound,
         iconColor: "#1C70E9",
     },
 

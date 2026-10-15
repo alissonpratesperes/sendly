@@ -173,17 +173,15 @@ const User = () => {
             { !isLoading && users.length > 0 && (
                 <Fragment>
                     <Table<UserResponseDto>
-                        headers={[ "Nome", "E-mail", "Status", "Acesso", "Criado em", "Editado em", ]}
+                        headers={[ "Nome", "E-mail", "Criado em", "Editado em", ]}
                         data={ users }
                         getEntityId={ (user: UserResponseDto) => user.id }
                         onEdit={ userInformation?.isSystemRoot ? handleUpdate : undefined }
                         onDelete={ userInformation?.isSystemRoot ? (id: number) => { setSelectedUserId(id); setIsDeleteModalOpen(true); } : undefined }
                         renderEntityRow={ (user: UserResponseDto) => (
                             <Fragment>
-                                <Styled.TableListBodyRowData> { user.name } </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <Styled.TableListMultiContent $isInUsersPage={ true }> <StatusBadge variant={ user.isFirstAccess ? UserStatus.FIRST_ACCESS : UserStatus.NOT_FIRST_ACCESS }/> <StatusBadge variant={ user.isSystemRoot ? UserStatus.SYSTEM_ROOT : UserStatus.NOT_SYSTEM_ROOT }/> { user.name } </Styled.TableListMultiContent> </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> <b> { user.email } </b> </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> <StatusBadge variant={ user.isFirstAccess ? UserStatus.FIRST_ACCESS : UserStatus.NOT_FIRST_ACCESS }/> </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> <StatusBadge variant={ user.isSystemRoot ? UserStatus.SYSTEM_ROOT : UserStatus.NOT_SYSTEM_ROOT }/> </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> { formatDate(user.createdAt, true) } </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> { formatDate(user.updatedAt, true) } </Styled.TableListBodyRowData>
                             </Fragment>
