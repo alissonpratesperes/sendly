@@ -101,7 +101,7 @@ const Lists = () => {
                 <LoadingState/>
             ) }
             { !isLoading && (
-                <Finder showAddButton={ true } placeholder="Pesquise uma lista por nome ou assunto" buttonText="Cadastrar lista" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } }/>
+                <Finder showAddButton={ true } placeholder="Pesquise uma lista por nome ou assunto" buttonText="Cadastrar" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } }/>
             ) }
             { !isLoading && lists.length > 0 && (
                 <Fragment>

@@ -100,7 +100,7 @@ const Template = () => {
                 <LoadingState/>
             ) }
             { !isLoading && (
-                <Finder showAddButton={ true } placeholder="Pesquise um template por nome" buttonText="Cadastrar template" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } }/>
+                <Finder showAddButton={ true } placeholder="Pesquise um template por nome" buttonText="Cadastrar" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } }/>
             ) }
             { !isLoading && templates.length > 0 && (
                 <Fragment>

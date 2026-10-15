@@ -104,7 +104,7 @@ const Company = () => {
                 <LoadingState/>
             ) }
             { !isLoading && (
-                <Finder showAddButton={ userInformation?.isSystemRoot ?? false } placeholder="Pesquise uma empresa por nome ou cnpj" buttonText="Cadastrar empresa" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } }/>
+                <Finder showAddButton={ userInformation?.isSystemRoot ?? false } placeholder="Pesquise uma empresa por nome ou cnpj" buttonText="Cadastrar" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } }/>
             ) }
             { !isLoading && companies.length > 0 && (
                 <Fragment>

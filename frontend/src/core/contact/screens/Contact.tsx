@@ -230,7 +230,7 @@ const Contact = () => {
                         />
                     </Styled.WhenInAnotherScreenWrapper>
 
-                    <Finder showImportButton={ true } importButtonText="Importar contatos" showAddButton={ true } placeholder="Pesquise um contato por nome ou telefone" buttonText="Cadastrar contato" search={ search } onAdd={ handleCreate } onImport={ handleImport } onSearchChange={ (value) => { setSearch(value); setPage(1); } }/>
+                    <Finder showImportButton={ true } importButtonText="Importar" showAddButton={ true } placeholder="Pesquise um contato por nome ou telefone" buttonText="Cadastrar" search={ search } onAdd={ handleCreate } onImport={ handleImport } onSearchChange={ (value) => { setSearch(value); setPage(1); } }/>
                </Styled.WhenInMultiSearchContainer>
             ) }
             { !isLoading && contacts.length > 0 && (

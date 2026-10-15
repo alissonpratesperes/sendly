@@ -167,7 +167,7 @@ const User = () => {
                         />
                     </Styled.WhenInAnotherScreenWrapper>
 
-                    <Finder showAddButton={ userInformation?.isSystemRoot ?? false } placeholder="Pesquise um usuário por nome ou e-mail" buttonText="Cadastrar usuário" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } }/>
+                    <Finder showAddButton={ userInformation?.isSystemRoot ?? false } placeholder="Pesquise um usuário por nome ou e-mail" buttonText="Cadastrar" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } }/>
                 </Styled.WhenInMultiSearchContainer>
             ) }
             { !isLoading && users.length > 0 && (

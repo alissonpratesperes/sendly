@@ -179,7 +179,7 @@ const Batch = () => {
                         />
                     </Styled.WhenInAnotherScreenWrapper>
 
-                    <Finder showAddButton={ true } placeholder="Pesquise um lote por nome" buttonText="Cadastrar lote" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } }/>
+                    <Finder showAddButton={ true } placeholder="Pesquise um lote por nome" buttonText="Cadastrar" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } }/>
                 </Styled.WhenInMultiSearchContainer>
             ) }
             { !isLoading && batches.length > 0 && (
