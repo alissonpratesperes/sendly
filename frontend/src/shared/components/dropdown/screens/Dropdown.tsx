@@ -1,4 +1,5 @@
-import Select from 'react-select';
+import { Funnel } from 'lucide-react';
+import Select, { components, type ControlProps } from 'react-select';
 
 import { SelectCommonStyles } from '../styles/dropdown.style';
 import { DropdownProps } from '../interfaces/dropdownProps.interface';
@@ -8,13 +9,21 @@ export default function Dropdown<Option>({
     isInPagination,
     isInBatchSendScreen,
     onChange,
-    components,
+    components: customComponents,
     menuPosition = "fixed",
     closeMenuOnSelect = true,
     hideSelectedOptions = false,
     menuPortalTarget = document.body,
     ...props
 }: DropdownProps<Option>) {
+    const CustomControl = (controlProps: ControlProps<Option, false>) => (
+        <components.Control { ...controlProps }>
+            <Funnel size={ 25 } color="#1C70E9" style={{ marginLeft: 15, flexShrink: 0 }} />
+
+            { controlProps.children }
+        </components.Control>
+    );
+
     return (
         <Select<Option, false>
             { ...props }
@@ -25,7 +34,7 @@ export default function Dropdown<Option>({
             hideSelectedOptions={ hideSelectedOptions }
             menuPortalTarget={ menuPortalTarget }
             styles={ SelectCommonStyles({ width, isInPagination, isInBatchSendScreen, }) }
-            components={ { IndicatorSeparator: () => null, ...components, } }
+            components={{ ...customComponents, IndicatorSeparator: () => null, Control: CustomControl, }}
         />
     );
 }
