@@ -1,4 +1,4 @@
-import { ShieldCheck     ,     User, UserCheck, UserKey, UserShield, ChartPie, Trophy, Flame, Rocket, Bomb } from 'lucide-react';
+import { UserKey, UserCheck, UserShield, User, Flame, Rocket, ChartPie, Bomb, Trophy, RotateCwFadingClock, CheckCheck, AlertTriangle } from 'lucide-react';
 
 import { UserStatus } from '../../../../core/user/enums/userStatus.enum';
 import { BatchStatus } from '../../../../core/batch/enums/batchStatus.enum';
@@ -45,19 +45,19 @@ export const STATUS_BADGE_CONFIG: Record<UserStatus | BatchStatus | BatchSendSta
     },
 
     [BatchSendStatus.WAITING]: {
-        icon: ShieldCheck,
+        icon: RotateCwFadingClock,
         iconColor: "#FF6B00",
     },
     [BatchSendStatus.PROCESSING]: {
-        icon: ShieldCheck,
+        icon: Rocket,
         iconColor: "#1C70E9",
     },
     [BatchSendStatus.SENT]: {
-        icon: ShieldCheck,
+        icon: CheckCheck,
         iconColor: "#10CF67",
     },
     [BatchSendStatus.ERROR]: {
-        icon: ShieldCheck,
+        icon: AlertTriangle,
         iconColor: "#DC143C",
     },
 }
