@@ -80,6 +80,7 @@ export const PagesArrayContainer = styled.div`
     width: auto;
     display: flex;
     align-items: center;
+    column-gap: 7.5px;
 `;
 
 export const EllipsisIcon = styled(Ellipsis)`

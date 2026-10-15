@@ -1,5 +1,5 @@
 import React from 'react';
-import { Info, SquarePen, Trash } from 'lucide-react';
+import { MessageSquareMore, SquarePen, Trash } from 'lucide-react';
 
 import * as Styled from '../styles/table.style';
 import { TableProps } from '../interfaces/tableProps.interface';
@@ -31,7 +31,7 @@ export const Table = <T,>({ headers, data, isInBatchScreen, getEntityId, onView,
                                             { (shouldShowView || shouldShowEdit || shouldShowDelete) && (
                                                 <Styled.TableListBodyRowDataActions>
                                                     { shouldShowView && (
-                                                        <Styled.TableListBodyRowDataActionButton type="button" onClick={ () => onView?.(id) }> <Info size={ 25 } /> </Styled.TableListBodyRowDataActionButton>
+                                                        <Styled.TableListBodyRowDataActionButton type="button" onClick={ () => onView?.(id) }> <MessageSquareMore size={ 25 } /> </Styled.TableListBodyRowDataActionButton>
                                                     ) }
                                                     { shouldShowEdit && (
                                                         <Styled.TableListBodyRowDataActionButton type="button" onClick={ () => onEdit?.(id) }> <SquarePen size={ 25 } /> </Styled.TableListBodyRowDataActionButton>

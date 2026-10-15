@@ -62,6 +62,14 @@ export const SearchInputField = styled.input`
         }
 `;
 
+export const SearchButtonsContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0px;
+    flex-shrink: 0;
+`;
+
 export const AddButton = styled.button`
     padding: 15px;
     height: auto;
@@ -72,12 +80,11 @@ export const AddButton = styled.button`
     font-family: "Lato";
     font-weight: 700;
     font-size: 16px;
-    color: #238636;
     border: none;
     outline: none;
-    border-radius: 14px;
-    background-color: transparent;
     cursor: pointer;
+    color: #238636;
+    background-color: #E6F4EA;
     transition: color 0.3s ease, background-color 0.3s ease;
 
         &:hover {
@@ -86,23 +93,35 @@ export const AddButton = styled.button`
             animation: addButtonEffect 0.6s ease-in-out;
         }
 
-            svg {
-                stroke: currentColor;
+            &:first-child {
+                border-top-left-radius: 14px;
+                border-bottom-left-radius: 14px;
+            }
+            &:last-child {
+                border-top-right-radius: 14px;
+                border-bottom-right-radius: 14px;
+            }
+            &:only-child {
+                border-radius: 14px;
             }
 
-                @keyframes addButtonEffect {
-                    0% {
-                        transform: scale(1.08);
-                    }
-
-                    50% {
-                        transform: scale(0.95);
-                    }
-
-                    100% {
-                        transform: scale(1);
-                    }
+                svg {
+                    stroke: currentColor;
                 }
+
+                    @keyframes addButtonEffect {
+                        0% {
+                            transform: scale(1.08);
+                        }
+
+                        50% {
+                            transform: scale(0.95);
+                        }
+
+                        100% {
+                            transform: scale(1);
+                        }
+                    }
 `;
 
 export const SearchInputSubmitText = styled.span`

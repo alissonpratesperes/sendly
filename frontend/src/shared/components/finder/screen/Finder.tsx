@@ -13,20 +13,22 @@ export const Finder: React.FC<FinderProps> = ({ showImportButton = false, import
                 <Styled.SearchInputField type="text" placeholder={ placeholder } value={ search } onChange={ (event) => onSearchChange(event.target.value) }/>
             </Styled.SearchInputContainer>
 
-            { showImportButton && (
-                <Styled.AddButton type="button" onClick={ onImport }>
-                    <DatabaseArrowUp size={ 25 }/>
+            <Styled.SearchButtonsContainer>
+                { showImportButton && (
+                    <Styled.AddButton type="button" onClick={ onImport }>
+                        <DatabaseArrowUp size={ 25 }/>
 
-                    <Styled.SearchInputSubmitText> { importButtonText } </Styled.SearchInputSubmitText>
-                </Styled.AddButton>
-            ) }
-            { showAddButton && (
-                <Styled.AddButton type="button" onClick={ onAdd }>
-                    <DatabasePlus size={ 25 }/>
+                        <Styled.SearchInputSubmitText> { importButtonText } </Styled.SearchInputSubmitText>
+                    </Styled.AddButton>
+                ) }
+                { showAddButton && (
+                    <Styled.AddButton type="button" onClick={ onAdd }>
+                        <DatabasePlus size={ 25 }/>
 
-                    <Styled.SearchInputSubmitText> { buttonText } </Styled.SearchInputSubmitText>
-                </Styled.AddButton>
-            ) }
+                        <Styled.SearchInputSubmitText> { buttonText } </Styled.SearchInputSubmitText>
+                    </Styled.AddButton>
+                ) }
+            </Styled.SearchButtonsContainer>
         </Styled.SearchInputWrapper>
     );
 }
