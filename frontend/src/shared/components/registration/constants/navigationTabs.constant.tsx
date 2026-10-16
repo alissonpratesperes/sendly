@@ -1,4 +1,4 @@
-import { Building2, ContactRound, Layers, List, MessageSquareText, Send, UsersRound } from 'lucide-react';
+import { Building2, Megaphone, Layers, List, MessageSquareText, Send, UsersRound } from 'lucide-react';
 
 import { NavigationTab } from '../types/navigationTab.type';
 
@@ -19,7 +19,7 @@ export const navigationTabs = [
         path: "list",
     },
     {
-        icon: <ContactRound size={ 25 }/>,
+        icon: <Megaphone size={ 25 }/>,
         label: "Contatos",
         path: "contact",
     },

@@ -181,7 +181,7 @@ const User = () => {
                         renderEntityRow={ (user: UserResponseDto) => (
                             <Fragment>
                                 <Styled.TableListBodyRowData> <Styled.TableListMultiContent $useSpecificPadding={ true }> <StatusBadge variant={ user.isFirstAccess ? UserStatus.FIRST_ACCESS : UserStatus.NOT_FIRST_ACCESS }/> <StatusBadge variant={ user.isSystemRoot ? UserStatus.SYSTEM_ROOT : UserStatus.NOT_SYSTEM_ROOT }/> { user.name } </Styled.TableListMultiContent> </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> <b> { user.email } </b> </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <Styled.UniqueKeyDestak> { user.email } </Styled.UniqueKeyDestak> </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> <i> { formatDate(user.updatedAt, false) } </i> </Styled.TableListBodyRowData>
                             </Fragment>
                         ) }

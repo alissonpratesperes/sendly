@@ -23,7 +23,7 @@ export const Slider = styled.div<ToggleSwitchProps>`
     border-radius: 9999px;
     transition: background-color 0.6s ease-in-out;
 
-    background-color: ${ ({ $checked }) => ($checked ? "#1C70E9" : "#D1D5DB") };
+    background-color: ${ ({ $checked }) => ($checked ? "#FF6B00" : "#D1D5DB") };
 `;
 
 export const SliderCircle = styled.div<ToggleSwitchProps>`

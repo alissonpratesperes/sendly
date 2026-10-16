@@ -112,7 +112,7 @@ const Template = () => {
                         onDelete={ (id: number) => { setSelectedTemplateId(id); setIsDeleteModalOpen(true); } }
                         renderEntityRow={ (template: TemplateResponseDto) => (
                             <Fragment>
-                                <Styled.TableListBodyRowData> <b> { template.name } </b> </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <Styled.UniqueKeyDestak> { template.name } </Styled.UniqueKeyDestak> </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> <i> { formatDate(template.updatedAt, false) } </i> </Styled.TableListBodyRowData>
                             </Fragment>
                         ) }

@@ -118,7 +118,7 @@ const Company = () => {
                         renderEntityRow={ (company: CompanyResponseDto) => (
                             <Fragment>
                                 <Styled.TableListBodyRowData> { company.name } </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> <b> { formatCompanyDocument(company.document) } </b> </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <Styled.UniqueKeyDestak> { formatCompanyDocument(company.document) } </Styled.UniqueKeyDestak> </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> { company.description } </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> <i> { formatDate(company.updatedAt, false) } </i> </Styled.TableListBodyRowData>
                             </Fragment>

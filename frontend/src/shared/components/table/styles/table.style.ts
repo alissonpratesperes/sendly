@@ -55,9 +55,8 @@ export const TableListBodyRowDataActions = styled.div`
 export const TableListBodyRow = styled.tr`
     height: 85px;
     display: table-row;
-    border-radius: 14px;
     background-color: #FFFFFF;
-    clip-path: inset(0 round 14px);
+    clip-path: inset(0 round 26px);
 `;
 
 export const TableListBodyRowDataActionButton = styled.button`
@@ -179,4 +178,13 @@ export const WhenInMultiSearchContainer = styled.div`
         > *:last-child {
             width: calc(70% - 15px);
         }
+`;
+
+export const UniqueKeyDestak = styled.span`
+    padding: 7.5px;
+    font-family: "Inter";
+    font-weight: 700;
+    color: #1C70E9;
+    border-radius: 7.5px;
+    background-color: #D3D2D9;
 `;

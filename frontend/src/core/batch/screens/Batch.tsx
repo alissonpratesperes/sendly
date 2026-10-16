@@ -191,7 +191,7 @@ const Batch = () => {
                         getEntityId={ (batch: BatchResponseDto) => batch.id }
                         renderEntityRow={ (batch: BatchResponseDto) => (
                             <Fragment>
-                                <Styled.TableListBodyRowData> <Styled.TableListMultiContent $useSpecificPadding={ true }> <StatusBadge variant={ batch.status }/> <Styled.TableListColorFragment $color={ listsNames[batch.listId]?.color ?? "" }/> <Styled.ContactNameSpan> <b> { batch.name } </b> </Styled.ContactNameSpan> </Styled.TableListMultiContent> </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <Styled.TableListMultiContent $useSpecificPadding={ true }> <StatusBadge variant={ batch.status }/> <Styled.TableListColorFragment $color={ listsNames[batch.listId]?.color ?? "" }/> <Styled.ContactNameSpan> <Styled.UniqueKeyDestak> { batch.name } </Styled.UniqueKeyDestak> </Styled.ContactNameSpan> </Styled.TableListMultiContent> </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> { templatesNames[batch.templateId]?.name ?? "" } </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> <b> Início: </b> <i> { batch.startedAt ? formatDate(batch.startedAt, false) : "-" } </i> <br/> <b> Fim: </b> <i> { batch.endedAt ? formatDate(batch.endedAt, false) : "-" } </i> </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> <i> { formatDate(batch.updatedAt, false) } </i> </Styled.TableListBodyRowData>
