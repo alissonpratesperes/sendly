@@ -90,3 +90,36 @@ A **sendly** é uma Aplicação desenvolvida para o gerenciamento de _listas de 
 _O sistema transforma um processo de disparos de marketing via WhatsApp, antes totalmente manual, em uma operação centralizada e automatizada. Por meio do cadastro ou da importação em massa de contatos, da organização em listas de distribuição e do uso de templates personalizados, a plataforma permite configurar campanhas cujos lotes de envio são processados automaticamente em segundo plano, sem a necessidade de acompanhamento individual de cada disparo._
 
 _Além de reduzir tarefas manuais e repetitivas, a solução oferece recursos de monitoramento, registro de ocorrências e retentativas automáticas, facilitando o diagnóstico de falhas e o controle operacional. Dessa forma, contribui para aumentar a eficiência operacional e estabelece uma base tecnológica preparada para escalar as operações de comunicação e marketing._
+
+## EXECUTE
+
+    - Instalar o NodeJS para a execução da aplicação
+    - Instalar o Docker para a execução dos containers
+    - Clonar esse repositório
+
+    Preparando o Docker para os containers dos Bancos de Dados
+
+    >_ Docker
+      |- Executar o Comando: "docker pull mysql:latest" para baixar a Imagem do Banco de Dados MYSQL
+      |- Executar o Comando: "docker network create sendly_databases_network" para criar a Rede interna, porque serão utilizados dois Bancos de Dados
+      |- Executar o Comando: "docker volume create sendly_mysql_data" para criar o Volume do primeiro Banco de Dados
+      |- Executar o Comando: "docker run -d --name sendly_mysql_database --network sendly_databases_network -p 3306:3306 -e 'MYSQL_ROOT_PASSWORD=<SENHA>' -v sendly_mysql_data:/var/lib/mysql mysql:latest" para criar o Container do primeiro Banco de Dados
+      |- Executar o Comando: "docker volume create sendly_redis_data" para criar o Volume do segundo Banco de Dados
+      |- Executar o Comando: "docker run -d --name sendly_redis_database --network sendly_databases_network -p 6379:6379 -v sendly_redis_data:/data redis:7-alpine redis-server --requirepass '<SENHA>'" para criar o Container do segundo Banco de Dados
+      |- Executar o Comando: "CREATE DATABASE sendly" dentro de um cliente MySQL para criar o primeiro Banco de Dados
+      >_ Executar o Script SQL: acessar "./backend/scripts/Database.sql" e implementar o esquema no primeiro Banco de Dados
+
+    Preparando e executando a Aplicação
+
+    >_ Acessar o Back-End: "./backend"
+      |- Criar a Variável de Ambiente: ".env" e preencher os dados utilizando o arquivo ".env.example" como modelo
+      |- Executar o Comando: "npm install --force" para instalar as dependências
+      |- Executar o Comando: "npm run prisma:introspect" para introspectar o esquema do primeiro Banco de Dados
+      |- Executar o Comando: "npm run prisma:generate" para criar o Client do Prisma ORM
+      |- Executar o Comando: "npm run prisma:seed" para gerar o Usuário Root que nascerá na primeira execução
+      >_ Executar o Comando: "npm run start:dev" para iniciar o Back-End
+
+    >_ Acessar o Front-End: "./frontend"
+      |- Criar a Variável de Ambiente: ".env" e preencher os dados utilizando o arquivo ".env.example" como modelo
+      |- Executar o Comando: "npm install --force" para instalar as dependências
+      >_ Executar o Comando: "npm run start" para iniciar o Front-End
