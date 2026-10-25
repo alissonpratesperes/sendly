@@ -123,3 +123,11 @@ _Além de reduzir tarefas manuais e repetitivas, a solução oferece recursos de
       |- Criar a Variável de Ambiente: ".env" e preencher os dados utilizando o arquivo ".env.example" como modelo
       |- Executar o Comando: "npm install --force" para instalar as dependências
       >_ Executar o Comando: "npm run start" para iniciar o Front-End
+
+## LICENÇA
+
+Esse projeto está sob a **Licença MIT** veja o arquivo [LICENSE](https://github.com/alissonpratesperes/sendly/blob/main/LICENSE) para mais detalhes
+
+---
+
+<p align="center">👨🏻‍💻&nbsp;with&nbsp;❤️</p>
