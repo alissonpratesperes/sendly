@@ -126,7 +126,7 @@ _Além de reduzir tarefas manuais e repetitivas, a solução oferece recursos de
 
 ## LICENÇA
 
-Esse projeto está sob a **Licença MIT** veja o arquivo [LICENSE](https://github.com/alissonpratesperes/sendly/blob/main/LICENSE.md) para mais detalhes
+Esse projeto está sob a **Licença MIT** veja o arquivo [LICENSE](./LICENSE.md) para mais detalhes
 
 ---
 
