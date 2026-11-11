@@ -7,7 +7,7 @@ import { EmptyStateProps } from '../interfaces/emptyStateProps.interface';
 export const EmptyState: React.FC<EmptyStateProps> = ({ message = "Nenhum registro encontrado" }) => {
     return (
         <Styled.EmptyStateContainer>
-            <DatabaseSearch size={ 55 } color="#1C70E9" />
+            <DatabaseSearch size={ 55 } color="#FF6B00" />
 
             <Styled.EmptyStateText> { message || "Nenhum registro encontrado" } </Styled.EmptyStateText>
         </Styled.EmptyStateContainer>

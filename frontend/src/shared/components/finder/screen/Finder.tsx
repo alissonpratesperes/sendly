@@ -8,7 +8,7 @@ export const Finder: React.FC<FinderProps> = ({ showImportButton = false, import
     return (
         <Styled.SearchInputWrapper>
             <Styled.SearchInputContainer>
-                <Search size={ 25 } color="#1C70E9" />
+                <Search size={ 25 } color="#FF6B00" />
 
                 <Styled.SearchInputField type="text" placeholder={ placeholder } value={ search } onChange={ (event) => onSearchChange(event.target.value) }/>
             </Styled.SearchInputContainer>

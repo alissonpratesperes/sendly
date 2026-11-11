@@ -69,14 +69,12 @@ export const SelectCommonStyles = <Option,>(custom?: { width?: string; isInPagin
         borderRadius: "14px",
         cursor: "pointer",
 
-        fontWeight: state.isFocused ? 900 : 500,
-        color: state.isFocused ? "#FFFFFF" : "#1C70E9",
-        backgroundColor: state.isFocused ? "#1C70E9" : "transparent",
+        color: state.isFocused ? custom?.isInPagination ? "#FFFFFF" : "#FF6B00" : "#171719",
+        backgroundColor: state.isFocused ? custom?.isInPagination ? "#223463" : "rgba(255, 107, 0, 0.25)" : "transparent",
 
             "&:active": {
-                fontWeight: 700,
-                color: "#FFFFFF",
-                backgroundColor: "#1C70E9",
+                color: custom?.isInPagination ? "#FFFFFF" : "#FF6B00",
+                backgroundColor: custom?.isInPagination ? "#223463" : "rgba(255, 107, 0, 0.25)",
             },
     }),
     singleValue: (base: CSSObjectWithLabel) => ({
