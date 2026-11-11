@@ -25,7 +25,7 @@ export const TableListHeaderRowColumn = styled.th`
     font-family: "Lato";
     font-weight: 900;
     font-size: 14px;
-    color: #223463;
+    color: #171719;
     text-align: left;
 `;
 

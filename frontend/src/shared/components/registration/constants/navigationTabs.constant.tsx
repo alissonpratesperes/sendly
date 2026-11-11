@@ -1,4 +1,4 @@
-import { Building2, Megaphone, Layers, List, MessageSquareText, Send, UsersRound } from 'lucide-react';
+import { Building2, Megaphone, Layers, List, MessageSquareText, Rocket, UsersRound } from 'lucide-react';
 
 import { NavigationTab } from '../types/navigationTab.type';
 
@@ -34,7 +34,7 @@ export const navigationTabs = [
         path: "batch",
     },
     {
-        icon: <Send size={ 25 }/>,
+        icon: <Rocket size={ 25 }/>,
         label: "Envios",
         path: "send",
     },
