@@ -184,7 +184,11 @@ export const UniqueKeyDestak = styled.span`
     padding: 7.5px;
     font-family: "Inter";
     font-weight: 700;
-    color: #1C70E9;
+    color: #223463;
     border-radius: 7.5px;
-    background-color: #D3D2D9;
+    background-color: #E8EEF8;
+`;
+
+export const TimeStampDestak = styled.span`
+    font-family: "Orbitron";
 `;

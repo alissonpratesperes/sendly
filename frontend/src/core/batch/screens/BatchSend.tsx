@@ -179,9 +179,9 @@ const BatchSend = () => {
                                 <Styled.TableListBodyRowData> { contactsNames[batchSend.contactId]?.name ?? "" } </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> <StatusBadge variant={ batchSend.status }/> </Styled.TableListBodyRowData>
                                 { hasErrors && ( <Styled.TableListBodyRowData> { batchSend.errorMessage?.trim() || "-" } </Styled.TableListBodyRowData> ) }
-                                <Styled.TableListBodyRowData> <i> { formatDate(batchSend.scheduledAt, false) } </i> </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> <b> Início: </b> <i> { batchSend.startedAt ? formatDate(batchSend.startedAt, false) : "-" } </i> <br/> <b> Fim: </b> <i> { batchSend.completedAt ? formatDate(batchSend.completedAt, false) : "-" } </i> </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> <i> { formatDate(batchSend.updatedAt, false) } </i> </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <Styled.TimeStampDestak> { formatDate(batchSend.scheduledAt, false) } </Styled.TimeStampDestak> </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <b> Início: </b> <Styled.TimeStampDestak> { batchSend.startedAt ? formatDate(batchSend.startedAt, false) : "-" } </Styled.TimeStampDestak> <br/> <b> Fim: </b> <Styled.TimeStampDestak> { batchSend.completedAt ? formatDate(batchSend.completedAt, false) : "-" } </Styled.TimeStampDestak> </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <Styled.TimeStampDestak> { formatDate(batchSend.updatedAt, false) } </Styled.TimeStampDestak> </Styled.TableListBodyRowData>
                             </Fragment>
                         ) }
                         canView={ true }

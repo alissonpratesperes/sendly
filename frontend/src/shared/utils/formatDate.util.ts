@@ -12,7 +12,7 @@ export const formatDate = (date: string | null | undefined, multiline: boolean =
     const datePart = parsedDate.toLocaleDateString("pt-BR", {
         day: "2-digit",
         month: "2-digit",
-        year: "numeric",
+        year: "2-digit",
     });
     const timePart = parsedDate.toLocaleTimeString("pt-BR", {
         hour: "2-digit",

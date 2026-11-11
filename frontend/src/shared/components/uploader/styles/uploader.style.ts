@@ -23,9 +23,9 @@ export const DropzoneArea = styled.div<DropzoneProps>`
 
     border: ${ ({ $backgroundImage }) => $backgroundImage ? "none" : "2px dashed #D3D2D9" };
     background-image: ${ ({ $backgroundImage }) => $backgroundImage ? `url("${ $backgroundImage }")` : "none" };
-    ${ ({ $isDragActive, $backgroundImage }) => $isDragActive && !$backgroundImage && `border: 2px dashed #1C70E9;` }
-    ${ ({ $isDragActive }) => $isDragActive && `background-color: rgba(28, 112, 233, 0.03); border: 2px dashed #1C70E9;` };
-    ${ ({ $backgroundImage }) => !$backgroundImage && `&:hover { border-color: #1C70E9; background-color: rgba(28, 112, 233, 0.04); }` }
+    ${ ({ $isDragActive, $backgroundImage }) => $isDragActive && !$backgroundImage && `border: 2px dashed #223463;` }
+    ${ ({ $isDragActive }) => $isDragActive && `background-color: #E8EEF8; border: 2px dashed #223463;` };
+    ${ ({ $backgroundImage }) => !$backgroundImage && `&:hover { border-color: #223463; background-color: #E8EEF8; }` }
 `;
 
 export const DropzoneTextContainer = styled.div`
@@ -46,7 +46,7 @@ export const DropzoneUploadIcon = styled.div`
     border-radius: 50%;
 
         svg {
-            color: #1C70E9;
+            color: #223463;
         }
 `;
 
@@ -62,7 +62,7 @@ export const DropzoneLabel = styled.h5`
     font-family: "Lato";
     font-weight: 500;
     font-size: 14px;
-    color: #1C70E9;
+    color: #223463;
 `;
 
 export const DropzoneActiveText = styled.p`
@@ -103,7 +103,7 @@ export const DraggedFileIcon = styled.div`
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    color: #1C70E9;
+    color: #223463;
 `;
 
 export const DraggedFileData = styled.div`
@@ -133,7 +133,7 @@ export const DraggedFileSize = styled.span`
     font-family: "Lato";
     font-weight: 900;
     font-size: 14px;
-    color: #1C70E9;
+    color: #223463;
 `;
 
 export const DraggedFilesActionsContainer = styled.div`
@@ -154,15 +154,15 @@ export const DraggedFilesActionButton = styled.button`
     border: none;
     outline: none;
     cursor: pointer;
-    color: #1C70E9;
-    background-color: #D3D2D9;
+    color: #FF6B00;
+    background-color: rgba(255, 107, 0, 0.25);
     border-radius: 50%;
     cursor: pointer;
     transition: color 0.3s ease, background-color 0.3s ease;
 
         &:hover {
-            color: #FFFFFF;
-            background: #1C70E9;
+            color: #FF6B00;
+            background: rgba(255, 107, 0, 0.25);
             animation: uploaderButtonsEffect 0.6s ease-in-out;
         }
 

@@ -113,7 +113,7 @@ const Template = () => {
                         renderEntityRow={ (template: TemplateResponseDto) => (
                             <Fragment>
                                 <Styled.TableListBodyRowData> <Styled.UniqueKeyDestak> { template.name } </Styled.UniqueKeyDestak> </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> <i> { formatDate(template.updatedAt, false) } </i> </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <Styled.TimeStampDestak> { formatDate(template.updatedAt, false) } </Styled.TimeStampDestak> </Styled.TableListBodyRowData>
                             </Fragment>
                         ) }
                         canEdit={ true }

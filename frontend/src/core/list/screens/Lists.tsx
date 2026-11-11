@@ -115,7 +115,7 @@ const Lists = () => {
                             <Fragment>
                                 <Styled.TableListBodyRowData> <Styled.TableListMultiContent> <Styled.TableListColorFragment $color={ list.color }/> <Styled.UniqueKeyDestak> { list.name } </Styled.UniqueKeyDestak> </Styled.TableListMultiContent> </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> { list.subject } </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> <i> { formatDate(list.updatedAt, false) } </i> </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <Styled.TimeStampDestak> { formatDate(list.updatedAt, false) } </Styled.TimeStampDestak> </Styled.TableListBodyRowData>
                             </Fragment>
                         ) }
                         canEdit={ true }

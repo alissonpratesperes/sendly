@@ -1,4 +1,4 @@
-import { UserRoundKey, UserRoundCheck, UserRoundCog, UserRound, Flame, Rocket, ChartPie, Bomb, Trophy, RotateCwFadingClock, CheckCheck, AlertTriangle } from 'lucide-react';
+import { KeyRound, BadgeCheck, Award, CircleUserRound, Flame, Rocket, ChartPie, Bomb, Trophy, RotateCwFadingClock, CircleCheck, CircleX } from 'lucide-react';
 
 import { UserStatus } from '../../../../core/user/enums/userStatus.enum';
 import { BatchStatus } from '../../../../core/batch/enums/batchStatus.enum';
@@ -7,20 +7,20 @@ import { StatusBadgeConfigItemProps } from '../interfaces/statusBadgeConfigItemP
 
 export const STATUS_BADGE_CONFIG: Record<UserStatus | BatchStatus | BatchSendStatus, StatusBadgeConfigItemProps> = {
     [UserStatus.FIRST_ACCESS]: {
-        icon: UserRoundKey,
+        icon: KeyRound,
         iconColor: "#FF6B00",
     },
     [UserStatus.NOT_FIRST_ACCESS]: {
-        icon: UserRoundCheck,
-        iconColor: "#10CF67",
+        icon: BadgeCheck,
+        iconColor: "#1C70E9",
     },
     [UserStatus.SYSTEM_ROOT]: {
-        icon: UserRoundCog,
-        iconColor: "#6941C6",
+        icon: Award,
+        iconColor: "#223463",
     },
     [UserStatus.NOT_SYSTEM_ROOT]: {
-        icon: UserRound,
-        iconColor: "#1C70E9",
+        icon: CircleUserRound,
+        iconColor: "#223463",
     },
 
     [BatchStatus.PENDING]: {
@@ -29,7 +29,7 @@ export const STATUS_BADGE_CONFIG: Record<UserStatus | BatchStatus | BatchSendSta
     },
     [BatchStatus.RUNNING]: {
         icon: Rocket,
-        iconColor: "#1C70E9",
+        iconColor: "#223463",
     },
     [BatchStatus.PARTIAL]: {
         icon: ChartPie,
@@ -50,14 +50,14 @@ export const STATUS_BADGE_CONFIG: Record<UserStatus | BatchStatus | BatchSendSta
     },
     [BatchSendStatus.PROCESSING]: {
         icon: Rocket,
-        iconColor: "#1C70E9",
+        iconColor: "#223463",
     },
     [BatchSendStatus.SENT]: {
-        icon: CheckCheck,
+        icon: CircleCheck,
         iconColor: "#10CF67",
     },
     [BatchSendStatus.ERROR]: {
-        icon: AlertTriangle,
+        icon: CircleX,
         iconColor: "#DC143C",
     },
 }

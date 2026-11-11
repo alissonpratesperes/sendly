@@ -120,7 +120,7 @@ const Company = () => {
                                 <Styled.TableListBodyRowData> { company.name } </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> <Styled.UniqueKeyDestak> { formatCompanyDocument(company.document) } </Styled.UniqueKeyDestak> </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> { company.description } </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> <i> { formatDate(company.updatedAt, false) } </i> </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <Styled.TimeStampDestak> { formatDate(company.updatedAt, false) } </Styled.TimeStampDestak> </Styled.TableListBodyRowData>
                             </Fragment>
                         ) }
                         canEdit={ true }
