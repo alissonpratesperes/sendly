@@ -7,28 +7,44 @@ export const UploaderWrapper = styled.div`
 `;
 
 export const DropzoneArea = styled.div<DropzoneProps>`
+    margin-bottom: 30px;
     height: 220px;
     width: 100%;
-    margin-bottom: 30px;
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     border-radius: 14px;
+    border: none;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    transition: border-color 0.3s ease, background-color 0.3s ease;
+    transition: background-color 0.3s ease-in-out;
 
-    border: ${ ({ $backgroundImage }) => $backgroundImage ? "none" : "2px dashed #D3D2D9" };
-    background-image: ${ ({ $backgroundImage }) => $backgroundImage ? `url("${ $backgroundImage }")` : "none" };
-    ${ ({ $isDragActive, $backgroundImage }) => $isDragActive && !$backgroundImage && `border: 2px dashed #223463;` }
-    ${ ({ $isDragActive }) => $isDragActive && `background-color: #E8EEF8; border: 2px dashed #223463;` };
-    ${ ({ $backgroundImage }) => !$backgroundImage && `&:hover { border-color: #223463; background-color: #E8EEF8; }` }
+    ${({ $backgroundImage }) => !$backgroundImage && `&:hover { background-color: #E8EEF8; } `};
+    background-image: ${({ $backgroundImage }) => $backgroundImage ? `url("${$backgroundImage}")` : "none" };
+    background-color: ${({ $isDragActive, $backgroundImage }) => $isDragActive && !$backgroundImage ? "#E8EEF8" : "#FFFFFF" };
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: -6px;
+            border-radius: 18px;
+            border: 2px solid #1C70E9;
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(1.08);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+    ${({ $isDragActive, $backgroundImage }) => !$backgroundImage && `&:hover::before { opacity: 1; transform: scale(1); }; ${ $isDragActive ? `&::before { opacity: 1; transform: scale(1); }` : "" }` };
 `;
 
 export const DropzoneTextContainer = styled.div`
+    height: 100%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -36,14 +52,12 @@ export const DropzoneTextContainer = styled.div`
 `;
 
 export const DropzoneUploadIcon = styled.div`
-    height: 55px;
-    width: 55px;
+    height: auto;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: #D3D2D9;
-    border-radius: 50%;
 
         svg {
             color: #223463;

@@ -224,6 +224,7 @@ export class BatchSendService {
                 Status: BatchSend_Status.ERROR,
                 ErrorCode: errorCode,
                 ErrorMessage: errorMessage,
+                CompletedAt: new Date(),
             },
         });
 

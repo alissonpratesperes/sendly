@@ -189,6 +189,24 @@ export const UniqueKeyDestak = styled.span`
     background-color: #E8EEF8;
 `;
 
+export const TimeStampsContainer = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+    row-gap: 7.5px;
+`;
+
+export const TimeStampsRowContent = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    column-gap: 7.5px;
+`;
+
 export const TimeStampDestak = styled.span`
     font-family: "Orbitron";
 `;
