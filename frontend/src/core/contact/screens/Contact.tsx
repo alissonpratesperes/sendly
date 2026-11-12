@@ -245,7 +245,7 @@ const Contact = () => {
                         onDelete={ (id: number) => { setSelectedContactId(id); setIsDeleteModalOpen(true); } }
                         renderEntityRow={ (contact: ContactResponseDto) => (
                             <Fragment>
-                                <Styled.TableListBodyRowData> <Styled.TableListMultiContent> <ToggleSwitch label={ contact.active ? "Active" : "Inactive" } checked={ contact.active } onChange={ (event) => handleActiveCommunication(contact.id, event.target.checked) }/> <Styled.TableListColorFragment $color={ listsNames[contact.listId]?.color ?? "transparent" }/> <Styled.ContactNameSpan> { contact.name } </Styled.ContactNameSpan> </Styled.TableListMultiContent> </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <Styled.TableListMultiContent $useSpecificPadding={ true }> <ToggleSwitch label={ contact.active ? "Active" : "Inactive" } checked={ contact.active } onChange={ (event) => handleActiveCommunication(contact.id, event.target.checked) }/> <Styled.TableListColorFragment $color={ listsNames[contact.listId]?.color ?? "transparent" }/> <Styled.ContactNameSpan> { contact.name } </Styled.ContactNameSpan> </Styled.TableListMultiContent> </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> <Styled.UniqueKeyDestak> { parsePhoneNumberFromString(contact.phone)?.formatNational() } </Styled.UniqueKeyDestak> </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> <Styled.TimeStampDestak> { formatDate(contact.updatedAt, false) } </Styled.TimeStampDestak> </Styled.TableListBodyRowData>
                             </Fragment>
