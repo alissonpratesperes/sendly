@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 
+import { BatchStatus } from '../../../../core/batch/enums/batchStatus.enum';
 import { TableListColorFragmentProps } from '../../../interfaces/tableListColorFragmentProps.interface';
 
 export const TableWrapper = styled.div`
@@ -31,10 +32,10 @@ export const TableListHeaderRowColumn = styled.th`
 
 export const TableListBodyRowData = styled.td<{ $isInBatchScreen?: boolean }>`
     padding: 20px;
+    position: relative;
     white-space: pre-line;
     vertical-align: middle;
     background: #FFFFFF;
-
         ${({ $isInBatchScreen }) => !$isInBatchScreen && `
             &:last-of-type {
                 width: 110px;
@@ -209,4 +210,32 @@ export const TimeStampsRowContent = styled.div`
 
 export const TimeStampDestak = styled.span`
     font-family: "Orbitron";
+`;
+
+export const TableStatusIndicator = styled.div<{ $isInBatchScreen?: boolean; $status: string }>`
+    width: 16px;
+    min-width: 16px;
+    height: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 6px;
+
+        background-color: ${ ({ $status }) => {
+            switch ($status) {
+                case BatchStatus.PENDING:
+                    return "#98A2B3";
+                case BatchStatus.RUNNING:
+                    return "#1C70E9";
+                case BatchStatus.PARTIAL:
+                    return "#FF6B00";
+                case BatchStatus.FAILED:
+                    return "#DC143C";
+                case BatchStatus.FINISHED:
+                    return "#10CF67";
+                default:
+                    return "transparent";
+            }
+        } };
 `;
