@@ -1,11 +1,12 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
 import { Batch, Batch_Status, BatchSend_Status, Prisma } from '@prisma/client';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 
 import { QueueService } from '../queue/queue.service';
 import { BatchSendService } from './batchSend.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { CompanyService } from '../company/company.service';
 import { ContactService } from '../contact/contact.service';
+import { BaileysService } from '../baileys/baileys.service';
 import { GetBatchResponseDto } from './dtos/getBatchResponse.dto';
 import { GetBatchSendResponseDto } from './dtos/getBatchSendResponseDto';
 import { PaginatedResponseDto } from '../common/dtos/paginatedResponse.dto';
@@ -17,6 +18,7 @@ export class BatchService {
         private readonly prismaService: PrismaService,
         private readonly companyService: CompanyService,
         private readonly contactService: ContactService,
+        private readonly baileysService: BaileysService,
         private readonly batchSendService: BatchSendService,
     ) {}
 
@@ -59,6 +61,12 @@ export class BatchService {
     }
 
     async create(companyId: number, name: string, templateId: number, listId: number): Promise<GetBatchResponseDto> {
+        const whatsappStatus = await this.baileysService.status(companyId);
+
+        if (!whatsappStatus.connected) {
+            throw new BadRequestException("It is necessary to connect WhatsApp before creating a batch of sends");
+        }
+
         await this.companyService.read(companyId);
 
         const contacts = await this.contactService.findForBatch(companyId, listId);
