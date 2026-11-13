@@ -258,7 +258,7 @@ const Contact = () => {
                 </Fragment>
             ) }
             { !isLoading && contacts.length === 0 && (
-                <EmptyState message="Nenhum contato encontrado" />
+                <EmptyState message="Nenhum contato encontrado"/>
             ) }
 
             <Modal isOpen={ isDeleteModalOpen } entityName={ contacts.find((contact: ContactResponseDto) => contact.id === selectedContactId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleDelete }/>

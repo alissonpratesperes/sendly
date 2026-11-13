@@ -126,7 +126,7 @@ const Lists = () => {
                 </Fragment>
             ) }
             { !isLoading && lists.length === 0 && (
-                <EmptyState message="Nenhuma lista encontrada" />
+                <EmptyState message="Nenhuma lista encontrada"/>
             ) }
 
             <Modal isOpen={ isDeleteModalOpen } entityName={ lists.find((list: ListResponseDto) => list.id === selectedListId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleDelete }/>

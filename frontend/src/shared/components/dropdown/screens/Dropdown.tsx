@@ -18,7 +18,7 @@ export default function Dropdown<Option>({
 }: DropdownProps<Option>) {
     const CustomControl = (controlProps: ControlProps<Option, false>) => (
         <components.Control { ...controlProps }>
-            { !isInPagination && ( <Funnel size={ 25 } color="#FF6B00" style={{ marginLeft: 15, flexShrink: 0 }} /> ) }
+            { !isInPagination && ( <Funnel size={ 25 } color="#FF6B00" style={{ marginLeft: 15, flexShrink: 0 }}/> ) }
             { controlProps.children }
         </components.Control>
     );

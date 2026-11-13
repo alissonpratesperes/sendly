@@ -8,10 +8,10 @@ export const LoadingState: React.FC<LoadingStateProps> = ({ isInBatchFlowScreens
   return (
     <Fragment>
       { isInBatchFlowScreens ? (
-        <BarLoader width="100%" height={ 8 } color="#1C70E9" cssOverride={{ borderRadius: "16px", }} />
+        <BarLoader width="100%" height={ 8 } color="#1C70E9" cssOverride={{ borderRadius: "16px", }}/>
       ) : (
         <Styled.LoadingStateContainer>
-          <PropagateLoader size={ 25 } color="#1C70E9" />
+          <PropagateLoader size={ 25 } color="#1C70E9"/>
         </Styled.LoadingStateContainer>
       ) }
     </Fragment>

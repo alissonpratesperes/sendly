@@ -131,7 +131,7 @@ const Company = () => {
                 </Fragment>
             ) }
             { !isLoading && companies.length === 0 && (
-                <EmptyState message="Nenhuma empresa encontrada" />
+                <EmptyState message="Nenhuma empresa encontrada"/>
             ) }
 
             <Modal isOpen={ isDeleteModalOpen } entityName={ companies.find((company: CompanyResponseDto) => company.id === selectedCompanyId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleDelete }/>

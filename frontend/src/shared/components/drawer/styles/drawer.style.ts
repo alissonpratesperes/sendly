@@ -24,60 +24,42 @@ export const Drawer = styled.div<{ $open: boolean; }>`
     display: flex;
     flex-direction: column;
     background-color: #F0F0F5;
-    overflow-y: auto;
-    overflow-x: hidden;
-    border-radius: 14px;
+    overflow: hidden;
+    border-radius: 26px;
     z-index: 1000;
 
     animation: ${ ({ $open }) => $open ? "drawerOpen 0.6s ease-in-out forwards" : "drawerClose 0.6s ease-in-out forwards" };
 
-        &::-webkit-scrollbar {
-            width: 10px;
-        }
-        &::-webkit-scrollbar-track {
-            margin-top: 14px;
-            margin-bottom: 14px;
-            background: transparent;
-        }
-        &::-webkit-scrollbar-thumb {
-            background: #C5C5C5;
-            border-radius: 10px;
-        }
-        &::-webkit-scrollbar-thumb:hover {
-            background: #AAAAAA;
-        }
-
-            @keyframes drawerOpen {
-                0% {
-                    transform: translateX(calc(100% + 30px));
-                }
-
-                70% {
-                    transform: translateX(-15px);
-                }
-
-                100% {
-                    transform: translateX(0);
-                }
+        @keyframes drawerOpen {
+            0% {
+                transform: translateX(calc(100% + 30px));
             }
-            @keyframes drawerClose {
-                0% {
-                    transform: translateX(0);
-                }
 
-                30% {
-                    transform: translateX(-15px);
-                }
-
-                100% {
-                    transform: translateX(calc(100% + 30px));
-                }
+            70% {
+                transform: translateX(-15px);
             }
+
+            100% {
+                transform: translateX(0);
+            }
+        }
+        @keyframes drawerClose {
+            0% {
+                transform: translateX(0);
+            }
+
+            30% {
+                transform: translateX(-15px);
+            }
+
+            100% {
+                transform: translateX(calc(100% + 30px));
+            }
+        }
 `;
 
 export const Header = styled.div`
     padding: 15px;
-    margin-bottom: 30px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -131,13 +113,28 @@ export const CloseButton = styled.button`
 `;
 
 export const Content = styled.div`
-    padding: 0px 30px;
+    padding: 30px 30px;
     display: flex;
     flex-direction: column;
     flex: 1;
     gap: 30px;
-    overflow-y: visible;
+    overflow-y: auto;
+    overflow-x: hidden;
     box-sizing: border-box;
+
+        &::-webkit-scrollbar {
+            width: 10px;
+        }
+        &::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        &::-webkit-scrollbar-thumb {
+            background: #C5C5C5;
+            border-radius: 10px;
+        }
+        &::-webkit-scrollbar-thumb:hover {
+            background: #AAAAAA;
+        }
 `;
 
 export const Form = styled.form`

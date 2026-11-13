@@ -91,7 +91,7 @@ const Connection: React.FC<ConnectionProps> = ({ onPairingSuccess, isOpen, compa
 
                         <Styled.ModalBody>
                             { loadingStatus ? (
-                                <LoadingState />
+                                <LoadingState/>
                             ) : status?.connected ? (
                                 <ConnectionBadge variant={ ConnectionBadgeVariant.CONNECTED } phone={ connectedPhone ?? undefined }/>
                             ) : (

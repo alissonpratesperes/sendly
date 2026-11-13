@@ -193,7 +193,7 @@ const Batch = () => {
                             <Fragment>
                                 <Styled.TableListBodyRowData> <Styled.TableListMultiContent> <Styled.TableListColorFragment $color={ listsNames[batch.listId]?.color ?? "" }/> <Styled.ContactNameSpan> <Styled.UniqueKeyDestak> { batch.name } </Styled.UniqueKeyDestak> </Styled.ContactNameSpan> </Styled.TableListMultiContent> </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> { templatesNames[batch.templateId]?.name ?? "" } </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> <Styled.TimeStampsContainer> <Styled.TimeStampsRowContent> <b> Início: </b> <Styled.TimeStampDestak> { batch.startedAt ? formatDate(batch.startedAt, false) : "-" } </Styled.TimeStampDestak> </Styled.TimeStampsRowContent> { batch.startedAt && !batch.endedAt ? <Styled.TimeStampsRowContent> <LoadingState isInBatchFlowScreens={ true } /> </Styled.TimeStampsRowContent> : <Styled.TimeStampsRowContent> <b> Fim: </b> <Styled.TimeStampDestak> { batch.endedAt ? formatDate(batch.endedAt, false) : "-" } </Styled.TimeStampDestak> </Styled.TimeStampsRowContent> } </Styled.TimeStampsContainer> </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <Styled.TimeStampsContainer> <Styled.TimeStampsRowContent> <b> Início: </b> <Styled.TimeStampDestak> { batch.startedAt ? formatDate(batch.startedAt, false) : "-" } </Styled.TimeStampDestak> </Styled.TimeStampsRowContent> { batch.startedAt && !batch.endedAt ? <Styled.TimeStampsRowContent> <LoadingState isInBatchFlowScreens={ true }/> </Styled.TimeStampsRowContent> : <Styled.TimeStampsRowContent> <b> Fim: </b> <Styled.TimeStampDestak> { batch.endedAt ? formatDate(batch.endedAt, false) : "-" } </Styled.TimeStampDestak> </Styled.TimeStampsRowContent> } </Styled.TimeStampsContainer> </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> <Styled.TimeStampDestak> { formatDate(batch.updatedAt, false) } </Styled.TimeStampDestak> </Styled.TableListBodyRowData>
                             </Fragment>
                         ) }
@@ -205,7 +205,7 @@ const Batch = () => {
                 </Fragment>
             ) }
             { !isLoading && batches.length === 0 && (
-                <EmptyState message="Nenhum lote encontrado" />
+                <EmptyState message="Nenhum lote encontrado"/>
             ) }
 
             <Drawer isOpen={ isDrawerOpen } isSubmitting={ isSubmitting } formId="batch-form" title={ updating ? "Editar lote" : "Novo lote" } mode={ updating ? "edit" : "create" } onClose={ () => { setIsDrawerOpen(false); setUpdating(null); } }>

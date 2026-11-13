@@ -96,7 +96,7 @@ export default function Paginate({ page, total, limit, onPageChange, onLimitChan
     return (
         <Styled.PaginateContainer>
             <Styled.PaginateButton disabled={ page === 1 } onClick={ previousPage }>
-                <Styled.ArrowLeftIcon />
+                <Styled.ArrowLeftIcon/>
 
                 <Styled.PreviousButtonText> Anterior </Styled.PreviousButtonText>
             </Styled.PaginateButton>
@@ -127,7 +127,7 @@ export default function Paginate({ page, total, limit, onPageChange, onLimitChan
             <Styled.PaginateButton disabled={ page === totalPages } onClick={ nextPage }>
                 <Styled.NextButtonText> Próxima </Styled.NextButtonText>
 
-                <Styled.ArrowRightIcon />
+                <Styled.ArrowRightIcon/>
             </Styled.PaginateButton>
         </Styled.PaginateContainer>
     );

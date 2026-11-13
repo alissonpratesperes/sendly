@@ -23,19 +23,19 @@ export const AppRouting: React.FC = () => {
 
     return (
         <Fragment>
-            { shouldUseAppLayout && (<Header links={ links } />) }
+            { shouldUseAppLayout && (<Header links={ links }/>) }
 
             <Main applyPadding={ shouldUseAppLayout }>
                 <Routes>
-                    <Route path="/authentication" element={ <PublicRoute element={ <Login /> }/> }/>
-                    <Route path="/authentication/reset" element={ <PublicRoute element={ <Reset /> }/> }/>
-                    <Route path="/authentication/forgot" element={ <PublicRoute element={ <Forgot /> }/> }/>
+                    <Route path="/authentication" element={ <PublicRoute element={ <Login/> }/> }/>
+                    <Route path="/authentication/reset" element={ <PublicRoute element={ <Reset/> }/> }/>
+                    <Route path="/authentication/forgot" element={ <PublicRoute element={ <Forgot/> }/> }/>
 
-                    <Route path="/" element={ <Navigate to={ userInformation?.isSystemRoot ? "/home" : "/registrations" } replace /> }/>
-                    <Route path="/home" element={ userInformation?.isSystemRoot ? <PrivateRoute element={ <Home /> }/> : <Navigate to="/registrations" replace /> }/>
-                    <Route path="/registrations/*" element={ <PrivateRoute element={ <Registration /> }/> }/>
+                    <Route path="/" element={ <Navigate to={ userInformation?.isSystemRoot ? "/home" : "/registrations" } replace/> }/>
+                    <Route path="/home" element={ userInformation?.isSystemRoot ? <PrivateRoute element={ <Home/> }/> : <Navigate to="/registrations" replace/> }/>
+                    <Route path="/registrations/*" element={ <PrivateRoute element={ <Registration/> }/> }/>
 
-                    <Route path="*" element={ <Navigate to="/" replace /> }/>
+                    <Route path="*" element={ <Navigate to="/" replace/> }/>
                 </Routes>
             </Main>
         </Fragment>

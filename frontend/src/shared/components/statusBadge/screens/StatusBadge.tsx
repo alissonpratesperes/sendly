@@ -9,7 +9,7 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ variant }) => {
     const Icon = badgeConfig.icon;
 
     return (
-        <Styled.StatusBadgeContainer variant={ variant }> <Icon size={ 25 } color={ badgeConfig.iconColor } /> </Styled.StatusBadgeContainer>
+        <Styled.StatusBadgeContainer variant={ variant }> <Icon size={ 25 } color={ badgeConfig.iconColor }/> </Styled.StatusBadgeContainer>
     );
 }
 

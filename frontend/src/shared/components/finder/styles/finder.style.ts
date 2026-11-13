@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const SearchInputWrapper = styled.div`
+export const SearchInputWrapper = styled.div<{ $isSystemRoot: boolean; }>`
     margin-bottom: 30px;
     width: 100%;
     position: relative;
@@ -8,9 +8,10 @@ export const SearchInputWrapper = styled.div`
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    column-gap: 30px;
     border-top-left-radius: 14px;
     border-top-right-radius: 14px;
+
+    column-gap: ${ ({ $isSystemRoot }) => $isSystemRoot ? "30px" : "0px" };
 `;
 
 export const SearchInputContainer = styled.div`

@@ -7,7 +7,7 @@ import { getAuthenticationStorage } from '../../../utils/authenticationStorage.u
 const PublicRoute: React.FC<PublicRouteProps> = ({ element }) => {
     const { accessToken } = getAuthenticationStorage();
 
-    return accessToken ? <Navigate to="/home" replace /> : element;
+    return accessToken ? <Navigate to="/home" replace/> : element;
 }
 
 export default PublicRoute;

@@ -55,7 +55,7 @@ async function main() {
     },
   });
 
-  await mailService.onModuleInit();
+  // await mailService.onModuleInit();
   await mailService.sendSystemRootEmail(seededUser.Email, {
     name: seededUser.Name,
     password: seedUser.password,

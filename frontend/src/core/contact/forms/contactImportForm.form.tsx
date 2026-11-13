@@ -137,13 +137,13 @@ export const ContactImportForm: React.FC<ImportFormProps> = ({ onCancel, onSubmi
                     <Styled.ImportResultTitle> <DatabaseCheck size={ 25 }/> Resultado da importação </Styled.ImportResultTitle>
 
                     <Styled.ImportResultInformations>
-                        <Styled.ImportResultSucceededTitle> <CircleCheck size={ 25 } /> { importResult.valid } </Styled.ImportResultSucceededTitle>
-                        <Styled.ImportResultUnsucceededTitle> <CircleAlert size={ 25 } /> { importResult.invalid } </Styled.ImportResultUnsucceededTitle>
+                        <Styled.ImportResultSucceededTitle> <CircleCheck size={ 25 }/> { importResult.valid } </Styled.ImportResultSucceededTitle>
+                        <Styled.ImportResultUnsucceededTitle> <CircleAlert size={ 25 }/> { importResult.invalid } </Styled.ImportResultUnsucceededTitle>
                     </Styled.ImportResultInformations>
 
                     { importResult.errors.length > 0 && (
                         <Styled.ImportResultErrorList>
-                            <Styled.ImportResultErrorListTitle> <ScrollText size={ 25 } /> Log do processamento </Styled.ImportResultErrorListTitle>
+                            <Styled.ImportResultErrorListTitle> <ScrollText size={ 25 }/> Log do processamento </Styled.ImportResultErrorListTitle>
 
                             { importResult.errors.map((error, index) => (
                                 <Styled.ImportResultErrorListItem key={ index }>

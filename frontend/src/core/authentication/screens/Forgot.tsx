@@ -50,7 +50,7 @@ const Forgot: React.FC = () => {
                 <Styled.InputWrapper>
                     <Styled.Label htmlFor="email"> E-MAIL </Styled.Label>
 
-                    <Styled.Input type="email" id="email" placeholder="Digite seu email" value={ email } onChange={ (inputEvent) => setEmail(inputEvent.target.value) } required />
+                    <Styled.Input type="email" id="email" placeholder="Digite seu email" value={ email } onChange={ (inputEvent) => setEmail(inputEvent.target.value) } required/>
                 </Styled.InputWrapper>
 
                 { isLoading && (
@@ -58,7 +58,7 @@ const Forgot: React.FC = () => {
                 ) }
                 { !isLoading && (
                     <Styled.ForgotButton type="submit">
-                        <Inbox size={ 25 } color="#FFFFFF" />
+                        <Inbox size={ 25 } color="#FFFFFF"/>
 
                         <Styled.ForgotButtonText> Solicitar link </Styled.ForgotButtonText>
                     </Styled.ForgotButton>

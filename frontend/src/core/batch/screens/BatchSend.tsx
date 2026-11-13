@@ -180,7 +180,7 @@ const BatchSend = () => {
                                 <Styled.TableListBodyRowData> <StatusBadge variant={ batchSend.status }/> </Styled.TableListBodyRowData>
                                 { hasErrors && ( <Styled.TableListBodyRowData> { batchSend.errorMessage?.trim() || "-" } </Styled.TableListBodyRowData> ) }
                                 <Styled.TableListBodyRowData> <Styled.TimeStampDestak> { formatDate(batchSend.scheduledAt, false) } </Styled.TimeStampDestak> </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> <Styled.TimeStampsContainer> <Styled.TimeStampsRowContent> <b> Início: </b> <Styled.TimeStampDestak> { batchSend.startedAt ? formatDate(batchSend.startedAt, false) : "-" } </Styled.TimeStampDestak> </Styled.TimeStampsRowContent> { batchSend.startedAt && !batchSend.completedAt ? <Styled.TimeStampsRowContent> <LoadingState isInBatchFlowScreens={ true } /> </Styled.TimeStampsRowContent> : <Styled.TimeStampsRowContent> <b> Fim: </b> <Styled.TimeStampDestak> { batchSend.completedAt ? formatDate(batchSend.completedAt, false) : "-" } </Styled.TimeStampDestak> </Styled.TimeStampsRowContent> } </Styled.TimeStampsContainer> </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <Styled.TimeStampsContainer> <Styled.TimeStampsRowContent> <b> Início: </b> <Styled.TimeStampDestak> { batchSend.startedAt ? formatDate(batchSend.startedAt, false) : "-" } </Styled.TimeStampDestak> </Styled.TimeStampsRowContent> { batchSend.startedAt && !batchSend.completedAt ? <Styled.TimeStampsRowContent> <LoadingState isInBatchFlowScreens={ true }/> </Styled.TimeStampsRowContent> : <Styled.TimeStampsRowContent> <b> Fim: </b> <Styled.TimeStampDestak> { batchSend.completedAt ? formatDate(batchSend.completedAt, false) : "-" } </Styled.TimeStampDestak> </Styled.TimeStampsRowContent> } </Styled.TimeStampsContainer> </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> <Styled.TimeStampDestak> { formatDate(batchSend.updatedAt, false) } </Styled.TimeStampDestak> </Styled.TableListBodyRowData>
                             </Fragment>
                         ) }
@@ -193,7 +193,7 @@ const BatchSend = () => {
                 </Fragment>
             ) }
             { !isLoading && batchSends.length === 0 && (
-                <EmptyState message="Selecione um lote para carregar os envios" />
+                <EmptyState message="Selecione um lote para carregar os envios"/>
             ) }
 
             <Drawer isOpen={ isDrawerOpen } isSubmitting={ isSubmitting } formId="batch-form" title={ "Template enviado" } mode={ viewingBatchSend ? "edit" : "create" } onClose={ () => { setIsDrawerOpen(false); setViewingBatchSend(null); } } hideFooter={ true }>

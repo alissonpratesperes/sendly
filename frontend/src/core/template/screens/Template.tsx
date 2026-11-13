@@ -124,7 +124,7 @@ const Template = () => {
                 </Fragment>
             ) }
             { !isLoading && templates.length === 0 && (
-                <EmptyState message="Nenhum template encontrado" />
+                <EmptyState message="Nenhum template encontrado"/>
             ) }
 
             <Modal isOpen={ isDeleteModalOpen } entityName={ templates.find((template: TemplateResponseDto) => template.id === selectedTemplateId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleDelete }/>

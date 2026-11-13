@@ -6,9 +6,9 @@ import { FinderProps } from '../interfaces/finderProps.interface';
 
 export const Finder: React.FC<FinderProps> = ({ showImportButton = false, importButtonText, showAddButton = false, placeholder, buttonText, search, onAdd, onImport, onSearchChange }) => {
     return (
-        <Styled.SearchInputWrapper>
+        <Styled.SearchInputWrapper $isSystemRoot={ showAddButton }>
             <Styled.SearchInputContainer>
-                <Search size={ 25 } color="#FF6B00" />
+                <Search size={ 25 } color="#FF6B00"/>
 
                 <Styled.SearchInputField type="text" placeholder={ placeholder } value={ search } onChange={ (event) => onSearchChange(event.target.value) }/>
             </Styled.SearchInputContainer>

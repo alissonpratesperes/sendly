@@ -9,11 +9,11 @@ import { GlobalStyle } from './shared/styles/Global.style';
 function App() {
   return (
     <Fragment>
-      <GlobalStyle />
+      <GlobalStyle/>
 
       <div className="App">
         <BrowserRouter>
-          <AppRouting />
+          <AppRouting/>
         </BrowserRouter>
       </div>
 

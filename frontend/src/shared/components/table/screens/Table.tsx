@@ -29,17 +29,17 @@ export const Table = <T,>({ headers, data, isInBatchScreen, getEntityId, onView,
 
                                 <Styled.TableListBodyRowData $isInBatchScreen={ isInBatchScreen }>
                                     { !shouldShowView && !shouldShowEdit && !shouldShowDelete ? (
-                                        <Styled.TableStatusIndicator $isInBatchScreen={ isInBatchScreen } $status={ String((entity as any).status) } />
+                                        <Styled.TableStatusIndicator $isInBatchScreen={ isInBatchScreen } $status={ String((entity as any).status) }/>
                                     ) : (shouldShowView || shouldShowEdit || shouldShowDelete) && (
                                         <Styled.TableListBodyRowDataActions>
                                             { shouldShowView && (
-                                                <Styled.TableListBodyRowDataActionButton type="button" onClick={ () => onView?.(id) }> <MessageSquareMore size={ 25 } /> </Styled.TableListBodyRowDataActionButton>
+                                                <Styled.TableListBodyRowDataActionButton type="button" onClick={ () => onView?.(id) }> <MessageSquareMore size={ 25 }/> </Styled.TableListBodyRowDataActionButton>
                                             ) }
                                             { shouldShowEdit && (
-                                                <Styled.TableListBodyRowDataActionButton type="button" onClick={ () => onEdit?.(id) }> <SquarePen size={ 25 } /> </Styled.TableListBodyRowDataActionButton>
+                                                <Styled.TableListBodyRowDataActionButton type="button" onClick={ () => onEdit?.(id) }> <SquarePen size={ 25 }/> </Styled.TableListBodyRowDataActionButton>
                                             ) }
                                             { shouldShowDelete && (
-                                                <Styled.TableListBodyRowDataActionButton type="button" onClick={ () => onDelete?.(id) }> <Trash size={ 25 } /> </Styled.TableListBodyRowDataActionButton>
+                                                <Styled.TableListBodyRowDataActionButton type="button" onClick={ () => onDelete?.(id) }> <Trash size={ 25 }/> </Styled.TableListBodyRowDataActionButton>
                                             ) }
                                         </Styled.TableListBodyRowDataActions>
                                     ) }

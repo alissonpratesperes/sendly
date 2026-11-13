@@ -66,14 +66,14 @@ const Authentication: React.FC = () => {
                 <Styled.InputWrapper>
                     <Styled.Label htmlFor="email"> E-MAIL </Styled.Label>
 
-                    <Styled.Input type="email" id="email" placeholder="Digite seu email" value={ email } onChange={ (inputEvent) => setEmail(inputEvent.target.value) } required />
+                    <Styled.Input type="email" id="email" placeholder="Digite seu email" value={ email } onChange={ (inputEvent) => setEmail(inputEvent.target.value) } required/>
                 </Styled.InputWrapper>
                 <Styled.InputWrapper>
                     <Styled.Label htmlFor="password"> SENHA </Styled.Label>
 
-                    <Styled.Input type={ showPassword ? "text" : "password" } id="password" placeholder="Digite sua senha" value={ password } onChange={ (inputEvent) => setPassword(inputEvent.target.value) } required />
+                    <Styled.Input type={ showPassword ? "text" : "password" } id="password" placeholder="Digite sua senha" value={ password } onChange={ (inputEvent) => setPassword(inputEvent.target.value) } required/>
 
-                   <Styled.EyeButton type="button" onClick={ togglePasswordVisibility }> { showPassword ? ( <EyeIcon size={ 25 } color="#FF6B00" /> ) : ( <EyeOffIcon size={ 25 } color="#FF6B00" /> ) } </Styled.EyeButton>
+                   <Styled.EyeButton type="button" onClick={ togglePasswordVisibility }> { showPassword ? ( <EyeIcon size={ 25 } color="#FF6B00"/> ) : ( <EyeOffIcon size={ 25 } color="#FF6B00"/> ) } </Styled.EyeButton>
                 </Styled.InputWrapper>
 
                 <Styled.LoginButtonsContainer>

@@ -193,7 +193,7 @@ const User = () => {
                 </Fragment>
             ) }
             { !isLoading && users.length === 0 && (
-                <EmptyState message="Nenhum usuário encontrado" />
+                <EmptyState message="Nenhum usuário encontrado"/>
             ) }
 
             <Modal isOpen={ isDeleteModalOpen } entityName={ users.find((user: UserResponseDto) => user.id === selectedUserId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleDelete }/>

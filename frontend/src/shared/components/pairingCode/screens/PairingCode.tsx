@@ -11,7 +11,7 @@ const PairingCode: React.FC<PairingCodeProps> = ({ pairingCode }) => {
     return (
         <Fragment>
             <Styled.PairingCodeTextContainer>
-                <KeyRound size={ 25 } color="#2F2E33" />
+                <KeyRound size={ 25 } color="#2F2E33"/>
 
                 <ModalStyled.ModalBoldText>
                     Insira o código abaixo no seu aplicativo do WhatsApp
