@@ -170,18 +170,16 @@ const BatchSend = () => {
             { !isLoading && batchSends.length > 0 && (
                 <Fragment>
                     <Table<BatchSendResponseDto>
-                        headers={[ "Contato", "Status", ...(hasErrors ? [ "Erro" ] : []), "Agendamento", "Execução", "Atualização", ]}
+                        headers={[ "Contato", "Agendamento", "Execução", "Atualização", ]}
                         data={ batchSends }
                         getEntityId={ (batchSend: BatchSendResponseDto) => batchSend.id }
                         onView={ handleViewBatchSend }
                         renderEntityRow={ (batchSend: BatchSendResponseDto) => (
                             <Fragment>
                                 <Styled.TableListBodyRowData> { contactsNames[batchSend.contactId]?.name ?? "" } </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> <StatusBadge variant={ batchSend.status }/> </Styled.TableListBodyRowData>
-                                { hasErrors && ( <Styled.TableListBodyRowData> { batchSend.errorMessage?.trim() || "-" } </Styled.TableListBodyRowData> ) }
                                 <Styled.TableListBodyRowData> <Styled.TimeStampDestak> { formatDate(batchSend.scheduledAt, false) } </Styled.TimeStampDestak> </Styled.TableListBodyRowData>
                                 <Styled.TableListBodyRowData> <Styled.TimeStampsContainer> <Styled.TimeStampsRowContent> <b> Início: </b> <Styled.TimeStampDestak> { batchSend.startedAt ? formatDate(batchSend.startedAt, false) : "-" } </Styled.TimeStampDestak> </Styled.TimeStampsRowContent> { batchSend.startedAt && !batchSend.completedAt ? <Styled.TimeStampsRowContent> <LoadingState isInBatchFlowScreens={ true }/> </Styled.TimeStampsRowContent> : <Styled.TimeStampsRowContent> <b> Fim: </b> <Styled.TimeStampDestak> { batchSend.completedAt ? formatDate(batchSend.completedAt, false) : "-" } </Styled.TimeStampDestak> </Styled.TimeStampsRowContent> } </Styled.TimeStampsContainer> </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> <Styled.TimeStampDestak> { formatDate(batchSend.updatedAt, false) } </Styled.TimeStampDestak> </Styled.TableListBodyRowData>
+                                <Styled.TableListBodyRowData> <Styled.TimeStampDestak $statusColor={ batchSend.status }> { formatDate(batchSend.updatedAt, false) } </Styled.TimeStampDestak> </Styled.TableListBodyRowData>
                             </Fragment>
                         ) }
                         canView={ true }

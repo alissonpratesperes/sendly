@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 import { BatchStatus } from '../../../../core/batch/enums/batchStatus.enum';
 import { TableListColorFragmentProps } from '../../../interfaces/tableListColorFragmentProps.interface';
+import { BatchSendStatus } from '../../../../core/batch/enums/batchSendStatus.enum';
 
 export const TableWrapper = styled.div`
     width: 100%;
@@ -208,34 +209,34 @@ export const TimeStampsRowContent = styled.div`
     column-gap: 7.5px;
 `;
 
-export const TimeStampDestak = styled.span`
+export const TimeStampDestak = styled.span<{ $statusColor?: string }>`
     font-family: "Orbitron";
-`;
 
-export const TableStatusIndicator = styled.div<{ $isInBatchScreen?: boolean; $status: string }>`
-    width: 16px;
-    min-width: 16px;
-    height: 50%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 6px;
+    font-weight: ${ ({ $statusColor }) => $statusColor ? 700 : 400 };
 
-        background-color: ${ ({ $status }) => {
-            switch ($status) {
-                case BatchStatus.PENDING:
-                    return "#98A2B3";
-                case BatchStatus.RUNNING:
-                    return "#1C70E9";
-                case BatchStatus.PARTIAL:
-                    return "#FF6B00";
-                case BatchStatus.FAILED:
-                    return "#DC143C";
-                case BatchStatus.FINISHED:
-                    return "#10CF67";
-                default:
-                    return "transparent";
-            }
-        } };
+    color: ${ ({ $statusColor }) => {
+        switch ($statusColor) {
+            case BatchStatus.PENDING:
+                return "#98A2B3";
+            case BatchStatus.RUNNING:
+                return "#1C70E9";
+            case BatchStatus.PARTIAL:
+                return "#FF6B00";
+            case BatchStatus.FAILED:
+                return "#DC143C";
+            case BatchStatus.FINISHED:
+                return "#10CF67";
+
+
+            case BatchSendStatus.WAITING:
+                return "#98A2B3";
+            case BatchSendStatus.PROCESSING:
+                return "#1C70E9";
+            case BatchSendStatus.SENT:
+                return "#10CF67";
+            case BatchSendStatus.ERROR:
+                return "#DC143C";
+            default: return "inherit";
+        }
+    } };
 `;

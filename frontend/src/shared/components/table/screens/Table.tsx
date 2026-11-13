@@ -28,9 +28,7 @@ export const Table = <T,>({ headers, data, isInBatchScreen, getEntityId, onView,
                                 { renderEntityRow(entity) }
 
                                 <Styled.TableListBodyRowData $isInBatchScreen={ isInBatchScreen }>
-                                    { !shouldShowView && !shouldShowEdit && !shouldShowDelete ? (
-                                        <Styled.TableStatusIndicator $isInBatchScreen={ isInBatchScreen } $status={ String((entity as any).status) }/>
-                                    ) : (shouldShowView || shouldShowEdit || shouldShowDelete) && (
+                                    { (shouldShowView || shouldShowEdit || shouldShowDelete) && (
                                         <Styled.TableListBodyRowDataActions>
                                             { shouldShowView && (
                                                 <Styled.TableListBodyRowDataActionButton type="button" onClick={ () => onView?.(id) }> <MessageSquareMore size={ 25 }/> </Styled.TableListBodyRowDataActionButton>
