@@ -1,6 +1,11 @@
-export function generateSpacedIntervalInMilliseconds(enqueuedJobIndex: number, baseIntervalInSeconds: number = 1800, randomJitterInSeconds: number = 300): number {
-    const baseInMilliseconds = enqueuedJobIndex * baseIntervalInSeconds * 1000;
-    const jitterInMilliseconds = Math.floor(Math.random() * randomJitterInSeconds * 1000);
+export function generateSpacedIntervalInMilliseconds(maxIntervalInSeconds: number): number {
+    const minIntervalInSeconds = 60;
 
-    return baseInMilliseconds + jitterInMilliseconds;
+    if (maxIntervalInSeconds < minIntervalInSeconds) {
+        throw new Error("Maximum interval must be at least 60 seconds");
+    }
+
+    const randomIntervalInSeconds = minIntervalInSeconds + Math.random() * (maxIntervalInSeconds - minIntervalInSeconds);
+
+    return Math.round(randomIntervalInSeconds * 1000);
 }

@@ -13,19 +13,20 @@ export class QueueService {
     ) {}
 
     private readonly queueName = requireEnvironmentVariable("REDIS_QUEUE_NAME");
+    private readonly queueInterval = requireEnvironmentVariable("REDIS_QUEUE_INTERVAL");
 
     async enqueueBatchSends(batchSendIds: number[]): Promise<void> {
         if (!batchSendIds.length) {
             return;
         }
 
-        const jobs = batchSendIds.map((batchSendId, index) => ({
+        const jobs = batchSendIds.map((batchSendId) => ({
             name: this.queueName,
             data: { batchSendId },
             opts: {
-                delay: generateSpacedIntervalInMilliseconds(index),
-                removeOnComplete: true,
-                removeOnFail: 1000,
+                delay: generateSpacedIntervalInMilliseconds(Number(this.queueInterval)),
+                removeOnComplete: false,
+                removeOnFail: false,
                 attempts: 3,
                 backoff: {
                     type: "exponential",
