@@ -32,7 +32,7 @@ export const DropzoneArea = styled.div<DropzoneProps>`
             position: absolute;
             inset: -6px;
             border-radius: 18px;
-            border: 2px solid #1C70E9;
+            border: 2px dashed #1C70E9;
             opacity: 0;
             pointer-events: none;
             transform: scale(1.08);

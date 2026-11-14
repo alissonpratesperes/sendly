@@ -43,7 +43,7 @@ export const NavItem = styled(NavLink)`
   font-family: "Lato";
   font-weight: 400;
   font-size: 16px;
-  color: #FFFFFF;
+  color: #F0F0F5;
   border-radius: 14px;
   transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
 
@@ -60,7 +60,7 @@ export const NavItem = styled(NavLink)`
     }
 
       svg {
-        stroke: currentColor;
+        stroke: #1C70E9;
       }
 
         @keyframes menuEffect {

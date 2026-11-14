@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { NavigationTabProps } from '../interfaces/navigationTabProps.interface';
 
 export const HeaderWrapper = styled.header`
-    margin-top: -170px;
+    margin-top: -183.5px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -36,15 +36,13 @@ export const SessionSubtitle = styled.span`
 
 export const NavigationTabs = styled.nav`
     margin-bottom: 30px;
-    padding: 15px;
     height: auto;
     width: auto;
     display: flex;
     flex-direction: row;
     justify-content: center;
-    column-gap: 15px;
-    border-radius: 26px;
-    background-color: #F0F0F5;
+    column-gap: 30px;
+    background-color: transparent;
 `;
 
 export const NavigationTabButtons = styled.button<{ $active: boolean; $hovered: boolean; $anotherHovered: boolean; }>`
@@ -59,40 +57,26 @@ export const NavigationTabButtons = styled.button<{ $active: boolean; $hovered: 
     cursor: pointer;
     outline: none;
     border: none;
-    border-radius: 14px;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
     background-color: transparent;
     transition: font-weight 0.3s, color 0.3s ease, background-color 0.3s ease;
 
     font-weight: ${ ({ $active, $anotherHovered }) => $active && !$anotherHovered ? 700 : 500 };
-    color: ${ ({ $active, $anotherHovered }) => $active && !$anotherHovered ? "#FFFFFF" : "#223463" };
-    background-color: ${ ({ $active, $anotherHovered }) => $active && !$anotherHovered ? "#223463" : "#F0F0F5" };
+    color: ${ ({ $active, $anotherHovered }) => $active && !$anotherHovered ? "#223463" : "#F0F0F5" };
+    background-color: ${ ({ $active, $anotherHovered }) => $active && !$anotherHovered ? "#F0F0F5" : "#223463" };
 
         &:hover {
             ${ ({ $active }) => !$active && `
                 font-weight: 700;
-                color: #FFFFFF;
-                background-color: #223463;
-                animation: navigationTabButtonEffect 0.6s ease-in-out;
+                color: #223463;
+                background-color: #F0F0F5;
             `}
         }
 
             svg {
-                stroke: currentColor;
+                stroke: #1C70E9;
             }
-
-                @keyframes navigationTabButtonEffect {
-                    0% {
-                        transform: scale(1.08);
-                    }
-
-                    50% {
-                        transform: scale(0.95);
-                    }
-
-                    100% {
-                        transform: scale(1);
-                    }
-                }
 `;
 
 export const NavigationTabButtonText = styled.span<NavigationTabProps>`

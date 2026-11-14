@@ -20,7 +20,7 @@ export const ModalWrapper = styled.div<{ $open: boolean }>`
     min-width: 500px;
     width: auto;
     background-color: #F0F0F5;
-    border-radius: 14px;
+    border-radius: 26px;
     box-sizing: border-box;
 
     animation: ${ ({ $open }) => $open ? "modalOpen 0.6s ease-in-out forwards" : "modalClose 0.6s ease-in-out forwards" };
@@ -183,7 +183,7 @@ export const ModalPrimaryButton = styled(ModalButton)`
         }
 
             svg {
-                stroke: currentColor;
+                stroke: #1C70E9;
             }
 
                 @keyframes footerButtonEffect {
@@ -240,13 +240,14 @@ export const ModalTertiaryButton = styled(ModalButton)`
     align-items: center;
     justify-content: center;
     font-weight: 400;
-    color: #1C70E9;
-    background: transparent;transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
+    color: #FF6B00;
+    background: transparent;
+    transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
 
         &:hover {
             font-weight: 700;
-            color: #FFFFFF;
-            background-color: #1C70E9;
+            color: #F0F0F5;
+            background-color: #FF6B00;
             animation: footerButtonEffect 0.6s ease-in-out;
         }
 

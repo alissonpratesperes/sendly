@@ -19,7 +19,7 @@ export const AppRouting: React.FC = () => {
     const location = useLocation();
     const { userInformation } = getAuthenticationStorage();
     const shouldUseAppLayout = !PATHS_WITHOUT_APP_LAYOUT.includes(location.pathname);
-    const links = [ ...(userInformation?.isSystemRoot ? [ { label: "Início", path: AppRoutes.HOME }, { label: "Cadastros", path: AppRoutes.REGISTRATIONS } ] : []), ];
+    const links = [ ...(userInformation?.isSystemRoot ? [ { label: "Atividade", path: AppRoutes.HOME }, { label: "Cadastros", path: AppRoutes.REGISTRATIONS } ] : []), ];
 
     return (
         <Fragment>

@@ -227,7 +227,6 @@ export const TimeStampDestak = styled.span<{ $statusColor?: string }>`
             case BatchStatus.FINISHED:
                 return "#10CF67";
 
-
             case BatchSendStatus.WAITING:
                 return "#98A2B3";
             case BatchSendStatus.PROCESSING:

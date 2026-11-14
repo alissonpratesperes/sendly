@@ -25,8 +25,8 @@ export class QueueService {
             data: { batchSendId },
             opts: {
                 delay: generateSpacedIntervalInMilliseconds(Number(this.queueInterval)),
-                removeOnComplete: false,
-                removeOnFail: false,
+                removeOnComplete: true,
+                removeOnFail: true,
                 attempts: 3,
                 backoff: {
                     type: "exponential",

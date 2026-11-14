@@ -344,9 +344,14 @@ export const FooterButton = styled.button<{ $variant?: "primary" | "secondary"; 
     color: ${ ({ $variant }) => $variant === "primary" ? "#FFFFFF" : "#223463" };
     background-color: ${ ({ $variant }) => $variant === "primary" ? "#238636" : "transparent" };
 
+        &.secondary {
+            svg {
+                stroke: #1C70E9;
+            }
+        }
         &.secondary:hover {
             font-weight: 700;
-            color: #FFFFFF;
+            color: #F0F0F5;
             background-color: #223463;
             animation: footerButtonEffect 0.6s ease-in-out;
         }

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const HeaderWrapper = styled.header`
-    margin-top: -170px;
+    margin-top: -183px;
     display: flex;
     flex-direction: column;
     align-items: center;

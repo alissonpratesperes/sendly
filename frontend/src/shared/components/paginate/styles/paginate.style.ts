@@ -33,13 +33,11 @@ export const PaginateButton = styled.button`
     transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
 
         &:hover:not(:disabled) {
-            font-weight: 700;
-            color: #FFFFFF;
+            color: #F0F0F5;
             background-color: #223463;
             animation: paginateButtonEffect 0.6s ease-in-out;
         }
         &:disabled {
-            color: #535862;
             cursor: not-allowed;
             opacity: 0.5;
         }
@@ -67,12 +65,15 @@ export const PreviousButtonText = styled.span`
     display: flex;
     align-items: center;
     font-family: "Lato";
-    font-weight: 400;
+    font-weight: 700;
     font-size: 16px;
 `;
 
 export const ArrowLeftIcon = styled(ArrowBigLeft)`
     margin-right: 7.5px;
+    height: 25px;
+    width: 25px;
+    color: #1C70E9;
 `;
 
 export const PagesArrayContainer = styled.div`
@@ -88,8 +89,7 @@ export const EllipsisIcon = styled(Ellipsis)`
     margin-right: 15px;
     height: 25px;
     width: 25px;
-    color: #535862;
-    opacity: 0.5;
+    color: #1C70E9;
 `;
 
 export const PageButton = styled.button<{ $active?: boolean; $anotherHovered: boolean; $disableTransition: boolean; }>`
@@ -147,10 +147,13 @@ export const NextButtonText = styled.span`
     display: flex;
     align-items: center;
     font-family: "Lato";
-    font-weight: 400;
+    font-weight: 700;
     font-size: 16px;
 `;
 
 export const ArrowRightIcon = styled(ArrowBigRight)`
     margin-left: 7.5px;
+    height: 25px;
+    width: 25px;
+    color: #1C70E9;
 `;

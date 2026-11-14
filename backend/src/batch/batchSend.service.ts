@@ -124,9 +124,9 @@ export class BatchSendService {
             skip: (page - 1) * limit,
             take: limit,
             orderBy: [
-                { CreatedAt: "desc" },
-                { Id: "desc" },
-            ],
+                { ScheduledAt: "asc" },
+                { Id: "asc" },
+            ]
         });
         const total = await this.prismaService.client.batchSend.count({
             where,
