@@ -1,9 +1,17 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 import { NavigationTabProps } from '../interfaces/navigationTabProps.interface';
 
+const navigationTabIconAnimation = keyframes`
+    0%, 100% { transform: rotate(0deg); }
+    20% { transform: rotate(-14deg); }
+    40% { transform: rotate(14deg); }
+    60% { transform: rotate(-12deg); }
+    80% { transform: rotate(12deg); }
+`;
+
 export const HeaderWrapper = styled.header`
-    margin-top: -183.5px;
+    margin-top: -184px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -45,7 +53,7 @@ export const NavigationTabs = styled.nav`
     background-color: transparent;
 `;
 
-export const NavigationTabButtons = styled.button<{ $active: boolean; $hovered: boolean; $anotherHovered: boolean; }>`
+export const NavigationTabButtons = styled.button<{ $active: boolean; $hovered: boolean; }>`
     padding: 15px;
     height: auto;
     display: flex;
@@ -53,6 +61,7 @@ export const NavigationTabButtons = styled.button<{ $active: boolean; $hovered: 
     align-items: center;
     justify-content: center;
     font-family: "Lato";
+    font-weight: 700;
     font-size: 16px;
     cursor: pointer;
     outline: none;
@@ -60,24 +69,45 @@ export const NavigationTabButtons = styled.button<{ $active: boolean; $hovered: 
     border-top-left-radius: 14px;
     border-top-right-radius: 14px;
     background-color: transparent;
-    transition: font-weight 0.3s, color 0.3s ease, background-color 0.3s ease;
+    position: relative;
 
-    cursor: ${ ({ $active, $anotherHovered }) => $active && !$anotherHovered ? "default" : "pointer" };
-    font-weight: ${ ({ $active, $anotherHovered }) => $active && !$anotherHovered ? 700 : 500 };
-    color: ${ ({ $active, $anotherHovered }) => $active && !$anotherHovered ? "#223463" : "#F0F0F5" };
-    background-color: ${ ({ $active, $anotherHovered }) => $active && !$anotherHovered ? "#F0F0F5" : "#223463" };
+    cursor: ${ ({ $active }) => $active ? "default" : "pointer" };
+    color: ${ ({ $active }) => $active ? "#223463" : "#F0F0F5" };
+    background-color: ${ ({ $active }) => $active ? "#F0F0F5" : "#223463" };
 
         &:hover {
-            ${ ({ $active }) => !$active && `
-                font-weight: 700;
-                color: #223463;
-                background-color: #F0F0F5;
-            ` }
+            svg {
+                animation: ${ navigationTabIconAnimation } 0.6s ease-in-out;
+            }
         }
 
             svg {
                 stroke: #1C70E9;
             }
+
+                &::before, &::after {
+                    content: "";
+                    height: 14px;
+                    width: 14px;
+                    position: absolute;
+                    bottom: 0px;
+                    pointer-events: none;
+                    opacity: 0;
+                }
+                &::before {
+                    left: -14px;
+                    border-radius: 0 0 14px 0;
+
+                    box-shadow: 5px 5px 0 5px ${ ({ $active }) => $active ? "#F0F0F5" : "transparent" };
+                }
+                &::after {
+                    right: -14px;
+                    border-radius: 0 0 0 14px;
+
+                    box-shadow: -5px 5px 0 5px ${ ({ $active }) => $active ? "#F0F0F5" : "transparent" };
+                }
+
+    ${ ({ $active, $hovered }) => { const showCurves = $active ?? $hovered; return ` z-index: 2; &::before, &::after { opacity: ${ showCurves ? 1 : 0 }; transform: translateY(${ showCurves ? "0" : "100%" }); }`; } };
 `;
 
 export const NavigationTabButtonText = styled.span<NavigationTabProps>`

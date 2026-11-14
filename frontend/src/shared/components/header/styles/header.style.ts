@@ -1,5 +1,13 @@
-import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
+import styled, { keyframes } from 'styled-components';
+
+const headerIconAnimation = keyframes`
+  0%, 100% { transform: rotate(0deg); }
+  20% { transform: rotate(-14deg); }
+  40% { transform: rotate(14deg); }
+  60% { transform: rotate(-12deg); }
+  80% { transform: rotate(12deg); }
+`;
 
 export const Container = styled.header`
   padding: 20px 30px 160px 30px;
@@ -41,41 +49,28 @@ export const NavItem = styled(NavLink)`
   justify-content: center;
   column-gap: 7.5px;
   font-family: "Lato";
-  font-weight: 400;
+  font-weight: 700;
   font-size: 16px;
   color: #F0F0F5;
   border-radius: 14px;
   transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
 
-    &:not(.active):hover {
-      font-weight: 700;
-      color: #223463;
-      background-color: #F0F0F5;
-      animation: menuEffect 0.6s ease-in-out;
-    }
-    &.active {
-      font-weight: 700;
-      color: #223463;
-      background-color: #F0F0F5;
-    }
-
-      svg {
+    svg {
         stroke: #1C70E9;
-      }
+    }
 
-        @keyframes menuEffect {
-          0% {
-            transform: scale(1.08);
-          }
-
-          50% {
-            transform: scale(0.95);
-          }
-
-          100% {
-            transform: scale(1);
-          }
+      &:not(.active):hover {
+        svg {
+          animation: ${ headerIconAnimation } 0.6s ease-in-out;
         }
+      }
+      &.active {
+        font-weight: 700;
+        color: #223463;
+        background-color: #F0F0F5;
+        cursor: default;
+        pointer-events: none;
+      }
 `;
 
 export const UserContainer = styled.div`
