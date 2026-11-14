@@ -1,3 +1,4 @@
+import { TagPlus } from 'lucide-react';
 import { styled } from 'styled-components';
 
 import { DrawerOverlayProps } from '../interfaces/drawerOverlayProps.interface';
@@ -170,16 +171,58 @@ export const Legend = styled.legend`
     color: #171719;
 `;
 
-export const Tip = styled.span`
+export const VariableTipButton = styled.button`
+    padding: 15px;
     margin-left: auto;
-    padding: 7.5px;
-    font-family: "Lato";
-    font-weight: 700;
-    font-size: 15px;
+    height: 55px;
+    width: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    font-family: "Inter";
+    font-weight: 400;
+    font-size: 16px;
+    border: none;
+    border-radius: 14px;
     color: #FF6B00;
-    background: rgba(255, 107, 0, 0.25);
-    border-radius: 7px;
-    pointer-events: none;
+    background: transparent;
+    cursor: pointer;
+    transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
+
+        &:hover {
+            font-weight: 700;
+            color: #F0F0F5;
+            background-color: #FF6B00;
+            animation: VariableButtonEffect 0.6s ease-in-out;
+        }
+
+            svg {
+                stroke: currentColor;
+            }
+
+                @keyframes VariableButtonEffect {
+                    0% {
+                        transform: scale(1.08);
+                    }
+
+                    50% {
+                        transform: scale(0.95);
+                    }
+
+                    100% {
+                        transform: scale(1);
+                    }
+                }
+`;
+
+export const VariableTipButtonIcon = styled(TagPlus)`
+    height: 25px;
+    width: 25px;
+`;
+
+export const VariableTipButtonText = styled.span`
+    margin-left: 7.5px;
 `;
 
 export const FieldWrapper = styled.div`

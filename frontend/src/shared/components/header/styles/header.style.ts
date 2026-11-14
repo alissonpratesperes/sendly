@@ -107,7 +107,7 @@ export const UserName = styled.h1`
 export const UserCompany = styled.h1`
   margin-top: 7.5px;
   font-family: "Inter";
-  font-weight: 400;
+  font-weight: 700;
   font-size: 14px;
   color: #F0F0F5;
 `;

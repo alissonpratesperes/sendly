@@ -29,9 +29,9 @@ export const SessionSubtitle = styled.span`
     margin-bottom: 30px;
     align-self: flex-start;
     font-family: "Inter";
-    font-weight: 500;
+    font-weight: 700;
     font-size: 18px;
-    color: #1C70E9;
+    color: #F0F0F5;
 `;
 
 export const NavigationTabs = styled.nav`
@@ -62,6 +62,7 @@ export const NavigationTabButtons = styled.button<{ $active: boolean; $hovered: 
     background-color: transparent;
     transition: font-weight 0.3s, color 0.3s ease, background-color 0.3s ease;
 
+    cursor: ${ ({ $active, $anotherHovered }) => $active && !$anotherHovered ? "default" : "pointer" };
     font-weight: ${ ({ $active, $anotherHovered }) => $active && !$anotherHovered ? 700 : 500 };
     color: ${ ({ $active, $anotherHovered }) => $active && !$anotherHovered ? "#223463" : "#F0F0F5" };
     background-color: ${ ({ $active, $anotherHovered }) => $active && !$anotherHovered ? "#F0F0F5" : "#223463" };
@@ -71,7 +72,7 @@ export const NavigationTabButtons = styled.button<{ $active: boolean; $hovered: 
                 font-weight: 700;
                 color: #223463;
                 background-color: #F0F0F5;
-            `}
+            ` }
         }
 
             svg {

@@ -1,6 +1,6 @@
 import * as z from 'zod';
 import { toast } from 'react-toastify';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import { Create, Update } from '../services/template.service';
 import Toast from '../../../shared/components/toast/screens/Toast';
@@ -18,9 +18,29 @@ export const TemplateForm: React.FC<FormProps<TemplateFormData>> = ({ initialVal
 
     const [templateImage, setTemplateImage] = useState<File | undefined>();
     const [existingImage, setExistingImage] = useState<string | undefined>();
+    const [activeField, setActiveField] = useState<keyof TemplateContentFields>("header");
     const [formData, setFormData] = useState<TemplateFormData>({ companyId: 0, name: "", content: { body: [], }, });
     const [templateFields, setTemplateFields] = useState<TemplateContentFields>({ header: "", body: "", footer: "", });
 
+    const templateFormInputRefs = { header: useRef<HTMLInputElement>(null), body: useRef<HTMLTextAreaElement>(null), footer: useRef<HTMLInputElement>(null), };
+
+    const handleInsertTemplateVariable = () => {
+        const currentValue = templateFields[activeField];
+
+        if (currentValue.includes("{{name}}")) {
+            return;
+        }
+
+        setTemplateFields(previous => ({
+            ...previous,
+
+            [activeField]: currentValue + "{{name}}",
+        }));
+
+        requestAnimationFrame(() => {
+            templateFormInputRefs[activeField].current?.focus();
+        });
+    }
     const handleChange = <T,>(changeEvent: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, setState: React.Dispatch<React.SetStateAction<T>>) => {
         const { name, value } = changeEvent.target;
 
@@ -148,22 +168,22 @@ export const TemplateForm: React.FC<FormProps<TemplateFormData>> = ({ initialVal
             </Styled.FieldWrapper>
 
             <Styled.Fieldset>
-                <Styled.Legend> Conteúdo { !disabled && (<Styled.Tip> Variáveis permitidas: { "{{ name }}" } </Styled.Tip>) } </Styled.Legend>
+                <Styled.Legend> Conteúdo { !disabled && (<Styled.VariableTipButton type="button" onClick={ handleInsertTemplateVariable}> <Styled.VariableTipButtonIcon/> <Styled.VariableTipButtonText> { "{{name}}" } </Styled.VariableTipButtonText> </Styled.VariableTipButton>) } </Styled.Legend>
 
                 <Styled.FieldWrapper>
                     <Styled.Label htmlFor="header"> Cabeçalho </Styled.Label>
 
-                    <Styled.Input id="header" name="header" placeholder="Digite o cabeçalho do template" value={ templateFields.header } onChange={ (event) => handleChange(event, setTemplateFields) } disabled={ disabled }/>
+                    <Styled.Input id="header" name="header" placeholder="Digite o cabeçalho do template" value={ templateFields.header } onChange={ (event) => handleChange(event, setTemplateFields) } disabled={ disabled } ref={ templateFormInputRefs.header } onFocus={ () => setActiveField("header") }/>
                 </Styled.FieldWrapper>
                 <Styled.FieldWrapper>
                     <Styled.TextareaWrapper>
-                        <Styled.Textarea id="body" name="body" placeholder="Digite o corpo do template" value={ templateFields.body } onChange={ (event) => handleChange(event, setTemplateFields) } disabled={ disabled }/>
+                        <Styled.Textarea id="body" name="body" placeholder="Digite o corpo do template" value={ templateFields.body } onChange={ (event) => handleChange(event, setTemplateFields) } disabled={ disabled } ref={ templateFormInputRefs.body } onFocus={ () => setActiveField("body") }/>
                     </Styled.TextareaWrapper>
                 </Styled.FieldWrapper>
                 <Styled.FieldWrapper>
                     <Styled.Label htmlFor="footer"> Rodapé </Styled.Label>
 
-                    <Styled.Input id="footer" name="footer" placeholder="Digite o rodapé do template" value={ templateFields.footer } onChange={ (event) => handleChange(event, setTemplateFields) } disabled={ disabled }/>
+                    <Styled.Input id="footer" name="footer" placeholder="Digite o rodapé do template" value={ templateFields.footer } onChange={ (event) => handleChange(event, setTemplateFields) } disabled={ disabled } ref={ templateFormInputRefs.footer } onFocus={ () => setActiveField("footer") }/>
                 </Styled.FieldWrapper>
 
                 <Uploader value={ templateImage } existingImage={ existingImage } onRemoveExistingImage={ () => { setExistingImage(undefined); } } onChange={ (file) => { if (file instanceof File) { setTemplateImage(file); } else { setTemplateImage(undefined); } } } blockRemove={ disabled }/>
