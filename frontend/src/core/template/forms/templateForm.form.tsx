@@ -1,6 +1,6 @@
 import * as z from 'zod';
 import { toast } from 'react-toastify';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, Fragment } from 'react';
 
 import { Create, Update } from '../services/template.service';
 import Toast from '../../../shared/components/toast/screens/Toast';
@@ -12,10 +12,13 @@ import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
 import { TemplateContentFields } from '../interfaces/templateContentFields.interface';
 import { TemplateFormData, TemplateFormSchema } from '../schemas/templateFormSchema.schema';
 import { getAuthenticationStorage } from '../../../shared/utils/authenticationStorage.util';
+import { WhatsAppPreview } from '../../../shared/components/whatsAppPreview/screens/WhatsAppPreview';
 
 export const TemplateForm: React.FC<FormProps<TemplateFormData>> = ({ initialValues, disabled = false, onSubmit, onLoadingChange, }) => {
     const { userInformation } = getAuthenticationStorage();
 
+    const [showPreview, setShowPreview] = useState(false);
+    const [closingPreview, setClosingPreview] = useState(false);
     const [templateImage, setTemplateImage] = useState<File | undefined>();
     const [existingImage, setExistingImage] = useState<string | undefined>();
     const [activeField, setActiveField] = useState<keyof TemplateContentFields>("header");
@@ -23,7 +26,18 @@ export const TemplateForm: React.FC<FormProps<TemplateFormData>> = ({ initialVal
     const [templateFields, setTemplateFields] = useState<TemplateContentFields>({ header: "", body: "", footer: "", });
 
     const templateFormInputRefs = { header: useRef<HTMLInputElement>(null), body: useRef<HTMLTextAreaElement>(null), footer: useRef<HTMLInputElement>(null), };
+    const hasReachedVariableLimit = Object.values(templateFields).every(field => field.includes("{{name}}"));
 
+    const handleTogglePreview = () => {
+        if (showPreview) {
+            setClosingPreview(true);
+
+            return;
+        }
+
+        setShowPreview(true);
+        setClosingPreview(false);
+    }
     const handleInsertTemplateVariable = () => {
         const currentValue = templateFields[activeField];
 
@@ -160,34 +174,46 @@ export const TemplateForm: React.FC<FormProps<TemplateFormData>> = ({ initialVal
     }, [ initialValues, ]);
 
     return (
-        <Styled.Form id="template-form" onSubmit={ handleSubmit }>
-            <Styled.FieldWrapper>
-                <Styled.Label htmlFor="name"> Nome </Styled.Label>
+        <Fragment>
+            { showPreview && ( <WhatsAppPreview header={ templateFields.header } body={ templateFields.body } footer={ templateFields.footer } image={ templateImage ?? existingImage } isClosing={ closingPreview } onAnimationEnd={ () => { if (closingPreview) { setShowPreview(false); setClosingPreview(false); } } }/> ) }
 
-                <Styled.Input id="name" name="name" placeholder="Digite o nome do template" value={ formData.name } onChange={ (event) => handleChange(event, setFormData) } disabled={ disabled }/>
-            </Styled.FieldWrapper>
-
-            <Styled.Fieldset>
-                <Styled.Legend> Conteúdo { !disabled && (<Styled.VariableTipButton type="button" onClick={ handleInsertTemplateVariable}> <Styled.VariableTipButtonIcon/> <Styled.VariableTipButtonText> { "{{name}}" } </Styled.VariableTipButtonText> </Styled.VariableTipButton>) } </Styled.Legend>
-
+            <Styled.Form id="template-form" onSubmit={ handleSubmit }>
                 <Styled.FieldWrapper>
-                    <Styled.Label htmlFor="header"> Cabeçalho </Styled.Label>
+                    <Styled.Label htmlFor="name"> Nome </Styled.Label>
 
-                    <Styled.Input id="header" name="header" placeholder="Digite o cabeçalho do template" value={ templateFields.header } onChange={ (event) => handleChange(event, setTemplateFields) } disabled={ disabled } ref={ templateFormInputRefs.header } onFocus={ () => setActiveField("header") }/>
-                </Styled.FieldWrapper>
-                <Styled.FieldWrapper>
-                    <Styled.TextareaWrapper>
-                        <Styled.Textarea id="body" name="body" placeholder="Digite o corpo do template" value={ templateFields.body } onChange={ (event) => handleChange(event, setTemplateFields) } disabled={ disabled } ref={ templateFormInputRefs.body } onFocus={ () => setActiveField("body") }/>
-                    </Styled.TextareaWrapper>
-                </Styled.FieldWrapper>
-                <Styled.FieldWrapper>
-                    <Styled.Label htmlFor="footer"> Rodapé </Styled.Label>
-
-                    <Styled.Input id="footer" name="footer" placeholder="Digite o rodapé do template" value={ templateFields.footer } onChange={ (event) => handleChange(event, setTemplateFields) } disabled={ disabled } ref={ templateFormInputRefs.footer } onFocus={ () => setActiveField("footer") }/>
+                    <Styled.Input id="name" name="name" placeholder="Digite o nome do template" value={ formData.name } onChange={ (event) => handleChange(event, setFormData) } disabled={ disabled }/>
                 </Styled.FieldWrapper>
 
-                <Uploader value={ templateImage } existingImage={ existingImage } onRemoveExistingImage={ () => { setExistingImage(undefined); } } onChange={ (file) => { if (file instanceof File) { setTemplateImage(file); } else { setTemplateImage(undefined); } } } blockRemove={ disabled }/>
-            </Styled.Fieldset>
-        </Styled.Form>
+                <Styled.Fieldset>
+                    <Styled.Legend>
+                        <Styled.WhatsAppPreviewToggleButton type="button" onClick={ handleTogglePreview } $showPreview={ showPreview }>
+                            { !showPreview ? <Styled.WhatsAppPreviewToggleButtonPlayIcon/> : <Styled.WhatsAppPreviewToggleButtonPauseIcon/> }
+
+                            <Styled.WhatsAppPreviewToggleButtonText> Preview </Styled.WhatsAppPreviewToggleButtonText>
+                        </Styled.WhatsAppPreviewToggleButton>
+
+                        { !disabled && (<Styled.VariableTipButton $disabled={ hasReachedVariableLimit } disabled={ disabled || hasReachedVariableLimit } type="button" onClick={ handleInsertTemplateVariable }> <Styled.VariableTipButtonIcon/> <Styled.VariableTipButtonText> { "{{name}}" } </Styled.VariableTipButtonText> </Styled.VariableTipButton>) }
+                    </Styled.Legend>
+
+                    <Styled.FieldWrapper>
+                        <Styled.Label htmlFor="header"> Cabeçalho </Styled.Label>
+
+                        <Styled.Input id="header" name="header" placeholder="Digite o cabeçalho do template" value={ templateFields.header } onChange={ (event) => handleChange(event, setTemplateFields) } disabled={ disabled } ref={ templateFormInputRefs.header } onFocus={ () => setActiveField("header") }/>
+                    </Styled.FieldWrapper>
+                    <Styled.FieldWrapper>
+                        <Styled.TextareaWrapper>
+                            <Styled.Textarea id="body" name="body" placeholder="Digite o corpo do template" value={ templateFields.body } onChange={ (event) => handleChange(event, setTemplateFields) } disabled={ disabled } ref={ templateFormInputRefs.body } onFocus={ () => setActiveField("body") }/>
+                        </Styled.TextareaWrapper>
+                    </Styled.FieldWrapper>
+                    <Styled.FieldWrapper>
+                        <Styled.Label htmlFor="footer"> Rodapé </Styled.Label>
+
+                        <Styled.Input id="footer" name="footer" placeholder="Digite o rodapé do template" value={ templateFields.footer } onChange={ (event) => handleChange(event, setTemplateFields) } disabled={ disabled } ref={ templateFormInputRefs.footer } onFocus={ () => setActiveField("footer") }/>
+                    </Styled.FieldWrapper>
+
+                    <Uploader value={ templateImage } existingImage={ existingImage } onRemoveExistingImage={ () => { setExistingImage(undefined); } } onChange={ (file) => { if (file instanceof File) { setTemplateImage(file); } else { setTemplateImage(undefined); } } } blockRemove={ disabled }/>
+                </Styled.Fieldset>
+            </Styled.Form>
+        </Fragment>
     );
 }

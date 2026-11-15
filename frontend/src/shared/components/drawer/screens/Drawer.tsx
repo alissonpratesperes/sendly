@@ -9,7 +9,7 @@ export const Drawer: React.FC<DrawerProps> = ({ isOpen, isSubmitting = false, fo
 
     return (
         <Fragment>
-            <Styled.DrawerOverlay $open={ isOpen && !isClosing } onClick={ () => setIsClosing(true) }/>
+            <Styled.DrawerOverlay $open={ isOpen && !isClosing }/>
 
                 { isOpen && (
                     <Styled.Drawer $open={ !isClosing } onAnimationEnd={ (event) => { if (event.currentTarget === event.target && isClosing) { onClose(); setIsClosing(false); } } }>

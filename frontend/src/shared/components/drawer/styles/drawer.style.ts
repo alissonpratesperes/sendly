@@ -1,5 +1,5 @@
 import { css, styled } from 'styled-components';
-import { AlertCircle, Ban, CircleAlert, CircleCheck, DatabaseCheck, HardDriveUpload, Save, ScrollText, SquarePen, TagPlus, X } from 'lucide-react';
+import { AlertCircle, Ban, CircleAlert, CircleCheck, DatabaseCheck, HardDriveUpload, Pause, Play, Save, ScrollText, SquarePen, TagPlus, X } from 'lucide-react';
 
 import { DrawerOverlayProps } from '../interfaces/drawerOverlayProps.interface';
 import { buttonHoverAnimation, drawerCloseAnimation, drawerOpenAnimation } from '../../../styles/Global.style';
@@ -137,7 +137,7 @@ export const Legend = styled.legend`
     color: #171719;
 `;
 
-export const VariableTipButton = styled.button`
+export const VariableTipButton = styled.button<{ $disabled: boolean }>`
     padding: 15px;
     margin-left: auto;
     height: 55px;
@@ -153,10 +153,12 @@ export const VariableTipButton = styled.button`
     border-radius: 14px;
     color: #FF6B00;
     background: transparent;
-    cursor: pointer;
     transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
 
-        &:hover {
+    opacity: ${ ({ $disabled }) => $disabled ? "0.5" : "1" };
+    cursor: ${ ({ $disabled }) => $disabled ? "not-allowed" : "pointer" };
+
+        &:hover:not(:disabled) {
             font-weight: 700;
             color: #F0F0F5;
             background-color: #FF6B00;
@@ -520,4 +522,51 @@ export const ImportResultErrorMessage = styled.span`
     font-weight: 400;
     font-size: 12px;
     color: #223463;
+`;
+
+export const WhatsAppPreviewToggleButton = styled.button<{ $showPreview: boolean }>`
+    padding: 15px;
+    height: 55px;
+    width: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    font-family: "Inter";
+    font-weight: 400;
+    font-size: 16px;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
+
+    font-weight: ${ ({ $showPreview }) => $showPreview ? "700" : "400" };
+    color: ${ ({ $showPreview }) => $showPreview ? "#F0F0F5" : "#075E54" };
+    background-color: ${ ({ $showPreview }) => $showPreview ? "#075E54" : "transparent" };
+
+        &:hover {
+            font-weight: 700;
+            color: #F0F0F5;
+            background-color: #075E54;
+
+            animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
+        }
+
+            svg {
+                stroke: strokeColor;
+            }
+`;
+
+export const WhatsAppPreviewToggleButtonPlayIcon = styled(Play)`
+    height: 25px;
+    width: 25px;
+`;
+
+export const WhatsAppPreviewToggleButtonPauseIcon = styled(Pause)`
+    height: 25px;
+    width: 25px;
+`;
+
+export const WhatsAppPreviewToggleButtonText = styled.span`
+    margin-left: 7.5px;
 `;

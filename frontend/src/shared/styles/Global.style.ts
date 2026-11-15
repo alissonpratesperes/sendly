@@ -39,6 +39,24 @@ export const modalCloseAnimation = keyframes`
     100% { transform: translateY(100px) scale(0.9); }
 `;
 
+export const whatsAppPreviewOpenAnimation = keyframes`
+    0% { transform: scale(0.75) translateX(40px); opacity: 0; }
+    60% { transform: scale(1.03) translateX(0); opacity: 1; }
+    100% { transform: scale(1) translateX(0); opacity: 1; }
+`;
+
+export const whatsAppPreviewCloseAnimation = keyframes`
+    0% { transform: scale(1) translateX(0); opacity: 1; }
+    40% { transform: scale(1.03) translateX(0); opacity: 1; }
+    100% { transform: scale(0.75) translateX(40px); opacity: 0; }
+`;
+
+export const whatsAppMesssagePopAnimation = keyframes`
+    0% { transform: scale(1.08); }
+    50% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+`;
+
 export const GlobalStyle = createGlobalStyle`
     * {
         margin: 0px 0px 0px 0px;
