@@ -1,5 +1,43 @@
 import isPropValid from '@emotion/is-prop-valid';
-import styled, { createGlobalStyle, css } from 'styled-components';
+import styled, { createGlobalStyle, css, keyframes } from 'styled-components';
+
+export const headerIconAnimation = keyframes`
+  0%, 100% { transform: rotate(0deg); }
+  20% { transform: rotate(-14deg); }
+  40% { transform: rotate(14deg); }
+  60% { transform: rotate(-12deg); }
+  80% { transform: rotate(12deg); }
+`;
+
+export const buttonHoverAnimation = keyframes`
+    0% { transform: scale(1.08); }
+    50% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+`;
+
+export const drawerOpenAnimation = keyframes`
+    0% { transform: translateX(calc(100% + 30px)); }
+    70% { transform: translateX(-15px); }
+    100% { transform: translateX(0); }
+`;
+
+export const drawerCloseAnimation = keyframes`
+    0% { transform: translateX(0); }
+    30% { transform: translateX(-15px); }
+    100% { transform: translateX(calc(100% + 30px)); }
+`;
+
+export const modalOpenAnimation = keyframes`
+    0% { transform: translateY(100px) scale(0.9); }
+    70% { transform: translateY(-10px) scale(1.02); }
+    100% { transform: translateY(0) scale(1); }
+`;
+
+export const modalCloseAnimation = keyframes`
+    0% { transform: translateY(0) scale(1); }
+    30% { transform: translateY(-10px) scale(1.02); }
+    100% { transform: translateY(100px) scale(0.9); }
+`;
 
 export const GlobalStyle = createGlobalStyle`
     * {

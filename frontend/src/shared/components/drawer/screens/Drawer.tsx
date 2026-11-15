@@ -13,7 +13,7 @@ export const Drawer: React.FC<DrawerProps> = ({ isOpen, isSubmitting = false, fo
             <Styled.DrawerOverlay $open={ isOpen && !isClosing } onClick={ () => setIsClosing(true) }/>
 
                 { isOpen && (
-                    <Styled.Drawer $open={ !isClosing } onAnimationEnd={ (event) => { if (event.animationName === "drawerClose") { onClose(); setIsClosing(false); } } }>
+                    <Styled.Drawer $open={ !isClosing } onAnimationEnd={ (event) => { if (event.currentTarget === event.target && isClosing) { onClose(); setIsClosing(false); } } }>
                         <Styled.Header>
                             <Styled.Title> { title } </Styled.Title>
 

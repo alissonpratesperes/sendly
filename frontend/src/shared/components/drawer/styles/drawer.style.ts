@@ -1,7 +1,8 @@
 import { TagPlus } from 'lucide-react';
-import { styled } from 'styled-components';
+import { css, styled } from 'styled-components';
 
 import { DrawerOverlayProps } from '../interfaces/drawerOverlayProps.interface';
+import { buttonHoverAnimation, drawerCloseAnimation, drawerOpenAnimation } from '../../../styles/Global.style';
 
 export const DrawerOverlay = styled.div<DrawerOverlayProps>`
     position: fixed;
@@ -29,34 +30,7 @@ export const Drawer = styled.div<{ $open: boolean; }>`
     border-radius: 26px;
     z-index: 1000;
 
-    animation: ${ ({ $open }) => $open ? "drawerOpen 0.6s ease-in-out forwards" : "drawerClose 0.6s ease-in-out forwards" };
-
-        @keyframes drawerOpen {
-            0% {
-                transform: translateX(calc(100% + 30px));
-            }
-
-            70% {
-                transform: translateX(-15px);
-            }
-
-            100% {
-                transform: translateX(0);
-            }
-        }
-        @keyframes drawerClose {
-            0% {
-                transform: translateX(0);
-            }
-
-            30% {
-                transform: translateX(-15px);
-            }
-
-            100% {
-                transform: translateX(calc(100% + 30px));
-            }
-        }
+    animation: ${ ({ $open }) => $open ? css`${ drawerOpenAnimation } 0.6s ease-in-out forwards` : css`${ drawerCloseAnimation } 0.6s ease-in-out forwards` };
 `;
 
 export const Header = styled.div`
@@ -91,26 +65,13 @@ export const CloseButton = styled.button`
         &:hover {
             color: #FFFFFF;
             background-color: #223463;
-            animation: closeButtonEffect 0.6s ease-in-out;
+
+            animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
         }
 
             svg {
                 stroke: currentColor;
             }
-
-                @keyframes closeButtonEffect {
-                    0% {
-                        transform: scale(1.08);
-                    }
-
-                    50% {
-                        transform: scale(0.95);
-                    }
-
-                    100% {
-                        transform: scale(1);
-                    }
-                }
 `;
 
 export const Content = styled.div`
@@ -194,26 +155,13 @@ export const VariableTipButton = styled.button`
             font-weight: 700;
             color: #F0F0F5;
             background-color: #FF6B00;
-            animation: VariableButtonEffect 0.6s ease-in-out;
+
+            animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
         }
 
             svg {
                 stroke: currentColor;
             }
-
-                @keyframes VariableButtonEffect {
-                    0% {
-                        transform: scale(1.08);
-                    }
-
-                    50% {
-                        transform: scale(0.95);
-                    }
-
-                    100% {
-                        transform: scale(1);
-                    }
-                }
 `;
 
 export const VariableTipButtonIcon = styled(TagPlus)`
@@ -241,10 +189,11 @@ export const FieldWrapper = styled.div`
             transition: transform 0.3s ease, opacity 0.3s ease;
             pointer-events: none;
         }
-        &:focus-within::before {
-            opacity: 1;
-            transform: scale(1);
-        }
+
+            &:focus-within::before {
+                opacity: 1;
+                transform: scale(1);
+            }
 `;
 
 export const Label = styled.label`
@@ -396,26 +345,13 @@ export const FooterButton = styled.button<{ $variant?: "primary" | "secondary"; 
             font-weight: 700;
             color: #F0F0F5;
             background-color: #223463;
-            animation: footerButtonEffect 0.6s ease-in-out;
+
+            animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
         }
 
             svg {
                 stroke: currentColor;
             }
-
-                @keyframes footerButtonEffect {
-                    0% {
-                        transform: scale(1.08);
-                    }
-
-                    50% {
-                        transform: scale(0.95);
-                    }
-
-                    100% {
-                        transform: scale(1);
-                    }
-                }
 `;
 
 export const FooterButtonText = styled.span`

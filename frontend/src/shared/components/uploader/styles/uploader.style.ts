@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 
+import { buttonHoverAnimation } from '../../../styles/Global.style';
 import { DropzoneProps } from '../interfaces/dropzoneProps.interface';
 
 export const UploaderWrapper = styled.div`
@@ -177,7 +178,8 @@ export const DraggedFilesActionButton = styled.button`
         &:hover {
             color: #FF6B00;
             background: rgba(255, 107, 0, 0.25);
-            animation: uploaderButtonsEffect 0.6s ease-in-out;
+
+            animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
         }
 
             &:first-child {
@@ -197,18 +199,4 @@ export const DraggedFilesActionButton = styled.button`
                 svg {
                     stroke: currentColor;
                 }
-
-                    @keyframes uploaderButtonsEffect {
-                        0% {
-                            transform: scale(1.08);
-                        }
-
-                        50% {
-                            transform: scale(0.95);
-                        }
-
-                        100% {
-                            transform: scale(1);
-                        }
-                    }
 `;

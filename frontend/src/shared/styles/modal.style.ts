@@ -1,4 +1,6 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+
+import { buttonHoverAnimation, modalCloseAnimation, modalOpenAnimation } from './Global.style';
 
 export const ModalOverlay = styled.div<{ $open: boolean }>`
     position: fixed;
@@ -23,34 +25,7 @@ export const ModalWrapper = styled.div<{ $open: boolean }>`
     border-radius: 26px;
     box-sizing: border-box;
 
-    animation: ${ ({ $open }) => $open ? "modalOpen 0.6s ease-in-out forwards" : "modalClose 0.6s ease-in-out forwards" };
-
-        @keyframes modalOpen {
-            0% {
-                transform: translateY(100px) scale(0.9);
-            }
-
-            70% {
-                transform: translateY(-10px) scale(1.02);
-            }
-
-            100% {
-                transform: translateY(0) scale(1);
-            }
-        }
-        @keyframes modalClose {
-            0% {
-                transform: translateY(0) scale(1);
-            }
-
-            30% {
-                transform: translateY(-10px) scale(1.02);
-            }
-
-            100% {
-                transform: translateY(100px) scale(0.9);
-            }
-        }
+    animation: ${ ({ $open }) => $open ? css`${ modalOpenAnimation } 0.6s ease-in-out forwards` : css`${ modalCloseAnimation } 0.6s ease-in-out forwards` };
 `;
 
 export const ModalContainer = styled.div`
@@ -89,26 +64,12 @@ export const ModalDismissButton = styled.button`
         &:hover {
             color: #FFFFFF;
             background-color: #223463;
-            animation: closeButtonEffect 0.6s ease-in-out;
+            animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
         }
 
             svg {
                 stroke: currentColor;
             }
-
-                @keyframes closeButtonEffect {
-                    0% {
-                        transform: scale(1.08);
-                    }
-
-                    50% {
-                        transform: scale(0.95);
-                    }
-
-                    100% {
-                        transform: scale(1);
-                    }
-                }
 `;
 
 export const ModalBody = styled.div`
@@ -179,26 +140,13 @@ export const ModalPrimaryButton = styled(ModalButton)`
             font-weight: 700;
             color: #FFFFFF;
             background-color: #223463;
-            animation: footerButtonEffect 0.6s ease-in-out;
+
+            animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
         }
 
             svg {
                 stroke: #1C70E9;
             }
-
-                @keyframes footerButtonEffect {
-                    0% {
-                        transform: scale(1.08);
-                    }
-
-                    50% {
-                        transform: scale(0.95);
-                    }
-
-                    100% {
-                        transform: scale(1);
-                    }
-                }
 `;
 
 export const ModalSecondaryButton = styled(ModalButton)`
@@ -213,26 +161,13 @@ export const ModalSecondaryButton = styled(ModalButton)`
             font-weight: 700;
             color: #FFFFFF;
             background-color: #DC143C;
-            animation: footerButtonEffect 0.6s ease-in-out;
+
+            animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
         }
 
             svg {
                 stroke: currentColor;
             }
-
-                @keyframes footerButtonEffect {
-                    0% {
-                        transform: scale(1.08);
-                    }
-
-                    50% {
-                        transform: scale(0.95);
-                    }
-
-                    100% {
-                        transform: scale(1);
-                    }
-                }
 `;
 
 export const ModalTertiaryButton = styled(ModalButton)`
@@ -248,24 +183,11 @@ export const ModalTertiaryButton = styled(ModalButton)`
             font-weight: 700;
             color: #F0F0F5;
             background-color: #FF6B00;
-            animation: footerButtonEffect 0.6s ease-in-out;
+
+            animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
         }
 
             svg {
                 stroke: currentColor;
             }
-
-                @keyframes footerButtonEffect {
-                    0% {
-                        transform: scale(1.08);
-                    }
-
-                    50% {
-                        transform: scale(0.95);
-                    }
-
-                    100% {
-                        transform: scale(1);
-                    }
-                }
 `;

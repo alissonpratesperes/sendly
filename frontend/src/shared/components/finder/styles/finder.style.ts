@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import { buttonHoverAnimation } from '../../../styles/Global.style';
+
 export const SearchInputWrapper = styled.div<{ $isSystemRoot: boolean; }>`
     margin-bottom: 30px;
     width: 100%;
@@ -91,7 +93,8 @@ export const AddButton = styled.button`
         &:hover {
             color: #FFFFFF;
             background-color: #238636;
-            animation: addButtonEffect 0.6s ease-in-out;
+
+            animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
         }
 
             &:first-child {
@@ -109,20 +112,6 @@ export const AddButton = styled.button`
                 svg {
                     stroke: currentColor;
                 }
-
-                    @keyframes addButtonEffect {
-                        0% {
-                            transform: scale(1.08);
-                        }
-
-                        50% {
-                            transform: scale(0.95);
-                        }
-
-                        100% {
-                            transform: scale(1);
-                        }
-                    }
 `;
 
 export const SearchInputSubmitText = styled.span`

@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
+import { buttonHoverAnimation } from '../../../shared/styles/Global.style';
+
 export const AuthFormContainer = styled.div`
     position: relative;
     height: 100vh;
@@ -139,26 +141,13 @@ export const LoginButton = styled.button`
             font-weight: 700;
             color: #FFFFFF;
             background-color: #223463;
-            animation: logOutButtonEffect 0.6s ease-in-out;
+
+            animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
         }
 
             svg {
                 stroke: currentColor;
             }
-
-                @keyframes logOutButtonEffect {
-                    0% {
-                        transform: scale(1.08);
-                    }
-
-                    50% {
-                        transform: scale(0.95);
-                    }
-
-                    100% {
-                        transform: scale(1);
-                    }
-                }
 `;
 
 export const LoginButtonText = styled.span`
@@ -187,26 +176,13 @@ export const ForgotButton = styled(Link)`
             font-weight: 700;
             color: #FFFFFF;
             background-color: #FF6B00;
-            animation: logOutButtonEffect 0.6s ease-in-out;
+
+            animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
         }
 
             svg {
                 stroke: currentColor;
             }
-
-                @keyframes logOutButtonEffect {
-                    0% {
-                        transform: scale(1.08);
-                    }
-
-                    50% {
-                        transform: scale(0.95);
-                    }
-
-                    100% {
-                        transform: scale(1);
-                    }
-                }
 `;
 
 export const ForgotButtonText = styled.span`

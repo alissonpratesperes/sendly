@@ -10,7 +10,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, entityName, onClose, onConfirm })
     return (
         <Styled.ModalOverlay $open={ isOpen && !isClosing } onClick={ () => setIsClosing(true) }>
             { isOpen && (
-                <Styled.ModalWrapper $open={ !isClosing } onClick={ (event) => event.stopPropagation() } onAnimationEnd={ (event) => { if (event.animationName === "modalClose") { onClose(); setIsClosing(false); } } }>
+                <Styled.ModalWrapper $open={ !isClosing } onClick={ (event) => event.stopPropagation() }  onAnimationEnd={ (event) => { if (event.currentTarget === event.target && isClosing) { onClose(); setIsClosing(false); } } }>
                 <Styled.ModalContainer>
                     <Styled.ModalHeader>
                         <Styled.ModalTitle> Exclusão de cadastro </Styled.ModalTitle>

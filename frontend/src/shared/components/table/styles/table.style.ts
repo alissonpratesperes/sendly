@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 
+import { buttonHoverAnimation } from '../../../styles/Global.style';
 import { BatchStatus } from '../../../../core/batch/enums/batchStatus.enum';
-import { TableListColorFragmentProps } from '../../../interfaces/tableListColorFragmentProps.interface';
 import { BatchSendStatus } from '../../../../core/batch/enums/batchSendStatus.enum';
+import { TableListColorFragmentProps } from '../../../interfaces/tableListColorFragmentProps.interface';
 
 export const TableWrapper = styled.div`
     width: 100%;
@@ -85,7 +86,7 @@ export const TableListBodyRowDataActionButton = styled.button`
             border-bottom-right-radius: 14px;
         }
         &:hover {
-            animation: tableButtonEffect 0.6s ease-in-out;
+            animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
         }
         &:first-child:hover {
             color: #FFFFFF;
@@ -106,20 +107,6 @@ export const TableListBodyRowDataActionButton = styled.button`
             border-radius: 14px;
 
         }
-
-            @keyframes tableButtonEffect {
-                0% {
-                    transform: scale(1.08);
-                }
-
-                50% {
-                    transform: scale(0.95);
-                }
-
-                100% {
-                    transform: scale(1);
-                }
-            }
 `;
 
 export const TableListColorFragment = styled.div<TableListColorFragmentProps>`
@@ -163,7 +150,27 @@ export const ContactNameSpan = styled.span`
 `;
 
 export const WhenInAnotherScreenWrapper = styled.div`
+    width: 100%;
     margin-bottom: 30px;
+    position: relative;
+    box-sizing: border-box;
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: -6px;
+            border-radius: 18px;
+            border: 2px solid #1C70E9;
+            opacity: 0;
+            transform: scale(1.08);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+            &:focus-within::before {
+                opacity: 1;
+                transform: scale(1);
+            }
 `;
 
 export const WhenInMultiSearchContainer = styled.div`

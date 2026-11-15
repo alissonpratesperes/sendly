@@ -1,5 +1,7 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { ArrowBigLeft, ArrowBigRight, Ellipsis } from 'lucide-react';
+
+import { buttonHoverAnimation } from '../../../styles/Global.style';
 
 export const PaginateContainer = styled.div`
     margin-top: 30px;
@@ -35,7 +37,8 @@ export const PaginateButton = styled.button`
         &:hover:not(:disabled) {
             color: #F0F0F5;
             background-color: #223463;
-            animation: paginateButtonEffect 0.6s ease-in-out;
+
+            animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
         }
         &:disabled {
             cursor: not-allowed;
@@ -45,20 +48,6 @@ export const PaginateButton = styled.button`
             svg {
                 stroke: currentColor;
             }
-
-                @keyframes paginateButtonEffect {
-                    0% {
-                        transform: scale(1.08);
-                    }
-
-                    50% {
-                        transform: scale(0.95);
-                    }
-
-                    100% {
-                        transform: scale(1);
-                    }
-                }
 `;
 
 export const PreviousButtonText = styled.span`
@@ -114,33 +103,19 @@ export const PageButton = styled.button<{ $active?: boolean; $anotherHovered: bo
         &:hover {
             animation: none;
         }
+            svg {
+                stroke: currentColor;
+            }
 
-            ${ ({ $active }) => !$active && `
-                &:hover {
-                    font-weight: 700;
-                    color: #FFFFFF;
-                    background-color: #223463;
-                    animation: paginateButtonEffect 0.6s ease-in-out;
+                ${ ({ $active }) => !$active &&
+                    css` &:hover {
+                        font-weight: 700;
+                        color: #FFFFFF;
+                        background-color: #223463;
+
+                        animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
+                    }`
                 }
-            ` }
-
-                svg {
-                    stroke: currentColor;
-                }
-
-                    @keyframes pageButtonEffect {
-                        0% {
-                            transform: scale(1.08);
-                        }
-
-                        50% {
-                            transform: scale(0.95);
-                        }
-
-                        100% {
-                            transform: scale(1);
-                        }
-                    }
 `;
 
 export const NextButtonText = styled.span`

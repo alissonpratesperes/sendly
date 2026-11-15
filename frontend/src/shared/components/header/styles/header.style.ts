@@ -1,13 +1,8 @@
 import { NavLink } from 'react-router-dom';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 
-const headerIconAnimation = keyframes`
-  0%, 100% { transform: rotate(0deg); }
-  20% { transform: rotate(-14deg); }
-  40% { transform: rotate(14deg); }
-  60% { transform: rotate(-12deg); }
-  80% { transform: rotate(12deg); }
-`;
+import { headerIconAnimation, buttonHoverAnimation } from '../../../styles/Global.style';
+
 
 export const Container = styled.header`
   padding: 20px 30px 160px 30px;
@@ -135,26 +130,13 @@ export const WhatsAppButton = styled.button`
     &:hover {
       color: #FFFFFF;
       background: #FF6B00;
-      animation: whatsAppButton 0.6s ease-in-out;
+
+      animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
     }
 
       svg {
         stroke: currentColor;
       }
-
-        @keyframes whatsAppButton {
-          0% {
-            transform: scale(1.08);
-          }
-
-          50% {
-            transform: scale(0.95);
-          }
-
-          100% {
-            transform: scale(1);
-          }
-        }
 `;
 
 export const LogOutButton = styled.button<{ isOnlyAction?: boolean }>`
@@ -174,24 +156,11 @@ export const LogOutButton = styled.button<{ isOnlyAction?: boolean }>`
     &:hover {
       color: #FFFFFF;
       background: #FF6B00;
-      animation: logOutButtonEffect 0.6s ease-in-out;
+
+      animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
     }
 
       svg {
         stroke: currentColor;
       }
-
-        @keyframes logOutButtonEffect {
-          0% {
-            transform: scale(1.08);
-          }
-
-          50% {
-            transform: scale(0.95);
-          }
-
-          100% {
-            transform: scale(1);
-          }
-        }
 `;

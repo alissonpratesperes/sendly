@@ -27,9 +27,9 @@ export const SessionSubtitle = styled.span`
     margin-bottom: 30px;
     align-self: flex-start;
     font-family: "Inter";
-    font-weight: 500;
+    font-weight: 700;
     font-size: 18px;
-    color: #1C70E9;
+    color: #F0F0F5;
 `;
 
 export const IframeContainer = styled.div`
