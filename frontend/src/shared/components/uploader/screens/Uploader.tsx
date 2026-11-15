@@ -1,7 +1,6 @@
 import { toast } from 'react-toastify';
 import { FileRejection, useDropzone } from 'react-dropzone';
 import React, { useCallback, useEffect, useMemo } from 'react';
-import { Upload, ImageUp, FileUp, ImageDown, Eraser, FileDown } from 'lucide-react';
 
 import * as Styled from '../styles/uploader.style';
 import { UploaderItemType } from '../types/uploaderItemType.type';
@@ -168,7 +167,7 @@ const Uploader: React.FC<UploaderProps> = ({ value, existingImage, blockRemove =
 
                     { !hasFile && (
                         <Styled.DropzoneTextContainer>
-                            <Styled.DropzoneUploadIcon> <Upload size={ 25 }/> </Styled.DropzoneUploadIcon>
+                            <Styled.DropzoneUploadArea> <Styled.DropzoneUploadAreaIcon/> </Styled.DropzoneUploadArea>
 
                             <Styled.DropzoneStrongContent> { isDragActive ? `Solte ${ isCsv ? "o arquivo CSV" : "a imagem" } aqui` : `Arraste e solte ${ isCsv ? "o arquivo CSV" : "a imagem" }` } </Styled.DropzoneStrongContent>
 
@@ -183,7 +182,7 @@ const Uploader: React.FC<UploaderProps> = ({ value, existingImage, blockRemove =
                 <Styled.DraggedFilesList>
                     <Styled.DraggedFilesListItem>
                         <Styled.ListItemContainer>
-                            <Styled.DraggedFileIcon> { isCsv ? <FileUp size={ 25 }/> : <ImageUp size={ 25 }/> } </Styled.DraggedFileIcon>
+                            <Styled.DraggedFileArea> { isCsv ? <Styled.DraggedFileAreaFileUpIcon/> : <Styled.DraggedFileAreaImageUpIcon/> } </Styled.DraggedFileArea>
 
                             <Styled.DraggedFileData>
                                 <Styled.DraggedFileName> { getFileName(value) } </Styled.DraggedFileName>
@@ -193,9 +192,9 @@ const Uploader: React.FC<UploaderProps> = ({ value, existingImage, blockRemove =
                         </Styled.ListItemContainer>
 
                         <Styled.DraggedFilesActionsContainer>
-                            <Styled.DraggedFilesActionButton type="button" onClick={ downloadFile }> { isCsv ? <FileDown size={ 25 }/> : <ImageDown size={ 25 }/> } </Styled.DraggedFilesActionButton>
+                            <Styled.DraggedFilesActionButton type="button" onClick={ downloadFile }> { isCsv ? <Styled.DraggedFilesActionButtonFileDownIcon/> : <Styled.DraggedFilesActionButtonImageDownIcon/> } </Styled.DraggedFilesActionButton>
 
-                            { !blockRemove && (<Styled.DraggedFilesActionButton type="button" onClick={ onFileRemove }> <Eraser size={ 25 }/> </Styled.DraggedFilesActionButton>) }
+                            { !blockRemove && (<Styled.DraggedFilesActionButton type="button" onClick={ onFileRemove }> <Styled.DraggedFilesActionButtonEraserIcon/> </Styled.DraggedFilesActionButton>) }
                         </Styled.DraggedFilesActionsContainer>
                     </Styled.DraggedFilesListItem>
                 </Styled.DraggedFilesList>

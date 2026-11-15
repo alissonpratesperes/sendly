@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { EyeIcon, EyeOffIcon, UserLock } from 'lucide-react';
 
 import { buttonHoverAnimation } from '../../../shared/styles/Global.style';
 
@@ -106,6 +107,20 @@ export const EyeButton = styled.button`
     background: transparent;
     cursor: pointer;
     z-index: 2;
+
+        svg {
+            stroke: #FF6B00;
+        }
+`;
+
+export const EyeButtonIconOpened = styled(EyeIcon)`
+    height: 25px;
+    width: 25px;
+`;
+
+export const EyeButtonIconClosed = styled(EyeOffIcon)`
+    height: 25px;
+    width: 25px;
 `;
 
 export const PasswordButton = styled.button`
@@ -135,8 +150,13 @@ export const PasswordButton = styled.button`
         }
 
             svg {
-                stroke: currentColor;
+                stroke: #1C70E9;
             }
+`;
+
+export const PasswordButtonIcon = styled(UserLock)`
+    height: 25px;
+    width: 25px;
 `;
 
 export const PasswordButtonText = styled.span`

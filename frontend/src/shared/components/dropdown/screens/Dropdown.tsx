@@ -1,8 +1,7 @@
-import { Funnel } from 'lucide-react';
 import Select, { components, type ControlProps } from 'react-select';
 
-import { SelectCommonStyles } from '../styles/dropdown.style';
 import { DropdownProps } from '../interfaces/dropdownProps.interface';
+import { SelectCommonStyles, SelectFilterIcon } from '../styles/dropdown.style';
 
 export default function Dropdown<Option>({
     width = "100%",
@@ -18,7 +17,7 @@ export default function Dropdown<Option>({
 }: DropdownProps<Option>) {
     const CustomControl = (controlProps: ControlProps<Option, false>) => (
         <components.Control { ...controlProps }>
-            { !isInPagination && ( <Funnel size={ 25 } color="#FF6B00" style={{ marginLeft: 15, flexShrink: 0 }}/> ) }
+            { !isInPagination && ( <SelectFilterIcon/> ) }
             { controlProps.children }
         </components.Control>
     );

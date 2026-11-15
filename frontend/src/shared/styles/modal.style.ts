@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { Ban, GlobeCode, GlobeOff, Trash, X } from 'lucide-react';
 
 import { buttonHoverAnimation, modalCloseAnimation, modalOpenAnimation } from './Global.style';
 
@@ -70,6 +71,11 @@ export const ModalDismissButton = styled.button`
             svg {
                 stroke: currentColor;
             }
+`;
+
+export const ModalDismissButtonIcon = styled(X)`
+    height: 25px;
+    width: 25px;
 `;
 
 export const ModalBody = styled.div`
@@ -149,6 +155,11 @@ export const ModalPrimaryButton = styled(ModalButton)`
             }
 `;
 
+export const ModalPrimaryButtonIcon = styled(Ban)`
+    height: 25px;
+    width: 25px;
+`;
+
 export const ModalSecondaryButton = styled(ModalButton)`
     flex-direction: row;
     align-items: center;
@@ -168,6 +179,16 @@ export const ModalSecondaryButton = styled(ModalButton)`
             svg {
                 stroke: currentColor;
             }
+`;
+
+export const ModalSecondaryButtonTrashIcon = styled(Trash)`
+    height: 25px;
+    width: 25px;
+`;
+
+export const ModalSecondaryButtonIcon = styled(GlobeOff)`
+    height: 25px;
+    width: 25px;
 `;
 
 export const ModalTertiaryButton = styled(ModalButton)`
@@ -190,4 +211,9 @@ export const ModalTertiaryButton = styled(ModalButton)`
             svg {
                 stroke: currentColor;
             }
+`;
+
+export const ModalTertiaryButtonIcon = styled(GlobeCode)`
+    height: 25px;
+    width: 25px;
 `;

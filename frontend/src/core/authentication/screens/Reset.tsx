@@ -2,7 +2,6 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { StatusCodes } from 'http-status-codes';
 import React, { useEffect, useState } from 'react';
-import { EyeIcon, EyeOffIcon, UserLock } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import * as Styled from '../styles/reset.style';
@@ -82,14 +81,14 @@ const Reset: React.FC = () => {
 
                     <Styled.Input type={ showPassword ? "text" : "password" } id="newPassword" placeholder="Digite sua nova senha" value={ newPassword } onChange={ (inputEvent) => setNewPassword(inputEvent.target.value) } required/>
 
-                    <Styled.EyeButton type="button" onClick={ () => setShowPassword(!showPassword) }> { showPassword ? ( <EyeIcon size={25} color="#FF6B00"/> ) : ( <EyeOffIcon size={25} color="#FF6B00"/> ) } </Styled.EyeButton>
+                    <Styled.EyeButton type="button" onClick={ () => setShowPassword(!showPassword) }> { showPassword ? ( <Styled.EyeButtonIconOpened/> ) : ( <Styled.EyeButtonIconClosed/> ) } </Styled.EyeButton>
                 </Styled.InputWrapper>
                 <Styled.InputWrapper>
                     <Styled.Label htmlFor="confirmPassword"> CONFIRMAR NOVA SENHA </Styled.Label>
 
                     <Styled.Input type={ showConfirmPassword ? "text" : "password" } id="confirmPassword" placeholder="Confirme sua nova senha" value={ confirmPassword } onChange={ (inputEvent) => setConfirmPassword(inputEvent.target.value) } required/>
 
-                    <Styled.EyeButton type="button" onClick={ () => setShowConfirmPassword(!showConfirmPassword) }> { showConfirmPassword ? ( <EyeIcon size={25} color="#FF6B00"/> ) : ( <EyeOffIcon size={25} color="#FF6B00"/> ) } </Styled.EyeButton>
+                    <Styled.EyeButton type="button" onClick={ () => setShowConfirmPassword(!showConfirmPassword) }> { showConfirmPassword ? ( <Styled.EyeButtonIconOpened/> ) : ( <Styled.EyeButtonIconClosed/> ) } </Styled.EyeButton>
                 </Styled.InputWrapper>
 
                 { isLoading && (
@@ -97,7 +96,7 @@ const Reset: React.FC = () => {
                 ) }
                 { !isLoading && (
                     <Styled.PasswordButton type="submit">
-                        <UserLock size={ 25 } color="#FFFFFF"/>
+                        <Styled.PasswordButtonIcon/>
 
                         <Styled.PasswordButtonText> Criar senha </Styled.PasswordButtonText>
                     </Styled.PasswordButton>

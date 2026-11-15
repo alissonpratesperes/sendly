@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Ban, Trash, X } from 'lucide-react';
 
 import * as Styled from '../../../styles/modal.style';
 import { ModalProps } from '../interfaces/modalProps.interface';
@@ -15,7 +14,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, entityName, onClose, onConfirm })
                     <Styled.ModalHeader>
                         <Styled.ModalTitle> Exclusão de cadastro </Styled.ModalTitle>
 
-                        <Styled.ModalDismissButton type="button" onClick={ () => setIsClosing(true) }> <X size={ 25 }/> </Styled.ModalDismissButton>
+                        <Styled.ModalDismissButton type="button" onClick={ () => setIsClosing(true) }> <Styled.ModalDismissButtonIcon/> </Styled.ModalDismissButton>
                     </Styled.ModalHeader>
 
                     <Styled.ModalBody>
@@ -24,12 +23,12 @@ const Modal: React.FC<ModalProps> = ({ isOpen, entityName, onClose, onConfirm })
 
                     <Styled.ModalFooter>
                         <Styled.ModalPrimaryButton onClick={ () => setIsClosing(true) }>
-                            <Ban size={ 25 }/>
+                            <Styled.ModalPrimaryButtonIcon/>
 
                             <Styled.ModalFooterButtonText> Cancelar </Styled.ModalFooterButtonText>
                         </Styled.ModalPrimaryButton>
                         <Styled.ModalSecondaryButton onClick={ onConfirm }>
-                            <Trash size={ 25 }/>
+                            <Styled.ModalSecondaryButtonTrashIcon/>
 
                             <Styled.ModalFooterButtonText> Excluir </Styled.ModalFooterButtonText>
                         </Styled.ModalSecondaryButton>

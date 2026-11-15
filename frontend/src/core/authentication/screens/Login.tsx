@@ -3,7 +3,6 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { StatusCodes } from 'http-status-codes';
 import React, { useState, Fragment } from 'react';
-import { EyeIcon, EyeOffIcon, LockOpen, Power } from 'lucide-react';
 
 import * as Styled from '../styles/login.style';
 import { Login } from '../services/authentication.service';
@@ -73,7 +72,7 @@ const Authentication: React.FC = () => {
 
                     <Styled.Input type={ showPassword ? "text" : "password" } id="password" placeholder="Digite sua senha" value={ password } onChange={ (inputEvent) => setPassword(inputEvent.target.value) } required/>
 
-                   <Styled.EyeButton type="button" onClick={ togglePasswordVisibility }> { showPassword ? ( <EyeIcon size={ 25 } color="#FF6B00"/> ) : ( <EyeOffIcon size={ 25 } color="#FF6B00"/> ) } </Styled.EyeButton>
+                   <Styled.EyeButton type="button" onClick={ togglePasswordVisibility }> { showPassword ? ( <Styled.EyeButtonIconOpened/> ) : ( <Styled.EyeButtonIconClosed/> ) } </Styled.EyeButton>
                 </Styled.InputWrapper>
 
                 <Styled.LoginButtonsContainer>
@@ -83,14 +82,14 @@ const Authentication: React.FC = () => {
                     { !isLoading && (
                         <Fragment>
                             <Styled.ForgotButton to="/authentication/forgot">
-                                <LockOpen size={ 25 } color="#FFFFFF"/>
+                                <Styled.ForgotButtonIcon/>
 
                                 <Styled.ForgotButtonText> Recuperar senha </Styled.ForgotButtonText>
                             </Styled.ForgotButton>
                             <Styled.LoginButton type="submit">
-                                <Power size={ 25 }/>
+                                <Styled.LoginButtonIcon/>
 
-                                <Styled.LoginButtonText> Fazer login </Styled.LoginButtonText>
+                                <Styled.LoginButtonText> Autenticar </Styled.LoginButtonText>
                             </Styled.LoginButton>
                         </Fragment>
                     ) }

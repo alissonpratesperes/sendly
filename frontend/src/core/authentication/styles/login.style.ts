@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { EyeIcon, EyeOffIcon, LockOpen, Power } from 'lucide-react';
 
 import { buttonHoverAnimation } from '../../../shared/styles/Global.style';
 
@@ -109,6 +110,20 @@ export const EyeButton = styled.button`
     background: transparent;
     cursor: pointer;
     z-index: 2;
+
+        svg {
+            stroke: #FF6B00;
+        }
+`;
+
+export const EyeButtonIconOpened = styled(EyeIcon)`
+    height: 25px;
+    width: 25px;
+`;
+
+export const EyeButtonIconClosed = styled(EyeOffIcon)`
+    height: 25px;
+    width: 25px;
 `;
 
 export const LoginButtonsContainer = styled.div`
@@ -117,41 +132,6 @@ export const LoginButtonsContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-`;
-
-export const LoginButton = styled.button`
-    padding: 15px;
-    height: auto;
-    width: auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: "Lato";
-    font-weight: 400;
-    font-size: 16px;
-    color: #223463;
-    border: none;
-    outline: none;
-    border-radius: 14px;
-    background-color: transparent;
-    cursor: pointer;
-    transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
-
-        &:hover {
-            font-weight: 700;
-            color: #FFFFFF;
-            background-color: #223463;
-
-            animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
-        }
-
-            svg {
-                stroke: currentColor;
-            }
-`;
-
-export const LoginButtonText = styled.span`
-    margin-left: 7.5px;
 `;
 
 export const ForgotButton = styled(Link)`
@@ -185,6 +165,51 @@ export const ForgotButton = styled(Link)`
             }
 `;
 
+export const ForgotButtonIcon = styled(LockOpen)`
+    height: 25px;
+    width: 25px;
+`;
+
 export const ForgotButtonText = styled.span`
+    margin-left: 7.5px;
+`;
+
+export const LoginButton = styled.button`
+    padding: 15px;
+    height: auto;
+    width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Lato";
+    font-weight: 400;
+    font-size: 16px;
+    color: #223463;
+    border: none;
+    outline: none;
+    border-radius: 14px;
+    background-color: transparent;
+    cursor: pointer;
+    transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
+
+        &:hover {
+            font-weight: 700;
+            color: #FFFFFF;
+            background-color: #223463;
+
+            animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
+        }
+
+            svg {
+                stroke: #1C70E9;
+            }
+`;
+
+export const LoginButtonIcon = styled(Power)`
+    height: 25px;
+    width: 25px;
+`;
+
+export const LoginButtonText = styled.span`
     margin-left: 7.5px;
 `;

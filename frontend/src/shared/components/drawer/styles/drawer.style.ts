@@ -1,5 +1,5 @@
-import { TagPlus } from 'lucide-react';
 import { css, styled } from 'styled-components';
+import { AlertCircle, Ban, CircleAlert, CircleCheck, DatabaseCheck, HardDriveUpload, Save, ScrollText, SquarePen, TagPlus, X } from 'lucide-react';
 
 import { DrawerOverlayProps } from '../interfaces/drawerOverlayProps.interface';
 import { buttonHoverAnimation, drawerCloseAnimation, drawerOpenAnimation } from '../../../styles/Global.style';
@@ -72,6 +72,11 @@ export const CloseButton = styled.button`
             svg {
                 stroke: currentColor;
             }
+`;
+
+export const CloseButtonIcon = styled(X)`
+    height: 25px;
+    width: 25px;
 `;
 
 export const Content = styled.div`
@@ -354,6 +359,26 @@ export const FooterButton = styled.button<{ $variant?: "primary" | "secondary"; 
             }
 `;
 
+export const FooterButtonCancelIcon = styled(Ban)`
+    height: 25px;
+    width: 25px;
+`;
+
+export const FooterButtonSaveIcon = styled(Save)`
+    height: 25px;
+    width: 25px;
+`;
+
+export const FooterButtonEditIcon = styled(SquarePen)`
+    height: 25px;
+    width: 25px;
+`;
+
+export const FooterButtonUploadIcon = styled(HardDriveUpload)`
+    height: 25px;
+    width: 25px;
+`;
+
 export const FooterButtonText = styled.span`
     margin-left: 7.5px;
 `;
@@ -374,6 +399,21 @@ export const ImportResultTitle = styled.p`
     color: #1C70E9;
     background-color: #FFFFFF;
     border-radius: 14px;
+`;
+
+export const ImportResultTitleIcon = styled(DatabaseCheck)`
+    height: 25px;
+    width: 25px;
+`;
+
+export const ImportResultTitleCheckIcon = styled(CircleCheck)`
+    height: 25px;
+    width: 25px;
+`;
+
+export const ImportResultTitleAlertIcon = styled(CircleAlert)`
+    height: 25px;
+    width: 25px;
 `;
 
 export const ImportResultInformations = styled.div`
@@ -432,6 +472,11 @@ export const ImportResultErrorList = styled.ul`
     border-radius: 14px;
 `;
 
+export const ImportResultErrorListIcon = styled(ScrollText)`
+    height: 25px;
+    width: 25px;
+`;
+
 export const ImportResultErrorListItem = styled.li`
     display: flex;
     flex-direction: row;
@@ -446,6 +491,12 @@ export const ImportResultLeftContainer = styled.div`
     flex-direction: row;
     align-items: center;
     justify-content: center;
+`;
+
+export const ImportResultLeftContainerIcon = styled(AlertCircle)`
+    height: 25px;
+    width: 25px;
+    color: #DC143C;
 `;
 
 export const ImportResultRightContainer = styled.div`

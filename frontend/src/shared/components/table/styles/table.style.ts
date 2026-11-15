@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { MessageSquareMore, SquarePen, Trash } from 'lucide-react';
 
 import { buttonHoverAnimation } from '../../../styles/Global.style';
 import { BatchStatus } from '../../../../core/batch/enums/batchStatus.enum';
@@ -108,6 +109,22 @@ export const TableListBodyRowDataActionButton = styled.button`
 
         }
 `;
+
+export const TableListBodyRowDataActionButtonViewIcon = styled(MessageSquareMore)`
+    height: 25px;
+    width: 25px;
+`;
+
+export const TableListBodyRowDataActionButtonEditIcon = styled(SquarePen)`
+    height: 25px;
+    width: 25px;
+`;
+
+export const TableListBodyRowDataActionButtonDeleteIcon = styled(Trash)`
+    height: 25px;
+    width: 25px;
+`;
+
 
 export const TableListColorFragment = styled.div<TableListColorFragmentProps>`
     width: 25px;

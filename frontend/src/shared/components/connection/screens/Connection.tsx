@@ -1,5 +1,4 @@
 import { toast } from 'react-toastify';
-import { Ban, GlobeOff, GlobeCode, X } from 'lucide-react';
 import React, { useState, useEffect, Fragment } from 'react';
 
 import * as Styled from '../../../styles/modal.style';
@@ -86,7 +85,7 @@ const Connection: React.FC<ConnectionProps> = ({ onPairingSuccess, isOpen, compa
                         <Styled.ModalHeader>
                             <Styled.ModalTitle> Sessão do WhatsApp </Styled.ModalTitle>
 
-                            <Styled.ModalDismissButton type="button" onClick={ () => setIsClosing(true) }> <X size={ 25 }/> </Styled.ModalDismissButton>
+                            <Styled.ModalDismissButton type="button" onClick={ () => setIsClosing(true) }> <Styled.ModalDismissButtonIcon/> </Styled.ModalDismissButton>
                         </Styled.ModalHeader>
 
                         <Styled.ModalBody>
@@ -115,21 +114,21 @@ const Connection: React.FC<ConnectionProps> = ({ onPairingSuccess, isOpen, compa
 
                         <Styled.ModalFooter>
                             <Styled.ModalPrimaryButton onClick={ () => setIsClosing(true) }>
-                                <Ban size={ 25 }/>
+                                <Styled.ModalPrimaryButtonIcon/>
 
                                 <Styled.ModalFooterButtonText> Fechar </Styled.ModalFooterButtonText>
                             </Styled.ModalPrimaryButton>
 
                             { !status?.connected && !pairingCode && (
                                 <Styled.ModalTertiaryButton type="submit" form="baileys-form" disabled={ loadingStatus }>
-                                  <GlobeCode size={ 25 }/>
+                                    <Styled.ModalTertiaryButtonIcon/>
 
                                   <Styled.ModalFooterButtonText> Gerar código </Styled.ModalFooterButtonText>
                                 </Styled.ModalTertiaryButton>
                             ) }
                             { status?.connected && (
                                 <Styled.ModalSecondaryButton onClick={ handleDisconnect }>
-                                    <GlobeOff size={ 25 }/>
+                                    <Styled.ModalSecondaryButtonIcon/>
 
                                     <Styled.ModalFooterButtonText> Desconectar </Styled.ModalFooterButtonText>
                                 </Styled.ModalSecondaryButton>

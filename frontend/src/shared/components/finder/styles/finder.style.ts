@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { DatabaseArrowUp, DatabasePlus, Search } from 'lucide-react';
 
 import { buttonHoverAnimation } from '../../../styles/Global.style';
 
@@ -44,6 +45,12 @@ export const SearchInputContainer = styled.div`
             opacity: 1;
             transform: scale(1);
         }
+`;
+
+export const SearchInputContainerIcon = styled(Search)`
+    height: 25px;
+    width: 25px;
+    color: #FF6B00;
 `;
 
 export const SearchInputField = styled.input`
@@ -112,6 +119,16 @@ export const AddButton = styled.button`
                 svg {
                     stroke: currentColor;
                 }
+`;
+
+export const AddButtonUploadIcon = styled(DatabaseArrowUp)`
+    height: 25px;
+    width: 25px;
+`;
+
+export const AddButtonAddIcon = styled(DatabasePlus)`
+    height: 25px;
+    width: 25px;
 `;
 
 export const SearchInputSubmitText = styled.span`

@@ -1,3 +1,5 @@
+import { Funnel } from 'lucide-react';
+import styled from 'styled-components';
 import { ControlProps, CSSObjectWithLabel, GroupBase, StylesConfig } from 'react-select';
 
 export const SelectCommonStyles = <Option,>(custom?: { width?: string; isInPagination?: boolean; isInBatchSendScreen?: boolean }): StylesConfig<Option, false, GroupBase<Option>> => ({
@@ -86,3 +88,11 @@ export const SelectCommonStyles = <Option,>(custom?: { width?: string; isInPagin
         color: "#212121",
     })
 })
+
+export const SelectFilterIcon = styled(Funnel)`
+    margin-left: 15px;
+    height: 25px;
+    width: 25px;
+    flex-shrink: 0;
+    color: #FF6B00;
+`;

@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react';
-import { Smartphone } from 'lucide-react';
 import parsePhoneNumberFromString from 'libphonenumber-js';
 
 import * as Styled from '../styles/connectionBadge.style';
@@ -28,7 +27,7 @@ const ConnectionBadge: React.FC<ConnectionBadgeProps> = ({ variant, phone }) => 
                     •
 
                     <Styled.ConnectionPhone>
-                        <Smartphone size={ 30 }/>
+                        <Styled.ConnectionPhoneIcon/>
 
                         { phone ? parsePhoneNumberFromString(`+${ phone }`)?.formatNational() ?? '—' : "" }
                     </Styled.ConnectionPhone>

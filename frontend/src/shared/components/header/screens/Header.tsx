@@ -1,6 +1,5 @@
 import { toast } from 'react-toastify';
 import React, { useState } from 'react';
-import { PowerOff, Phone } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 import * as Styled from '../styles/header.style';
@@ -55,12 +54,12 @@ const Header: React.FC<HeaderMenuLinksProps> = ({ links }) => {
                 <Styled.UserActionContainer>
                     { !userInformation?.isSystemRoot && (
                         <Styled.WhatsAppButton type="button" onClick={ () => setIsConnectionOpen(true) }>
-                            <Phone size={ 25 }/>
+                            <Styled.WhatsAppButtonIcon/>
                         </Styled.WhatsAppButton>
                     ) }
 
                     <Styled.LogOutButton type="button" onClick={ () => handleLogout() } isOnlyAction={ userInformation?.isSystemRoot }>
-                        <PowerOff size={ 25 }/>
+                        <Styled.LogOutButtonIcon/>
                     </Styled.LogOutButton>
                 </Styled.UserActionContainer>
             </Styled.UserContainer>

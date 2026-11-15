@@ -1,3 +1,4 @@
+import { Inbox } from 'lucide-react';
 import styled from 'styled-components';
 
 import { buttonHoverAnimation } from '../../../shared/styles/Global.style';
@@ -121,8 +122,13 @@ export const ForgotButton = styled.button`
         }
 
             svg {
-                stroke: currentColor;
+                stroke: #1C70E9;
             }
+`;
+
+export const ForgotButtonIcon = styled(Inbox)`
+    height: 25px;
+    width: 25px;
 `;
 
 export const ForgotButtonText = styled.span`

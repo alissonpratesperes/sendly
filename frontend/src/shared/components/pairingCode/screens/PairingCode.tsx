@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react';
-import { KeyRound } from 'lucide-react';
 
 import * as Styled from '../styles/pairingCode.style';
 import * as ModalStyled from '../../../styles/modal.style';
@@ -11,7 +10,7 @@ const PairingCode: React.FC<PairingCodeProps> = ({ pairingCode }) => {
     return (
         <Fragment>
             <Styled.PairingCodeTextContainer>
-                <KeyRound size={ 25 } color="#2F2E33"/>
+                <Styled.PairingCodeContainerIcon/>
 
                 <ModalStyled.ModalBoldText>
                     Insira o código abaixo no seu aplicativo do WhatsApp

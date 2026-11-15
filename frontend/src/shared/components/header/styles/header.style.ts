@@ -1,8 +1,8 @@
-import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
+import { Phone, PowerOff } from 'lucide-react';
 
 import { headerIconAnimation, buttonHoverAnimation } from '../../../styles/Global.style';
-
 
 export const Container = styled.header`
   padding: 20px 30px 160px 30px;
@@ -139,6 +139,11 @@ export const WhatsAppButton = styled.button`
       }
 `;
 
+export const WhatsAppButtonIcon = styled(Phone)`
+  height: 25px;
+  width: 25px;
+`;
+
 export const LogOutButton = styled.button<{ isOnlyAction?: boolean }>`
   width: 55px;
   height: 55px;
@@ -163,4 +168,9 @@ export const LogOutButton = styled.button<{ isOnlyAction?: boolean }>`
       svg {
         stroke: currentColor;
       }
+`;
+
+export const LogOutButtonIcon = styled(PowerOff)`
+  height: 25px;
+  width: 25px;
 `;

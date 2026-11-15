@@ -1,5 +1,4 @@
 import React from 'react';
-import { MessageSquareMore, SquarePen, Trash } from 'lucide-react';
 
 import * as Styled from '../styles/table.style';
 import { TableProps } from '../interfaces/tableProps.interface';
@@ -31,13 +30,13 @@ export const Table = <T,>({ headers, data, isInBatchScreen, getEntityId, onView,
                                     { (shouldShowView || shouldShowEdit || shouldShowDelete) && (
                                         <Styled.TableListBodyRowDataActions>
                                             { shouldShowView && (
-                                                <Styled.TableListBodyRowDataActionButton type="button" onClick={ () => onView?.(id) }> <MessageSquareMore size={ 25 }/> </Styled.TableListBodyRowDataActionButton>
+                                                <Styled.TableListBodyRowDataActionButton type="button" onClick={ () => onView?.(id) }> <Styled.TableListBodyRowDataActionButtonViewIcon/> </Styled.TableListBodyRowDataActionButton>
                                             ) }
                                             { shouldShowEdit && (
-                                                <Styled.TableListBodyRowDataActionButton type="button" onClick={ () => onEdit?.(id) }> <SquarePen size={ 25 }/> </Styled.TableListBodyRowDataActionButton>
+                                                <Styled.TableListBodyRowDataActionButton type="button" onClick={ () => onEdit?.(id) }> <Styled.TableListBodyRowDataActionButtonEditIcon/> </Styled.TableListBodyRowDataActionButton>
                                             ) }
                                             { shouldShowDelete && (
-                                                <Styled.TableListBodyRowDataActionButton type="button" onClick={ () => onDelete?.(id) }> <Trash size={ 25 }/> </Styled.TableListBodyRowDataActionButton>
+                                                <Styled.TableListBodyRowDataActionButton type="button" onClick={ () => onDelete?.(id) }> <Styled.TableListBodyRowDataActionButtonDeleteIcon/> </Styled.TableListBodyRowDataActionButton>
                                             ) }
                                         </Styled.TableListBodyRowDataActions>
                                     ) }

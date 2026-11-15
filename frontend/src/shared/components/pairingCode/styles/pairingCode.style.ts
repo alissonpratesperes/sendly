@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { KeyRound } from 'lucide-react';
 
 export const PairingCodeContainer = styled.div`
     width: 100%;
@@ -10,6 +11,12 @@ export const PairingCodeTextContainer = styled.div`
     align-items: center;
     justify-content: center;
     gap: 15px;
+`;
+
+export const PairingCodeContainerIcon = styled(KeyRound)`
+    height: 25px;
+    width: 25px;
+    color: #2F2E33;
 `;
 
 export const PairingCodeDigitsContainer = styled.div`

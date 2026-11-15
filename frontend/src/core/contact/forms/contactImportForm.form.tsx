@@ -1,5 +1,4 @@
 import { toast } from 'react-toastify';
-import { AlertCircle, CircleAlert, CircleCheck, DatabaseCheck, Dot, ScrollText } from 'lucide-react';
 import React, { Fragment, useEffect, useState } from 'react';
 
 import { List } from '../../list/services/list.service';
@@ -134,20 +133,20 @@ export const ContactImportForm: React.FC<ImportFormProps> = ({ onCancel, onSubmi
                 </Styled.Form>
             ) : (
                 <Styled.ContactImportResultContainer>
-                    <Styled.ImportResultTitle> <DatabaseCheck size={ 25 }/> Resultado da importação </Styled.ImportResultTitle>
+                    <Styled.ImportResultTitle> <Styled.ImportResultTitleIcon/> Resultado da importação </Styled.ImportResultTitle>
 
                     <Styled.ImportResultInformations>
-                        <Styled.ImportResultSucceededTitle> <CircleCheck size={ 25 }/> { importResult.valid } </Styled.ImportResultSucceededTitle>
-                        <Styled.ImportResultUnsucceededTitle> <CircleAlert size={ 25 }/> { importResult.invalid } </Styled.ImportResultUnsucceededTitle>
+                        <Styled.ImportResultSucceededTitle> <Styled.ImportResultTitleCheckIcon/> { importResult.valid } </Styled.ImportResultSucceededTitle>
+                        <Styled.ImportResultUnsucceededTitle> <Styled.ImportResultTitleAlertIcon/> { importResult.invalid } </Styled.ImportResultUnsucceededTitle>
                     </Styled.ImportResultInformations>
 
                     { importResult.errors.length > 0 && (
                         <Styled.ImportResultErrorList>
-                            <Styled.ImportResultErrorListTitle> <ScrollText size={ 25 }/> Log do processamento </Styled.ImportResultErrorListTitle>
+                            <Styled.ImportResultErrorListTitle> <Styled.ImportResultErrorListIcon/> Log do processamento </Styled.ImportResultErrorListTitle>
 
                             { importResult.errors.map((error, index) => (
                                 <Styled.ImportResultErrorListItem key={ index }>
-                                    <Styled.ImportResultLeftContainer> <AlertCircle size={ 25 } color="#DC143C"/> </Styled.ImportResultLeftContainer>
+                                    <Styled.ImportResultLeftContainer> <Styled.ImportResultLeftContainerIcon/> </Styled.ImportResultLeftContainer>
 
                                     <Styled.ImportResultRightContainer>
                                         <Styled.ImportResultErrorName> { error.name } </Styled.ImportResultErrorName>

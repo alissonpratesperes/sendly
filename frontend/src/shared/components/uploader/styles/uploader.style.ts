@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Eraser, FileDown, FileUp, ImageDown, ImageUp, Upload } from 'lucide-react';
 
 import { buttonHoverAnimation } from '../../../styles/Global.style';
 import { DropzoneProps } from '../interfaces/dropzoneProps.interface';
@@ -52,7 +53,7 @@ export const DropzoneTextContainer = styled.div`
     justify-content: center;
 `;
 
-export const DropzoneUploadIcon = styled.div`
+export const DropzoneUploadArea = styled.div`
     height: auto;
     width: 100%;
     display: flex;
@@ -63,6 +64,11 @@ export const DropzoneUploadIcon = styled.div`
         svg {
             color: #223463;
         }
+`;
+
+export const DropzoneUploadAreaIcon = styled(Upload)`
+    height: 25px;
+    width: 25px;
 `;
 
 export const DropzoneStrongContent = styled.h5`
@@ -113,12 +119,22 @@ export const ListItemContainer = styled.div`
     column-gap: 15px;
 `;
 
-export const DraggedFileIcon = styled.div`
+export const DraggedFileArea = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     color: #223463;
+`;
+
+export const DraggedFileAreaFileUpIcon = styled(FileUp)`
+    height: 25px;
+    width: 25px;
+`;
+
+export const DraggedFileAreaImageUpIcon = styled(ImageUp)`
+    height: 25px;
+    width: 25px;
 `;
 
 export const DraggedFileData = styled.div`
@@ -199,4 +215,19 @@ export const DraggedFilesActionButton = styled.button`
                 svg {
                     stroke: currentColor;
                 }
+`;
+
+export const DraggedFilesActionButtonFileDownIcon = styled(FileDown)`
+    height: 25px;
+    width: 25px;
+`;
+
+export const DraggedFilesActionButtonImageDownIcon = styled(ImageDown)`
+    height: 25px;
+    width: 25px;
+`;
+
+export const DraggedFilesActionButtonEraserIcon = styled(Eraser)`
+    height: 25px;
+    width: 25px;
 `;
