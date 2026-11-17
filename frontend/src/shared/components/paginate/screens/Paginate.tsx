@@ -2,10 +2,10 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import * as Styled from '../styles/paginate.style';
 import { PageOption } from '../types/pageOption.type';
-import Dropdown from '../../dropdown/screens/Dropdown';
+import { Dropdown } from '../../dropdown/screens/Dropdown';
 import { PaginateParams } from '../types/paginateParams.type';
 
-export default function Paginate({ page, total, limit, onPageChange, onLimitChange, }: PaginateParams) {
+export function Paginate({ page, total, limit, onPageChange, onLimitChange, }: PaginateParams) {
     const [hoveredPage, setHoveredPage] = useState<number | null>(null);
     const [disableTransition, setDisableTransition] = useState(false);
 

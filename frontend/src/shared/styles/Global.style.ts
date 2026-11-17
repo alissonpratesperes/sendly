@@ -1,6 +1,14 @@
 import isPropValid from '@emotion/is-prop-valid';
 import styled, { createGlobalStyle, css, keyframes } from 'styled-components';
 
+export const navigationTabIconAnimation = keyframes`
+    0%, 100% { transform: rotate(0deg); }
+    20% { transform: rotate(-14deg); }
+    40% { transform: rotate(14deg); }
+    60% { transform: rotate(-12deg); }
+    80% { transform: rotate(12deg); }
+`;
+
 export const headerIconAnimation = keyframes`
   0%, 100% { transform: rotate(0deg); }
   20% { transform: rotate(-14deg); }
@@ -77,5 +85,5 @@ export const GlobalStyle = createGlobalStyle`
 `;
 
 export const Main = styled("main").withConfig({ shouldForwardProp: (prop) => isPropValid(prop) && prop !== "applyPadding" }) <{ applyPadding?: boolean; }>`
-    ${ ({ applyPadding }) => applyPadding && css` padding: 40px 30px 40px 30px;` }
+    ${ ({ applyPadding }) => applyPadding && css` padding: 40px 30px 40px 30px;` };
 `;

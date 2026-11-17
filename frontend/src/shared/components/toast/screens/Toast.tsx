@@ -3,7 +3,7 @@ import React from 'react';
 import * as Styled from '../styles/toast.style';
 import { ValidationErrorToastProps } from '../interfaces/validationErrorToastProps.interface';
 
-const Toast: React.FC<ValidationErrorToastProps> = ({ errors }) => (
+export const Toast: React.FC<ValidationErrorToastProps> = ({ errors }) => (
     <Styled.ToastWrapper>
         <Styled.Title> Erros de validação </Styled.Title>
 
@@ -14,5 +14,3 @@ const Toast: React.FC<ValidationErrorToastProps> = ({ errors }) => (
         </Styled.List>
     </Styled.ToastWrapper>
 )
-
-export default Toast;

@@ -8,7 +8,7 @@ import { Brand } from '../../../shared/elements/brand/screens/Brand';
 import { Forgot as ForgotPassword } from '../services/authentication.service';
 import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
 
-const Forgot: React.FC = () => {
+export const Forgot: React.FC = () => {
     const [email, setEmail] = useState("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -68,5 +68,3 @@ const Forgot: React.FC = () => {
         </Styled.ForgotFormContainer>
     )
 }
-
-export default Forgot;

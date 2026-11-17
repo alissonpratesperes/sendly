@@ -10,7 +10,7 @@ import { Decal } from '../../../shared/elements/decal/screens/Decal';
 import { Brand } from '../../../shared/elements/brand/screens/Brand';
 import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
 
-const Reset: React.FC = () => {
+export const Reset: React.FC = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [newPassword, setNewPassword] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -107,5 +107,3 @@ const Reset: React.FC = () => {
         </Styled.ResetFormContainer>
     )
 }
-
-export default Reset;

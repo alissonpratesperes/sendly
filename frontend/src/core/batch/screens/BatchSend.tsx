@@ -10,16 +10,15 @@ import { TemplateForm } from '../../template/forms/templateForm.form';
 import { Table } from '../../../shared/components/table/screens/Table';
 import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
 import { ContactResponseDto } from '../../contact/dtos/contactResponse.dto';
-import Dropdown from '../../../shared/components/dropdown/screens/Dropdown';
-import Paginate from '../../../shared/components/paginate/screens/Paginate';
 import * as Styled from '../../../shared/components/table/styles/table.style';
+import { Paginate } from '../../../shared/components/paginate/screens/Paginate';
+import { Dropdown } from '../../../shared/components/dropdown/screens/Dropdown';
 import { TemplateFormData } from '../../template/schemas/templateFormSchema.schema';
 import { EmptyState } from '../../../shared/components/emptyState/screens/EmpyState';
-import StatusBadge from '../../../shared/components/statusBadge/screens/StatusBadge';
 import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
 
-const BatchSend = () => {
+export const BatchSend = () => {
     const [page, setPage] = useState<number>(1);
     const [total, setTotal] = useState<number>(0);
     const [limit, setLimit] = useState<number>(15);
@@ -200,5 +199,3 @@ const BatchSend = () => {
         </Fragment>
     );
 }
-
-export default BatchSend;

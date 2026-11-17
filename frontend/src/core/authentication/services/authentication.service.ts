@@ -1,4 +1,4 @@
-import api from '../../../shared/api/axios.client';
+import { api } from '../../../shared/api/axios.client';
 import { LoginCommandDto } from '../dtos/loginCommand.dto';
 import { ResetCommandDto } from '../dtos/resetCommand.dto';
 import { ForgotCommandDto } from '../dtos/forgotCommand.dto';

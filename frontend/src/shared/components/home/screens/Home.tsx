@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 
 import * as Styled from '../styles/home.style';
 
-const Home: React.FC = () => {
+export const Home: React.FC = () => {
     return (
         <Fragment>
             <Styled.HeaderWrapper>
@@ -19,5 +19,3 @@ const Home: React.FC = () => {
         </Fragment>
     );
 }
-
-export default Home;

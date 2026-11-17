@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { PrivateRouteProps } from '../interfaces/privateRouteProps.interface';
 import { clearAuthenticationStorage, getAuthenticationStorage } from '../../../utils/authenticationStorage.util';
 
-const PrivateRoute: React.FC<PrivateRouteProps> = ({ element }) => {
+export const PrivateRoute: React.FC<PrivateRouteProps> = ({ element }) => {
     const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
 
     const navigate = useNavigate();
@@ -35,5 +35,3 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ element }) => {
 
     return isAuthorized ? element : null;
 }
-
-export default PrivateRoute;

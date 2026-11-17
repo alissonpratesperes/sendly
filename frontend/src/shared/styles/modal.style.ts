@@ -10,7 +10,7 @@ export const ModalOverlay = styled.div<{ $open: boolean }>`
     justify-content: center;
     inset: 0;
     background: rgba(0, 0, 0, 0.25);
-    backdrop-filter: blur(7px);
+    backdrop-filter: blur(3.5px);
     z-index: 1000;
     transition: opacity 0.6s ease-in-out, visibility 0.6s ease-in-out;
 
@@ -107,7 +107,7 @@ export const ModalFooter = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
     column-gap: 30px;
     border-top: 2px solid #E9EAEB;
 `;
@@ -137,13 +137,12 @@ export const ModalPrimaryButton = styled(ModalButton)`
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    font-weight: 400;
+    font-weight: 700;
     color: #223463;
-    background: transparent;
+    background-color: #E8EEF8;
     transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
 
         &:hover {
-            font-weight: 700;
             color: #FFFFFF;
             background-color: #223463;
 
@@ -164,12 +163,12 @@ export const ModalSecondaryButton = styled(ModalButton)`
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    font-weight: 400;
+    font-weight: 700;
     color: #DC143C;
-    background: transparent;transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
+    background-color: #FCE8E6;
+    transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
 
         &:hover {
-            font-weight: 700;
             color: #FFFFFF;
             background-color: #DC143C;
 
@@ -195,13 +194,12 @@ export const ModalTertiaryButton = styled(ModalButton)`
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    font-weight: 400;
+    font-weight: 700;
     color: #FF6B00;
-    background: transparent;
+    background: rgba(255, 107, 0, 0.25);
     transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
 
         &:hover {
-            font-weight: 700;
             color: #F0F0F5;
             background-color: #FF6B00;
 

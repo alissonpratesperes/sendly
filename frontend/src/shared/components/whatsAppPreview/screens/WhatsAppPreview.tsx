@@ -11,6 +11,8 @@ export const WhatsAppPreview: React.FC<WhatsAppPreviewProps> = ({ header, body, 
     const hasContent = Boolean(header || body || footer || image);
     const enterTimeout = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
+    const openedPreviewDate: string = new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", });
+
     const getParallaxPosition = (element: HTMLDivElement, clientX: number, clientY: number) => {
         const intensity = 20;
         const rect = element.getBoundingClientRect();
@@ -100,7 +102,11 @@ export const WhatsAppPreview: React.FC<WhatsAppPreviewProps> = ({ header, body, 
                                 { body && ( <Styled.WhatsAppMessageBody> { body } </Styled.WhatsAppMessageBody> ) }
                                 { footer && ( <Styled.WhatsAppMessageFooter> { footer } </Styled.WhatsAppMessageFooter> ) }
 
-                                <Styled.WhatsAppMessageReadFeedback> <Styled.WhatsAppMessageReadFeedbackIcon $isRead={ isRead }/> </Styled.WhatsAppMessageReadFeedback>
+                                <Styled.WhatsAppMessageReadFeedback>
+                                    <Styled.WhatsAppMessageReadFeedbackHour> { openedPreviewDate } </Styled.WhatsAppMessageReadFeedbackHour>
+
+                                    <Styled.WhatsAppMessageReadFeedbackIcon $isRead={ isRead }/>
+                                </Styled.WhatsAppMessageReadFeedback>
                             </Styled.WhatsAppMessageBubble>
                         ) }
                     </Styled.WhatsAppChatBody>

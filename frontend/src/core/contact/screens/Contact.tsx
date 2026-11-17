@@ -8,23 +8,23 @@ import { ContactResponseDto } from '../dtos/contactResponse.dto';
 import { List, Update, Delete } from '../services/contact.service';
 import { List as ListLits} from '../../list/services/list.service';
 import { formatDate } from '../../../shared/utils/formatDate.util';
-import Modal from '../../../shared/components/modal/screens/Modal';
 import { ListResponseDto } from '../../list/dtos/listResponse.dto';
 import { ContactImportForm } from '../forms/contactImportForm.form';
 import { ContactFormData } from '../schemas/contactFormSchema.schema';
 import { Table } from '../../../shared/components/table/screens/Table';
+import { Modal } from '../../../shared/components/modal/screens/Modal';
 import { Finder } from '../../../shared/components/finder/screen/Finder';
 import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
-import Dropdown from '../../../shared/components/dropdown/screens/Dropdown';
-import Paginate from '../../../shared/components/paginate/screens/Paginate';
 import * as Styled from '../../../shared/components/table/styles/table.style';
+import { Paginate } from '../../../shared/components/paginate/screens/Paginate';
+import { Dropdown } from '../../../shared/components/dropdown/screens/Dropdown';
 import { EmptyState } from '../../../shared/components/emptyState/screens/EmpyState';
-import ToggleSwitch from '../../../shared/components/toggleSwitch/screens/ToggleSwitch';
+import { ToggleSwitch } from '../../../shared/components/toggleSwitch/screens/ToggleSwitch';
 import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
 import * as ContactFormStyled from '../../../shared/components/dropdown/styles/contactFormDropdown.style';
 
-const Contact = () => {
+export const Contact = () => {
     const [page, setPage] = useState<number>(1);
     const [total, setTotal] = useState<number>(0);
     const [limit, setLimit] = useState<number>(15);
@@ -272,5 +272,3 @@ const Contact = () => {
         </Fragment>
     );
 }
-
-export default Contact;

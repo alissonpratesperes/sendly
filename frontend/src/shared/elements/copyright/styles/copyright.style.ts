@@ -6,7 +6,7 @@ export const CopyrightContainer = styled.div`
 
 export const CopyrightContent = styled.p`
     font-family: "Inter";
-    font-weight: 500;
+    font-weight: 700;
     font-size: 16px;
-    color: #9CA3AF;
+    color: #F0F0F5;
 `;

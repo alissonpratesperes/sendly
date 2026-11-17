@@ -1,19 +1,19 @@
 import { Fragment, useState } from 'react';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 
-import User from '../../../../core/user/screens/User';
 import * as Styled from '../styles/registration.style';
-import Lists from '../../../../core/list/screens/Lists';
-import Batch from '../../../../core/batch/screens/Batch';
+import { User } from '../../../../core/user/screens/User';
 import { NavigationTab } from '../types/navigationTab.type';
-import PrivateRoute from '../../private/screens/PrivateRoute';
-import Company from '../../../../core/company/screens/Company';
-import Contact from '../../../../core/contact/screens/Contact';
-import BatchSend from '../../../../core/batch/screens/BatchSend';
-import Template from '../../../../core/template/screens/Template';
+import { Lists } from '../../../../core/list/screens/Lists';
+import { Batch } from '../../../../core/batch/screens/Batch';
+import { PrivateRoute } from '../../private/screens/PrivateRoute';
+import { Company } from '../../../../core/company/screens/Company';
+import { Contact } from '../../../../core/contact/screens/Contact';
+import { BatchSend } from '../../../../core/batch/screens/BatchSend';
+import { Template } from '../../../../core/template/screens/Template';
 import { navigationTabs } from '../constants/navigationTabs.constant';
 
-const Registration: React.FC = () => {
+export const Registration: React.FC = () => {
     const [hoveredTab, setHoveredTab] = useState<string | null>(null);
 
     const navigate = useNavigate();
@@ -58,5 +58,3 @@ const Registration: React.FC = () => {
         </Fragment>
     );
 }
-
-export default Registration;

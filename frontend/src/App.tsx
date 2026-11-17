@@ -6,7 +6,7 @@ import { AppRouting } from './AppRouting';
 import 'react-toastify/dist/ReactToastify.css';
 import { GlobalStyle } from './shared/styles/Global.style';
 
-function App() {
+export function App() {
   return (
     <Fragment>
       <GlobalStyle/>
@@ -29,6 +29,4 @@ function App() {
         />
     </Fragment>
   );
-}
-
-export default App;
+};

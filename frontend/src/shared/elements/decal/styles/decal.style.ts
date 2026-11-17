@@ -11,8 +11,8 @@ export const Decal = styled.div`
     left: 50%;
     bottom: 0;
     transform: translateX(-50%);
-    border-top-left-radius: 14px;
-    border-top-right-radius: 14px;
+    border-top-left-radius: 26px;
+    border-top-right-radius: 26px;
     pointer-events: none;
     z-index: 0;
     background-color: #223463

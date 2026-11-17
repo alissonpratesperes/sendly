@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import React, { useState, useEffect } from 'react';
 
 import { Create, Update } from '../services/company.service';
-import Toast from '../../../shared/components/toast/screens/Toast';
+import { Toast } from '../../../shared/components/toast/screens/Toast';
 import { CreateCompanyCommandDto } from '../dtos/createCompanyCommand.dto';
 import { UpdateCompanyCommandDto } from '../dtos/updateCompanyCommand.dto';
 import { FormProps } from '../../../shared/interfaces/formProps.interface';

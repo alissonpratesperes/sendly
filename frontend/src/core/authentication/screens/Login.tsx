@@ -11,7 +11,7 @@ import { Brand } from '../../../shared/elements/brand/screens/Brand';
 import { setAuthenticationStorage } from '../../../shared/utils/authenticationStorage.util';
 import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
 
-const Authentication: React.FC = () => {
+export const Authentication: React.FC = () => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [showPassword, setShowPassword] = useState(false);
@@ -100,5 +100,3 @@ const Authentication: React.FC = () => {
         </Styled.AuthFormContainer>
     );
 }
-
-export default Authentication;

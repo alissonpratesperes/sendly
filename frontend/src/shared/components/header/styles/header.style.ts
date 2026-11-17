@@ -5,7 +5,7 @@ import { Phone, PowerOff } from 'lucide-react';
 import { headerIconAnimation, buttonHoverAnimation } from '../../../styles/Global.style';
 
 export const Container = styled.header`
-  padding: 20px 30px 160px 30px;
+  padding: 30px 30px 190px 30px;
   width: auto;
   display: flex;
   flex-direction: row;
@@ -15,15 +15,19 @@ export const Container = styled.header`
 `;
 
 export const ApplicationBrandContainer = styled.div`
-  height: 100%;
+  height: auto;
+  max-height: 55px;
   width: auto;
 `;
 
 export const ApplicationBrandMark = styled.p`
+  margin: 0;
+  padding: 0;
   font-family: "Alien Block";
   font-weight: 400;
   font-size: 60px;
-  color: #1C70E9;
+  color: #9CA3AF;
+  line-height: 0.1;
 `;
 
 export const MenuContainer = styled.div`
@@ -55,9 +59,11 @@ export const NavItem = styled(NavLink)`
     }
 
       &:not(.active):hover {
-        svg {
-          animation: ${ headerIconAnimation } 0.6s ease-in-out;
-        }
+        animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
+
+          svg {
+            animation: ${ headerIconAnimation } 0.6s ease-in-out;
+          }
       }
       &.active {
         font-weight: 700;
@@ -69,7 +75,7 @@ export const NavItem = styled(NavLink)`
 `;
 
 export const UserContainer = styled.div`
-  height: 80px;
+  height: auto;
   width: 450px;
   display: flex;
   align-items: center;

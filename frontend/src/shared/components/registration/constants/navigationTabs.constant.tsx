@@ -38,4 +38,4 @@ export const navigationTabs = [
         label: "Envios",
         path: "send",
     },
-] satisfies NavigationTab[];
+] satisfies NavigationTab[]

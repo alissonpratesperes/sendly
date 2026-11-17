@@ -4,7 +4,7 @@ import * as Styled from '../styles/pairingCode.style';
 import * as ModalStyled from '../../../styles/modal.style';
 import { PairingCodeProps } from '../interfaces/pairingCodeProps.interface';
 
-const PairingCode: React.FC<PairingCodeProps> = ({ pairingCode }) => {
+export const PairingCode: React.FC<PairingCodeProps> = ({ pairingCode }) => {
     const formattedPairingCode = pairingCode.replace(/[^a-zA-Z0-9]/g, "").split("");
 
     return (
@@ -29,5 +29,3 @@ const PairingCode: React.FC<PairingCodeProps> = ({ pairingCode }) => {
         </Fragment>
     );
 }
-
-export default PairingCode;

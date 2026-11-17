@@ -11,39 +11,39 @@ export const Drawer: React.FC<DrawerProps> = ({ isOpen, isSubmitting = false, fo
         <Fragment>
             <Styled.DrawerOverlay $open={ isOpen && !isClosing }/>
 
-                { isOpen && (
-                    <Styled.Drawer $open={ !isClosing } onAnimationEnd={ (event) => { if (event.currentTarget === event.target && isClosing) { onClose(); setIsClosing(false); } } }>
-                        <Styled.Header>
-                            <Styled.Title> { title } </Styled.Title>
+            { isOpen && (
+                <Styled.Drawer $open={ !isClosing } onAnimationEnd={ (event) => { if (event.currentTarget === event.target && isClosing) { onClose(); setIsClosing(false); } } }>
+                    <Styled.Header>
+                        <Styled.Title> { title } </Styled.Title>
 
-                            <Styled.CloseButton type="button" onClick={ () => setIsClosing(true) }> <Styled.CloseButtonIcon/> </Styled.CloseButton>
-                        </Styled.Header>
+                        <Styled.CloseButton type="button" onClick={ () => setIsClosing(true) }> <Styled.CloseButtonIcon/> </Styled.CloseButton>
+                    </Styled.Header>
 
-                        <Styled.Content> { children } </Styled.Content>
+                    <Styled.Content> { children } </Styled.Content>
 
-                        { !hideFooter && (
-                            <Styled.Footer>
-                                { isSubmitting && (
-                                    <LoadingState/>
-                                ) }
-                                { !isSubmitting && (
-                                    <Fragment>
-                                        <Styled.FooterButton type="button" $variant="secondary" className="secondary" onClick={ () => setIsClosing(true) }>
-                                            <Styled.FooterButtonCancelIcon/>
+                    { !hideFooter && (
+                        <Styled.Footer>
+                            { isSubmitting && (
+                                <LoadingState/>
+                            ) }
+                            { !isSubmitting && (
+                                <Fragment>
+                                    <Styled.FooterButton type="button" $variant="secondary" className="secondary" onClick={ () => setIsClosing(true) }>
+                                        <Styled.FooterButtonCancelIcon/>
 
-                                            <Styled.FooterButtonText> Cancelar </Styled.FooterButtonText>
-                                        </Styled.FooterButton>
-                                        <Styled.FooterButton type="submit" $variant="primary" className="primary" form={ formId }>
-                                            { mode === "create" ? <Styled.FooterButtonSaveIcon/> : mode === "edit"? <Styled.FooterButtonEditIcon/> : <Styled.FooterButtonUploadIcon/> }
+                                        <Styled.FooterButtonText> Cancelar </Styled.FooterButtonText>
+                                    </Styled.FooterButton>
+                                    <Styled.FooterButton type="submit" $variant="primary" className="primary" form={ formId }>
+                                        { mode === "create" ? <Styled.FooterButtonSaveIcon/> : mode === "edit"? <Styled.FooterButtonEditIcon/> : <Styled.FooterButtonUploadIcon/> }
 
-                                            <Styled.FooterButtonText> { mode === "create" ? "Salvar" : mode === "edit" ? "Atualizar" : "Importar" } </Styled.FooterButtonText>
-                                        </Styled.FooterButton>
-                                    </Fragment>
-                                ) }
-                            </Styled.Footer>
-                        ) }
-                    </Styled.Drawer>
-                ) }
+                                        <Styled.FooterButtonText> { mode === "create" ? "Salvar" : mode === "edit" ? "Atualizar" : "Importar" } </Styled.FooterButtonText>
+                                    </Styled.FooterButton>
+                                </Fragment>
+                            ) }
+                        </Styled.Footer>
+                    ) }
+                </Styled.Drawer>
+            ) }
         </Fragment>
     );
 }

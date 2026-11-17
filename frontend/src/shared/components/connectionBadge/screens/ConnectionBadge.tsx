@@ -5,7 +5,7 @@ import * as Styled from '../styles/connectionBadge.style';
 import { ConnectionBadgeProps } from '../interfaces/connectionBadgeProps.interface';
 import { CONNECTION_BADGE_CONFIG } from '../constants/connectionBadgeConfig.constant';
 
-const ConnectionBadge: React.FC<ConnectionBadgeProps> = ({ variant, phone }) => {
+export const ConnectionBadge: React.FC<ConnectionBadgeProps> = ({ variant, phone }) => {
     const badgeConfig = CONNECTION_BADGE_CONFIG[variant];
 
     if (!badgeConfig) {
@@ -36,5 +36,3 @@ const ConnectionBadge: React.FC<ConnectionBadgeProps> = ({ variant, phone }) => 
         </Styled.ConnectionBadgeContainer>
     );
 }
-
-export default ConnectionBadge;

@@ -1,17 +1,10 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { NavigationTabProps } from '../interfaces/navigationTabProps.interface';
-
-const navigationTabIconAnimation = keyframes`
-    0%, 100% { transform: rotate(0deg); }
-    20% { transform: rotate(-14deg); }
-    40% { transform: rotate(14deg); }
-    60% { transform: rotate(-12deg); }
-    80% { transform: rotate(12deg); }
-`;
+import { buttonHoverAnimation, navigationTabIconAnimation } from '../../../styles/Global.style';
 
 export const HeaderWrapper = styled.header`
-    margin-top: -184px;
+    margin-top: -214px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -26,6 +19,7 @@ export const SessionInformationWrapper = styled.div`
 `;
 
 export const SessionTitle = styled.h1`
+    margin-top: 30px;
     margin-bottom: 7.5px;
     font-family: "Inter";
     font-weight: 900;
@@ -75,11 +69,19 @@ export const NavigationTabButtons = styled.button<{ $active: boolean; $hovered: 
     color: ${ ({ $active }) => $active ? "#223463" : "#F0F0F5" };
     background-color: ${ ({ $active }) => $active ? "#F0F0F5" : "#223463" };
 
-        &:hover {
-            svg {
-                animation: ${ navigationTabIconAnimation } 0.6s ease-in-out;
-            }
-        }
+        ${ ({ $active }) => !$active && css`
+            cursor: pointer;
+
+                &:hover {
+                    span {
+                        animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
+                    }
+
+                    svg {
+                        animation: ${ navigationTabIconAnimation } 0.6s ease-in-out;
+                    }
+                }
+        `}
 
             svg {
                 stroke: #1C70E9;

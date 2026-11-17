@@ -3,13 +3,13 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import * as Styled from '../styles/header.style';
-import Connection from '../../../components/connection/screens/Connection';
+import { Connection } from '../../../components/connection/screens/Connection';
 import { HeaderMenuLinksProps } from '../interfaces/headerMenuLinksProps.interface';
 import { HEADER_MENU_ICONS_CONFIG } from '../constants/headerMenuIconsConfig.constant';
 import { Logout } from '../../../../core/authentication/services/authentication.service';
 import { clearAuthenticationStorage, getAuthenticationStorage } from '../../../utils/authenticationStorage.util';
 
-const Header: React.FC<HeaderMenuLinksProps> = ({ links }) => {
+export const Header: React.FC<HeaderMenuLinksProps> = ({ links }) => {
     const [isConnectionOpen, setIsConnectionOpen] = useState<boolean>(false);
 
     const navigate = useNavigate();
@@ -75,5 +75,3 @@ const Header: React.FC<HeaderMenuLinksProps> = ({ links }) => {
         </Styled.Container>
     );
 }
-
-export default Header;

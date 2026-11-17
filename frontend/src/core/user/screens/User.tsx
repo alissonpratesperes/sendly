@@ -6,23 +6,23 @@ import { UserStatus } from '../enums/userStatus.enum';
 import { List, Delete } from '../services/user.service';
 import { UserResponseDto } from '../dtos/userResponse.dto';
 import { UserFormData } from '../schemas/userFormSchema.schema';
-import Modal from '../../../shared/components/modal/screens/Modal';
 import { formatDate } from '../../../shared/utils/formatDate.util';
+import { Modal } from '../../../shared/components/modal/screens/Modal';
 import { Table } from '../../../shared/components/table/screens/Table';
 import { Finder } from '../../../shared/components/finder/screen/Finder';
 import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
-import Paginate from '../../../shared/components/paginate/screens/Paginate';
-import Dropdown from '../../../shared/components/dropdown/screens/Dropdown';
 import { CompanyResponseDto } from '../../company/dtos/companyResponse.dto';
 import * as Styled from '../../../shared/components/table/styles/table.style';
 import { List as ListCompanies } from '../../company/services/company.service';
-import StatusBadge from '../../../shared/components/statusBadge/screens/StatusBadge';
+import { Paginate } from '../../../shared/components/paginate/screens/Paginate';
+import { Dropdown } from '../../../shared/components/dropdown/screens/Dropdown';
 import { EmptyState } from '../../../shared/components/emptyState/screens/EmpyState';
+import { StatusBadge } from '../../../shared/components/statusBadge/screens/StatusBadge';
 import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
 import { getAuthenticationStorage } from '../../../shared/utils/authenticationStorage.util';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
 
-const User = () => {
+export const User = () => {
     const [page, setPage] = useState<number>(1);
     const [total, setTotal] = useState<number>(0);
     const [limit, setLimit] = useState<number>(15);
@@ -204,5 +204,3 @@ const User = () => {
         </Fragment>
     );
 }
-
-export default User;

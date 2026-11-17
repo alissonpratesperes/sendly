@@ -15,4 +15,4 @@ export const ALLOWED_IMAGE_EXTENSIONS = [
     ".webp",
 ] as const;
 
-export type AllowedImageExtension = typeof ALLOWED_IMAGE_EXTENSIONS[number];
+export type AllowedImageExtension = typeof ALLOWED_IMAGE_EXTENSIONS[number]

@@ -1,25 +1,24 @@
 import { toast } from 'react-toastify';
-import { Pen, Plus } from 'lucide-react';
 import React, { Fragment, useCallback, useEffect, useState } from 'react';
 
 import { CompanyForm } from '../forms/companyForm.form';
 import { List, Delete } from '../services/company.service';
 import { CompanyResponseDto } from '../dtos/companyResponse.dto';
 import { formatDate } from '../../../shared/utils/formatDate.util';
-import Modal from '../../../shared/components/modal/screens/Modal';
 import { CompanyFormData } from '../schemas/companyFormSchema.schema';
 import { Table } from '../../../shared/components/table/screens/Table';
+import { Modal } from '../../../shared/components/modal/screens/Modal';
 import { Finder } from '../../../shared/components/finder/screen/Finder';
 import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
-import Paginate from '../../../shared/components/paginate/screens/Paginate';
 import * as Styled from '../../../shared/components/table/styles/table.style';
+import { Paginate } from '../../../shared/components/paginate/screens/Paginate';
 import { EmptyState } from '../../../shared/components/emptyState/screens/EmpyState';
 import { formatCompanyDocument } from '../../../shared/utils/formatCompanyDocument.util';
 import { getAuthenticationStorage } from '../../../shared/utils/authenticationStorage.util';
 import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
 
-const Company = () => {
+export const Company = () => {
     const [page, setPage] = useState<number>(1);
     const [total, setTotal] = useState<number>(0);
     const [limit, setLimit] = useState<number>(15);
@@ -141,6 +140,4 @@ const Company = () => {
             </Drawer>
         </Fragment>
     );
-}
-
-export default Company;
+};

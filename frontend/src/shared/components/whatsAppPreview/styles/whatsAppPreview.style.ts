@@ -27,7 +27,7 @@ export const WhatsAppChatContainer = styled.div`
 
 export const WhatsAppChatBody = styled.div`
     padding: 30px;
-    height: 800px;
+    height: calc(100vh - 60px);
     position: relative;
     overflow-x: hidden;
     overflow-y: auto;
@@ -40,8 +40,7 @@ export const WhatsAppChatBody = styled.div`
             width: 10px;
         }
         &::-webkit-scrollbar-track {
-            margin-top: 14px;
-            margin-bottom: 14px;
+            margin-top: 14px 0px;
             background: transparent;
         }
         &::-webkit-scrollbar-thumb {
@@ -140,7 +139,14 @@ export const WhatsAppMessageReadFeedback = styled.div`
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    text-align: right;
+    column-gap: 7.5px;
+`;
+
+export const WhatsAppMessageReadFeedbackHour = styled.span`
+    font-family: "Inter";
+    font-weight: 500;
+    font-size: 13px;
+    color: #171719;
 `;
 
 export const WhatsAppMessageReadFeedbackIcon = styled(CheckCheck)<{ $isRead: boolean }>`

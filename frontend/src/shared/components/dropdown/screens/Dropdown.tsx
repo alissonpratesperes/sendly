@@ -3,7 +3,7 @@ import Select, { components, type ControlProps } from 'react-select';
 import { DropdownProps } from '../interfaces/dropdownProps.interface';
 import { SelectCommonStyles, SelectFilterIcon } from '../styles/dropdown.style';
 
-export default function Dropdown<Option>({
+export function Dropdown<Option>({
     width = "100%",
     isInPagination,
     isInBatchSendScreen,

@@ -10,7 +10,7 @@ import { ACCEPTED_CSV_CONFIG, ACCEPTED_IMAGES_CONFIG, ALLOWED_IMAGE_EXTENSIONS }
 const REACT_APP_MAX_IMAGE_SIZE = Number(process.env.REACT_APP_MAX_IMAGE_SIZE);
 const REACT_APP_MAX_CSV_SIZE = Number(process.env.REACT_APP_MAX_CSV_SIZE);
 
-const Uploader: React.FC<UploaderProps> = ({ value, existingImage, blockRemove = false, onRemoveExistingImage, onChange, isCsv = false }) => {
+export const Uploader: React.FC<UploaderProps> = ({ value, existingImage, blockRemove = false, onRemoveExistingImage, onChange, isCsv = false }) => {
     const hasFile = !!value || !!existingImage;
     const shouldShowDropzone = !isCsv || !hasFile;
     const accept = isCsv ? ACCEPTED_CSV_CONFIG : ACCEPTED_IMAGES_CONFIG;
@@ -202,5 +202,3 @@ const Uploader: React.FC<UploaderProps> = ({ value, existingImage, blockRemove =
         </Styled.UploaderWrapper>
     );
 }
-
-export default Uploader;

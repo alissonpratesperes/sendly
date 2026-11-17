@@ -39,6 +39,9 @@ export const TableListBodyRowData = styled.td<{ $isInBatchScreen?: boolean }>`
     white-space: pre-line;
     vertical-align: middle;
     background: #FFFFFF;
+    height: 95px;
+    min-height: 95px;
+
         ${({ $isInBatchScreen }) => !$isInBatchScreen && `
             &:last-of-type {
                 width: 110px;
@@ -57,7 +60,6 @@ export const TableListBodyRowDataActions = styled.div`
 `;
 
 export const TableListBodyRow = styled.tr`
-    height: 85px;
     display: table-row;
     background-color: #FFFFFF;
     clip-path: inset(0 round 26px);
@@ -221,7 +223,6 @@ export const TimeStampsContainer = styled.div`
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-end;
-    row-gap: 7.5px;
 `;
 
 export const TimeStampsRowContent = styled.div`
@@ -234,7 +235,9 @@ export const TimeStampsRowContent = styled.div`
 `;
 
 export const TimeStampDestak = styled.span<{ $statusColor?: string }>`
+    padding: 3.75px;
     font-family: "Orbitron";
+    font-size: 13px;
 
     font-weight: ${ ({ $statusColor }) => $statusColor ? 700 : 400 };
 

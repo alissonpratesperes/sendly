@@ -3,9 +3,9 @@ import { toast } from 'react-toastify';
 import React, { useState, useEffect } from 'react';
 
 import { Create, Update } from '../services/list.service';
-import Toast from '../../../shared/components/toast/screens/Toast';
 import { CreateListCommandDto } from '../dtos/createListCommand.dto';
 import { UpdateListCommandDto } from '../dtos/updateListCommand.dto';
+import { Toast } from '../../../shared/components/toast/screens/Toast';
 import { FormProps } from '../../../shared/interfaces/formProps.interface';
 import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
 import { ListFormData, ListFormSchema } from '../schemas/listFormSchema.schema';

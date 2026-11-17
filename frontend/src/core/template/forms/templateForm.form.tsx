@@ -3,11 +3,11 @@ import { toast } from 'react-toastify';
 import React, { useState, useEffect, useRef, Fragment } from 'react';
 
 import { Create, Update } from '../services/template.service';
-import Toast from '../../../shared/components/toast/screens/Toast';
+import { Toast } from '../../../shared/components/toast/screens/Toast';
 import { FormProps } from '../../../shared/interfaces/formProps.interface';
-import Uploader from '../../../shared/components/uploader/screens/Uploader';
 import { CreateTemplateCommandDto } from '../dtos/createTemplateCommand.dto';
 import { UpdateTemplateCommandDto } from '../dtos/updateTemplateCommand.dto';
+import { Uploader } from '../../../shared/components/uploader/screens/Uploader';
 import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
 import { TemplateContentFields } from '../interfaces/templateContentFields.interface';
 import { TemplateFormData, TemplateFormSchema } from '../schemas/templateFormSchema.schema';

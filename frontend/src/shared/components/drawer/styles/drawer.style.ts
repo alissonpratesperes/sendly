@@ -8,7 +8,7 @@ export const DrawerOverlay = styled.div<DrawerOverlayProps>`
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.25);
-    backdrop-filter: blur(7px);
+    backdrop-filter: blur(3.5px);
     z-index: 999;
     transition: opacity 0.6s ease-in-out, visibility 0.6s ease-in-out;
 
@@ -93,6 +93,7 @@ export const Content = styled.div`
             width: 10px;
         }
         &::-webkit-scrollbar-track {
+            margin: 14px 0px;
             background: transparent;
         }
         &::-webkit-scrollbar-thumb {
@@ -113,7 +114,6 @@ export const Form = styled.form`
 `;
 
 export const Fieldset = styled.fieldset`
-    margin-bottom: 30px;
     padding: 30px 30px 0px 30px;
     display: flex;
     flex-direction: column;
@@ -147,19 +147,18 @@ export const VariableTipButton = styled.button<{ $disabled: boolean }>`
     align-items: center;
     justify-content: center;
     font-family: "Inter";
-    font-weight: 400;
+    font-weight: 700;
     font-size: 16px;
     border: none;
     border-radius: 14px;
     color: #FF6B00;
-    background: transparent;
+    background: rgba(255, 107, 0, 0.25);
     transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
 
     opacity: ${ ({ $disabled }) => $disabled ? "0.5" : "1" };
     cursor: ${ ({ $disabled }) => $disabled ? "not-allowed" : "pointer" };
 
         &:hover:not(:disabled) {
-            font-weight: 700;
             color: #F0F0F5;
             background-color: #FF6B00;
 
@@ -310,15 +309,15 @@ export const Footer = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
     column-gap: 30px;
     border-top: 2px solid #E9EAEB;
 
         &:has(.secondary:hover) {
             .primary {
-                font-weight: 400;
+                font-weight: 700;
                 color: #238636;
-                background-color: transparent;
+                background-color: #E6F4EA;
             }
         }
 `;
@@ -332,16 +331,15 @@ export const FooterButton = styled.button<{ $variant?: "primary" | "secondary"; 
     align-items: center;
     justify-content: center;
     font-family: "Inter";
-    font-weight: 400;
+    font-weight: 700;
     font-size: 16px;
     border: none;
     border-radius: 14px;
     cursor: pointer;
     transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
 
-    font-weight: ${ ({ $variant }) => $variant === "primary" ? "700" : "400" };
     color: ${ ({ $variant }) => $variant === "primary" ? "#FFFFFF" : "#223463" };
-    background-color: ${ ({ $variant }) => $variant === "primary" ? "#238636" : "transparent" };
+    background-color: ${ ({ $variant }) => $variant === "primary" ? "#238636" : "#E8EEF8" };
 
         &.secondary {
             svg {
@@ -349,7 +347,6 @@ export const FooterButton = styled.button<{ $variant?: "primary" | "secondary"; 
             }
         }
         &.secondary:hover {
-            font-weight: 700;
             color: #F0F0F5;
             background-color: #223463;
 
@@ -533,16 +530,15 @@ export const WhatsAppPreviewToggleButton = styled.button<{ $showPreview: boolean
     align-items: center;
     justify-content: center;
     font-family: "Inter";
-    font-weight: 400;
+    font-weight: 700;
     font-size: 16px;
     border: none;
     border-radius: 14px;
     cursor: pointer;
     transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
 
-    font-weight: ${ ({ $showPreview }) => $showPreview ? "700" : "400" };
     color: ${ ({ $showPreview }) => $showPreview ? "#F0F0F5" : "#075E54" };
-    background-color: ${ ({ $showPreview }) => $showPreview ? "#075E54" : "transparent" };
+    background-color: ${ ({ $showPreview }) => $showPreview ? "#075E54" : "rgba(7, 94, 84, 0.25);" };
 
         &:hover {
             font-weight: 700;

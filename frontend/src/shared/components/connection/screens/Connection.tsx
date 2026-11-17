@@ -2,16 +2,16 @@ import { toast } from 'react-toastify';
 import React, { useState, useEffect, Fragment } from 'react';
 
 import * as Styled from '../../../styles/modal.style';
-import PairingCode from '../../pairingCode/screens/PairingCode';
+import { PairingCode } from '../../pairingCode/screens/PairingCode';
 import { LoadingState } from '../../loadingState/screens/LoadingState';
 import { ConnectionProps } from '../interfaces/connectionProps.interface';
-import ConnectionBadge from '../../connectionBadge/screens/ConnectionBadge';
 import { BaileysForm } from '../../../../core/baileys/forms/baileysForm.form';
+import { ConnectionBadge } from '../../connectionBadge/screens/ConnectionBadge';
 import { Status, Logout } from '../../../../core/baileys/services/baileys.service';
 import { ConnectionBadgeVariant } from '../../connectionBadge/enums/connectionBadgeVariant.enum';
 import { BaileysStatusResponseDto } from '../../../../core/baileys/dtos/baileysStatusResponse.dto';
 
-const Connection: React.FC<ConnectionProps> = ({ onPairingSuccess, isOpen, companyId, onClose }) => {
+export const Connection: React.FC<ConnectionProps> = ({ onPairingSuccess, isOpen, companyId, onClose }) => {
     const [isClosing, setIsClosing] = useState(false);
     const [loadingStatus, setLoadingStatus] = useState(false);
     const [pairingCode, setPairingCode] = useState<string | null>(null);
@@ -78,7 +78,7 @@ const Connection: React.FC<ConnectionProps> = ({ onPairingSuccess, isOpen, compa
     }, [ isOpen, companyId, ]);
 
     return (
-        <Styled.ModalOverlay $open={ isOpen && !isClosing } onClick={ () => setIsClosing(true) }>
+        <Styled.ModalOverlay $open={ isOpen && !isClosing }>
             { isOpen && (
                 <Styled.ModalWrapper $open={ !isClosing } onClick={ (event) => event.stopPropagation() }  onAnimationEnd={ (event) => { if (event.currentTarget === event.target && isClosing) { onClose(); setIsClosing(false); } } }>
                     <Styled.ModalContainer>
@@ -140,5 +140,3 @@ const Connection: React.FC<ConnectionProps> = ({ onPairingSuccess, isOpen, compa
         </Styled.ModalOverlay>
     );
 }
-
-export default Connection;

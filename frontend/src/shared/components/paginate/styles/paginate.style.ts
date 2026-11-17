@@ -86,7 +86,7 @@ export const PageButton = styled.button<{ $active?: boolean; $anotherHovered: bo
     height: 55px;
     width: 55px;
     font-family: "Lato";
-    font-weight: 500;
+    font-weight: 700;
     font-size: 16px;
     border-radius: 14px;
     border: none;
@@ -95,7 +95,6 @@ export const PageButton = styled.button<{ $active?: boolean; $anotherHovered: bo
     opacity: 1;
 
     cursor: ${ ({ $active }) => ($active ? "default" : "pointer") };
-    font-weight: ${ ({ $active, $anotherHovered }) => $active && !$anotherHovered ? 700 : 500 };
     color: ${ ({ $active, $anotherHovered }) => $active && !$anotherHovered ? "#FFFFFF" : "#223463" };
     background-color: ${ ({ $active, $anotherHovered }) => $active && !$anotherHovered ? "#223463" : "transparent" };
     transition: ${ ({ $disableTransition }) => $disableTransition ? "none" : "font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease" };

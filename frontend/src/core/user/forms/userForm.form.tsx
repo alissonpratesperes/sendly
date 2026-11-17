@@ -4,12 +4,12 @@ import React, { useState, useEffect } from 'react';
 
 import { Create, Update } from '../services/user.service';
 import { List } from '../../company/services/company.service';
-import Toast from '../../../shared/components/toast/screens/Toast';
 import { CreateUserCommandDto } from '../dtos/createUserCommand.dto';
 import { UpdateUserCommandDto } from '../dtos/updateUserCommand.dto';
+import { Toast } from '../../../shared/components/toast/screens/Toast';
 import { FormProps } from '../../../shared/interfaces/formProps.interface';
 import { CompanyResponseDto } from '../../company/dtos/companyResponse.dto';
-import Dropdown from '../../../shared/components/dropdown/screens/Dropdown';
+import { Dropdown } from '../../../shared/components/dropdown/screens/Dropdown';
 import { UserFormData, UserFormSchema } from '../schemas/userFormSchema.schema';
 import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
 

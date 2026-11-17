@@ -11,18 +11,17 @@ import { Read as ReadList } from '../../list/services/list.service';
 import { Table } from '../../../shared/components/table/screens/Table';
 import { Finder } from '../../../shared/components/finder/screen/Finder';
 import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
-import Paginate from '../../../shared/components/paginate/screens/Paginate';
-import Dropdown from '../../../shared/components/dropdown/screens/Dropdown';
 import * as Styled from '../../../shared/components/table/styles/table.style';
 import { TemplateResponseDto } from '../../template/dtos/templateResponse.dto';
+import { Paginate } from '../../../shared/components/paginate/screens/Paginate';
+import { Dropdown } from '../../../shared/components/dropdown/screens/Dropdown';
 import { Read as ReadTemplate } from '../../template/services/template.service';
 import { List as ListTemplates } from '../../template/services/template.service';
 import { EmptyState } from '../../../shared/components/emptyState/screens/EmpyState';
-import StatusBadge from '../../../shared/components/statusBadge/screens/StatusBadge';
 import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
 
-const Batch = () => {
+export const Batch = () => {
     const [page, setPage] = useState<number>(1);
     const [total, setTotal] = useState<number>(0);
     const [limit, setLimit] = useState<number>(15);
@@ -214,5 +213,3 @@ const Batch = () => {
         </Fragment>
     );
 }
-
-export default Batch;
