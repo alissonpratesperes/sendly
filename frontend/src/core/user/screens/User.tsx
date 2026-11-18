@@ -161,7 +161,7 @@ export const User = () => {
                             isSearchable={ true }
                             isClearable={ true }
                             options={ optionsForCompanies }
-                            placeholder="Filtre por uma empresa"
+                            placeholder="Filtre por empresa"
                             value={ selectedCompanyOption }
                             onChange={ (selectedOption) => { setSelectedCompanyId(selectedOption?.value ?? null); setPage(1); } }
                         />

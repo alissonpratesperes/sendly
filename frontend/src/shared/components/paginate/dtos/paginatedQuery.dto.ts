@@ -8,6 +8,7 @@ export interface PaginatedQueryDto {
     listId?: number;
     templateId?: number;
     status?: BatchSendStatus;
+    active?: Boolean;
 
     companyId?: number;
 }

@@ -42,9 +42,17 @@ export const Contact = () => {
     const [isImportDrawerOpen, setIsImportDrawerOpen] = useState<boolean>(false);
     const [selectedContactId, setSelectedContactId] = useState<number | null>(null);
     const [listsNames, setListsNames] = useState<Record<number, ListResponseDto>>({});
+    const [selectedContactActive, setSelectedContactActive] = useState<boolean | undefined>(undefined);
 
     const listsNamesRef = useRef<Record<number, ListResponseDto>>({});
 
+    const optionsForContactActive = [
+        { value: true, label: "Ativo" },
+        { value: false, label: "Inativo" },
+    ];
+    const selectedContactActiveOption = useMemo(() => {
+        return optionsForContactActive.find((option) => option.value === selectedContactActive) ?? null;
+    }, [ optionsForContactActive, selectedContactActive, ]);
     const optionsForLists = useMemo(() => {
         return lists
             .filter((list) => list.id !== undefined && list.id !== null)
@@ -66,7 +74,7 @@ export const Contact = () => {
         try {
             setIsLoading(true);
 
-            const params: PaginatedQueryDto = { page, limit, search, listId: selectedListId ?? undefined, };
+            const params: PaginatedQueryDto = { page, limit, search, active: selectedContactActive, listId: selectedListId ?? undefined, };
             const response = await List(params);
 
             setContacts(response.data);
@@ -101,7 +109,7 @@ export const Contact = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [ page, limit, search, selectedListId, ])
+    }, [ page, limit, search, selectedContactActive, selectedListId, ])
     const handleUpdate = (id: number) => {
         const clicked = contacts.find((contact: ContactResponseDto) => contact.id === id);
 
@@ -212,13 +220,25 @@ export const Contact = () => {
                 <Styled.WhenInMultiSearchContainer>
                     <Styled.WhenInAnotherScreenWrapper>
                         <Dropdown
+                            inputId="contactStatusId"
+                            isInBatchSendScreen={ true }
+                            isSearchable={ false }
+                            isClearable={ true }
+                            options={ optionsForContactActive }
+                            placeholder="Filtre por estado"
+                            value={ selectedContactActiveOption }
+                            onChange={(selectedOption) => { setSelectedContactActive(selectedOption?.value); setPage(1); } }
+                        />
+                    </Styled.WhenInAnotherScreenWrapper>
+                    <Styled.WhenInAnotherScreenWrapper>
+                        <Dropdown
                             inputId="listId"
                             isInBatchSendScreen={ true }
                             isLoading={ isListsLoading }
                             isSearchable={ true }
                             isClearable={ true }
                             options={ optionsForLists }
-                            placeholder="Filtre por uma lista"
+                            placeholder="Filtre por lista"
                             value={ selectedListOption }
                             onChange={ (selectedOption) => { setSelectedListId(selectedOption?.value ?? null); setPage(1); } }
 

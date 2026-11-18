@@ -45,10 +45,10 @@ export const Batch = () => {
             .filter((template) => template.id !== undefined && template.id !== null)
             .map((template) => ({ value: Number(template.id), label: template.name, }))
             .sort((a, b) => a.label.localeCompare(b.label));
-    }, [ templates ]);
+    }, [ templates, ]);
     const selectedTemplateOption = useMemo(() => {
         return optionsForTemplates.find((option) => option.value === selectedTemplateId) ?? null;
-    }, [ optionsForTemplates, selectedTemplateId ]);
+    }, [ optionsForTemplates, selectedTemplateId, ]);
 
     const handleCreate = () => {
         setUpdating(null);
@@ -172,7 +172,7 @@ export const Batch = () => {
                             isSearchable={ true }
                             isClearable={ true }
                             options={ optionsForTemplates }
-                            placeholder="Filtre por um template"
+                            placeholder="Filtre por template"
                             value={ selectedTemplateOption }
                             onChange={ (selectedOption) => { setSelectedTemplateId(selectedOption?.value ?? null); setPage(1); } }
                         />

@@ -161,9 +161,9 @@ export const BatchSend = () => {
                 <Styled.WhenInMultiSearchContainer>
                     <Styled.WhenInAnotherScreenWrapper>
                         <Dropdown
-                            inputId="templateId"
+                            inputId="batchStatusId"
                             isInBatchSendScreen={ true }
-                            isSearchable={ true }
+                            isSearchable={ false }
                             isClearable={ true }
                             options={ optionsForBatchSendStatus }
                             placeholder="Filtre por status"
@@ -171,7 +171,6 @@ export const BatchSend = () => {
                             onChange={ (selectedOption) => { setSelectedBatchSendStatus(selectedOption?.value ?? null); setPage(1); } }
                         />
                     </Styled.WhenInAnotherScreenWrapper>
-
                     <Styled.WhenInAnotherScreenWrapper>
                         <Dropdown
                             inputId="batchId"

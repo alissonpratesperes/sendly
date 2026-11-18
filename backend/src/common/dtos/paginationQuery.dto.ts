@@ -1,7 +1,7 @@
 import { BatchSend_Status } from '@prisma/client';
 import { Transform, Type } from 'class-transformer';
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsEnum, IsInt, IsOptional, IsString, Max, Min } from 'class-validator';
+import { IsBoolean, IsEnum, IsInt, IsOptional, IsString, Max, Min } from 'class-validator';
 
 export class PaginationQueryDto {
     @Min(1)
@@ -43,6 +43,17 @@ export class PaginationQueryDto {
     @IsOptional()
     @ApiPropertyOptional({ enum: BatchSend_Status })
     status?: BatchSend_Status;
+
+    @IsBoolean()
+    @IsOptional()
+    @Transform(({ value }) => {
+        if (value === "true") { return true; }
+        if (value === "false") { return false; }
+
+        return value;
+    })
+    @ApiPropertyOptional({ example: true })
+    active?: boolean;
 
     @Min(1)
     @IsInt()

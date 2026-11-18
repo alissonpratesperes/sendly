@@ -40,10 +40,11 @@ export class ContactService {
         );
     }
 
-    private buildContactListWhere(search?: string, listId?: number): Prisma.ContactWhereInput {
+    private buildContactListWhere(search?: string, active?: boolean, listId?: number): Prisma.ContactWhereInput {
         return {
             DeletedAt: null,
 
+            ...(active !== undefined && { Active: active }),
             ...(listId !== undefined && { ListId: listId, }),
 
             ...(search
@@ -147,8 +148,8 @@ export class ContactService {
         return contacts;
     }
 
-    async list(page: number = 1, limit: number = 15, search?: string, listId?: number): Promise<PaginatedResponseDto<GetContactResponseDto>> {
-        const where = this.buildContactListWhere(search, listId);
+    async list(page: number = 1, limit: number = 15, search?: string, active?: boolean, listId?: number): Promise<PaginatedResponseDto<GetContactResponseDto>> {
+        const where = this.buildContactListWhere(search, active, listId);
         const contacts = await this.prismaService.client.contact.findMany({
             where,
             skip: (page - 1) * limit,
