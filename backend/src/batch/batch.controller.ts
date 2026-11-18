@@ -29,6 +29,6 @@ export class BatchController {
     @Get(":id/sends")
     @HttpCode(HttpStatus.OK)
     async listSends(@Param() param: IdParamDto, @Query() query: PaginationQueryDto): Promise<PaginatedResponseDto<GetBatchSendResponseDto>> {
-        return this.batchService.listSends(param.id, query.page, query.limit);
+        return this.batchService.listSends(param.id, query.page, query.limit, query.status);
     }
 }

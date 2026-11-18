@@ -123,8 +123,8 @@ export class BatchService {
         );
     }
 
-    async listSends(batchId: number, page: number = 1, limit: number = 15): Promise<PaginatedResponseDto<GetBatchSendResponseDto>> {
-        return this.batchSendService.listByBatchId(batchId, page, limit);
+    async listSends(batchId: number, page: number = 1, limit: number = 15, status?: BatchSend_Status): Promise<PaginatedResponseDto<GetBatchSendResponseDto>> {
+        return this.batchSendService.listByBatchId(batchId, page, limit, status);
     }
 
     async markAsRunning(companyId: number, id: number): Promise<void> {

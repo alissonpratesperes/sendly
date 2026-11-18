@@ -4,6 +4,7 @@ import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react
 import { List, ListSends } from '../services/batch.service';
 import { BatchResponseDto } from '../dtos/batchResponse.dto';
 import { Read } from '../../contact/services/contact.service';
+import { BatchSendStatus } from '../enums/batchSendStatus.enum';
 import { formatDate } from '../../../shared/utils/formatDate.util';
 import { BatchSendResponseDto } from '../dtos/batchSendResponse.dto';
 import { TemplateForm } from '../../template/forms/templateForm.form';
@@ -33,7 +34,14 @@ export const BatchSend = () => {
     const [selectedBatchId, setSelectedBatchId] = useState<number | null>(null);
     const [viewingBatchSend, setViewingBatchSend] = useState<TemplateFormData | null>(null);
     const [contactsNames, setContactsNames] = useState<Record<number, ContactResponseDto>>({});
+    const [selectedBatchSendStatus, setSelectedBatchSendStatus] = useState<BatchSendStatus | null>(null);
 
+    const optionsForBatchSendStatus = [
+        { value: BatchSendStatus.WAITING, label: "Aguardando" },
+        { value: BatchSendStatus.PROCESSING, label: "Processando" },
+        { value: BatchSendStatus.SENT, label: "Enviado" },
+        { value: BatchSendStatus.ERROR, label: "Falhado" },
+    ];
     const optionsForBatches = batches
         .filter((batch: BatchResponseDto) => batch.id !== undefined && batch.id !== null)
         .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
@@ -50,7 +58,7 @@ export const BatchSend = () => {
         try {
             setIsLoading(true);
 
-            const params: PaginatedQueryDto = { page, limit, search, };
+            const params: PaginatedQueryDto = { page, limit, search, status: selectedBatchSendStatus ?? undefined, };
             const response = await ListSends({ id: selectedBatchId }, params);
 
             setBatchSends(response.data);
@@ -87,7 +95,7 @@ export const BatchSend = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [ selectedBatchId, page, limit ]);
+    }, [ selectedBatchId, page, limit, selectedBatchSendStatus ]);
 
     const handleViewBatchSend = (id: number) => {
         const clicked = batchSends.find((batchSend: BatchSendResponseDto) => batchSend.id === id);
@@ -105,8 +113,6 @@ export const BatchSend = () => {
         setIsDrawerOpen(true);
     }
 
-    const hasErrors = batchSends.some((batchSend: BatchSendResponseDto) => !!batchSend.errorMessage?.trim());
-
     useEffect(() => {
         const timeout = setTimeout(() => {
             handleRead();
@@ -114,7 +120,6 @@ export const BatchSend = () => {
 
         return () => clearTimeout(timeout);
     }, [ handleRead, ]);
-
     useEffect(() => {
         const progressiveBatchesFetch = async () => {
             try {
@@ -153,18 +158,33 @@ export const BatchSend = () => {
                 <LoadingState/>
             ) }
             { !isLoading && (
-                <Styled.WhenInAnotherScreenWrapper>
-                    <Dropdown
-                        inputId="batchId"
-                        isInBatchSendScreen={ true }
-                        isLoading={ isBatchesLoading }
-                        isClearable={ true }
-                        options={ optionsForBatches }
-                        placeholder="Selecione um lote"
-                        value={ optionsForBatches.find((option) => option.value === selectedBatchId) ?? null }
-                        onChange={ (selectedOption) => { setSelectedBatchId(selectedOption?.value ?? null); setBatchSends([]); setTotal(0); setPage(1); } }
-                    />
-                </Styled.WhenInAnotherScreenWrapper>
+                <Styled.WhenInMultiSearchContainer>
+                    <Styled.WhenInAnotherScreenWrapper>
+                        <Dropdown
+                            inputId="templateId"
+                            isInBatchSendScreen={ true }
+                            isSearchable={ true }
+                            isClearable={ true }
+                            options={ optionsForBatchSendStatus }
+                            placeholder="Filtre por status"
+                            value={ optionsForBatchSendStatus.find((option) => option.value === selectedBatchSendStatus) ?? null }
+                            onChange={ (selectedOption) => { setSelectedBatchSendStatus(selectedOption?.value ?? null); setPage(1); } }
+                        />
+                    </Styled.WhenInAnotherScreenWrapper>
+
+                    <Styled.WhenInAnotherScreenWrapper>
+                        <Dropdown
+                            inputId="batchId"
+                            isInBatchSendScreen={ true }
+                            isLoading={ isBatchesLoading }
+                            isClearable={ true }
+                            options={ optionsForBatches }
+                            placeholder="Selecione um lote"
+                            value={ optionsForBatches.find((option) => option.value === selectedBatchId) ?? null }
+                            onChange={ (selectedOption) => { setSelectedBatchId(selectedOption?.value ?? null); setBatchSends([]); setTotal(0); setPage(1); } }
+                        />
+                    </Styled.WhenInAnotherScreenWrapper>
+                </Styled.WhenInMultiSearchContainer>
             ) }
             { !isLoading && batchSends.length > 0 && (
                 <Fragment>
@@ -190,11 +210,11 @@ export const BatchSend = () => {
                 </Fragment>
             ) }
             { !isLoading && batchSends.length === 0 && (
-                <EmptyState message="Selecione um lote para carregar os envios"/>
+                <EmptyState message={ selectedBatchId === null ? "Selecione um lote para carregar os envios" : "Nenhum envio encontrado para os filtros selecionados" }/>
             ) }
 
             <Drawer isOpen={ isDrawerOpen } isSubmitting={ isSubmitting } formId="batch-form" title={ "Template enviado" } mode={ viewingBatchSend ? "edit" : "create" } onClose={ () => { setIsDrawerOpen(false); setViewingBatchSend(null); } } hideFooter={ true }>
-                <TemplateForm initialValues={ viewingBatchSend ?? undefined } onCancel={ () => { setIsDrawerOpen(false); if (isSubmitting) { return; } setViewingBatchSend(null); } } onSubmit={ () => { setIsDrawerOpen(false); setViewingBatchSend(null); handleRead(); } } onLoadingChange={ setIsSubmitting } disabled={true}/>
+                <TemplateForm initialValues={ viewingBatchSend ?? undefined } onCancel={ () => { setIsDrawerOpen(false); if (isSubmitting) { return; } setViewingBatchSend(null); } } onSubmit={ () => { setIsDrawerOpen(false); setViewingBatchSend(null); handleRead(); } } onLoadingChange={ setIsSubmitting } disabled={ true }/>
             </Drawer>
         </Fragment>
     );

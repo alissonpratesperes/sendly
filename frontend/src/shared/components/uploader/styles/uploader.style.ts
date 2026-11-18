@@ -63,7 +63,7 @@ export const DropzoneUploadArea = styled.div`
     justify-content: center;
 
         svg {
-            color: #223463;
+            color: #1C70E9;
         }
 `;
 
@@ -77,12 +77,12 @@ export const DropzoneStrongContent = styled.h5`
     font-family: "Lato";
     font-weight: 700;
     font-size: 14px;
-    color: #171719;
+    color: #223463;
 `;
 
 export const DropzoneLabel = styled.h5`
     font-family: "Lato";
-    font-weight: 500;
+    font-weight: 700;
     font-size: 14px;
     color: #223463;
 `;

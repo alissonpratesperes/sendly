@@ -10,10 +10,10 @@ import { MailTemplateContext } from './types/mailTemplateContext.type';
 import { requireEnvironmentVariable } from '../common/utils/requireEnvironmentVariable.util';
 
 @Injectable()
-export class MailService {
+export class MailService implements OnModuleInit {
     private transporter!: nodemailer.Transporter;
 
-    constructor() {
+    async onModuleInit(): Promise<void> {
         this.transporter = nodemailer.createTransport({
             host: requireEnvironmentVariable("SMTP_HOST"),
             port: Number(requireEnvironmentVariable("SMTP_PORT")),
@@ -25,6 +25,8 @@ export class MailService {
                 pass: requireEnvironmentVariable("SMTP_PASS"),
             },
         });
+
+        await this.transporter.verify();
     }
 
     private async renderTemplate<T extends MailTemplate>(template: T, context: MailTemplateContext[T]): Promise<string> {

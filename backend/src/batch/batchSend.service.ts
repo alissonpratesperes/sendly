@@ -41,9 +41,11 @@ export class BatchSendService {
         );
     }
 
-    private buildBatchSendListWhere(batchId: number): Prisma.BatchSendWhereInput {
+    private buildBatchSendListWhere(batchId: number, status?: BatchSend_Status): Prisma.BatchSendWhereInput {
         return {
             BatchId: batchId,
+
+            ...(status && { Status: status, }),
 
             Batch: {
                 DeletedAt: null,
@@ -117,8 +119,8 @@ export class BatchSendService {
         return createdBatchSends.map(({ Id }) => Id);
     }
 
-    async listByBatchId(batchId: number, page: number = 1, limit: number = 15): Promise<PaginatedResponseDto<GetBatchSendResponseDto>> {
-        const where = this.buildBatchSendListWhere(batchId);
+    async listByBatchId(batchId: number, page: number = 1, limit: number = 15, status?: BatchSend_Status): Promise<PaginatedResponseDto<GetBatchSendResponseDto>> {
+        const where = this.buildBatchSendListWhere(batchId, status);
         const batchSends = await this.prismaService.client.batchSend.findMany({
             where,
             skip: (page - 1) * limit,
