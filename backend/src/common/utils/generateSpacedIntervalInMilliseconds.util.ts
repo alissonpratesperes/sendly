@@ -1,11 +1,20 @@
-export function generateSpacedIntervalInMilliseconds(maxIntervalInSeconds: number): number {
-    const minIntervalInSeconds = 60;
+import { requireEnvironmentVariable } from './requireEnvironmentVariable.util';
 
-    if (maxIntervalInSeconds < minIntervalInSeconds) {
-        throw new Error("Maximum interval must be at least 60 seconds");
+export function generateSpacedIntervalInMilliseconds(): number {
+    const absoluteMinIntervalInSeconds = Number(requireEnvironmentVariable("MIN_INTERVAL_LIMIT"));
+    const absoluteMaxIntervalInSeconds = Number(requireEnvironmentVariable("MAX_INTERVAL_LIMIT"));
+
+    if (
+        !Number.isFinite(absoluteMinIntervalInSeconds) ||
+        !Number.isFinite(absoluteMaxIntervalInSeconds) ||
+        absoluteMinIntervalInSeconds < 60 ||
+        absoluteMaxIntervalInSeconds > 10800 ||
+        absoluteMaxIntervalInSeconds < absoluteMinIntervalInSeconds
+    ) {
+        throw new Error("Interval limits must be between '60' and '10800' seconds");
     }
 
-    const randomIntervalInSeconds = minIntervalInSeconds + Math.random() * (maxIntervalInSeconds - minIntervalInSeconds);
+    const randomIntervalInSeconds = absoluteMinIntervalInSeconds + Math.random() * (absoluteMaxIntervalInSeconds - absoluteMinIntervalInSeconds);
 
     return Math.round(randomIntervalInSeconds * 1000);
 }
