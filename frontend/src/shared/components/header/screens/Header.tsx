@@ -28,10 +28,6 @@ export const Header: React.FC<HeaderMenuLinksProps> = ({ links }) => {
 
     return (
         <Styled.Container>
-            <Styled.ApplicationBrandContainer>
-                <Styled.ApplicationBrandMark> Sendly </Styled.ApplicationBrandMark>
-            </Styled.ApplicationBrandContainer>
-
             <Styled.MenuContainer>
                 { links.map(({ label, path }) => {
                     const Icon = HEADER_MENU_ICONS_CONFIG[path];
@@ -43,6 +39,13 @@ export const Header: React.FC<HeaderMenuLinksProps> = ({ links }) => {
                         </Styled.NavItem>
                     );
                 }) }
+                { !userInformation?.isSystemRoot && (
+                    <Styled.WhatsAppButton type="button" onClick={ () => setIsConnectionOpen(true) }>
+                        <Styled.WhatsAppButtonIcon/>
+
+                        WhatsApp
+                    </Styled.WhatsAppButton>
+                ) }
             </Styled.MenuContainer>
 
             <Styled.UserContainer>
@@ -52,25 +55,14 @@ export const Header: React.FC<HeaderMenuLinksProps> = ({ links }) => {
                 </Styled.UserInformation>
 
                 <Styled.UserActionContainer>
-                    { !userInformation?.isSystemRoot && (
-                        <Styled.WhatsAppButton type="button" onClick={ () => setIsConnectionOpen(true) }>
-                            <Styled.WhatsAppButtonIcon/>
-                        </Styled.WhatsAppButton>
-                    ) }
-
-                    <Styled.LogOutButton type="button" onClick={ () => handleLogout() } isOnlyAction={ userInformation?.isSystemRoot }>
+                    <Styled.LogOutButton type="button" onClick={ () => handleLogout() }>
                         <Styled.LogOutButtonIcon/>
                     </Styled.LogOutButton>
                 </Styled.UserActionContainer>
             </Styled.UserContainer>
 
             { userInformation?.company?.id && (
-                <Connection
-                    onPairingSuccess={ false }
-                    isOpen={ isConnectionOpen }
-                    companyId={ userInformation.company.id }
-                    onClose={ () => setIsConnectionOpen(false) }
-                />
+                <Connection onPairingSuccess={ false } isOpen={ isConnectionOpen } companyId={ userInformation.company.id } onClose={ () => setIsConnectionOpen(false) }/>
             ) }
         </Styled.Container>
     );

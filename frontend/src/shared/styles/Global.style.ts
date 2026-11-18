@@ -87,3 +87,22 @@ export const GlobalStyle = createGlobalStyle`
 export const Main = styled("main").withConfig({ shouldForwardProp: (prop) => isPropValid(prop) && prop !== "applyPadding" }) <{ applyPadding?: boolean; }>`
     ${ ({ applyPadding }) => applyPadding && css` padding: 40px 30px 40px 30px;` };
 `;
+
+export const Footer = styled.footer`
+    margin-top: 60px;
+    height: 160px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    background-color: #223463;
+`;
+
+export const FooterContentContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    row-gap: 30px;
+`;

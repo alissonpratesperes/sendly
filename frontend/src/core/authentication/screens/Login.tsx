@@ -6,8 +6,6 @@ import React, { useState, Fragment } from 'react';
 
 import * as Styled from '../styles/login.style';
 import { Login } from '../services/authentication.service';
-import { Decal } from '../../../shared/elements/decal/screens/Decal';
-import { Brand } from '../../../shared/elements/brand/screens/Brand';
 import { setAuthenticationStorage } from '../../../shared/utils/authenticationStorage.util';
 import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
 
@@ -57,8 +55,6 @@ export const Authentication: React.FC = () => {
     return (
         <Styled.AuthFormContainer>
             <Styled.LoginForm onSubmit={ handleSubmit }>
-                <Brand/>
-
                 <Styled.FormTitle> Bem-vindo </Styled.FormTitle>
                 <Styled.FormSubtitle> Para autenticar no sistema, informe suas credenciais abaixo </Styled.FormSubtitle>
 
@@ -95,8 +91,6 @@ export const Authentication: React.FC = () => {
                     ) }
                 </Styled.LoginButtonsContainer>
             </Styled.LoginForm>
-
-            <Decal/>
         </Styled.AuthFormContainer>
     );
 }

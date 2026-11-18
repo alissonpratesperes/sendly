@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const HeaderWrapper = styled.header`
-    margin-top: -183px;
+    margin-top: -184px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -9,10 +9,12 @@ export const HeaderWrapper = styled.header`
 `;
 
 export const SessionInformationWrapper = styled.div`
+    height: auto;
+    width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-start;
+    justify-content: flex-start;
 `;
 
 export const SessionTitle = styled.h1`

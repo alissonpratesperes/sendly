@@ -1,12 +1,14 @@
 import React, { Fragment } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 
-import { Main } from './shared/styles/Global.style';
+import * as Styled from './shared/styles/Global.style';
 import { Reset } from './core/authentication/screens/Reset';
 import { Home } from './shared/components/home/screens/Home';
 import { Forgot } from './core/authentication/screens/Forgot';
+import { Brand } from './shared/elements/brand/screens/Brand';
 import { Header } from './shared/components/header/screens/Header';
 import { Authentication } from './core/authentication/screens/Login';
+import { Copyright } from './shared/elements/copyright/screens/Copyright';
 import { AppRoutes } from './shared/components/header/enums/appRoutes.enum';
 import { PublicRoute } from './shared/components/public/screens/PublicRoute';
 import { PrivateRoute } from './shared/components/private/screens/PrivateRoute';
@@ -20,13 +22,13 @@ export const AppRouting: React.FC = () => {
     const { userInformation } = getAuthenticationStorage();
 
     const shouldUseAppLayout = !PATHS_WITHOUT_APP_LAYOUT.includes(location.pathname);
-    const links = [ ...(userInformation?.isSystemRoot ? [ { label: "Atividade", path: AppRoutes.HOME }, { label: "Cadastros", path: AppRoutes.REGISTRATIONS } ] : []), ];
+    const links = [ ...(userInformation?.isSystemRoot ? [{ label: "Atividade", path: AppRoutes.HOME }, { label: "Cadastros", path: AppRoutes.REGISTRATIONS }] : [{ label: "Cadastros", path: AppRoutes.REGISTRATIONS }]), ];
 
     return (
         <Fragment>
             { shouldUseAppLayout && (<Header links={ links }/>) }
 
-            <Main applyPadding={ shouldUseAppLayout }>
+            <Styled.Main applyPadding={ shouldUseAppLayout }>
                 <Routes>
                     <Route path="/authentication/reset" element={ <PublicRoute element={ <Reset/> }/> }/>
                     <Route path="/authentication/forgot" element={ <PublicRoute element={ <Forgot/> }/> }/>
@@ -38,7 +40,15 @@ export const AppRouting: React.FC = () => {
 
                     <Route path="*" element={ <Navigate to="/" replace/> }/>
                 </Routes>
-            </Main>
+            </Styled.Main>
+
+            <Styled.Footer>
+                <Styled.FooterContentContainer>
+                    <Brand/>
+
+                    <Copyright/>
+                </Styled.FooterContentContainer>
+            </Styled.Footer>
         </Fragment>
     );
 }

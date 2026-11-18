@@ -5,8 +5,7 @@ import { buttonHoverAnimation } from '../../../shared/styles/Global.style';
 
 export const ForgotFormContainer = styled.div`
     position: relative;
-    height: 100vh;
-    min-height: 100vh;
+    height: calc(100vh - 220px);
     width: 100vw;
     display: flex;
     flex-direction: row;
@@ -37,7 +36,7 @@ export const FormSubtitle = styled.span`
     margin-bottom: 30px;
     align-self: flex-start;
     font-family: "Inter";
-    font-weight: 500;
+    font-weight: 700;
     font-size: 18px;
     color: #525059;
 `;
@@ -103,26 +102,25 @@ export const ForgotButton = styled.button`
     align-items: center;
     justify-content: center;
     font-family: "Lato";
-    font-weight: 400;
+    font-weight: 700;
     font-size: 16px;
     color: #223463;
     border: none;
     outline: none;
     border-radius: 14px;
-    background-color: transparent;
+    background-color: #E8EEF8;
     cursor: pointer;
     transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
 
-        &:hover {
-            font-weight: 700;
-            color: #FFFFFF;
-            background-color: #223463;
-
-            animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
+        svg {
+            stroke: #1C70E9;
         }
 
-            svg {
-                stroke: #1C70E9;
+            &:hover {
+                color: #FFFFFF;
+                background-color: #223463;
+
+                animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
             }
 `;
 

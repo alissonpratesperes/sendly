@@ -42,13 +42,13 @@ export const TableListBodyRowData = styled.td<{ $isInBatchScreen?: boolean }>`
     height: 95px;
     min-height: 95px;
 
-        ${({ $isInBatchScreen }) => !$isInBatchScreen && `
+        ${ ({ $isInBatchScreen }) => !$isInBatchScreen && `
             &:last-of-type {
                 width: 110px;
                 min-width: 110px;
                 text-align: center;
             }
-        `}
+        ` }
 `;
 
 export const TableListBodyRowDataActions = styled.div`

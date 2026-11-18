@@ -25,9 +25,10 @@ export const DropzoneArea = styled.div<DropzoneProps>`
     background-repeat: no-repeat;
     transition: background-color 0.3s ease-in-out;
 
-    ${({ $backgroundImage }) => !$backgroundImage && `&:hover { background-color: #E8EEF8; } `};
-    background-image: ${({ $backgroundImage }) => $backgroundImage ? `url("${$backgroundImage}")` : "none" };
-    background-color: ${({ $isDragActive, $backgroundImage }) => $isDragActive && !$backgroundImage ? "#E8EEF8" : "#FFFFFF" };
+    cursor: ${ ({ $backgroundImage }) => $backgroundImage ? "default" : "pointer" };
+    ${ ({ $backgroundImage }) => !$backgroundImage && `&:hover { background-color: #E8EEF8; } `};
+    background-image: ${ ({ $backgroundImage }) => $backgroundImage ? `url("${$backgroundImage}")` : "none" };
+    background-color: ${ ({ $isDragActive, $backgroundImage }) => $isDragActive && !$backgroundImage ? "#E8EEF8" : "#FFFFFF" };
 
         &::before {
             content: "";
@@ -41,7 +42,7 @@ export const DropzoneArea = styled.div<DropzoneProps>`
             transition: transform 0.3s ease, opacity 0.3s ease;
         }
 
-    ${({ $isDragActive, $backgroundImage }) => !$backgroundImage && `&:hover::before { opacity: 1; transform: scale(1); }; ${ $isDragActive ? `&::before { opacity: 1; transform: scale(1); }` : "" }` };
+    ${ ({ $isDragActive, $backgroundImage }) => !$backgroundImage && `&:hover::before { opacity: 1; transform: scale(1); }; ${ $isDragActive ? `&::before { opacity: 1; transform: scale(1); }` : "" }` };
 `;
 
 export const DropzoneTextContainer = styled.div`

@@ -5,32 +5,20 @@ import { Phone, PowerOff } from 'lucide-react';
 import { headerIconAnimation, buttonHoverAnimation } from '../../../styles/Global.style';
 
 export const Container = styled.header`
-  padding: 30px 30px 190px 30px;
+  padding: 30px 30px 160px 30px;
   width: auto;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   background-color: #223463;
 `;
 
-export const ApplicationBrandContainer = styled.div`
-  height: auto;
-  max-height: 55px;
-  width: auto;
-`;
-
-export const ApplicationBrandMark = styled.p`
-  margin: 0;
-  padding: 0;
-  font-family: "Alien Block";
-  font-weight: 400;
-  font-size: 60px;
-  color: #9CA3AF;
-  line-height: 0.1;
-`;
-
 export const MenuContainer = styled.div`
+  padding: 7.5px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -118,30 +106,35 @@ export const UserActionContainer = styled.div`
 `;
 
 export const WhatsAppButton = styled.button`
-  width: 55px;
-  height: 55px;
+  padding: 15px;
+  height: 100%;
+  width: auto;
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
-  border: none;
+  column-gap: 7.5px;
+  font-family: "Lato";
+  font-weight: 700;
+  font-size: 16px;
+  color: #F0F0F5;
   outline: none;
-  background: none;
-  color: #FF6B00;
-  background: rgba(255, 107, 0, 0.25);
-  border-top-left-radius: 14px;
-  border-bottom-left-radius: 14px;
+  border: none;
+  border-radius: 14px;
+  background-color: transparent;
   cursor: pointer;
-  transition: background 0.3s ease, color 0.3s ease;
+  transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
 
-    &:hover {
-      color: #FFFFFF;
-      background: #FF6B00;
-
-      animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
+    svg {
+      stroke: #1C70E9;
     }
 
-      svg {
-        stroke: currentColor;
+      &:hover {
+        animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
+
+          svg {
+            animation: ${ headerIconAnimation } 0.6s ease-in-out;
+          }
       }
 `;
 
@@ -150,7 +143,7 @@ export const WhatsAppButtonIcon = styled(Phone)`
   width: 25px;
 `;
 
-export const LogOutButton = styled.button<{ isOnlyAction?: boolean }>`
+export const LogOutButton = styled.button`
   width: 55px;
   height: 55px;
   display: flex;
@@ -160,19 +153,19 @@ export const LogOutButton = styled.button<{ isOnlyAction?: boolean }>`
   outline: none;
   color: #FF6B00;
   background: rgba(255, 107, 0, 0.25);
-  border-radius: ${ ({ isOnlyAction }) => isOnlyAction ? "14px" : "0 14px 14px 0" };
+  border-radius: 14px;
   cursor: pointer;
   transition: background 0.3s ease, color 0.3s ease;
 
-    &:hover {
-      color: #FFFFFF;
-      background: #FF6B00;
-
-      animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
+    svg {
+      stroke: currentColor;
     }
 
-      svg {
-        stroke: currentColor;
+      &:hover {
+        color: #FFFFFF;
+        background: #FF6B00;
+
+        animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
       }
 `;
 

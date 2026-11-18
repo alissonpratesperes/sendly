@@ -6,8 +6,6 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import * as Styled from '../styles/reset.style';
 import { Reset as ResetPassword } from '../services/authentication.service';
-import { Decal } from '../../../shared/elements/decal/screens/Decal';
-import { Brand } from '../../../shared/elements/brand/screens/Brand';
 import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
 
 export const Reset: React.FC = () => {
@@ -71,9 +69,7 @@ export const Reset: React.FC = () => {
     return (
         <Styled.ResetFormContainer>
             <Styled.ResetForm onSubmit={ handleSubmit }>
-                <Brand/>
-
-                <Styled.FormTitle> Definir uma nova senha </Styled.FormTitle>
+                <Styled.FormTitle> Atualizar senha </Styled.FormTitle>
                 <Styled.FormSubtitle> Para configurar sua nova senha, utilize os dois campos abaixo </Styled.FormSubtitle>
 
                 <Styled.InputWrapper>
@@ -102,8 +98,6 @@ export const Reset: React.FC = () => {
                     </Styled.PasswordButton>
                 ) }
             </Styled.ResetForm>
-
-            <Decal/>
         </Styled.ResetFormContainer>
     )
 }

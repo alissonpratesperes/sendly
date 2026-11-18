@@ -3,8 +3,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import * as Styled from '../styles/forgot.style';
-import { Decal } from '../../../shared/elements/decal/screens/Decal';
-import { Brand } from '../../../shared/elements/brand/screens/Brand';
 import { Forgot as ForgotPassword } from '../services/authentication.service';
 import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
 
@@ -41,9 +39,7 @@ export const Forgot: React.FC = () => {
     return (
         <Styled.ForgotFormContainer>
             <Styled.ForgotForm onSubmit={ handleSubmit }>
-                <Brand/>
-
-                <Styled.FormTitle> Esqueci minha senha </Styled.FormTitle>
+                <Styled.FormTitle> Recuperar senha </Styled.FormTitle>
                 <Styled.FormSubtitle> Para solicitar a redefinição de senha, informe seu e-mail abaixo </Styled.FormSubtitle>
 
                 <Styled.InputWrapper>
@@ -63,8 +59,6 @@ export const Forgot: React.FC = () => {
                     </Styled.ForgotButton>
                 ) }
             </Styled.ForgotForm>
-
-            <Decal/>
         </Styled.ForgotFormContainer>
     )
 }

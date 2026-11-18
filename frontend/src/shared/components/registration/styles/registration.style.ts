@@ -12,10 +12,12 @@ export const HeaderWrapper = styled.header`
 `;
 
 export const SessionInformationWrapper = styled.div`
+    height: auto;
+    width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-start;
+    justify-content: flex-start;
 `;
 
 export const SessionTitle = styled.h1`
@@ -98,13 +100,13 @@ export const NavigationTabButtons = styled.button<{ $active: boolean; $hovered: 
                 }
                 &::before {
                     left: -14px;
-                    border-radius: 0 0 14px 0;
+                    border-radius: 0px 0px 14px 0px;
 
                     box-shadow: 5px 5px 0 5px ${ ({ $active }) => $active ? "#F0F0F5" : "transparent" };
                 }
                 &::after {
                     right: -14px;
-                    border-radius: 0 0 0 14px;
+                    border-radius: 0px 0px 0px 14px;
 
                     box-shadow: -5px 5px 0 5px ${ ({ $active }) => $active ? "#F0F0F5" : "transparent" };
                 }
@@ -116,4 +118,10 @@ export const NavigationTabButtonText = styled.span<NavigationTabProps>`
     margin-left: 7.5px;
     font-weight: inherit;
     color: inherit;
+`;
+
+export const ContentWrapper = styled.div`
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 `;
