@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import * as Styled from '../styles/paginate.style';
+import * as I from '../../../shared/styles/icon.style';
+
 import { PageOption } from '../types/pageOption.type';
 import { Dropdown } from '../../dropdown/screens/Dropdown';
 import { PaginateParams } from '../types/paginateParams.type';
@@ -96,7 +98,7 @@ export function Paginate({ page, total, limit, onPageChange, onLimitChange, }: P
     return (
         <Styled.PaginateContainer>
             <Styled.PaginateButton disabled={ page === 1 } onClick={ previousPage }>
-                <Styled.ArrowLeftIcon/>
+                <I.ArrowBigLeftIcon/>
 
                 <Styled.PreviousButtonText> Anterior </Styled.PreviousButtonText>
             </Styled.PaginateButton>
@@ -104,7 +106,7 @@ export function Paginate({ page, total, limit, onPageChange, onLimitChange, }: P
             <Styled.PagesArrayContainer>
                 { pages.map((pageNumber, index) =>
                     pageNumber === "..." ? (
-                        <Styled.EllipsisIcon key={ `ellipsis-${ index }` }/>
+                        <I.EllipsisIcon key={ `ellipsis-${ index }` }/>
                     ) : (
                         <Styled.PageButton key={ `page-${ pageNumber }` } $active={ page === pageNumber } $anotherHovered={ hoveredPage !== null && hoveredPage !== pageNumber } $disableTransition={ disableTransition } onMouseEnter={ () => setHoveredPage(pageNumber as number) } onMouseLeave={ () => setHoveredPage(null) } onClick={ () => { setDisableTransition(false); goToPage(pageNumber as number); } }> { pageNumber } </Styled.PageButton>
                     )
@@ -127,7 +129,7 @@ export function Paginate({ page, total, limit, onPageChange, onLimitChange, }: P
             <Styled.PaginateButton disabled={ page === totalPages } onClick={ nextPage }>
                 <Styled.NextButtonText> Próxima </Styled.NextButtonText>
 
-                <Styled.ArrowRightIcon/>
+                <I.ArrowBigRightIcon/>
             </Styled.PaginateButton>
         </Styled.PaginateContainer>
     );

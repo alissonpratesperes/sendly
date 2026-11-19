@@ -1,7 +1,6 @@
 import styled, { css } from 'styled-components';
-import { Ban, GlobeCode, GlobeOff, Trash, X } from 'lucide-react';
 
-import { buttonHoverAnimation, modalCloseAnimation, modalOpenAnimation } from './Global.style';
+import { AnimateButtonHover, AnimateModalClosing, AnimateModalOpening } from './animation.style';
 
 export const ModalOverlay = styled.div<{ $open: boolean }>`
     position: fixed;
@@ -26,7 +25,7 @@ export const ModalWrapper = styled.div<{ $open: boolean }>`
     border-radius: 26px;
     box-sizing: border-box;
 
-    animation: ${ ({ $open }) => $open ? css`${ modalOpenAnimation } 0.6s ease-in-out forwards` : css`${ modalCloseAnimation } 0.6s ease-in-out forwards` };
+    animation: ${ ({ $open }) => $open ? css`${ AnimateModalOpening } 0.6s ease-in-out forwards` : css`${ AnimateModalClosing } 0.6s ease-in-out forwards` };
 `;
 
 export const ModalContainer = styled.div`
@@ -65,17 +64,9 @@ export const ModalDismissButton = styled.button`
         &:hover {
             color: #FFFFFF;
             background-color: #223463;
-            animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
-        }
 
-            svg {
-                stroke: currentColor;
-            }
-`;
-
-export const ModalDismissButtonIcon = styled(X)`
-    height: 25px;
-    width: 25px;
+            animation: ${ AnimateButtonHover } 0.6s ease-in-out;
+        }  
 `;
 
 export const ModalBody = styled.div`
@@ -110,14 +101,6 @@ export const ModalFooter = styled.div`
     justify-content: flex-end;
     column-gap: 30px;
     border-top: 2px solid #E9EAEB;
-`;
-
-export const FooterButtonsContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 0px;
-    flex-shrink: 0;
 `;
 
 export const ModalFooterButtonText = styled.span`
@@ -157,13 +140,8 @@ export const ModalPrimaryButton = styled(ModalButton)`
                 color: #FFFFFF;
                 background-color: #223463;
 
-                animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
+                animation: ${ AnimateButtonHover } 0.6s ease-in-out;
             }
-`;
-
-export const ModalPrimaryButtonIcon = styled(Ban)`
-    height: 25px;
-    width: 25px;
 `;
 
 export const ModalSecondaryButton = styled(ModalButton)`
@@ -175,26 +153,12 @@ export const ModalSecondaryButton = styled(ModalButton)`
     background-color: #FCE8E6;
     transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
 
-        svg {
-            stroke: currentColor;
+        &:hover {
+            color: #FFFFFF;
+            background-color: #DC143C;
+
+            animation: ${ AnimateButtonHover } 0.6s ease-in-out;
         }
-
-            &:hover {
-                color: #FFFFFF;
-                background-color: #DC143C;
-
-                animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
-            }
-`;
-
-export const ModalSecondaryButtonTrashIcon = styled(Trash)`
-    height: 25px;
-    width: 25px;
-`;
-
-export const ModalSecondaryButtonIcon = styled(GlobeOff)`
-    height: 25px;
-    width: 25px;
 `;
 
 export const ModalTertiaryButton = styled(ModalButton)`
@@ -206,19 +170,10 @@ export const ModalTertiaryButton = styled(ModalButton)`
     background: rgba(255, 107, 0, 0.25);
     transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
 
-        svg {
-            stroke: currentColor;
+        &:hover {
+            color: #F0F0F5;
+            background-color: #FF6B00;
+
+            animation: ${ AnimateButtonHover } 0.6s ease-in-out;
         }
-
-            &:hover {
-                color: #F0F0F5;
-                background-color: #FF6B00;
-
-                animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
-            }
-`;
-
-export const ModalTertiaryButtonIcon = styled(GlobeCode)`
-    height: 25px;
-    width: 25px;
 `;

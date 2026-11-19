@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import { Phone, PowerOff } from 'lucide-react';
 
-import { headerIconAnimation, buttonHoverAnimation } from '../../../styles/Global.style';
+import { AnimateButtonHover, AnimateHeaderIcon } from '../../../styles/animation.style';
 
 export const Container = styled.header`
   padding: 30px 30px 160px 30px;
@@ -47,10 +47,10 @@ export const NavItem = styled(NavLink)`
     }
 
       &:not(.active):hover {
-        animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
+        animation: ${ AnimateButtonHover } 0.6s ease-in-out;
 
           svg {
-            animation: ${ headerIconAnimation } 0.6s ease-in-out;
+            animation: ${ AnimateHeaderIcon } 0.6s ease-in-out;
           }
       }
       &.active {
@@ -130,10 +130,10 @@ export const WhatsAppButton = styled.button`
     }
 
       &:hover {
-        animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
+        animation: ${ AnimateButtonHover } 0.6s ease-in-out;
 
           svg {
-            animation: ${ headerIconAnimation } 0.6s ease-in-out;
+            animation: ${ AnimateHeaderIcon } 0.6s ease-in-out;
           }
       }
 `;
@@ -157,16 +157,12 @@ export const LogOutButton = styled.button`
   cursor: pointer;
   transition: background 0.3s ease, color 0.3s ease;
 
-    svg {
-      stroke: currentColor;
+    &:hover {
+      color: #FFFFFF;
+      background: #FF6B00;
+
+      animation: ${ AnimateButtonHover } 0.6s ease-in-out;
     }
-
-      &:hover {
-        color: #FFFFFF;
-        background: #FF6B00;
-
-        animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
-      }
 `;
 
 export const LogOutButtonIcon = styled(PowerOff)`

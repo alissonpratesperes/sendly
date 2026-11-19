@@ -1,6 +1,8 @@
 import { toast } from 'react-toastify';
 import React, { Fragment, useCallback, useEffect, useState } from 'react';
 
+import * as Styled from '../../../shared/components/table/styles/table.style';
+
 import { TemplateForm } from '../forms/templateForm.form';
 import { List, Delete } from '../services/template.service';
 import { TemplateResponseDto } from '../dtos/templateResponse.dto';
@@ -10,7 +12,6 @@ import { Table } from '../../../shared/components/table/screens/Table';
 import { TemplateFormData } from '../schemas/templateFormSchema.schema';
 import { Finder } from '../../../shared/components/finder/screen/Finder';
 import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
-import * as Styled from '../../../shared/components/table/styles/table.style';
 import { Paginate } from '../../../shared/components/paginate/screens/Paginate';
 import { EmptyState } from '../../../shared/components/emptyState/screens/EmpyState';
 import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';

@@ -2,6 +2,9 @@ import { toast } from 'react-toastify';
 import parsePhoneNumberFromString from 'libphonenumber-js';
 import React, { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+import * as Styled from '../../../shared/components/table/styles/table.style';
+import * as ContactFormStyled from '../../../shared/components/dropdown/styles/contactFormDropdown.style';
+
 import { ContactForm } from '../forms/contactForm.form';
 import { Read } from '../../list/services/list.service';
 import { ContactResponseDto } from '../dtos/contactResponse.dto';
@@ -15,14 +18,12 @@ import { Table } from '../../../shared/components/table/screens/Table';
 import { Modal } from '../../../shared/components/modal/screens/Modal';
 import { Finder } from '../../../shared/components/finder/screen/Finder';
 import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
-import * as Styled from '../../../shared/components/table/styles/table.style';
 import { Paginate } from '../../../shared/components/paginate/screens/Paginate';
 import { Dropdown } from '../../../shared/components/dropdown/screens/Dropdown';
 import { EmptyState } from '../../../shared/components/emptyState/screens/EmpyState';
 import { ToggleSwitch } from '../../../shared/components/toggleSwitch/screens/ToggleSwitch';
 import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
-import * as ContactFormStyled from '../../../shared/components/dropdown/styles/contactFormDropdown.style';
 
 export const Contact = () => {
     const [page, setPage] = useState<number>(1);

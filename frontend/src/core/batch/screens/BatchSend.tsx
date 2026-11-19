@@ -1,6 +1,8 @@
 import { toast } from 'react-toastify';
 import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 
+import * as Styled from '../../../shared/components/table/styles/table.style';
+
 import { List, ListSends } from '../services/batch.service';
 import { BatchResponseDto } from '../dtos/batchResponse.dto';
 import { Read } from '../../contact/services/contact.service';
@@ -11,7 +13,6 @@ import { TemplateForm } from '../../template/forms/templateForm.form';
 import { Table } from '../../../shared/components/table/screens/Table';
 import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
 import { ContactResponseDto } from '../../contact/dtos/contactResponse.dto';
-import * as Styled from '../../../shared/components/table/styles/table.style';
 import { Paginate } from '../../../shared/components/paginate/screens/Paginate';
 import { Dropdown } from '../../../shared/components/dropdown/screens/Dropdown';
 import { TemplateFormData } from '../../template/schemas/templateFormSchema.schema';

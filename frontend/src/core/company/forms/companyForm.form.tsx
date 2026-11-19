@@ -2,12 +2,14 @@ import * as z from 'zod';
 import { toast } from 'react-toastify';
 import React, { useState, useEffect } from 'react';
 
+import * as G from '../../../shared/styles/global.style';
+import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
+
 import { Create, Update } from '../services/company.service';
 import { Toast } from '../../../shared/components/toast/screens/Toast';
 import { CreateCompanyCommandDto } from '../dtos/createCompanyCommand.dto';
 import { UpdateCompanyCommandDto } from '../dtos/updateCompanyCommand.dto';
 import { FormProps } from '../../../shared/interfaces/formProps.interface';
-import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
 import { CompanyFormData, CompanyFormSchema } from '../schemas/companyFormSchema.schema';
 import { formatCompanyDocument } from '../../../shared/utils/formatCompanyDocument.util';
 
@@ -76,17 +78,17 @@ export const CompanyForm: React.FC<FormProps<CompanyFormData>> = ({ initialValue
     return (
         <Styled.Form id="company-form" onSubmit={ handleSubmit }>
             <Styled.FieldWrapper>
-                <Styled.Label htmlFor="name"> Nome </Styled.Label>
+                <G.Label htmlFor="name"> Nome </G.Label>
 
                 <Styled.Input id="name" name="name" placeholder="Digite o nome da empresa" value={ formData.name } onChange={ handleChange }/>
             </Styled.FieldWrapper>
             <Styled.FieldWrapper>
-                <Styled.Label htmlFor="document"> CNPJ </Styled.Label>
+                <G.Label htmlFor="document"> CNPJ </G.Label>
 
                 <Styled.Input id="document" name="document" placeholder="Digite o cnpj da empresa" value={ formatCompanyDocument(formData.document) } onChange={ handleChange }/>
             </Styled.FieldWrapper>
             <Styled.FieldWrapper>
-                <Styled.Label htmlFor="description"> Descrição </Styled.Label>
+                <G.Label htmlFor="description"> Descrição </G.Label>
 
                 <Styled.Input id="description" name="description" placeholder="Digite uma descrição para a empresa" value={ formData.description } onChange={ handleChange }/>
             </Styled.FieldWrapper>

@@ -3,6 +3,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import * as Styled from '../styles/forgot.style';
+import * as I from '../../../shared/styles/icon.style';
+import * as G from '../../../shared/styles/global.style';
+
 import { Forgot as ForgotPassword } from '../services/authentication.service';
 import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
 
@@ -37,28 +40,28 @@ export const Forgot: React.FC = () => {
     }
 
     return (
-        <Styled.ForgotFormContainer>
+        <G.FormContainer>
             <Styled.ForgotForm onSubmit={ handleSubmit }>
-                <Styled.FormTitle> Recuperar senha </Styled.FormTitle>
-                <Styled.FormSubtitle> Para solicitar a redefinição de senha, informe seu e-mail abaixo </Styled.FormSubtitle>
+                <G.FormTitle> Recuperar senha </G.FormTitle>
+                <G.FormSubtitle> Para solicitar a redefinição de senha, informe seu e-mail abaixo </G.FormSubtitle>
 
-                <Styled.InputWrapper>
-                    <Styled.Label htmlFor="email"> E-MAIL </Styled.Label>
+                <G.InputWrapper>
+                    <G.Label htmlFor="email"> E-MAIL </G.Label>
 
-                    <Styled.Input type="email" id="email" placeholder="Digite seu email" value={ email } onChange={ (inputEvent) => setEmail(inputEvent.target.value) } required/>
-                </Styled.InputWrapper>
+                    <G.Input type="email" id="email" placeholder="Digite seu email" value={ email } onChange={ (inputEvent) => setEmail(inputEvent.target.value) } required/>
+                </G.InputWrapper>
 
                 { isLoading && (
                     <LoadingState/>
                 ) }
                 { !isLoading && (
                     <Styled.ForgotButton type="submit">
-                        <Styled.ForgotButtonIcon/>
+                        <I.InboxIcon/>
 
                         <Styled.ForgotButtonText> Recuperar </Styled.ForgotButtonText>
                     </Styled.ForgotButton>
                 ) }
             </Styled.ForgotForm>
-        </Styled.ForgotFormContainer>
+        </G.FormContainer>
     )
 }

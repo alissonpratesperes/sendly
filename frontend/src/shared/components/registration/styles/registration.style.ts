@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 
 import { NavigationTabProps } from '../interfaces/navigationTabProps.interface';
-import { buttonHoverAnimation, navigationTabIconAnimation } from '../../../styles/Global.style';
+import { AnimateButtonHover, AnimateTabIcon } from '../../../styles/animation.style';
 
 export const HeaderWrapper = styled.header`
     margin-top: -214px;
@@ -9,33 +9,6 @@ export const HeaderWrapper = styled.header`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-`;
-
-export const SessionInformationWrapper = styled.div`
-    height: auto;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-`;
-
-export const SessionTitle = styled.h1`
-    margin-top: 30px;
-    margin-bottom: 7.5px;
-    font-family: "Inter";
-    font-weight: 900;
-    font-size: 25px;
-    color: #1C70E9;
-`;
-
-export const SessionSubtitle = styled.span`
-    margin-bottom: 30px;
-    align-self: flex-start;
-    font-family: "Inter";
-    font-weight: 700;
-    font-size: 18px;
-    color: #F0F0F5;
 `;
 
 export const NavigationTabs = styled.nav`
@@ -76,11 +49,11 @@ export const NavigationTabButtons = styled.button<{ $active: boolean; $hovered: 
 
                 &:hover {
                     span {
-                        animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
+                        animation: ${ AnimateButtonHover } 0.6s ease-in-out;
                     }
 
                     svg {
-                        animation: ${ navigationTabIconAnimation } 0.6s ease-in-out;
+                        animation: ${ AnimateTabIcon } 0.6s ease-in-out;
                     }
                 }
         `}

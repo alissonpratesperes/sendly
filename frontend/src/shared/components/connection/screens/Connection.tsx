@@ -1,7 +1,10 @@
 import { toast } from 'react-toastify';
 import React, { useState, useEffect, Fragment } from 'react';
 
+import * as G from '../../../styles/global.style';
 import * as Styled from '../../../styles/modal.style';
+import * as I from '../../../shared/styles/icon.style';
+
 import { PairingCode } from '../../pairingCode/screens/PairingCode';
 import { LoadingState } from '../../loadingState/screens/LoadingState';
 import { ConnectionProps } from '../interfaces/connectionProps.interface';
@@ -113,28 +116,28 @@ export const Connection: React.FC<ConnectionProps> = ({ onPairingSuccess, isOpen
                         </Styled.ModalBody>
 
                         <Styled.ModalFooter>
-                            <Styled.FooterButtonsContainer>
+                            <G.ButtonsContainer>
                                 <Styled.ModalPrimaryButton onClick={ () => setIsClosing(true) }>
-                                    <Styled.ModalPrimaryButtonIcon/>
+                                    <I.BanIcon/>
 
                                     <Styled.ModalFooterButtonText> Fechar </Styled.ModalFooterButtonText>
                                 </Styled.ModalPrimaryButton>
 
                                 { !status?.connected && !pairingCode && (
                                     <Styled.ModalTertiaryButton type="submit" form="baileys-form" disabled={ loadingStatus }>
-                                        <Styled.ModalTertiaryButtonIcon/>
+                                        <I.GlobeCode/>
 
                                         <Styled.ModalFooterButtonText> Gerar código </Styled.ModalFooterButtonText>
                                     </Styled.ModalTertiaryButton>
                                 ) }
                                 { status?.connected && (
                                     <Styled.ModalSecondaryButton onClick={ handleDisconnect }>
-                                        <Styled.ModalSecondaryButtonIcon/>
+                                        <I.GlobeOff/>
 
                                         <Styled.ModalFooterButtonText> Desconectar </Styled.ModalFooterButtonText>
                                     </Styled.ModalSecondaryButton>
                                 ) }
-                            </Styled.FooterButtonsContainer>
+                            </G.ButtonsContainer>
                         </Styled.ModalFooter>
                     </Styled.ModalContainer>
                 </Styled.ModalWrapper>

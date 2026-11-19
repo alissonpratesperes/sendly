@@ -1,7 +1,9 @@
 import { Fragment, useState } from 'react';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 
+import * as G from '../../../styles/global.style';
 import * as Styled from '../styles/registration.style';
+
 import { User } from '../../../../core/user/screens/User';
 import { NavigationTab } from '../types/navigationTab.type';
 import { Lists } from '../../../../core/list/screens/Lists';
@@ -22,11 +24,11 @@ export const Registration: React.FC = () => {
     return (
         <Fragment>
             <Styled.HeaderWrapper>
-                <Styled.SessionInformationWrapper>
-                    <Styled.SessionTitle> Gerenciar cadastros </Styled.SessionTitle>
+                <G.SessionInformationWrapper>
+                    <G.SessionTitle> Gerenciar cadastros </G.SessionTitle>
 
-                    <Styled.SessionSubtitle> Crie, edite e gerencie todos os seus cadastros </Styled.SessionSubtitle>
-                </Styled.SessionInformationWrapper>
+                    <G.SessionSubtitle> Crie, edite e gerencie todos os seus cadastros </G.SessionSubtitle>
+                </G.SessionInformationWrapper>
 
                 <Styled.NavigationTabs>
                     { navigationTabs.map((tab: NavigationTab) => {

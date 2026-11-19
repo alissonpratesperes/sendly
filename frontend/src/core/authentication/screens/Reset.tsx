@@ -5,6 +5,9 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import * as Styled from '../styles/reset.style';
+import * as I from '../../../shared/styles/icon.style';
+import * as G from '../../../shared/styles/global.style';
+
 import { Reset as ResetPassword } from '../services/authentication.service';
 import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
 
@@ -67,37 +70,37 @@ export const Reset: React.FC = () => {
     }
 
     return (
-        <Styled.ResetFormContainer>
+        <G.FormContainer>
             <Styled.ResetForm onSubmit={ handleSubmit }>
-                <Styled.FormTitle> Atualizar senha </Styled.FormTitle>
-                <Styled.FormSubtitle> Para configurar sua nova senha, utilize os dois campos abaixo </Styled.FormSubtitle>
+                <G.FormTitle> Atualizar senha </G.FormTitle>
+                <G.FormSubtitle> Para configurar sua nova senha, utilize os dois campos abaixo </G.FormSubtitle>
 
-                <Styled.InputWrapper>
-                    <Styled.Label htmlFor="newPassword"> NOVA SENHA </Styled.Label>
+                <G.InputWrapper>
+                    <G.Label htmlFor="newPassword"> NOVA SENHA </G.Label>
 
-                    <Styled.Input type={ showPassword ? "text" : "password" } id="newPassword" placeholder="Digite sua nova senha" value={ newPassword } onChange={ (inputEvent) => setNewPassword(inputEvent.target.value) } required/>
+                    <G.Input type={ showPassword ? "text" : "password" } id="newPassword" placeholder="Digite sua nova senha" value={ newPassword } onChange={ (inputEvent) => setNewPassword(inputEvent.target.value) } required/>
 
                     <Styled.EyeButton type="button" onClick={ () => setShowPassword(!showPassword) }> { showPassword ? ( <Styled.EyeButtonIconOpened/> ) : ( <Styled.EyeButtonIconClosed/> ) } </Styled.EyeButton>
-                </Styled.InputWrapper>
-                <Styled.InputWrapper>
-                    <Styled.Label htmlFor="confirmPassword"> CONFIRMAR NOVA SENHA </Styled.Label>
+                </G.InputWrapper>
+                <G.InputWrapper>
+                    <G.Label htmlFor="confirmPassword"> CONFIRMAR NOVA SENHA </G.Label>
 
-                    <Styled.Input type={ showConfirmPassword ? "text" : "password" } id="confirmPassword" placeholder="Confirme sua nova senha" value={ confirmPassword } onChange={ (inputEvent) => setConfirmPassword(inputEvent.target.value) } required/>
+                    <G.Input type={ showConfirmPassword ? "text" : "password" } id="confirmPassword" placeholder="Confirme sua nova senha" value={ confirmPassword } onChange={ (inputEvent) => setConfirmPassword(inputEvent.target.value) } required/>
 
                     <Styled.EyeButton type="button" onClick={ () => setShowConfirmPassword(!showConfirmPassword) }> { showConfirmPassword ? ( <Styled.EyeButtonIconOpened/> ) : ( <Styled.EyeButtonIconClosed/> ) } </Styled.EyeButton>
-                </Styled.InputWrapper>
+                </G.InputWrapper>
 
                 { isLoading && (
                     <LoadingState/>
                 ) }
                 { !isLoading && (
                     <Styled.PasswordButton type="submit">
-                        <Styled.PasswordButtonIcon/>
+                        <I.UserLockIcon/>
 
                         <Styled.PasswordButtonText> Criar senha </Styled.PasswordButtonText>
                     </Styled.PasswordButton>
                 ) }
             </Styled.ResetForm>
-        </Styled.ResetFormContainer>
+        </G.FormContainer>
     )
 }

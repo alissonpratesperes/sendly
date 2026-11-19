@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 
+import * as G from '../../../styles/global.style';
 import * as Styled from '../../../styles/modal.style';
+import * as I from '../../../../shared/styles/icon.style';
+
 import { ModalProps } from '../interfaces/modalProps.interface';
 
 export const Modal: React.FC<ModalProps> = ({ isOpen, entityName, onClose, onConfirm }) => {
@@ -14,7 +17,7 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, entityName, onClose, onCon
                         <Styled.ModalHeader>
                             <Styled.ModalTitle> Exclusão de cadastro </Styled.ModalTitle>
 
-                            <Styled.ModalDismissButton type="button" onClick={ () => setIsClosing(true) }> <Styled.ModalDismissButtonIcon/> </Styled.ModalDismissButton>
+                            <Styled.ModalDismissButton type="button" onClick={ () => setIsClosing(true) }> <I.XIcon/> </Styled.ModalDismissButton>
                         </Styled.ModalHeader>
 
                         <Styled.ModalBody>
@@ -22,18 +25,18 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, entityName, onClose, onCon
                         </Styled.ModalBody>
 
                         <Styled.ModalFooter>
-                            <Styled.FooterButtonsContainer>
+                            <G.ButtonsContainer>
                                 <Styled.ModalPrimaryButton onClick={ () => setIsClosing(true) }>
-                                    <Styled.ModalPrimaryButtonIcon/>
+                                    <I.BanIcon/>
 
                                     <Styled.ModalFooterButtonText> Cancelar </Styled.ModalFooterButtonText>
                                 </Styled.ModalPrimaryButton>
                                 <Styled.ModalSecondaryButton onClick={ onConfirm }>
-                                    <Styled.ModalSecondaryButtonTrashIcon/>
+                                    <I.TrashIcon/>
 
                                     <Styled.ModalFooterButtonText> Excluir </Styled.ModalFooterButtonText>
                                 </Styled.ModalSecondaryButton>
-                            </Styled.FooterButtonsContainer>
+                            </G.ButtonsContainer>
                         </Styled.ModalFooter>
                     </Styled.ModalContainer>
                 </Styled.ModalWrapper>

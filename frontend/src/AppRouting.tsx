@@ -1,7 +1,8 @@
 import React, { Fragment } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 
-import * as Styled from './shared/styles/Global.style';
+import * as Styled from './shared/styles/global.style';
+
 import { Reset } from './core/authentication/screens/Reset';
 import { Home } from './shared/components/home/screens/Home';
 import { Forgot } from './core/authentication/screens/Forgot';

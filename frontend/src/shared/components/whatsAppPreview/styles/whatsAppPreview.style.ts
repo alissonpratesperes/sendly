@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { CheckCheck } from 'lucide-react';
 
-import { whatsAppMesssagePopAnimation, whatsAppPreviewCloseAnimation, whatsAppPreviewOpenAnimation } from '../../../styles/Global.style';
+import { AnimateMesssagePopping, AnimatePreviewClosing, AnimatePreviewOpening } from '../../../styles/animation.style';
 
 export const WhatsAppPanel = styled.aside`
     width: 500px;
@@ -15,7 +15,7 @@ export const WhatsAppPanel = styled.aside`
 export const WhatsAppPanelAnimation = styled.div<{ $isClosing: boolean }>`
     will-change: transform;
 
-    animation: ${ ({ $isClosing }) => $isClosing ? whatsAppPreviewCloseAnimation : whatsAppPreviewOpenAnimation } 0.6s ease-in-out forwards;
+    animation: ${ ({ $isClosing }) => $isClosing ? AnimatePreviewClosing : AnimatePreviewOpening } 0.6s ease-in-out forwards;
 `;
 
 export const WhatsAppChatContainer = styled.div`
@@ -71,7 +71,7 @@ export const WhatsAppMessageBubble = styled.div`
     overflow: visible;
     transform-origin: top right;
 
-    animation: ${ whatsAppMesssagePopAnimation } 0.6s ease-in-out;
+    animation: ${ AnimateMesssagePopping } 0.6s ease-in-out;
 
         &::after {
             margin-top: -1px;

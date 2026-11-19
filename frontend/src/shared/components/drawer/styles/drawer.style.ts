@@ -1,8 +1,7 @@
 import { css, styled } from 'styled-components';
-import { AlertCircle, Ban, CircleAlert, CircleCheck, DatabaseCheck, HardDriveUpload, Pause, Play, Save, ScrollText, SquarePen, TagPlus, X } from 'lucide-react';
 
 import { DrawerOverlayProps } from '../interfaces/drawerOverlayProps.interface';
-import { buttonHoverAnimation, drawerCloseAnimation, drawerOpenAnimation } from '../../../styles/Global.style';
+import { AnimateButtonHover, AnimateDrawerClosing, AnimateDrawerOpening } from '../../../styles/animation.style';
 
 export const DrawerOverlay = styled.div<DrawerOverlayProps>`
     position: fixed;
@@ -30,7 +29,7 @@ export const Drawer = styled.div<{ $open: boolean; }>`
     border-radius: 26px;
     z-index: 1000;
 
-    animation: ${ ({ $open }) => $open ? css`${ drawerOpenAnimation } 0.6s ease-in-out forwards` : css`${ drawerCloseAnimation } 0.6s ease-in-out forwards` };
+    animation: ${ ({ $open }) => $open ? css`${ AnimateDrawerOpening } 0.6s ease-in-out forwards` : css`${ AnimateDrawerClosing } 0.6s ease-in-out forwards` };
 `;
 
 export const Header = styled.div`
@@ -62,21 +61,12 @@ export const CloseButton = styled.button`
     cursor: pointer;
     transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
 
-        svg {
-            stroke: currentColor;
+        &:hover {
+            color: #FFFFFF;
+            background-color: #223463;
+
+            animation: ${ AnimateButtonHover } 0.6s ease-in-out;
         }
-
-            &:hover {
-                color: #FFFFFF;
-                background-color: #223463;
-
-                animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
-            }
-`;
-
-export const CloseButtonIcon = styled(X)`
-    height: 25px;
-    width: 25px;
 `;
 
 export const Content = styled.div`
@@ -134,12 +124,6 @@ export const Legend = styled.legend`
     flex-shrink: 0;
 `;
 
-export const LegendButtonsContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-`;
-
 export const VariableTipButton = styled.button<{ $disabled: boolean }>`
     padding: 15px;
     margin-left: auto;
@@ -160,21 +144,12 @@ export const VariableTipButton = styled.button<{ $disabled: boolean }>`
     opacity: ${ ({ $disabled }) => $disabled ? "0.5" : "1" };
     cursor: ${ ({ $disabled }) => $disabled ? "not-allowed" : "pointer" };
 
-        svg {
-            stroke: currentColor;
+        &:hover:not(:disabled) {
+            color: #F0F0F5;
+            background-color: #FF6B00;
+
+            animation: ${ AnimateButtonHover } 0.6s ease-in-out;
         }
-
-            &:hover:not(:disabled) {
-                color: #F0F0F5;
-                background-color: #FF6B00;
-
-                animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
-            }
-`;
-
-export const VariableTipButtonIcon = styled(TagPlus)`
-    height: 25px;
-    width: 25px;
 `;
 
 export const VariableTipButtonText = styled.span`
@@ -202,37 +177,6 @@ export const FieldWrapper = styled.div`
                 opacity: 1;
                 transform: scale(1);
             }
-`;
-
-export const Label = styled.label`
-    position: absolute;
-    left: 15px;
-    top: 7.5px;
-    text-transform: uppercase;
-    font-family: "Lato";
-    font-weight: 700;
-    font-size: 12px;
-    color: #223463;
-    pointer-events: none;
-`;
-
-export const Input = styled.input`
-    padding: 15px 15px 0px 15px;
-    height: 60px;
-    width: 100%;
-    font-family: "Lato";
-    font-weight: 400;
-    font-size: 16px;
-    color: #212121;
-    border: none;
-    outline: none;
-    background-color: #FFFFFF;
-    border-radius: 14px;
-    z-index: 1;
-
-        &::placeholder {
-            color: #BDBDBD;
-        }
 `;
 
 export const TextareaWrapper = styled.div`
@@ -324,17 +268,9 @@ export const Footer = styled.div`
         }
         &:not(:has(.secondary:hover)) {
             .primary {
-                animation: ${buttonHoverAnimation} 0.6s ease-in-out;
+                animation: ${ AnimateButtonHover } 0.6s ease-in-out;
             }
         }
-`;
-
-export const FooterButtonsContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 0px;
-    flex-shrink: 0;
 `;
 
 export const FooterButton = styled.button<{ $variant?: "primary" | "secondary"; $formType?: "default" | "action"; }>`
@@ -355,41 +291,18 @@ export const FooterButton = styled.button<{ $variant?: "primary" | "secondary"; 
     color: ${ ({ $variant }) => $variant === "primary" ? "#FFFFFF" : "#223463" };
     background-color: ${ ({ $variant }) => $variant === "primary" ? "#238636" : "#E8EEF8" };
 
-        svg {
-            stroke: currentColor;
+        &.secondary {
+            svg {
+                stroke: #1C70E9;
+            }
         }
 
-            &.secondary {
-                svg {
-                    stroke: #1C70E9;
-                }
-            }
             &.secondary:hover {
                 color: #F0F0F5;
                 background-color: #223463;
 
-                animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
+                animation: ${ AnimateButtonHover } 0.6s ease-in-out;
             }
-`;
-
-export const FooterButtonCancelIcon = styled(Ban)`
-    height: 25px;
-    width: 25px;
-`;
-
-export const FooterButtonSaveIcon = styled(Save)`
-    height: 25px;
-    width: 25px;
-`;
-
-export const FooterButtonEditIcon = styled(SquarePen)`
-    height: 25px;
-    width: 25px;
-`;
-
-export const FooterButtonUploadIcon = styled(HardDriveUpload)`
-    height: 25px;
-    width: 25px;
 `;
 
 export const FooterButtonText = styled.span`
@@ -412,21 +325,6 @@ export const ImportResultTitle = styled.p`
     color: #1C70E9;
     background-color: #FFFFFF;
     border-radius: 14px;
-`;
-
-export const ImportResultTitleIcon = styled(DatabaseCheck)`
-    height: 25px;
-    width: 25px;
-`;
-
-export const ImportResultTitleCheckIcon = styled(CircleCheck)`
-    height: 25px;
-    width: 25px;
-`;
-
-export const ImportResultTitleAlertIcon = styled(CircleAlert)`
-    height: 25px;
-    width: 25px;
 `;
 
 export const ImportResultInformations = styled.div`
@@ -484,12 +382,6 @@ export const ImportResultErrorList = styled.ul`
     background-color: #D9DEE7;
     border-radius: 14px;
 `;
-
-export const ImportResultErrorListIcon = styled(ScrollText)`
-    height: 25px;
-    width: 25px;
-`;
-
 export const ImportResultErrorListItem = styled.li`
     display: flex;
     flex-direction: row;
@@ -504,12 +396,6 @@ export const ImportResultLeftContainer = styled.div`
     flex-direction: row;
     align-items: center;
     justify-content: center;
-`;
-
-export const ImportResultLeftContainerIcon = styled(AlertCircle)`
-    height: 25px;
-    width: 25px;
-    color: #DC143C;
 `;
 
 export const ImportResultRightContainer = styled.div`
@@ -553,27 +439,13 @@ export const WhatsAppPreviewToggleButton = styled.button<{ $showPreview: boolean
     color: ${ ({ $showPreview }) => $showPreview ? "#F0F0F5" : "#075E54" };
     background-color: ${ ({ $showPreview }) => $showPreview ? "#075E54" : "rgba(7, 94, 84, 0.25);" };
 
-        svg {
-            stroke: strokeColor;
+        &:hover {
+            font-weight: 700;
+            color: #F0F0F5;
+            background-color: #075E54;
+
+            animation: ${ AnimateButtonHover } 0.6s ease-in-out;
         }
-
-            &:hover {
-                font-weight: 700;
-                color: #F0F0F5;
-                background-color: #075E54;
-
-                animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
-            }
-`;
-
-export const WhatsAppPreviewToggleButtonPlayIcon = styled(Play)`
-    height: 25px;
-    width: 25px;
-`;
-
-export const WhatsAppPreviewToggleButtonPauseIcon = styled(Pause)`
-    height: 25px;
-    width: 25px;
 `;
 
 export const WhatsAppPreviewToggleButtonText = styled.span`

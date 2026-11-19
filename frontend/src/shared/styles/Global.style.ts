@@ -1,69 +1,5 @@
 import isPropValid from '@emotion/is-prop-valid';
-import styled, { createGlobalStyle, css, keyframes } from 'styled-components';
-
-export const navigationTabIconAnimation = keyframes`
-    0%, 100% { transform: rotate(0deg); }
-    20% { transform: rotate(-14deg); }
-    40% { transform: rotate(14deg); }
-    60% { transform: rotate(-12deg); }
-    80% { transform: rotate(12deg); }
-`;
-
-export const headerIconAnimation = keyframes`
-  0%, 100% { transform: rotate(0deg); }
-  20% { transform: rotate(-14deg); }
-  40% { transform: rotate(14deg); }
-  60% { transform: rotate(-12deg); }
-  80% { transform: rotate(12deg); }
-`;
-
-export const buttonHoverAnimation = keyframes`
-    0% { transform: scale(1.08); }
-    50% { transform: scale(0.95); }
-    100% { transform: scale(1); }
-`;
-
-export const drawerOpenAnimation = keyframes`
-    0% { transform: translateX(calc(100% + 30px)); }
-    70% { transform: translateX(-15px); }
-    100% { transform: translateX(0); }
-`;
-
-export const drawerCloseAnimation = keyframes`
-    0% { transform: translateX(0); }
-    30% { transform: translateX(-15px); }
-    100% { transform: translateX(calc(100% + 30px)); }
-`;
-
-export const modalOpenAnimation = keyframes`
-    0% { transform: translateY(100px) scale(0.9); }
-    70% { transform: translateY(-10px) scale(1.02); }
-    100% { transform: translateY(0) scale(1); }
-`;
-
-export const modalCloseAnimation = keyframes`
-    0% { transform: translateY(0) scale(1); }
-    30% { transform: translateY(-10px) scale(1.02); }
-    100% { transform: translateY(100px) scale(0.9); }
-`;
-
-export const whatsAppPreviewOpenAnimation = keyframes`
-    0% { transform: scale(0.75) translateX(40px); opacity: 0; }
-    60% { transform: scale(1.03) translateX(0); opacity: 1; }
-    100% { transform: scale(1) translateX(0); opacity: 1; }
-`;
-
-export const whatsAppPreviewCloseAnimation = keyframes`
-    0% { transform: scale(1) translateX(0); opacity: 1; }
-    40% { transform: scale(1.03) translateX(0); opacity: 1; }
-    100% { transform: scale(0.75) translateX(40px); opacity: 0; }
-`;
-
-export const whatsAppMesssagePopAnimation = keyframes`
-    0% { transform: scale(1.08); }
-    50% { transform: scale(0.95); }
-    100% { transform: scale(1); }
-`;
+import styled, { createGlobalStyle, css } from 'styled-components';
 
 export const GlobalStyle = createGlobalStyle`
     * {
@@ -100,6 +36,122 @@ export const GlobalStyle = createGlobalStyle`
 
 export const Main = styled("main").withConfig({ shouldForwardProp: (prop) => isPropValid(prop) && prop !== "applyPadding" }) <{ applyPadding?: boolean; }>`
     ${ ({ applyPadding }) => applyPadding && css` padding: 40px 30px 40px 30px;` };
+`;
+
+export const FormContainer = styled.div`
+    position: relative;
+    height: calc(100vh - 220px);
+    width: 100vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    background-color: transparent;
+`;
+
+export const FormTitle = styled.h4`
+    margin-bottom: 15px;
+    align-self: flex-start;
+    font-family: "Inter";
+    font-weight: 900;
+    font-size: 25px;
+    color: #171719;
+`;
+
+export const FormSubtitle = styled.span`
+    margin-bottom: 30px;
+    align-self: flex-start;
+    font-family: "Inter";
+    font-weight: 700;
+    font-size: 18px;
+    color: #525059;
+`;
+
+export const InputWrapper = styled.div`
+    margin-bottom: 30px;
+    width: 100%;
+    position: relative;
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: -6px;
+            border-radius: 18px;
+            border: 2px solid #1C70E9;
+            opacity: 0;
+            transform: scale(1.08);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+            &:focus-within::before {
+                opacity: 1;
+                transform: scale(1);
+            }
+`;
+
+export const Label = styled.label`
+    position: absolute;
+    left: 15px;
+    top: 7.5px;
+    font-family: "Lato";
+    font-weight: 700;
+    font-size: 12px;
+    color: #223463;
+    pointer-events: none;
+`;
+
+export const SessionInformationWrapper = styled.div`
+    height: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+`;
+
+export const SessionTitle = styled.h1`
+    margin-bottom: 7.5px;
+    font-family: "Inter";
+    font-weight: 900;
+    font-size: 25px;
+    color: #1C70E9;
+`;
+
+export const SessionSubtitle = styled.span`
+    margin-bottom: 30px;
+    align-self: flex-start;
+    font-family: "Inter";
+    font-weight: 700;
+    font-size: 18px;
+    color: #F0F0F5;
+`;
+
+export const Input = styled.input`
+    padding: 15px 15px 0px 15px;
+    height: 60px;
+    width: 100%;
+    font-family: "Lato";
+    font-weight: 400;
+    font-size: 16px;
+    color: #212121;
+    border: none;
+    outline: none;
+    background-color: #FFFFFF;
+    border-radius: 14px;
+    z-index: 1;
+
+        &::placeholder {
+            color: #BDBDBD;
+        }
+`;
+
+export const ButtonsContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0px;
+    flex-shrink: 0;
 `;
 
 export const Footer = styled.footer`

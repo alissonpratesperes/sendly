@@ -1,6 +1,7 @@
 import React from 'react';
 
 import * as Styled from '../styles/toast.style';
+
 import { ValidationErrorToastProps } from '../interfaces/validationErrorToastProps.interface';
 
 export const Toast: React.FC<ValidationErrorToastProps> = ({ errors }) => (

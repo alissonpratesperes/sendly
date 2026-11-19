@@ -1,6 +1,8 @@
 import { toast } from 'react-toastify';
 import React, { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+import * as Styled from '../../../shared/components/table/styles/table.style';
+
 import { List } from '../services/batch.service';
 import { BatchForm } from '../forms/batchForm.form';
 import { BatchStatus } from '../enums/batchStatus.enum';
@@ -12,7 +14,6 @@ import { Read as ReadList } from '../../list/services/list.service';
 import { Table } from '../../../shared/components/table/screens/Table';
 import { Finder } from '../../../shared/components/finder/screen/Finder';
 import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
-import * as Styled from '../../../shared/components/table/styles/table.style';
 import { TemplateResponseDto } from '../../template/dtos/templateResponse.dto';
 import { Paginate } from '../../../shared/components/paginate/screens/Paginate';
 import { Dropdown } from '../../../shared/components/dropdown/screens/Dropdown';

@@ -8,32 +8,6 @@ export const HeaderWrapper = styled.header`
     justify-content: center;
 `;
 
-export const SessionInformationWrapper = styled.div`
-    height: auto;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-`;
-
-export const SessionTitle = styled.h1`
-    margin-bottom: 7.5px;
-    font-family: "Inter";
-    font-weight: 900;
-    font-size: 25px;
-    color: #1C70E9;
-`;
-
-export const SessionSubtitle = styled.span`
-    margin-bottom: 30px;
-    align-self: flex-start;
-    font-family: "Inter";
-    font-weight: 700;
-    font-size: 18px;
-    color: #F0F0F5;
-`;
-
 export const IframeContainer = styled.div`
     height: 100vh;
     width: 100%;

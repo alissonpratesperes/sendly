@@ -2,11 +2,12 @@ import * as z from 'zod';
 import { toast } from 'react-toastify';
 import React, { useState, useEffect } from 'react';
 
+import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
+
 import { Pair } from '../services/baileys.service';
 import { Toast } from '../../../shared/components/toast/screens/Toast';
 import { AsYouType, parsePhoneNumberFromString } from 'libphonenumber-js';
 import { FormProps } from '../../../shared/interfaces/formProps.interface';
-import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
 import { CreatePairingCodeCommandDto } from '../dtos/createPairingCodeCommand.dto';
 import { BaileysFormData, BaileysFormSchema } from '../schemas/baileysFormSchema.schema';
 import { getAuthenticationStorage } from '../../../shared/utils/authenticationStorage.util';

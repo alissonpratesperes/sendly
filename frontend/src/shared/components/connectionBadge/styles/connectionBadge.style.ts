@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Smartphone } from 'lucide-react';
 
 import { ConnectionBadgeVariant } from '../enums/connectionBadgeVariant.enum';
 import { ConnectionBadgeProps } from '../interfaces/connectionBadgeProps.interface';
@@ -45,9 +44,4 @@ export const ConnectionPhone = styled.div`
     align-items: center;
     justify-content: center;
     gap: 7.5px;
-`;
-
-export const ConnectionPhoneIcon = styled(Smartphone)`
-    height: 25px;
-    width: 25px;
 `;

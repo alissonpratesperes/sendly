@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 
+import { StyledBaseIcon } from '../../../../shared/styles/icon.style';
 import { ToggleSwitchProps } from '../interfaces/ToggleSwitchProps.interface';
 
 export const SwitchWrapper = styled.label`
@@ -27,13 +28,13 @@ export const Slider = styled.div<ToggleSwitchProps>`
 `;
 
 export const SliderCircle = styled.div<ToggleSwitchProps>`
-    height: 25px;
-    width: 25px;
-    position: absolute;
-    top: 2px;
-    background-color: #FFFFFF;
-    border-radius: 50%;
-    transition: left 0.3s ease;
+    ${ StyledBaseIcon }
+    
+        position: absolute;
+        top: 2px;
+        background-color: #FFFFFF;
+        border-radius: 50%;
+        transition: left 0.3s ease;
 
-    left: ${ ({ $checked }) => ($checked ? "25px" : "2px") };
+        left: ${ ({ $checked }) => ($checked ? "25px" : "2px") };
 `;

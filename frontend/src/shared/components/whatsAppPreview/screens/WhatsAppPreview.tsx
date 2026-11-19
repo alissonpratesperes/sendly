@@ -2,6 +2,7 @@ import { createPortal } from 'react-dom';
 import React, { useEffect, useRef, useState } from 'react';
 
 import * as Styled from '../styles/whatsAppPreview.style';
+
 import { WhatsAppPreviewProps } from '../interfaces/whatsAppPreviewProps.interface';
 
 export const WhatsAppPreview: React.FC<WhatsAppPreviewProps> = ({ header, body, footer, image, isClosing = false, onAnimationEnd, }) => {

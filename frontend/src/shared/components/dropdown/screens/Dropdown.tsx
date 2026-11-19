@@ -1,7 +1,9 @@
 import Select, { components, type ControlProps } from 'react-select';
 
+import * as I from '../../../shared/styles/icon.style';
+
+import { SelectCommonStyles } from '../styles/dropdown.style';
 import { DropdownProps } from '../interfaces/dropdownProps.interface';
-import { SelectCommonStyles, SelectFilterIcon } from '../styles/dropdown.style';
 
 export function Dropdown<Option>({
     width = "100%",
@@ -17,7 +19,7 @@ export function Dropdown<Option>({
 }: DropdownProps<Option>) {
     const CustomControl = (controlProps: ControlProps<Option, false>) => (
         <components.Control { ...controlProps }>
-            { !isInPagination && ( <SelectFilterIcon/> ) }
+            { !isInPagination && ( <I.FunnelIcon/> ) }
             { controlProps.children }
         </components.Control>
     );

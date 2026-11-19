@@ -2,6 +2,10 @@ import * as z from 'zod';
 import { toast } from 'react-toastify';
 import React, { useState, useEffect } from 'react';
 
+import * as G from '../../../shared/styles/global.style';
+import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
+import * as ContactFormStyled from '../../../shared/components/dropdown/styles/contactFormDropdown.style';
+
 import { Create } from '../services/batch.service';
 import { ListResponseDto } from '../../list/dtos/listResponse.dto';
 import { List as ListLists } from '../../list/services/list.service';
@@ -9,12 +13,10 @@ import { Toast } from '../../../shared/components/toast/screens/Toast';
 import { CreateBatchCommandDto } from '../dtos/createBatchCommand.dto';
 import { FormProps } from '../../../shared/interfaces/formProps.interface';
 import { TemplateResponseDto } from '../../template/dtos/templateResponse.dto';
-import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
 import { Dropdown } from '../../../shared/components/dropdown/screens/Dropdown';
 import { List as ListTemplates } from '../../template/services/template.service';
 import { BatchFormData, BatchFormSchema } from '../schemas/batchFormSchema.schema';
 import { getAuthenticationStorage } from '../../../shared/utils/authenticationStorage.util';
-import * as ContactFormStyled from '../../../shared/components/dropdown/styles/contactFormDropdown.style';
 
 export const BatchForm: React.FC<FormProps<BatchFormData>> = ({ initialValues, onSubmit, onLoadingChange, }) => {
     const { userInformation } = getAuthenticationStorage();
@@ -156,7 +158,7 @@ export const BatchForm: React.FC<FormProps<BatchFormData>> = ({ initialValues, o
     return (
         <Styled.Form id="batch-form" onSubmit={ handleSubmit }>
             <Styled.FieldWrapper>
-                <Styled.Label htmlFor="name"> Nome </Styled.Label>
+                <G.Label htmlFor="name"> Nome </G.Label>
 
                 <Styled.Input id="name" name="name" placeholder="Digite o nome do envio" value={ formData.name } onChange={ handleChange }/>
             </Styled.FieldWrapper>

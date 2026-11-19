@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 import { AppRouting } from './AppRouting';
 import 'react-toastify/dist/ReactToastify.css';
-import { GlobalStyle } from './shared/styles/Global.style';
+import { GlobalStyle } from './shared/styles/global.style';
 
 export function App() {
   return (

@@ -1,20 +1,7 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { EyeIcon, EyeOffIcon, LockOpen, Power } from 'lucide-react';
 
-import { buttonHoverAnimation } from '../../../shared/styles/Global.style';
-
-export const AuthFormContainer = styled.div`
-    position: relative;
-    height: calc(100vh - 220px);
-    width: 100vw;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
-    background-color: #F0F0F5;
-    overflow: hidden;
-`;
+import { AnimateButtonHover } from '../../../shared/styles/animation.style';
 
 export const LoginForm = styled.form`
     position: relative;
@@ -24,76 +11,6 @@ export const LoginForm = styled.form`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-`;
-
-export const FormTitle = styled.h4`
-    margin-bottom: 15px;
-    align-self: flex-start;
-    font-family: "Inter";
-    font-weight: 900;
-    font-size: 25px;
-    color: #171719;
-`;
-
-export const FormSubtitle = styled.span`
-    margin-bottom: 30px;
-    align-self: flex-start;
-    font-family: "Inter";
-    font-weight: 700;
-    font-size: 18px;
-    color: #525059;
-`;
-
-export const InputWrapper = styled.div`
-    margin-bottom: 30px;
-    width: 100%;
-    position: relative;
-
-        &::before {
-            content: "";
-            position: absolute;
-            inset: -6px;
-            border-radius: 18px;
-            border: 2px solid #1C70E9;
-            opacity: 0;
-            transform: scale(1.08);
-            transition: transform 0.3s ease, opacity 0.3s ease;
-            pointer-events: none;
-        }
-        &:focus-within::before {
-            opacity: 1;
-            transform: scale(1);
-        }
-`;
-
-export const Label = styled.label`
-    position: absolute;
-    left: 15px;
-    top: 7.5px;
-    font-family: "Lato";
-    font-weight: 700;
-    font-size: 12px;
-    color: #223463;
-    pointer-events: none;
-`;
-
-export const Input = styled.input`
-    padding: 15px 15px 0px 15px;
-    height: 60px;
-    width: 100%;
-    font-family: "Lato";
-    font-weight: 400;
-    font-size: 16px;
-    color: #212121;
-    border: none;
-    outline: none;
-    background-color: #FFFFFF;
-    border-radius: 14px;
-    z-index: 1;
-
-        &::placeholder {
-            color: #BDBDBD;
-        }
 `;
 
 export const EyeButton = styled.button`
@@ -115,27 +32,6 @@ export const EyeButton = styled.button`
         }
 `;
 
-export const EyeButtonIconOpened = styled(EyeIcon)`
-    height: 25px;
-    width: 25px;
-`;
-
-export const EyeButtonIconClosed = styled(EyeOffIcon)`
-    height: 25px;
-    width: 25px;
-`;
-
-export const LoginButtonsContainer = styled.div`
-    height: auto;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 0px;
-    flex-shrink: 0;
-`;
-
 export const ForgotButton = styled(Link)`
     padding: 15px;
     height: auto;
@@ -153,33 +49,24 @@ export const ForgotButton = styled(Link)`
     cursor: pointer;
     transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
 
-        svg {
-            stroke: currentColor;
+        &:hover {
+            color: #FFFFFF;
+            background-color: #FF6B00;
+
+            animation: ${ AnimateButtonHover } 0.6s ease-in-out;
         }
 
-            &:hover {
-                color: #FFFFFF;
-                background-color: #FF6B00;
-
-                animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
+            &:first-child {
+                border-top-left-radius: 14px;
+                border-bottom-left-radius: 14px;
             }
-
-                &:first-child {
-                    border-top-left-radius: 14px;
-                    border-bottom-left-radius: 14px;
-                }
-                &:last-child {
-                    border-top-right-radius: 14px;
-                    border-bottom-right-radius: 14px;
-                }
-                &:only-child {
-                    border-radius: 14px;
-                }
-`;
-
-export const ForgotButtonIcon = styled(LockOpen)`
-    height: 25px;
-    width: 25px;
+            &:last-child {
+                border-top-right-radius: 14px;
+                border-bottom-right-radius: 14px;
+            }
+            &:only-child {
+                border-radius: 14px;
+            }
 `;
 
 export const ForgotButtonText = styled.span`
@@ -211,13 +98,8 @@ export const LoginButton = styled.button`
                 color: #FFFFFF;
                 background-color: #223463;
 
-                animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
+                animation: ${ AnimateButtonHover } 0.6s ease-in-out;
             }
-`;
-
-export const LoginButtonIcon = styled(Power)`
-    height: 25px;
-    width: 25px;
 `;
 
 export const LoginButtonText = styled.span`

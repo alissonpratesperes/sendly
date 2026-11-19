@@ -1,16 +1,17 @@
 import React, { Fragment } from 'react';
 
 import * as Styled from '../styles/home.style';
+import * as G from '../../../styles/global.style';
 
 export const Home: React.FC = () => {
     return (
         <Fragment>
             <Styled.HeaderWrapper>
-                <Styled.SessionInformationWrapper>
-                    <Styled.SessionTitle> Gerenciar envios </Styled.SessionTitle>
+                <G.SessionInformationWrapper>
+                    <G.SessionTitle> Gerenciar envios </G.SessionTitle>
 
-                    <Styled.SessionSubtitle> Monitore os envios, e fique por dentro da execução </Styled.SessionSubtitle>
-                </Styled.SessionInformationWrapper>
+                    <G.SessionSubtitle> Monitore os envios, e fique por dentro da execução </G.SessionSubtitle>
+                </G.SessionInformationWrapper>
             </Styled.HeaderWrapper>
 
             <Styled.IframeContainer>

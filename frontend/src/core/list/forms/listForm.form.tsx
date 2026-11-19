@@ -2,12 +2,14 @@ import * as z from 'zod';
 import { toast } from 'react-toastify';
 import React, { useState, useEffect } from 'react';
 
+import * as G from '../../../shared/styles/global.style';
+import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
+
 import { Create, Update } from '../services/list.service';
 import { CreateListCommandDto } from '../dtos/createListCommand.dto';
 import { UpdateListCommandDto } from '../dtos/updateListCommand.dto';
 import { Toast } from '../../../shared/components/toast/screens/Toast';
 import { FormProps } from '../../../shared/interfaces/formProps.interface';
-import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
 import { ListFormData, ListFormSchema } from '../schemas/listFormSchema.schema';
 import { getAuthenticationStorage } from '../../../shared/utils/authenticationStorage.util';
 
@@ -79,17 +81,17 @@ export const ListForm: React.FC<FormProps<ListFormData>> = ({ initialValues, onS
     return (
         <Styled.Form id="list-form" onSubmit={ handleSubmit }>
             <Styled.FieldWrapper>
-                <Styled.Label htmlFor="name"> Nome </Styled.Label>
+                <G.Label htmlFor="name"> Nome </G.Label>
 
                 <Styled.Input id="name" name="name" placeholder="Digite o nome da lista" value={ formData.name } onChange={ handleChange }/>
             </Styled.FieldWrapper>
             <Styled.FieldWrapper>
-                <Styled.Label htmlFor="subject"> Assunto </Styled.Label>
+                <G.Label htmlFor="subject"> Assunto </G.Label>
 
                 <Styled.Input id="subject" name="subject" placeholder="Digite o assunto da lista" value={ formData.subject } onChange={ handleChange }/>
             </Styled.FieldWrapper>
             <Styled.FieldWrapper>
-                <Styled.Label htmlFor="color"> Cor </Styled.Label>
+                <G.Label htmlFor="color"> Cor </G.Label>
 
                 <Styled.ColorInput type="color" id="color" name="color" placeholder="" value={ formData.color } onChange={ handleChange }/>
             </Styled.FieldWrapper>

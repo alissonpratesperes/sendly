@@ -5,6 +5,9 @@ import { StatusCodes } from 'http-status-codes';
 import React, { useState, Fragment } from 'react';
 
 import * as Styled from '../styles/login.style';
+import * as I from '../../../shared/styles/icon.style';
+import * as G from '../../../shared/styles/global.style';
+
 import { Login } from '../services/authentication.service';
 import { setAuthenticationStorage } from '../../../shared/utils/authenticationStorage.util';
 import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
@@ -53,44 +56,44 @@ export const Authentication: React.FC = () => {
     }
 
     return (
-        <Styled.AuthFormContainer>
+        <G.FormContainer>
             <Styled.LoginForm onSubmit={ handleSubmit }>
-                <Styled.FormTitle> Bem-vindo </Styled.FormTitle>
-                <Styled.FormSubtitle> Para autenticar no sistema, informe suas credenciais abaixo </Styled.FormSubtitle>
+                <G.FormTitle> Bem-vindo </G.FormTitle>
+                <G.FormSubtitle> Para autenticar no sistema, informe suas credenciais abaixo </G.FormSubtitle>
 
-                <Styled.InputWrapper>
-                    <Styled.Label htmlFor="email"> E-MAIL </Styled.Label>
+                <G.InputWrapper>
+                    <G.Label htmlFor="email"> E-MAIL </G.Label>
 
-                    <Styled.Input type="email" id="email" placeholder="Digite seu email" value={ email } onChange={ (inputEvent) => setEmail(inputEvent.target.value) } required/>
-                </Styled.InputWrapper>
-                <Styled.InputWrapper>
-                    <Styled.Label htmlFor="password"> SENHA </Styled.Label>
+                    <G.Input type="email" id="email" placeholder="Digite seu email" value={ email } onChange={ (inputEvent) => setEmail(inputEvent.target.value) } required/>
+                </G.InputWrapper>
+                <G.InputWrapper>
+                    <G.Label htmlFor="password"> SENHA </G.Label>
 
-                    <Styled.Input type={ showPassword ? "text" : "password" } id="password" placeholder="Digite sua senha" value={ password } onChange={ (inputEvent) => setPassword(inputEvent.target.value) } required/>
+                    <G.Input type={ showPassword ? "text" : "password" } id="password" placeholder="Digite sua senha" value={ password } onChange={ (inputEvent) => setPassword(inputEvent.target.value) } required/>
 
-                   <Styled.EyeButton type="button" onClick={ togglePasswordVisibility }> { showPassword ? ( <Styled.EyeButtonIconOpened/> ) : ( <Styled.EyeButtonIconClosed/> ) } </Styled.EyeButton>
-                </Styled.InputWrapper>
+                   <Styled.EyeButton type="button" onClick={ togglePasswordVisibility }> { showPassword ? ( <G.EyeIconIcon/> ) : ( <G.EyeOffIconIcon/> ) } </Styled.EyeButton>
+                </G.InputWrapper>
 
-                <Styled.LoginButtonsContainer>
+                <G.ButtonsContainer>
                     { isLoading && (
                         <LoadingState/>
                     ) }
                     { !isLoading && (
                         <Fragment>
                             <Styled.ForgotButton to="/authentication/forgot">
-                                <Styled.ForgotButtonIcon/>
+                                <I.LockOpenIcon/>
 
                                 <Styled.ForgotButtonText> Recuperar senha </Styled.ForgotButtonText>
                             </Styled.ForgotButton>
                             <Styled.LoginButton type="submit">
-                                <Styled.LoginButtonIcon/>
+                                <I.PowerIcon/>
 
                                 <Styled.LoginButtonText> Autenticar </Styled.LoginButtonText>
                             </Styled.LoginButton>
                         </Fragment>
                     ) }
-                </Styled.LoginButtonsContainer>
+                </G.ButtonsContainer>
             </Styled.LoginForm>
-        </Styled.AuthFormContainer>
+        </G.FormContainer>
     );
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import * as Styled from '../styles/ToggleSwitch.style';
+
 import { ToggleSwitchSliderProps } from '../interfaces/ToggleSwitchSliderProps.interface';
 
 export const ToggleSwitch: React.FC<ToggleSwitchSliderProps> = ({ checked, onChange }) => {

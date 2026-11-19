@@ -1,7 +1,9 @@
 import React, { Fragment } from 'react';
 
 import * as Styled from '../styles/pairingCode.style';
+import * as I from '../../../../shared/styles/icon.style';
 import * as ModalStyled from '../../../styles/modal.style';
+
 import { PairingCodeProps } from '../interfaces/pairingCodeProps.interface';
 
 export const PairingCode: React.FC<PairingCodeProps> = ({ pairingCode }) => {
@@ -10,7 +12,7 @@ export const PairingCode: React.FC<PairingCodeProps> = ({ pairingCode }) => {
     return (
         <Fragment>
             <Styled.PairingCodeTextContainer>
-                <Styled.PairingCodeContainerIcon/>
+                <I.KeyRoundIcon/>
 
                 <ModalStyled.ModalBoldText>
                     Insira o código abaixo no seu aplicativo do WhatsApp

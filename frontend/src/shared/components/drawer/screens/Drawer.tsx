@@ -1,6 +1,9 @@
 import React, { Fragment, useState } from 'react';
 
 import * as Styled from '../styles/drawer.style';
+import * as G from '../../../styles/global.style';
+import * as I from '../../../shared/styles/icon.style';
+
 import { DrawerProps } from '../interfaces/drawerProps.interface';
 import { LoadingState } from '../../loadingState/screens/LoadingState';
 
@@ -27,18 +30,18 @@ export const Drawer: React.FC<DrawerProps> = ({ isOpen, isSubmitting = false, fo
                                 <LoadingState/>
                             ) }
                             { !isSubmitting && (
-                                <Styled.FooterButtonsContainer>
+                                <G.ButtonsContainer>
                                     <Styled.FooterButton type="button" $variant="secondary" className="secondary" onClick={ () => setIsClosing(true) }>
-                                        <Styled.FooterButtonCancelIcon/>
+                                        <I.BanIcon/>
 
                                         <Styled.FooterButtonText> Cancelar </Styled.FooterButtonText>
                                     </Styled.FooterButton>
                                     <Styled.FooterButton type="submit" $variant="primary" className="primary" form={ formId }>
-                                        { mode === "create" ? <Styled.FooterButtonSaveIcon/> : mode === "edit"? <Styled.FooterButtonEditIcon/> : <Styled.FooterButtonUploadIcon/> }
+                                        { mode === "create" ? <I.SaveIcon/> : mode === "edit"? <I.SquarePenIcon/> : <I.HardDriveUploadIcon/> }
 
                                         <Styled.FooterButtonText> { mode === "create" ? "Salvar" : mode === "edit" ? "Atualizar" : "Importar" } </Styled.FooterButtonText>
                                     </Styled.FooterButton>
-                                </Styled.FooterButtonsContainer>
+                                </G.ButtonsContainer>
                             ) }
                         </Styled.Footer>
                     ) }

@@ -2,13 +2,15 @@ import * as z from 'zod';
 import { toast } from 'react-toastify';
 import React, { useState, useEffect, useRef, Fragment } from 'react';
 
+import * as G from '../../../shared/styles/global.style';
+import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
+
 import { Create, Update } from '../services/template.service';
 import { Toast } from '../../../shared/components/toast/screens/Toast';
 import { FormProps } from '../../../shared/interfaces/formProps.interface';
 import { CreateTemplateCommandDto } from '../dtos/createTemplateCommand.dto';
 import { UpdateTemplateCommandDto } from '../dtos/updateTemplateCommand.dto';
 import { Uploader } from '../../../shared/components/uploader/screens/Uploader';
-import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
 import { TemplateContentFields } from '../interfaces/templateContentFields.interface';
 import { TemplateFormData, TemplateFormSchema } from '../schemas/templateFormSchema.schema';
 import { getAuthenticationStorage } from '../../../shared/utils/authenticationStorage.util';
@@ -179,14 +181,14 @@ export const TemplateForm: React.FC<FormProps<TemplateFormData>> = ({ initialVal
 
             <Styled.Form id="template-form" onSubmit={ handleSubmit }>
                 <Styled.FieldWrapper>
-                    <Styled.Label htmlFor="name"> Nome </Styled.Label>
+                    <G.Label htmlFor="name"> Nome </G.Label>
 
                     <Styled.Input id="name" name="name" placeholder="Digite o nome do template" value={ formData.name } onChange={ (event) => handleChange(event, setFormData) } disabled={ disabled }/>
                 </Styled.FieldWrapper>
 
                 <Styled.Fieldset>
                     <Styled.Legend>
-                        <Styled.LegendButtonsContainer>
+                        <G.ButtonsContainer>
                             <Styled.WhatsAppPreviewToggleButton type="button" onClick={ handleTogglePreview } $showPreview={ showPreview }>
                                 { !showPreview ? <Styled.WhatsAppPreviewToggleButtonPlayIcon/> : <Styled.WhatsAppPreviewToggleButtonPauseIcon/> }
 
@@ -194,11 +196,11 @@ export const TemplateForm: React.FC<FormProps<TemplateFormData>> = ({ initialVal
                             </Styled.WhatsAppPreviewToggleButton>
 
                             { !disabled && (<Styled.VariableTipButton $disabled={ hasReachedVariableLimit } disabled={ disabled || hasReachedVariableLimit } type="button" onClick={ handleInsertTemplateVariable }> <Styled.VariableTipButtonIcon/> <Styled.VariableTipButtonText> { "{{name}}" } </Styled.VariableTipButtonText> </Styled.VariableTipButton>) }
-                        </Styled.LegendButtonsContainer>
+                        </G.ButtonsContainer>
                     </Styled.Legend>
 
                     <Styled.FieldWrapper>
-                        <Styled.Label htmlFor="header"> Cabeçalho </Styled.Label>
+                        <G.Label htmlFor="header"> Cabeçalho </G.Label>
 
                         <Styled.Input id="header" name="header" placeholder="Digite o cabeçalho do template" value={ templateFields.header } onChange={ (event) => handleChange(event, setTemplateFields) } disabled={ disabled } ref={ templateFormInputRefs.header } onFocus={ () => setActiveField("header") }/>
                     </Styled.FieldWrapper>
@@ -208,7 +210,7 @@ export const TemplateForm: React.FC<FormProps<TemplateFormData>> = ({ initialVal
                         </Styled.TextareaWrapper>
                     </Styled.FieldWrapper>
                     <Styled.FieldWrapper>
-                        <Styled.Label htmlFor="footer"> Rodapé </Styled.Label>
+                        <G.Label htmlFor="footer"> Rodapé </G.Label>
 
                         <Styled.Input id="footer" name="footer" placeholder="Digite o rodapé do template" value={ templateFields.footer } onChange={ (event) => handleChange(event, setTemplateFields) } disabled={ disabled } ref={ templateFormInputRefs.footer } onFocus={ () => setActiveField("footer") }/>
                     </Styled.FieldWrapper>

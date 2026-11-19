@@ -3,6 +3,10 @@ import { toast } from 'react-toastify';
 import React, { useState, useEffect } from 'react';
 import { AsYouType, CountryCode, getCountryCallingCode, parsePhoneNumberFromString } from 'libphonenumber-js';
 
+import * as G from '../../../shared/styles/global.style';
+import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
+import * as ContactFormStyled from '../../../shared/components/dropdown/styles/contactFormDropdown.style';
+
 import { List } from '../../list/services/list.service';
 import { Create, Update } from '../services/contact.service';
 import { ListResponseDto } from '../../list/dtos/listResponse.dto';
@@ -12,10 +16,8 @@ import { UpdateContactCommandDto } from '../dtos/updateContactCommand.dto';
 import { FormProps } from '../../../shared/interfaces/formProps.interface';
 import { AVAILABLE_COUNTRIES } from '../constants/availableCountries.constant';
 import { Dropdown } from '../../../shared/components/dropdown/screens/Dropdown';
-import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
 import { ContactFormData, ContactFormSchema } from '../schemas/contactFormSchema.schema';
 import { getAuthenticationStorage } from '../../../shared/utils/authenticationStorage.util';
-import * as ContactFormStyled from '../../../shared/components/dropdown/styles/contactFormDropdown.style';
 
 export const ContactForm: React.FC<FormProps<ContactFormData>> = ({ initialValues, onSubmit, onLoadingChange, }) => {
     const { userInformation } = getAuthenticationStorage();
@@ -182,12 +184,12 @@ export const ContactForm: React.FC<FormProps<ContactFormData>> = ({ initialValue
                 />
             </Styled.FieldWrapper>
             <Styled.FieldWrapper>
-                <Styled.Label htmlFor="name"> Nome </Styled.Label>
+                <G.Label htmlFor="name"> Nome </G.Label>
 
                 <Styled.Input id="name" name="name" placeholder="Digite o nome do contato" value={ formData.name } onChange={ handleChange }/>
             </Styled.FieldWrapper>
             <Styled.FieldWrapper>
-                <Styled.Label htmlFor="phone"> Telefone </Styled.Label>
+                <G.Label htmlFor="phone"> Telefone </G.Label>
 
                 <Styled.Input id="phone" name="phone" placeholder="Digite o telefone do contato" value={ formData.phone } onChange={ handleChange }/>
             </Styled.FieldWrapper>

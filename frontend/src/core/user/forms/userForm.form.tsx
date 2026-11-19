@@ -2,6 +2,9 @@ import * as z from 'zod';
 import { toast } from 'react-toastify';
 import React, { useState, useEffect } from 'react';
 
+import * as G from '../../../shared/styles/global.style';
+import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
+
 import { Create, Update } from '../services/user.service';
 import { List } from '../../company/services/company.service';
 import { CreateUserCommandDto } from '../dtos/createUserCommand.dto';
@@ -11,7 +14,6 @@ import { FormProps } from '../../../shared/interfaces/formProps.interface';
 import { CompanyResponseDto } from '../../company/dtos/companyResponse.dto';
 import { Dropdown } from '../../../shared/components/dropdown/screens/Dropdown';
 import { UserFormData, UserFormSchema } from '../schemas/userFormSchema.schema';
-import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
 
 export const UserForm: React.FC<FormProps<UserFormData>> = ({ initialValues, onSubmit, onLoadingChange, }) => {
     const [limit, setLimit] = useState<number>(15);
@@ -131,12 +133,12 @@ export const UserForm: React.FC<FormProps<UserFormData>> = ({ initialValues, onS
                 />
             </Styled.FieldWrapper>
             <Styled.FieldWrapper>
-                <Styled.Label htmlFor="name"> Nome </Styled.Label>
+                <G.Label htmlFor="name"> Nome </G.Label>
 
                 <Styled.Input id="name" name="name" placeholder="Digite o nome do usuário" value={ formData.name } onChange={ handleChange }/>
             </Styled.FieldWrapper>
             <Styled.FieldWrapper>
-                <Styled.Label htmlFor="email"> Email </Styled.Label>
+                <G.Label htmlFor="email"> Email </G.Label>
 
                 <Styled.Input id="email" name="email" placeholder="Digite o e-mail do usuário" value={ formData.email } onChange={ handleChange }/>
             </Styled.FieldWrapper>

@@ -1,6 +1,9 @@
 import { toast } from 'react-toastify';
 import React, { Fragment, useEffect, useState } from 'react';
 
+import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
+import * as ContactFormStyled from '../../../shared/components/dropdown/styles/contactFormDropdown.style';
+
 import { List } from '../../list/services/list.service';
 import { ImportContactsCsv } from '../services/contact.service';
 import { ListResponseDto } from '../../list/dtos/listResponse.dto';
@@ -8,10 +11,8 @@ import { ImportContactResponseDto } from '../dtos/importContactResponse.dto';
 import { importErrorMessages } from '../mappings/importErrorMessages.mapping';
 import { Dropdown } from '../../../shared/components/dropdown/screens/Dropdown';
 import { Uploader } from '../../../shared/components/uploader/screens/Uploader';
-import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
 import { ImportFormProps } from '../../../shared/interfaces/importFormProps.interface';
 import { getAuthenticationStorage } from '../../../shared/utils/authenticationStorage.util';
-import * as ContactFormStyled from '../../../shared/components/dropdown/styles/contactFormDropdown.style';
 
 export const ContactImportForm: React.FC<ImportFormProps> = ({ onCancel, onSubmit, onLoadingChange, onResultChange, }) => {
     const { userInformation } = getAuthenticationStorage();

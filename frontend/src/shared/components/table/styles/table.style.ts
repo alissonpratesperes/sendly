@@ -1,7 +1,6 @@
 import styled from 'styled-components';
-import { MessageSquareMore, SquarePen, Trash } from 'lucide-react';
 
-import { buttonHoverAnimation } from '../../../styles/Global.style';
+import { AnimateButtonHover } from '../../../styles/animation.style';
 import { BatchStatus } from '../../../../core/batch/enums/batchStatus.enum';
 import { BatchSendStatus } from '../../../../core/batch/enums/batchSendStatus.enum';
 import { TableListColorFragmentProps } from '../../../interfaces/tableListColorFragmentProps.interface';
@@ -77,7 +76,7 @@ export const TableListBodyRowDataActionButton = styled.button`
     transition: background 0.3s ease, color 0.3s ease;
 
         &:hover {
-            animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
+            animation: ${ AnimateButtonHover } 0.6s ease-in-out;
         }
 
             &:first-child {
@@ -106,22 +105,6 @@ export const TableListBodyRowDataActionButton = styled.button`
                     background-color: #223463;
                 }
 `;
-
-export const TableListBodyRowDataActionButtonViewIcon = styled(MessageSquareMore)`
-    height: 25px;
-    width: 25px;
-`;
-
-export const TableListBodyRowDataActionButtonEditIcon = styled(SquarePen)`
-    height: 25px;
-    width: 25px;
-`;
-
-export const TableListBodyRowDataActionButtonDeleteIcon = styled(Trash)`
-    height: 25px;
-    width: 25px;
-`;
-
 
 export const TableListColorFragment = styled.div<TableListColorFragmentProps>`
     width: 25px;

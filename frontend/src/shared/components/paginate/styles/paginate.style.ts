@@ -1,7 +1,6 @@
 import styled, { css } from 'styled-components';
-import { ArrowBigLeft, ArrowBigRight, Ellipsis } from 'lucide-react';
 
-import { buttonHoverAnimation } from '../../../styles/Global.style';
+import { AnimateButtonHover } from '../../../styles/animation.style';
 
 export const PaginateContainer = styled.div`
     margin-top: 30px;
@@ -38,16 +37,12 @@ export const PaginateButton = styled.button`
             color: #F0F0F5;
             background-color: #223463;
 
-            animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
+            animation: ${ AnimateButtonHover } 0.6s ease-in-out;
         }
         &:disabled {
             cursor: not-allowed;
             opacity: 0.5;
         }
-
-            svg {
-                stroke: currentColor;
-            }
 `;
 
 export const PreviousButtonText = styled.span`
@@ -58,27 +53,12 @@ export const PreviousButtonText = styled.span`
     font-size: 16px;
 `;
 
-export const ArrowLeftIcon = styled(ArrowBigLeft)`
-    margin-right: 7.5px;
-    height: 25px;
-    width: 25px;
-    color: #1C70E9;
-`;
-
 export const PagesArrayContainer = styled.div`
     height: auto;
     width: auto;
     display: flex;
     align-items: center;
     column-gap: 7.5px;
-`;
-
-export const EllipsisIcon = styled(Ellipsis)`
-    margin-left: 15px;
-    margin-right: 15px;
-    height: 25px;
-    width: 25px;
-    color: #1C70E9;
 `;
 
 export const PageButton = styled.button<{ $active?: boolean; $anotherHovered: boolean; $disableTransition: boolean; }>`
@@ -102,19 +82,16 @@ export const PageButton = styled.button<{ $active?: boolean; $anotherHovered: bo
         &:hover {
             animation: none;
         }
-            svg {
-                stroke: currentColor;
+
+            ${ ({ $active }) => !$active &&
+                css` &:hover {
+                    font-weight: 700;
+                    color: #FFFFFF;
+                    background-color: #223463;
+
+                    animation: ${ AnimateButtonHover } 0.6s ease-in-out;
+                }`
             }
-
-                ${ ({ $active }) => !$active &&
-                    css` &:hover {
-                        font-weight: 700;
-                        color: #FFFFFF;
-                        background-color: #223463;
-
-                        animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
-                    }`
-                }
 `;
 
 export const NextButtonText = styled.span`
@@ -123,11 +100,4 @@ export const NextButtonText = styled.span`
     font-family: "Lato";
     font-weight: 700;
     font-size: 16px;
-`;
-
-export const ArrowRightIcon = styled(ArrowBigRight)`
-    margin-left: 7.5px;
-    height: 25px;
-    width: 25px;
-    color: #1C70E9;
 `;

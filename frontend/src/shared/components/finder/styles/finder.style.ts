@@ -1,7 +1,6 @@
 import styled from 'styled-components';
-import { DatabaseArrowUp, DatabasePlus, Search } from 'lucide-react';
 
-import { buttonHoverAnimation } from '../../../styles/Global.style';
+import { AnimateButtonHover } from '../../../styles/animation.style';
 
 export const SearchInputWrapper = styled.div<{ $isSystemRoot: boolean; }>`
     margin-bottom: 30px;
@@ -47,12 +46,6 @@ export const SearchInputContainer = styled.div`
         }
 `;
 
-export const SearchInputContainerIcon = styled(Search)`
-    height: 25px;
-    width: 25px;
-    color: #FF6B00;
-`;
-
 export const SearchInputField = styled.input`
     margin-left: 15px;
     height: 55px;
@@ -72,14 +65,6 @@ export const SearchInputField = styled.input`
         }
 `;
 
-export const SearchButtonsContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 0px;
-    flex-shrink: 0;
-`;
-
 export const AddButton = styled.button`
     padding: 15px;
     height: auto;
@@ -97,26 +82,12 @@ export const AddButton = styled.button`
     background-color: #E6F4EA;
     transition: color 0.3s ease, background-color 0.3s ease;
 
-        svg {
-            stroke: currentColor;
+        &:hover {
+            color: #FFFFFF;
+            background-color: #238636;
+
+            animation: ${ AnimateButtonHover } 0.6s ease-in-out;
         }
-
-            &:hover {
-                color: #FFFFFF;
-                background-color: #238636;
-
-                animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
-            }
-`;
-
-export const AddButtonUploadIcon = styled(DatabaseArrowUp)`
-    height: 25px;
-    width: 25px;
-`;
-
-export const AddButtonAddIcon = styled(DatabasePlus)`
-    height: 25px;
-    width: 25px;
 `;
 
 export const SearchInputSubmitText = styled.span`
