@@ -2,7 +2,7 @@ import { toast } from 'react-toastify';
 import React, { Fragment, useCallback, useEffect, useState } from 'react';
 
 import { CompanyForm } from '../forms/companyForm.form';
-import { List, Delete } from '../services/company.service';
+import { Rank, List, Delete } from '../services/company.service';
 import { CompanyResponseDto } from '../dtos/companyResponse.dto';
 import { formatDate } from '../../../shared/utils/formatDate.util';
 import { CompanyFormData } from '../schemas/companyFormSchema.schema';
@@ -10,6 +10,7 @@ import { Table } from '../../../shared/components/table/screens/Table';
 import { Modal } from '../../../shared/components/modal/screens/Modal';
 import { Finder } from '../../../shared/components/finder/screen/Finder';
 import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
+import { UsersRankingResponseDto } from '../dtos/usersRankingResponse.dto';
 import * as Styled from '../../../shared/components/table/styles/table.style';
 import { Paginate } from '../../../shared/components/paginate/screens/Paginate';
 import { EmptyState } from '../../../shared/components/emptyState/screens/EmpyState';
@@ -27,7 +28,9 @@ export const Company = () => {
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
     const [companies, setCompanies] = useState<CompanyResponseDto[]>([]);
+    const [ranking, setRanking] = useState<UsersRankingResponseDto[]>([]);
     const [updating, setUpdating] = useState<CompanyFormData | null>(null);
+    const [isRankingLoading, setIsRankingLoading] = useState<boolean>(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
     const [selectedCompanyId, setSelectedCompanyId] = useState<number | null>(null);
 
@@ -37,6 +40,19 @@ export const Company = () => {
         setUpdating(null);
         setIsDrawerOpen(true);
     }
+    const handleRank = useCallback(async () => {
+        try {
+            setIsRankingLoading(true);
+
+            const response = await Rank();
+
+            setRanking(response);
+        } catch (error) {
+            toast.error(`Erro ao carregar o dashboard para Empresas: ${ error }`);
+        } finally {
+            setIsRankingLoading(false);
+        }
+    }, []);
     const handleRead = useCallback(async () => {
         try {
             setIsLoading(true);
@@ -90,6 +106,9 @@ export const Company = () => {
         } finally { }
     }
 
+    useEffect(() => {
+        handleRank();
+    }, [ handleRank, ]);
     useEffect(() => {
         const timeout = setTimeout(() => {
             handleRead();

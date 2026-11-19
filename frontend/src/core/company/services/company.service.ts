@@ -2,6 +2,7 @@ import { IdParamDto } from '../../../shared/dtos/idParam.dto';
 import { CompanyResponseDto } from '../dtos/companyResponse.dto';
 import { CreateCompanyCommandDto } from '../dtos/createCompanyCommand.dto';
 import { UpdateCompanyCommandDto } from '../dtos/updateCompanyCommand.dto';
+import { UsersRankingResponseDto } from '../dtos/usersRankingResponse.dto';
 import axiosInstance from '../../../core/authentication/interceptors/authorization.interceptor';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
 import { PaginatedResponseDto } from '../../../shared/components/paginate/dtos/paginatedResponse.dto';
@@ -14,6 +15,12 @@ export const Create = async (command: CreateCompanyCommandDto): Promise<CompanyR
     return data;
 }
 
+export const Rank = async(): Promise<UsersRankingResponseDto[]> => {
+    const { data } = await axiosInstance.get<UsersRankingResponseDto[]>(`${ BASE_ENDPOINT }/chart/users-ranking`);
+
+    return data;
+}
+
 export const Read = async (param: IdParamDto): Promise<CompanyResponseDto> => {
     const { data } = await axiosInstance.get<CompanyResponseDto>(`${ BASE_ENDPOINT }/${ param.id }`);
 
@@ -21,7 +28,7 @@ export const Read = async (param: IdParamDto): Promise<CompanyResponseDto> => {
 }
 
 export const List = async (query: PaginatedQueryDto): Promise<PaginatedResponseDto<CompanyResponseDto>> => {
-    const { data } = await axiosInstance.get<PaginatedResponseDto<CompanyResponseDto>>(BASE_ENDPOINT, { params: query });
+    const { data } = await axiosInstance.get<PaginatedResponseDto<CompanyResponseDto>>(BASE_ENDPOINT, { params: query, });
 
     return data;
 }
