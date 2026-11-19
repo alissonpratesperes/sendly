@@ -3,6 +3,7 @@ import React, { Fragment, useCallback, useEffect, useMemo, useRef, useState } fr
 
 import { List } from '../services/batch.service';
 import { BatchForm } from '../forms/batchForm.form';
+import { BatchStatus } from '../enums/batchStatus.enum';
 import { BatchResponseDto } from '../dtos/batchResponse.dto';
 import { BatchFormData } from '../schemas/batchFormSchema.schema';
 import { formatDate } from '../../../shared/utils/formatDate.util';
@@ -40,6 +41,16 @@ export const Batch = () => {
     const listsNamesRef = useRef<Record<number, ListResponseDto>>({});
     const templatesNamesRef = useRef<Record<number, TemplateResponseDto>>({});
 
+    const [selectedBatchStatus, setSelectedBatchStatus] = useState<BatchStatus | null>(null);
+
+    const optionsForBatchStatus = [
+        { value: BatchStatus.PENDING, label: "Pendente" },
+        { value: BatchStatus.RUNNING, label: "Executando" },
+        { value: BatchStatus.PARTIAL, label: "Parcial" },
+        { value: BatchStatus.FAILED, label: "Falhado" },
+        { value: BatchStatus.FINISHED, label: "Finalizado" },
+    ];
+
     const optionsForTemplates = useMemo(() => {
         return templates
             .filter((template) => template.id !== undefined && template.id !== null)
@@ -58,7 +69,7 @@ export const Batch = () => {
         try {
             setIsLoading(true);
 
-            const params: PaginatedQueryDto = { page, limit, search, templateId: selectedTemplateId ?? undefined, };
+            const params: PaginatedQueryDto = { page, limit, search, situation: selectedBatchStatus ?? undefined, templateId: selectedTemplateId ?? undefined, };
             const response = await List(params);
 
             setBatches(response.data);
@@ -116,7 +127,7 @@ export const Batch = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [ page, limit, search, selectedTemplateId, ])
+    }, [ page, limit, search, selectedBatchStatus, selectedTemplateId, ])
 
     useEffect(() => {
         const progressiveTemplatesFetch = async () => {
@@ -164,6 +175,18 @@ export const Batch = () => {
             ) }
             { !isLoading && (
                 <Styled.WhenInMultiSearchContainer>
+                    <Styled.WhenInAnotherScreenWrapper>
+                        <Dropdown
+                            inputId="statusId"
+                            isInBatchSendScreen={ true }
+                            isSearchable={ false }
+                            isClearable={ true }
+                            options={ optionsForBatchStatus }
+                            placeholder="Filtre por status"
+                            value={ optionsForBatchStatus.find((option) => option.value === selectedBatchStatus) ?? null }
+                            onChange={ (selectedOption) => { setSelectedBatchStatus(selectedOption?.value ?? null); setPage(1); } }
+                        />
+                    </Styled.WhenInAnotherScreenWrapper>
                     <Styled.WhenInAnotherScreenWrapper>
                         <Dropdown
                             inputId="templateId"

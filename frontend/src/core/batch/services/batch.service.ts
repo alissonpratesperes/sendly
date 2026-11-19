@@ -21,7 +21,7 @@ export const List = async (query: PaginatedQueryDto): Promise<PaginatedResponseD
 }
 
 export const ListSends = async (param: IdParamDto, query: PaginatedQueryDto): Promise<PaginatedResponseDto<BatchSendResponseDto>> => {
-    const { data } = await axiosInstance.get<PaginatedResponseDto<BatchSendResponseDto>>(`${ BASE_ENDPOINT }/${ param.id }/sends`, { params: query });
+    const { data } = await axiosInstance.get<PaginatedResponseDto<BatchSendResponseDto>>(`${ BASE_ENDPOINT }/${ param.id }/sends`, { params: query, });
 
     return data;
 }

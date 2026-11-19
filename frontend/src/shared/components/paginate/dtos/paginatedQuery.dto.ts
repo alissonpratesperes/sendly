@@ -1,3 +1,4 @@
+import { BatchStatus } from '../../../../core/batch/enums/batchStatus.enum';
 import { BatchSendStatus } from '../../../../core/batch/enums/batchSendStatus.enum';
 
 export interface PaginatedQueryDto {
@@ -7,6 +8,7 @@ export interface PaginatedQueryDto {
     search?: string;
     listId?: number;
     templateId?: number;
+    situation?: BatchStatus;
     status?: BatchSendStatus;
     active?: Boolean;
 

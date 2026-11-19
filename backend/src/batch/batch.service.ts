@@ -40,10 +40,11 @@ export class BatchService {
         );
     }
 
-    private buildBatchListWhere(search?: string, templateId?: number): Prisma.BatchWhereInput {
+    private buildBatchListWhere(search?: string, situation?: Batch_Status, templateId?: number): Prisma.BatchWhereInput {
         return {
             DeletedAt: null,
 
+            ...(situation && { Status: situation, }),
             ...(templateId !== undefined && { TemplateId: templateId, }),
 
             ...(search
@@ -99,8 +100,8 @@ export class BatchService {
         return this.toBatchResponse(batch);
     }
 
-    async list(page: number = 1, limit: number = 15, search?: string, templateId?: number): Promise<PaginatedResponseDto<GetBatchResponseDto>> {
-        const where = this.buildBatchListWhere(search, templateId);
+    async list(page: number = 1, limit: number = 15, search?: string, situation?: Batch_Status, templateId?: number): Promise<PaginatedResponseDto<GetBatchResponseDto>> {
+        const where = this.buildBatchListWhere(search, situation, templateId);
         const batches = await this.prismaService.client.batch.findMany({
             where,
             skip: (page - 1) * limit,
