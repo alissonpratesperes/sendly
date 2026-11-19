@@ -6,6 +6,7 @@ import { GetCompanyResponseDto } from './dtos/getCompanyResponse.dto';
 import { PaginationQueryDto } from '../common/dtos/paginationQuery.dto';
 import { CreateCompanyCommandDto } from './dtos/createCompanyCommand.dto';
 import { UpdateCompanyCommandDto } from './dtos/updateCompanyCommand.dto';
+import { UsersRankingResponseDto } from './dtos/usersRankingResponse.dto';
 import { PaginatedResponseDto } from '../common/dtos/paginatedResponse.dto';
 import { IsSystemRoot } from '../authentication/decorators/isSystemRoot.decorator';
 
@@ -20,6 +21,12 @@ export class CompanyController {
     @HttpCode(HttpStatus.CREATED)
     async create(@Body() command: CreateCompanyCommandDto): Promise<GetCompanyResponseDto> {
         return this.companyService.create(command.name, command.document, command.description ?? null);
+    }
+
+    @Get("chart/users-ranking")
+    @HttpCode(HttpStatus.OK)
+    async getUsersRanking(): Promise<UsersRankingResponseDto[]> {
+        return this.companyService.rank();
     }
 
     @Get(":id")

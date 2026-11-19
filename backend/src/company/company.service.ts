@@ -3,6 +3,7 @@ import { ConflictException, Injectable, NotFoundException } from '@nestjs/common
 
 import { PrismaService } from '../prisma/prisma.service';
 import { GetCompanyResponseDto } from './dtos/getCompanyResponse.dto';
+import { UsersRankingResponseDto } from './dtos/usersRankingResponse.dto';
 import { PaginatedResponseDto } from '../common/dtos/paginatedResponse.dto';
 import { formatCompanyDocument } from '../common/formatters/companyDocument.formatter';
 
@@ -97,6 +98,37 @@ export class CompanyService {
             total,
 
             companies.map((company: Company) => this.toCompanyResponse(company)),
+        );
+    }
+
+    async rank(): Promise<UsersRankingResponseDto[]> {
+        const ranking = await this.prismaService.client.$queryRaw<{ companyId: number; companyName: string; totalUsers: bigint; }[]>`
+            SELECT
+                c.Id AS companyId,
+                c.Name AS companyName,
+                COUNT(u.Id) AS totalUsers
+            FROM
+                Company c
+            INNER JOIN
+                User u
+            ON
+                u.CompanyId = c.Id
+            WHERE
+                c.DeletedAt IS NULL
+            GROUP BY
+                c.Id,
+                c.Name
+            ORDER BY
+                totalUsers DESC,
+                c.Id ASC
+        `;
+
+        return ranking.map((item) =>
+            new UsersRankingResponseDto(
+                Number(item.companyId),
+                item.companyName,
+                Number(item.totalUsers),
+            ),
         );
     }
 
