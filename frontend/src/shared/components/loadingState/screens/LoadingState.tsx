@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 
-import * as Styled from '../styles/loadingState.style';
+import * as S from '../styles/loadingState.style';
 
 import { LoadingStateProps } from '../interfaces/loadingStateProps.interface';
 
@@ -8,9 +8,9 @@ export const LoadingState: React.FC<LoadingStateProps> = ({ isInBatchFlowScreens
   return (
     <Fragment>
       { isInBatchFlowScreens ? (
-        <Styled.LoadingStateBar />
+        <S.LoadingStateBar />
       ) : (
-        <Styled.LoadingStateContainer> <Styled.LoadingStateSpinner /> </Styled.LoadingStateContainer>
+        <S.LoadingStateContainer> <S.LoadingStateSpinner /> </S.LoadingStateContainer>
       ) }
     </Fragment>
   );

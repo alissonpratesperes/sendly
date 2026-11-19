@@ -3,8 +3,8 @@ import { toast } from 'react-toastify';
 import React, { useState, useEffect } from 'react';
 
 import * as G from '../../../shared/styles/global.style';
-import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
-import * as ContactFormStyled from '../../../shared/components/dropdown/styles/contactFormDropdown.style';
+import * as S from '../../../shared/components/drawer/styles/drawer.style';
+import * as F from '../../../shared/components/dropdown/styles/contactFormDropdown.style';
 
 import { Create } from '../services/batch.service';
 import { ListResponseDto } from '../../list/dtos/listResponse.dto';
@@ -156,13 +156,13 @@ export const BatchForm: React.FC<FormProps<BatchFormData>> = ({ initialValues, o
     }, [ initialValues, ]);
 
     return (
-        <Styled.Form id="batch-form" onSubmit={ handleSubmit }>
-            <Styled.FieldWrapper>
+        <S.Form id="batch-form" onSubmit={ handleSubmit }>
+            <S.FieldWrapper>
                 <G.Label htmlFor="name"> Nome </G.Label>
 
-                <Styled.Input id="name" name="name" placeholder="Digite o nome do envio" value={ formData.name } onChange={ handleChange }/>
-            </Styled.FieldWrapper>
-            <Styled.FieldWrapper>
+                <S.Input id="name" name="name" placeholder="Digite o nome do envio" value={ formData.name } onChange={ handleChange }/>
+            </S.FieldWrapper>
+            <S.FieldWrapper>
                 <Dropdown
                     inputId="templateId"
                     isLoading={ isTemplatesLoading }
@@ -171,8 +171,8 @@ export const BatchForm: React.FC<FormProps<BatchFormData>> = ({ initialValues, o
                     value={ optionsForTemplates.find((option) => option.value === formData.templateId) ?? null }
                     onChange={ (selectedOption) => setFormData((previous) => ({ ...previous, templateId: selectedOption?.value ?? 0 })) }
                 />
-            </Styled.FieldWrapper>
-            <Styled.FieldWrapper>
+            </S.FieldWrapper>
+            <S.FieldWrapper>
                 <Dropdown
                     inputId="listId"
                     isLoading={ isListsLoading }
@@ -182,14 +182,14 @@ export const BatchForm: React.FC<FormProps<BatchFormData>> = ({ initialValues, o
                     onChange={ (selectedOption) => setFormData((previous) => ({ ...previous, listId: selectedOption?.value ?? 0 })) }
 
                     formatOptionLabel={ (option) => (
-                        <ContactFormStyled.OptionContent>
-                            <ContactFormStyled.ListColor $color={ option.color }/>
+                        <F.OptionContent>
+                            <F.ListColor $color={ option.color }/>
 
                             <span> { option.label } </span>
-                        </ContactFormStyled.OptionContent>
+                        </F.OptionContent>
                     ) }
                 />
-            </Styled.FieldWrapper>
-        </Styled.Form>
+            </S.FieldWrapper>
+        </S.Form>
     );
 }

@@ -1,7 +1,7 @@
 import { toast } from 'react-toastify';
 import React, { Fragment, useCallback, useEffect, useState } from 'react';
 
-import * as Styled from '../../../shared/components/table/styles/table.style';
+import * as S from '../../../shared/components/table/styles/table.style';
 
 import { ListForm } from '../forms/listForm.form';
 import { List, Delete } from '../services/list.service';
@@ -114,9 +114,9 @@ export const Lists = () => {
                         onDelete={ (id: number) => { setSelectedListId(id); setIsDeleteModalOpen(true); } }
                         renderEntityRow={ (list: ListResponseDto) => (
                             <Fragment>
-                                <Styled.TableListBodyRowData> <Styled.TableListMultiContent> <Styled.TableListColorFragment $color={ list.color }/> <Styled.UniqueKeyDestak> { list.name } </Styled.UniqueKeyDestak> </Styled.TableListMultiContent> </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> { list.subject } </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> <Styled.TimeStampDestak> { formatDate(list.updatedAt, false) } </Styled.TimeStampDestak> </Styled.TableListBodyRowData>
+                                <S.TableListBodyRowData> <S.TableListMultiContent> <S.TableListColorFragment $color={ list.color }/> <S.UniqueKeyDestak> { list.name } </S.UniqueKeyDestak> </S.TableListMultiContent> </S.TableListBodyRowData>
+                                <S.TableListBodyRowData> { list.subject } </S.TableListBodyRowData>
+                                <S.TableListBodyRowData> <S.TimeStampDestak> { formatDate(list.updatedAt, false) } </S.TimeStampDestak> </S.TableListBodyRowData>
                             </Fragment>
                         ) }
                         canEdit={ true }

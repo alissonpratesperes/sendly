@@ -1,7 +1,7 @@
 import { toast } from 'react-toastify';
 import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 
-import * as Styled from '../../../shared/components/table/styles/table.style';
+import * as S from '../../../shared/components/table/styles/table.style';
 
 import { List, ListSends } from '../services/batch.service';
 import { BatchResponseDto } from '../dtos/batchResponse.dto';
@@ -159,8 +159,8 @@ export const BatchSend = () => {
                 <LoadingState/>
             ) }
             { !isLoading && (
-                <Styled.WhenInMultiSearchContainer>
-                    <Styled.WhenInAnotherScreenWrapper>
+                <S.WhenInMultiSearchContainer>
+                    <S.WhenInAnotherScreenWrapper>
                         <Dropdown
                             inputId="batchStatusId"
                             isInBatchSendScreen={ true }
@@ -171,8 +171,8 @@ export const BatchSend = () => {
                             value={ optionsForBatchSendStatus.find((option) => option.value === selectedBatchSendStatus) ?? null }
                             onChange={ (selectedOption) => { setSelectedBatchSendStatus(selectedOption?.value ?? null); setPage(1); } }
                         />
-                    </Styled.WhenInAnotherScreenWrapper>
-                    <Styled.WhenInAnotherScreenWrapper>
+                    </S.WhenInAnotherScreenWrapper>
+                    <S.WhenInAnotherScreenWrapper>
                         <Dropdown
                             inputId="batchId"
                             isInBatchSendScreen={ true }
@@ -183,8 +183,8 @@ export const BatchSend = () => {
                             value={ optionsForBatches.find((option) => option.value === selectedBatchId) ?? null }
                             onChange={ (selectedOption) => { setSelectedBatchId(selectedOption?.value ?? null); setBatchSends([]); setTotal(0); setPage(1); } }
                         />
-                    </Styled.WhenInAnotherScreenWrapper>
-                </Styled.WhenInMultiSearchContainer>
+                    </S.WhenInAnotherScreenWrapper>
+                </S.WhenInMultiSearchContainer>
             ) }
             { !isLoading && batchSends.length > 0 && (
                 <Fragment>
@@ -195,10 +195,10 @@ export const BatchSend = () => {
                         onView={ handleViewBatchSend }
                         renderEntityRow={ (batchSend: BatchSendResponseDto) => (
                             <Fragment>
-                                <Styled.TableListBodyRowData> { contactsNames[batchSend.contactId]?.name ?? "" } </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> <Styled.TimeStampDestak> { formatDate(batchSend.scheduledAt, false) } </Styled.TimeStampDestak> </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> <Styled.TimeStampsContainer> <Styled.TimeStampsRowContent> <b> Início: </b> <Styled.TimeStampDestak> { batchSend.startedAt ? formatDate(batchSend.startedAt, false) : "-" } </Styled.TimeStampDestak> </Styled.TimeStampsRowContent> { batchSend.startedAt && !batchSend.completedAt ? <Styled.TimeStampsRowContent> <LoadingState isInBatchFlowScreens={ true }/> </Styled.TimeStampsRowContent> : <Styled.TimeStampsRowContent> <b> Fim: </b> <Styled.TimeStampDestak> { batchSend.completedAt ? formatDate(batchSend.completedAt, false) : "-" } </Styled.TimeStampDestak> </Styled.TimeStampsRowContent> } </Styled.TimeStampsContainer> </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> <Styled.TimeStampDestak $statusColor={ batchSend.status } title={ batchSend.errorMessage?.trim() || undefined }> { formatDate(batchSend.updatedAt, false) } </Styled.TimeStampDestak> </Styled.TableListBodyRowData>
+                                <S.TableListBodyRowData> { contactsNames[batchSend.contactId]?.name ?? "" } </S.TableListBodyRowData>
+                                <S.TableListBodyRowData> <S.TimeStampDestak> { formatDate(batchSend.scheduledAt, false) } </S.TimeStampDestak> </S.TableListBodyRowData>
+                                <S.TableListBodyRowData> <S.TimeStampsContainer> <S.TimeStampsRowContent> <b> Início: </b> <S.TimeStampDestak> { batchSend.startedAt ? formatDate(batchSend.startedAt, false) : "-" } </S.TimeStampDestak> </S.TimeStampsRowContent> { batchSend.startedAt && !batchSend.completedAt ? <S.TimeStampsRowContent> <LoadingState isInBatchFlowScreens={ true }/> </S.TimeStampsRowContent> : <S.TimeStampsRowContent> <b> Fim: </b> <S.TimeStampDestak> { batchSend.completedAt ? formatDate(batchSend.completedAt, false) : "-" } </S.TimeStampDestak> </S.TimeStampsRowContent> } </S.TimeStampsContainer> </S.TableListBodyRowData>
+                                <S.TableListBodyRowData> <S.TimeStampDestak $statusColor={ batchSend.status } title={ batchSend.errorMessage?.trim() || undefined }> { formatDate(batchSend.updatedAt, false) } </S.TimeStampDestak> </S.TableListBodyRowData>
                             </Fragment>
                         ) }
                         canView={ true }

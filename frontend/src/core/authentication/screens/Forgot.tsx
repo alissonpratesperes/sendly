@@ -2,7 +2,7 @@ import { toast } from 'react-toastify';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import * as Styled from '../styles/forgot.style';
+import * as S from '../styles/forgot.style';
 import * as I from '../../../shared/styles/icon.style';
 import * as G from '../../../shared/styles/global.style';
 
@@ -41,7 +41,7 @@ export const Forgot: React.FC = () => {
 
     return (
         <G.FormContainer>
-            <Styled.ForgotForm onSubmit={ handleSubmit }>
+            <S.ForgotForm onSubmit={ handleSubmit }>
                 <G.FormTitle> Recuperar senha </G.FormTitle>
                 <G.FormSubtitle> Para solicitar a redefinição de senha, informe seu e-mail abaixo </G.FormSubtitle>
 
@@ -55,13 +55,13 @@ export const Forgot: React.FC = () => {
                     <LoadingState/>
                 ) }
                 { !isLoading && (
-                    <Styled.ForgotButton type="submit">
+                    <S.ForgotButton type="submit">
                         <I.InboxIcon/>
 
-                        <Styled.ForgotButtonText> Recuperar </Styled.ForgotButtonText>
-                    </Styled.ForgotButton>
+                        <S.ForgotButtonText> Recuperar </S.ForgotButtonText>
+                    </S.ForgotButton>
                 ) }
-            </Styled.ForgotForm>
+            </S.ForgotForm>
         </G.FormContainer>
     )
 }

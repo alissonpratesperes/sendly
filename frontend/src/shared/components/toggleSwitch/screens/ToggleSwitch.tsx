@@ -1,17 +1,17 @@
 import React from 'react';
 
-import * as Styled from '../styles/ToggleSwitch.style';
+import * as S from '../styles/ToggleSwitch.style';
 
 import { ToggleSwitchSliderProps } from '../interfaces/ToggleSwitchSliderProps.interface';
 
 export const ToggleSwitch: React.FC<ToggleSwitchSliderProps> = ({ checked, onChange }) => {
     return (
-        <Styled.SwitchWrapper>
-            <Styled.HiddenCheckbox type="checkbox" checked={ checked } onChange={ onChange }/>
+        <S.SwitchWrapper>
+            <S.HiddenCheckbox type="checkbox" checked={ checked } onChange={ onChange }/>
 
-            <Styled.Slider $checked={ checked }>
-                <Styled.SliderCircle $checked={ checked }/>
-            </Styled.Slider>
-        </Styled.SwitchWrapper>
+            <S.Slider $checked={ checked }>
+                <S.SliderCircle $checked={ checked }/>
+            </S.Slider>
+        </S.SwitchWrapper>
     );
 }

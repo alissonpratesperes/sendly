@@ -1,17 +1,17 @@
 import React from 'react';
 
-import * as Styled from '../styles/toast.style';
+import * as S from '../styles/toast.style';
 
 import { ValidationErrorToastProps } from '../interfaces/validationErrorToastProps.interface';
 
 export const Toast: React.FC<ValidationErrorToastProps> = ({ errors }) => (
-    <Styled.ToastWrapper>
-        <Styled.Title> Erros de validação </Styled.Title>
+    <S.ToastWrapper>
+        <S.Title> Erros de validação </S.Title>
 
-        <Styled.List>
+        <S.List>
             { errors.map((issue, index) => (
-                <Styled.ListItem key={ index }> { issue.message } </Styled.ListItem>
+                <S.ListItem key={ index }> { issue.message } </S.ListItem>
             )) }
-        </Styled.List>
-    </Styled.ToastWrapper>
+        </S.List>
+    </S.ToastWrapper>
 )

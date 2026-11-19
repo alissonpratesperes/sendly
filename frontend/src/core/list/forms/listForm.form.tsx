@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import React, { useState, useEffect } from 'react';
 
 import * as G from '../../../shared/styles/global.style';
-import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
+import * as S from '../../../shared/components/drawer/styles/drawer.style';
 
 import { Create, Update } from '../services/list.service';
 import { CreateListCommandDto } from '../dtos/createListCommand.dto';
@@ -79,22 +79,22 @@ export const ListForm: React.FC<FormProps<ListFormData>> = ({ initialValues, onS
     }, [ initialValues, ]);
 
     return (
-        <Styled.Form id="list-form" onSubmit={ handleSubmit }>
-            <Styled.FieldWrapper>
+        <S.Form id="list-form" onSubmit={ handleSubmit }>
+            <S.FieldWrapper>
                 <G.Label htmlFor="name"> Nome </G.Label>
 
-                <Styled.Input id="name" name="name" placeholder="Digite o nome da lista" value={ formData.name } onChange={ handleChange }/>
-            </Styled.FieldWrapper>
-            <Styled.FieldWrapper>
+                <S.Input id="name" name="name" placeholder="Digite o nome da lista" value={ formData.name } onChange={ handleChange }/>
+            </S.FieldWrapper>
+            <S.FieldWrapper>
                 <G.Label htmlFor="subject"> Assunto </G.Label>
 
-                <Styled.Input id="subject" name="subject" placeholder="Digite o assunto da lista" value={ formData.subject } onChange={ handleChange }/>
-            </Styled.FieldWrapper>
-            <Styled.FieldWrapper>
+                <S.Input id="subject" name="subject" placeholder="Digite o assunto da lista" value={ formData.subject } onChange={ handleChange }/>
+            </S.FieldWrapper>
+            <S.FieldWrapper>
                 <G.Label htmlFor="color"> Cor </G.Label>
 
-                <Styled.ColorInput type="color" id="color" name="color" placeholder="" value={ formData.color } onChange={ handleChange }/>
-            </Styled.FieldWrapper>
-        </Styled.Form>
+                <S.ColorInput type="color" id="color" name="color" placeholder="" value={ formData.color } onChange={ handleChange }/>
+            </S.FieldWrapper>
+        </S.Form>
     );
 }

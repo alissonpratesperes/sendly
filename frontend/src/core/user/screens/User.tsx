@@ -1,7 +1,7 @@
 import { toast } from 'react-toastify';
 import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 
-import * as Styled from '../../../shared/components/table/styles/table.style';
+import * as S from '../../../shared/components/table/styles/table.style';
 
 import { UserForm } from '../forms/userForm.form';
 import { UserStatus } from '../enums/userStatus.enum';
@@ -153,8 +153,8 @@ export const User = () => {
                 <LoadingState/>
             ) }
             { !isLoading && (
-                <Styled.WhenInMultiSearchContainer>
-                    <Styled.WhenInAnotherScreenWrapper>
+                <S.WhenInMultiSearchContainer>
+                    <S.WhenInAnotherScreenWrapper>
                         <Dropdown
                             inputId="companyId"
                             isInBatchSendScreen={ true }
@@ -166,10 +166,10 @@ export const User = () => {
                             value={ selectedCompanyOption }
                             onChange={ (selectedOption) => { setSelectedCompanyId(selectedOption?.value ?? null); setPage(1); } }
                         />
-                    </Styled.WhenInAnotherScreenWrapper>
+                    </S.WhenInAnotherScreenWrapper>
 
                     <Finder showAddButton={ userInformation?.isSystemRoot ?? false } placeholder="Pesquise um usuário por nome ou e-mail" buttonText="Cadastrar" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } }/>
-                </Styled.WhenInMultiSearchContainer>
+                </S.WhenInMultiSearchContainer>
             ) }
             { !isLoading && users.length > 0 && (
                 <Fragment>
@@ -181,9 +181,9 @@ export const User = () => {
                         onDelete={ userInformation?.isSystemRoot ? (id: number) => { setSelectedUserId(id); setIsDeleteModalOpen(true); } : undefined }
                         renderEntityRow={ (user: UserResponseDto) => (
                             <Fragment>
-                                <Styled.TableListBodyRowData> <Styled.TableListMultiContent $useSpecificPadding={ true }> <StatusBadge variant={ user.isFirstAccess ? UserStatus.FIRST_ACCESS : UserStatus.NOT_FIRST_ACCESS }/> <StatusBadge variant={ user.isSystemRoot ? UserStatus.SYSTEM_ROOT : UserStatus.NOT_SYSTEM_ROOT }/> { user.name } </Styled.TableListMultiContent> </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> <Styled.UniqueKeyDestak> { user.email } </Styled.UniqueKeyDestak> </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> <Styled.TimeStampDestak> { formatDate(user.updatedAt, false) } </Styled.TimeStampDestak> </Styled.TableListBodyRowData>
+                                <S.TableListBodyRowData> <S.TableListMultiContent $useSpecificPadding={ true }> <StatusBadge variant={ user.isFirstAccess ? UserStatus.FIRST_ACCESS : UserStatus.NOT_FIRST_ACCESS }/> <StatusBadge variant={ user.isSystemRoot ? UserStatus.SYSTEM_ROOT : UserStatus.NOT_SYSTEM_ROOT }/> { user.name } </S.TableListMultiContent> </S.TableListBodyRowData>
+                                <S.TableListBodyRowData> <S.UniqueKeyDestak> { user.email } </S.UniqueKeyDestak> </S.TableListBodyRowData>
+                                <S.TableListBodyRowData> <S.TimeStampDestak> { formatDate(user.updatedAt, false) } </S.TimeStampDestak> </S.TableListBodyRowData>
                             </Fragment>
                         ) }
                         canEdit={ true }

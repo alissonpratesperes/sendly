@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import * as Styled from '../styles/paginate.style';
+import * as S from '../styles/paginate.style';
 import * as I from '../../../shared/styles/icon.style';
 
 import { PageOption } from '../types/pageOption.type';
@@ -96,19 +96,19 @@ export function Paginate({ page, total, limit, onPageChange, onLimitChange, }: P
     }, [ page, totalPages, onPageChange, ])
 
     return (
-        <Styled.PaginateContainer>
-            <Styled.PaginateButton disabled={ page === 1 } onClick={ previousPage }>
+        <S.PaginateContainer>
+            <S.PaginateButton disabled={ page === 1 } onClick={ previousPage }>
                 <I.ArrowBigLeftIcon/>
 
-                <Styled.PreviousButtonText> Anterior </Styled.PreviousButtonText>
-            </Styled.PaginateButton>
+                <S.PreviousButtonText> Anterior </S.PreviousButtonText>
+            </S.PaginateButton>
 
-            <Styled.PagesArrayContainer>
+            <S.PagesArrayContainer>
                 { pages.map((pageNumber, index) =>
                     pageNumber === "..." ? (
                         <I.EllipsisIcon key={ `ellipsis-${ index }` }/>
                     ) : (
-                        <Styled.PageButton key={ `page-${ pageNumber }` } $active={ page === pageNumber } $anotherHovered={ hoveredPage !== null && hoveredPage !== pageNumber } $disableTransition={ disableTransition } onMouseEnter={ () => setHoveredPage(pageNumber as number) } onMouseLeave={ () => setHoveredPage(null) } onClick={ () => { setDisableTransition(false); goToPage(pageNumber as number); } }> { pageNumber } </Styled.PageButton>
+                        <S.PageButton key={ `page-${ pageNumber }` } $active={ page === pageNumber } $anotherHovered={ hoveredPage !== null && hoveredPage !== pageNumber } $disableTransition={ disableTransition } onMouseEnter={ () => setHoveredPage(pageNumber as number) } onMouseLeave={ () => setHoveredPage(null) } onClick={ () => { setDisableTransition(false); goToPage(pageNumber as number); } }> { pageNumber } </S.PageButton>
                     )
                 ) }
                 { onLimitChange && (
@@ -124,13 +124,13 @@ export function Paginate({ page, total, limit, onPageChange, onLimitChange, }: P
                         onChange={ handleLimitChange }
                     />
                 ) }
-            </Styled.PagesArrayContainer>
+            </S.PagesArrayContainer>
 
-            <Styled.PaginateButton disabled={ page === totalPages } onClick={ nextPage }>
-                <Styled.NextButtonText> Próxima </Styled.NextButtonText>
+            <S.PaginateButton disabled={ page === totalPages } onClick={ nextPage }>
+                <S.NextButtonText> Próxima </S.NextButtonText>
 
                 <I.ArrowBigRightIcon/>
-            </Styled.PaginateButton>
-        </Styled.PaginateContainer>
+            </S.PaginateButton>
+        </S.PaginateContainer>
     );
 }

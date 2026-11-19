@@ -1,8 +1,8 @@
 import { toast } from 'react-toastify';
 import React, { useState, useEffect, Fragment } from 'react';
 
+import * as S from '../../../styles/modal.style';
 import * as G from '../../../styles/global.style';
-import * as Styled from '../../../styles/modal.style';
 import * as I from '../../../shared/styles/icon.style';
 
 import { PairingCode } from '../../pairingCode/screens/PairingCode';
@@ -81,17 +81,17 @@ export const Connection: React.FC<ConnectionProps> = ({ onPairingSuccess, isOpen
     }, [ isOpen, companyId, ]);
 
     return (
-        <Styled.ModalOverlay $open={ isOpen && !isClosing }>
+        <S.ModalOverlay $open={ isOpen && !isClosing }>
             { isOpen && (
-                <Styled.ModalWrapper $open={ !isClosing } onClick={ (event) => event.stopPropagation() }  onAnimationEnd={ (event) => { if (event.currentTarget === event.target && isClosing) { onClose(); setIsClosing(false); } } }>
-                    <Styled.ModalContainer>
-                        <Styled.ModalHeader>
-                            <Styled.ModalTitle> Sessão do WhatsApp </Styled.ModalTitle>
+                <S.ModalWrapper $open={ !isClosing } onClick={ (event) => event.stopPropagation() }  onAnimationEnd={ (event) => { if (event.currentTarget === event.target && isClosing) { onClose(); setIsClosing(false); } } }>
+                    <S.ModalContainer>
+                        <S.ModalHeader>
+                            <S.ModalTitle> Sessão do WhatsApp </S.ModalTitle>
 
-                            <Styled.ModalDismissButton type="button" onClick={ () => setIsClosing(true) }> <Styled.ModalDismissButtonIcon/> </Styled.ModalDismissButton>
-                        </Styled.ModalHeader>
+                            <S.ModalDismissButton type="button" onClick={ () => setIsClosing(true) }> <S.ModalDismissButtonIcon/> </S.ModalDismissButton>
+                        </S.ModalHeader>
 
-                        <Styled.ModalBody>
+                        <S.ModalBody>
                             { loadingStatus ? (
                                 <LoadingState/>
                             ) : status?.connected ? (
@@ -104,44 +104,44 @@ export const Connection: React.FC<ConnectionProps> = ({ onPairingSuccess, isOpen
                                         <ConnectionBadge variant={ ConnectionBadgeVariant.DISCONNECTED }/>
                                     ) }
 
-                                    <Styled.ModalInnerBodyContainer>
+                                    <S.ModalInnerBodyContainer>
                                         { !pairingCode ? (
                                             <BaileysForm onCancel={ () => {} } onSubmit={ () => {} } onLoadingChange={ setLoadingStatus } onPairingSuccess={ (pairingCode) => setPairingCode(pairingCode) }/>
                                         ) : (
                                             <PairingCode pairingCode={ pairingCode }/>
                                         ) }
-                                    </Styled.ModalInnerBodyContainer>
+                                    </S.ModalInnerBodyContainer>
                                 </Fragment>
                             ) }
-                        </Styled.ModalBody>
+                        </S.ModalBody>
 
-                        <Styled.ModalFooter>
+                        <S.ModalFooter>
                             <G.ButtonsContainer>
-                                <Styled.ModalPrimaryButton onClick={ () => setIsClosing(true) }>
+                                <S.ModalPrimaryButton onClick={ () => setIsClosing(true) }>
                                     <I.BanIcon/>
 
-                                    <Styled.ModalFooterButtonText> Fechar </Styled.ModalFooterButtonText>
-                                </Styled.ModalPrimaryButton>
+                                    <S.ModalFooterButtonText> Fechar </S.ModalFooterButtonText>
+                                </S.ModalPrimaryButton>
 
                                 { !status?.connected && !pairingCode && (
-                                    <Styled.ModalTertiaryButton type="submit" form="baileys-form" disabled={ loadingStatus }>
+                                    <S.ModalTertiaryButton type="submit" form="baileys-form" disabled={ loadingStatus }>
                                         <I.GlobeCode/>
 
-                                        <Styled.ModalFooterButtonText> Gerar código </Styled.ModalFooterButtonText>
-                                    </Styled.ModalTertiaryButton>
+                                        <S.ModalFooterButtonText> Gerar código </S.ModalFooterButtonText>
+                                    </S.ModalTertiaryButton>
                                 ) }
                                 { status?.connected && (
-                                    <Styled.ModalSecondaryButton onClick={ handleDisconnect }>
+                                    <S.ModalSecondaryButton onClick={ handleDisconnect }>
                                         <I.GlobeOff/>
 
-                                        <Styled.ModalFooterButtonText> Desconectar </Styled.ModalFooterButtonText>
-                                    </Styled.ModalSecondaryButton>
+                                        <S.ModalFooterButtonText> Desconectar </S.ModalFooterButtonText>
+                                    </S.ModalSecondaryButton>
                                 ) }
                             </G.ButtonsContainer>
-                        </Styled.ModalFooter>
-                    </Styled.ModalContainer>
-                </Styled.ModalWrapper>
+                        </S.ModalFooter>
+                    </S.ModalContainer>
+                </S.ModalWrapper>
             ) }
-        </Styled.ModalOverlay>
+        </S.ModalOverlay>
     );
 }

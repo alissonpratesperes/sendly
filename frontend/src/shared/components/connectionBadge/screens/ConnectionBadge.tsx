@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
 import parsePhoneNumberFromString from 'libphonenumber-js';
 
+import * as S from '../styles/connectionBadge.style';
 import * as I from '../../../shared/styles/icon.style';
-import * as Styled from '../styles/connectionBadge.style';
 
 import { ConnectionBadgeProps } from '../interfaces/connectionBadgeProps.interface';
 import { CONNECTION_BADGE_CONFIG } from '../constants/connectionBadgeConfig.constant';
@@ -17,24 +17,24 @@ export const ConnectionBadge: React.FC<ConnectionBadgeProps> = ({ variant, phone
     const Icon = badgeConfig.icon;
 
     return (
-        <Styled.ConnectionBadgeContainer variant={ variant }>
-            <Styled.ConnectionLabel>
+        <S.ConnectionBadgeContainer variant={ variant }>
+            <S.ConnectionLabel>
                 <Icon size={ 30 }/>
 
                 { badgeConfig.label }
-            </Styled.ConnectionLabel>
+            </S.ConnectionLabel>
 
             { phone && (
                 <Fragment>
                     •
 
-                    <Styled.ConnectionPhone>
+                    <S.ConnectionPhone>
                         <I.SmartphoneIcon/>
 
                         { phone ? parsePhoneNumberFromString(`+${ phone }`)?.formatNational() ?? '—' : "" }
-                    </Styled.ConnectionPhone>
+                    </S.ConnectionPhone>
                 </Fragment>
             ) }
-        </Styled.ConnectionBadgeContainer>
+        </S.ConnectionBadgeContainer>
     );
 }

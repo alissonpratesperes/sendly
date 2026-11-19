@@ -2,7 +2,7 @@ import { toast } from 'react-toastify';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import * as Styled from '../styles/header.style';
+import * as S from '../styles/header.style';
 
 import { Connection } from '../../../components/connection/screens/Connection';
 import { HeaderMenuLinksProps } from '../interfaces/headerMenuLinksProps.interface';
@@ -28,43 +28,43 @@ export const Header: React.FC<HeaderMenuLinksProps> = ({ links }) => {
     }
 
     return (
-        <Styled.Container>
-            <Styled.MenuContainer>
+        <S.Container>
+            <S.MenuContainer>
                 { links.map(({ label, path }) => {
                     const Icon = HEADER_MENU_ICONS_CONFIG[path];
 
                     return (
-                        <Styled.NavItem key={ path } to={ path }>
+                        <S.NavItem key={ path } to={ path }>
                             { Icon && <Icon size={ 25 }/> }
                             { label }
-                        </Styled.NavItem>
+                        </S.NavItem>
                     );
                 }) }
                 { !userInformation?.isSystemRoot && (
-                    <Styled.WhatsAppButton type="button" onClick={ () => setIsConnectionOpen(true) }>
-                        <Styled.WhatsAppButtonIcon/>
+                    <S.WhatsAppButton type="button" onClick={ () => setIsConnectionOpen(true) }>
+                        <S.WhatsAppButtonIcon/>
 
                         WhatsApp
-                    </Styled.WhatsAppButton>
+                    </S.WhatsAppButton>
                 ) }
-            </Styled.MenuContainer>
+            </S.MenuContainer>
 
-            <Styled.UserContainer>
-                <Styled.UserInformation>
-                    <Styled.UserName> { userInformation?.name ?? "" } </Styled.UserName>
-                    <Styled.UserCompany> { userInformation?.company?.name ?? "" } </Styled.UserCompany>
-                </Styled.UserInformation>
+            <S.UserContainer>
+                <S.UserInformation>
+                    <S.UserName> { userInformation?.name ?? "" } </S.UserName>
+                    <S.UserCompany> { userInformation?.company?.name ?? "" } </S.UserCompany>
+                </S.UserInformation>
 
-                <Styled.UserActionContainer>
-                    <Styled.LogOutButton type="button" onClick={ () => handleLogout() }>
-                        <Styled.LogOutButtonIcon/>
-                    </Styled.LogOutButton>
-                </Styled.UserActionContainer>
-            </Styled.UserContainer>
+                <S.UserActionContainer>
+                    <S.LogOutButton type="button" onClick={ () => handleLogout() }>
+                        <S.LogOutButtonIcon/>
+                    </S.LogOutButton>
+                </S.UserActionContainer>
+            </S.UserContainer>
 
             { userInformation?.company?.id && (
                 <Connection onPairingSuccess={ false } isOpen={ isConnectionOpen } companyId={ userInformation.company.id } onClose={ () => setIsConnectionOpen(false) }/>
             ) }
-        </Styled.Container>
+        </S.Container>
     );
 }

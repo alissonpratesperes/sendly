@@ -1,7 +1,7 @@
 import { toast } from 'react-toastify';
 import React, { Fragment, useCallback, useEffect, useState } from 'react';
 
-import * as Styled from '../../../shared/components/table/styles/table.style';
+import * as S from '../../../shared/components/table/styles/table.style';
 
 import { TemplateForm } from '../forms/templateForm.form';
 import { List, Delete } from '../services/template.service';
@@ -113,8 +113,8 @@ export const Template = () => {
                         onDelete={ (id: number) => { setSelectedTemplateId(id); setIsDeleteModalOpen(true); } }
                         renderEntityRow={ (template: TemplateResponseDto) => (
                             <Fragment>
-                                <Styled.TableListBodyRowData> <Styled.UniqueKeyDestak> { template.name } </Styled.UniqueKeyDestak> </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> <Styled.TimeStampDestak> { formatDate(template.updatedAt, false) } </Styled.TimeStampDestak> </Styled.TableListBodyRowData>
+                                <S.TableListBodyRowData> <S.UniqueKeyDestak> { template.name } </S.UniqueKeyDestak> </S.TableListBodyRowData>
+                                <S.TableListBodyRowData> <S.TimeStampDestak> { formatDate(template.updatedAt, false) } </S.TimeStampDestak> </S.TableListBodyRowData>
                             </Fragment>
                         ) }
                         canEdit={ true }

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { StatusCodes } from 'http-status-codes';
 import React, { useState, Fragment } from 'react';
 
-import * as Styled from '../styles/login.style';
+import * as S from '../styles/login.style';
 import * as I from '../../../shared/styles/icon.style';
 import * as G from '../../../shared/styles/global.style';
 
@@ -57,7 +57,7 @@ export const Authentication: React.FC = () => {
 
     return (
         <G.FormContainer>
-            <Styled.LoginForm onSubmit={ handleSubmit }>
+            <S.LoginForm onSubmit={ handleSubmit }>
                 <G.FormTitle> Bem-vindo </G.FormTitle>
                 <G.FormSubtitle> Para autenticar no sistema, informe suas credenciais abaixo </G.FormSubtitle>
 
@@ -71,7 +71,7 @@ export const Authentication: React.FC = () => {
 
                     <G.Input type={ showPassword ? "text" : "password" } id="password" placeholder="Digite sua senha" value={ password } onChange={ (inputEvent) => setPassword(inputEvent.target.value) } required/>
 
-                   <Styled.EyeButton type="button" onClick={ togglePasswordVisibility }> { showPassword ? ( <G.EyeIconIcon/> ) : ( <G.EyeOffIconIcon/> ) } </Styled.EyeButton>
+                   <S.EyeButton type="button" onClick={ togglePasswordVisibility }> { showPassword ? ( <G.EyeIconIcon/> ) : ( <G.EyeOffIconIcon/> ) } </S.EyeButton>
                 </G.InputWrapper>
 
                 <G.ButtonsContainer>
@@ -80,20 +80,20 @@ export const Authentication: React.FC = () => {
                     ) }
                     { !isLoading && (
                         <Fragment>
-                            <Styled.ForgotButton to="/authentication/forgot">
+                            <S.ForgotButton to="/authentication/forgot">
                                 <I.LockOpenIcon/>
 
-                                <Styled.ForgotButtonText> Recuperar senha </Styled.ForgotButtonText>
-                            </Styled.ForgotButton>
-                            <Styled.LoginButton type="submit">
+                                <S.ForgotButtonText> Recuperar senha </S.ForgotButtonText>
+                            </S.ForgotButton>
+                            <S.LoginButton type="submit">
                                 <I.PowerIcon/>
 
-                                <Styled.LoginButtonText> Autenticar </Styled.LoginButtonText>
-                            </Styled.LoginButton>
+                                <S.LoginButtonText> Autenticar </S.LoginButtonText>
+                            </S.LoginButton>
                         </Fragment>
                     ) }
                 </G.ButtonsContainer>
-            </Styled.LoginForm>
+            </S.LoginForm>
         </G.FormContainer>
     );
 }

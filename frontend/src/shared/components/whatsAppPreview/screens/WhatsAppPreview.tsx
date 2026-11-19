@@ -1,7 +1,7 @@
 import { createPortal } from 'react-dom';
 import React, { useEffect, useRef, useState } from 'react';
 
-import * as Styled from '../styles/whatsAppPreview.style';
+import * as S from '../styles/whatsAppPreview.style';
 
 import { WhatsAppPreviewProps } from '../interfaces/whatsAppPreviewProps.interface';
 
@@ -92,28 +92,28 @@ export const WhatsAppPreview: React.FC<WhatsAppPreviewProps> = ({ header, body, 
     }, []);
 
     return createPortal(
-        <Styled.WhatsAppPanel>
-            <Styled.WhatsAppPanelAnimation $isClosing={ isClosing } onAnimationEnd={ onAnimationEnd }>
-                <Styled.WhatsAppChatContainer>
-                    <Styled.WhatsAppChatBody onMouseEnter={ handleWallpaperEnter } onMouseMove={ handleWallpaperMove } onMouseLeave={ handleWallpaperLeave }>
+        <S.WhatsAppPanel>
+            <S.WhatsAppPanelAnimation $isClosing={ isClosing } onAnimationEnd={ onAnimationEnd }>
+                <S.WhatsAppChatContainer>
+                    <S.WhatsAppChatBody onMouseEnter={ handleWallpaperEnter } onMouseMove={ handleWallpaperMove } onMouseLeave={ handleWallpaperLeave }>
                         { hasContent && (
-                            <Styled.WhatsAppMessageBubble>
-                                { imageUrl && ( <Styled.WhatsAppMessageImage src={ imageUrl }/> ) }
-                                { header && ( <Styled.WhatsAppMessageHeader> { header } </Styled.WhatsAppMessageHeader> ) }
-                                { body && ( <Styled.WhatsAppMessageBody> { body } </Styled.WhatsAppMessageBody> ) }
-                                { footer && ( <Styled.WhatsAppMessageFooter> { footer } </Styled.WhatsAppMessageFooter> ) }
+                            <S.WhatsAppMessageBubble>
+                                { imageUrl && ( <S.WhatsAppMessageImage src={ imageUrl }/> ) }
+                                { header && ( <S.WhatsAppMessageHeader> { header } </S.WhatsAppMessageHeader> ) }
+                                { body && ( <S.WhatsAppMessageBody> { body } </S.WhatsAppMessageBody> ) }
+                                { footer && ( <S.WhatsAppMessageFooter> { footer } </S.WhatsAppMessageFooter> ) }
 
-                                <Styled.WhatsAppMessageReadFeedback>
-                                    <Styled.WhatsAppMessageReadFeedbackHour> { openedPreviewDate } </Styled.WhatsAppMessageReadFeedbackHour>
+                                <S.WhatsAppMessageReadFeedback>
+                                    <S.WhatsAppMessageReadFeedbackHour> { openedPreviewDate } </S.WhatsAppMessageReadFeedbackHour>
 
-                                    <Styled.WhatsAppMessageReadFeedbackIcon $isRead={ isRead }/>
-                                </Styled.WhatsAppMessageReadFeedback>
-                            </Styled.WhatsAppMessageBubble>
+                                    <S.WhatsAppMessageReadFeedbackIcon $isRead={ isRead }/>
+                                </S.WhatsAppMessageReadFeedback>
+                            </S.WhatsAppMessageBubble>
                         ) }
-                    </Styled.WhatsAppChatBody>
-                </Styled.WhatsAppChatContainer>
-            </Styled.WhatsAppPanelAnimation>
-        </Styled.WhatsAppPanel>,
+                    </S.WhatsAppChatBody>
+                </S.WhatsAppChatContainer>
+            </S.WhatsAppPanelAnimation>
+        </S.WhatsAppPanel>,
 
             document.body
     );

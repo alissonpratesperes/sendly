@@ -2,7 +2,7 @@ import * as z from 'zod';
 import { toast } from 'react-toastify';
 import React, { useState, useEffect } from 'react';
 
-import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
+import * as S from '../../../shared/components/drawer/styles/drawer.style';
 
 import { Pair } from '../services/baileys.service';
 import { Toast } from '../../../shared/components/toast/screens/Toast';
@@ -93,12 +93,12 @@ export const BaileysForm: React.FC<FormProps<BaileysFormData>> = ({ initialValue
     }, [ initialValues, ]);
 
     return (
-        <Styled.Form id="baileys-form" onSubmit={ handleSubmit }>
-            <Styled.FieldWrapper>
-                <Styled.Label htmlFor="phone"> Telefone </Styled.Label>
+        <S.Form id="baileys-form" onSubmit={ handleSubmit }>
+            <S.FieldWrapper>
+                <S.Label htmlFor="phone"> Telefone </S.Label>
 
-                <Styled.Input id="phone" name="phone" placeholder="Digite o número do WhatsApp (com DDD)" value={ formData.phone } onChange={ handleChange }/>
-            </Styled.FieldWrapper>
-        </Styled.Form>
+                <S.Input id="phone" name="phone" placeholder="Digite o número do WhatsApp (com DDD)" value={ formData.phone } onChange={ handleChange }/>
+            </S.FieldWrapper>
+        </S.Form>
     );
 }

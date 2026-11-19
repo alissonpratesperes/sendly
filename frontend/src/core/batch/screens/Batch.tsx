@@ -1,7 +1,7 @@
 import { toast } from 'react-toastify';
 import React, { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import * as Styled from '../../../shared/components/table/styles/table.style';
+import * as S from '../../../shared/components/table/styles/table.style';
 
 import { List } from '../services/batch.service';
 import { BatchForm } from '../forms/batchForm.form';
@@ -175,8 +175,8 @@ export const Batch = () => {
                 <LoadingState/>
             ) }
             { !isLoading && (
-                <Styled.WhenInMultiSearchContainer>
-                    <Styled.WhenInAnotherScreenWrapper>
+                <S.WhenInMultiSearchContainer>
+                    <S.WhenInAnotherScreenWrapper>
                         <Dropdown
                             inputId="statusId"
                             isInBatchSendScreen={ true }
@@ -187,8 +187,8 @@ export const Batch = () => {
                             value={ optionsForBatchStatus.find((option) => option.value === selectedBatchStatus) ?? null }
                             onChange={ (selectedOption) => { setSelectedBatchStatus(selectedOption?.value ?? null); setPage(1); } }
                         />
-                    </Styled.WhenInAnotherScreenWrapper>
-                    <Styled.WhenInAnotherScreenWrapper>
+                    </S.WhenInAnotherScreenWrapper>
+                    <S.WhenInAnotherScreenWrapper>
                         <Dropdown
                             inputId="templateId"
                             isInBatchSendScreen={ true }
@@ -200,10 +200,10 @@ export const Batch = () => {
                             value={ selectedTemplateOption }
                             onChange={ (selectedOption) => { setSelectedTemplateId(selectedOption?.value ?? null); setPage(1); } }
                         />
-                    </Styled.WhenInAnotherScreenWrapper>
+                    </S.WhenInAnotherScreenWrapper>
 
                     <Finder showAddButton={ true } placeholder="Pesquise um lote por nome" buttonText="Cadastrar" search={ search } onAdd={ handleCreate } onSearchChange={ (value) => { setSearch(value); setPage(1); } }/>
-                </Styled.WhenInMultiSearchContainer>
+                </S.WhenInMultiSearchContainer>
             ) }
             { !isLoading && batches.length > 0 && (
                 <Fragment>
@@ -214,10 +214,10 @@ export const Batch = () => {
                         getEntityId={ (batch: BatchResponseDto) => batch.id }
                         renderEntityRow={ (batch: BatchResponseDto) => (
                             <Fragment>
-                                <Styled.TableListBodyRowData> <Styled.TableListMultiContent> <Styled.TableListColorFragment $color={ listsNames[batch.listId]?.color ?? "" }/> <Styled.ContactNameSpan> <Styled.UniqueKeyDestak> { batch.name } </Styled.UniqueKeyDestak> </Styled.ContactNameSpan> </Styled.TableListMultiContent> </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> { templatesNames[batch.templateId]?.name ?? "" } </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> <Styled.TimeStampsContainer> <Styled.TimeStampsRowContent> <b> Início: </b> <Styled.TimeStampDestak> { batch.startedAt ? formatDate(batch.startedAt, false) : "-" } </Styled.TimeStampDestak> </Styled.TimeStampsRowContent> { batch.startedAt && !batch.endedAt ? <Styled.TimeStampsRowContent> <LoadingState isInBatchFlowScreens={ true }/> </Styled.TimeStampsRowContent> : <Styled.TimeStampsRowContent> <b> Fim: </b> <Styled.TimeStampDestak> { batch.endedAt ? formatDate(batch.endedAt, false) : "-" } </Styled.TimeStampDestak> </Styled.TimeStampsRowContent> } </Styled.TimeStampsContainer> </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> <Styled.TimeStampDestak $statusColor={ batch.status }> { formatDate(batch.updatedAt, false) } </Styled.TimeStampDestak> </Styled.TableListBodyRowData>
+                                <S.TableListBodyRowData> <S.TableListMultiContent> <S.TableListColorFragment $color={ listsNames[batch.listId]?.color ?? "" }/> <S.ContactNameSpan> <S.UniqueKeyDestak> { batch.name } </S.UniqueKeyDestak> </S.ContactNameSpan> </S.TableListMultiContent> </S.TableListBodyRowData>
+                                <S.TableListBodyRowData> { templatesNames[batch.templateId]?.name ?? "" } </S.TableListBodyRowData>
+                                <S.TableListBodyRowData> <S.TimeStampsContainer> <S.TimeStampsRowContent> <b> Início: </b> <S.TimeStampDestak> { batch.startedAt ? formatDate(batch.startedAt, false) : "-" } </S.TimeStampDestak> </S.TimeStampsRowContent> { batch.startedAt && !batch.endedAt ? <S.TimeStampsRowContent> <LoadingState isInBatchFlowScreens={ true }/> </S.TimeStampsRowContent> : <S.TimeStampsRowContent> <b> Fim: </b> <S.TimeStampDestak> { batch.endedAt ? formatDate(batch.endedAt, false) : "-" } </S.TimeStampDestak> </S.TimeStampsRowContent> } </S.TimeStampsContainer> </S.TableListBodyRowData>
+                                <S.TableListBodyRowData> <S.TimeStampDestak $statusColor={ batch.status }> { formatDate(batch.updatedAt, false) } </S.TimeStampDestak> </S.TableListBodyRowData>
                             </Fragment>
                         ) }
                         canEdit={ false }

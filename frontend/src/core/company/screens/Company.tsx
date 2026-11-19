@@ -1,7 +1,7 @@
 import { toast } from 'react-toastify';
 import React, { Fragment, useCallback, useEffect, useState } from 'react';
 
-import * as Styled from '../../../shared/components/table/styles/table.style';
+import * as S from '../../../shared/components/table/styles/table.style';
 
 import { CompanyForm } from '../forms/companyForm.form';
 import { Rank, List, Delete } from '../services/company.service';
@@ -135,10 +135,10 @@ export const Company = () => {
                         onDelete={ userInformation?.isSystemRoot ? (id: number) => { setSelectedCompanyId(id); setIsDeleteModalOpen(true); } : undefined }
                         renderEntityRow={ (company: CompanyResponseDto) => (
                             <Fragment>
-                                <Styled.TableListBodyRowData> { company.name } </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> <Styled.UniqueKeyDestak> { formatCompanyDocument(company.document) } </Styled.UniqueKeyDestak> </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> { company.description } </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> <Styled.TimeStampDestak> { formatDate(company.updatedAt, false) } </Styled.TimeStampDestak> </Styled.TableListBodyRowData>
+                                <S.TableListBodyRowData> { company.name } </S.TableListBodyRowData>
+                                <S.TableListBodyRowData> <S.UniqueKeyDestak> { formatCompanyDocument(company.document) } </S.UniqueKeyDestak> </S.TableListBodyRowData>
+                                <S.TableListBodyRowData> { company.description } </S.TableListBodyRowData>
+                                <S.TableListBodyRowData> <S.TimeStampDestak> { formatDate(company.updatedAt, false) } </S.TimeStampDestak> </S.TableListBodyRowData>
                             </Fragment>
                         ) }
                         canEdit={ true }

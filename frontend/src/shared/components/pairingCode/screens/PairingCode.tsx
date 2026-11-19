@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
 
-import * as Styled from '../styles/pairingCode.style';
+import * as S from '../styles/pairingCode.style';
+import * as M from '../../../styles/modal.style';
 import * as I from '../../../../shared/styles/icon.style';
-import * as ModalStyled from '../../../styles/modal.style';
 
 import { PairingCodeProps } from '../interfaces/pairingCodeProps.interface';
 
@@ -11,23 +11,23 @@ export const PairingCode: React.FC<PairingCodeProps> = ({ pairingCode }) => {
 
     return (
         <Fragment>
-            <Styled.PairingCodeTextContainer>
+            <S.PairingCodeTextContainer>
                 <I.KeyRoundIcon/>
 
-                <ModalStyled.ModalBoldText>
+                <M.ModalBoldText>
                     Insira o código abaixo no seu aplicativo do WhatsApp
-                </ModalStyled.ModalBoldText>
-            </Styled.PairingCodeTextContainer>
+                </M.ModalBoldText>
+            </S.PairingCodeTextContainer>
 
-            <Styled.PairingCodeDigitsContainer>
+            <S.PairingCodeDigitsContainer>
                 { formattedPairingCode.map((char, index) => (
                     <Fragment key={ index }>
-                        <Styled.PairingCodeCharactersCards> { char } </Styled.PairingCodeCharactersCards>
+                        <S.PairingCodeCharactersCards> { char } </S.PairingCodeCharactersCards>
 
-                        { index === 3 && (<Styled.PairingCodeCharactersSeparator> - </Styled.PairingCodeCharactersSeparator>) }
+                        { index === 3 && (<S.PairingCodeCharactersSeparator> - </S.PairingCodeCharactersSeparator>) }
                     </Fragment>
                 )) }
-            </Styled.PairingCodeDigitsContainer>
+            </S.PairingCodeDigitsContainer>
         </Fragment>
     );
 }

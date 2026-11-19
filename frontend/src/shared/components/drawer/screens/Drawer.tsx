@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from 'react';
 
-import * as Styled from '../styles/drawer.style';
+import * as S from '../styles/drawer.style';
 import * as G from '../../../styles/global.style';
 import * as I from '../../../shared/styles/icon.style';
 
@@ -12,40 +12,40 @@ export const Drawer: React.FC<DrawerProps> = ({ isOpen, isSubmitting = false, fo
 
     return (
         <Fragment>
-            <Styled.DrawerOverlay $open={ isOpen && !isClosing }/>
+            <S.DrawerOverlay $open={ isOpen && !isClosing }/>
 
             { isOpen && (
-                <Styled.Drawer $open={ !isClosing } onAnimationEnd={ (event) => { if (event.currentTarget === event.target && isClosing) { onClose(); setIsClosing(false); } } }>
-                    <Styled.Header>
-                        <Styled.Title> { title } </Styled.Title>
+                <S.Drawer $open={ !isClosing } onAnimationEnd={ (event) => { if (event.currentTarget === event.target && isClosing) { onClose(); setIsClosing(false); } } }>
+                    <S.Header>
+                        <S.Title> { title } </S.Title>
 
-                        <Styled.CloseButton type="button" onClick={ () => setIsClosing(true) }> <Styled.CloseButtonIcon/> </Styled.CloseButton>
-                    </Styled.Header>
+                        <S.CloseButton type="button" onClick={ () => setIsClosing(true) }> <S.CloseButtonIcon/> </S.CloseButton>
+                    </S.Header>
 
-                    <Styled.Content> { children } </Styled.Content>
+                    <S.Content> { children } </S.Content>
 
                     { !hideFooter && (
-                        <Styled.Footer>
+                        <S.Footer>
                             { isSubmitting && (
                                 <LoadingState/>
                             ) }
                             { !isSubmitting && (
                                 <G.ButtonsContainer>
-                                    <Styled.FooterButton type="button" $variant="secondary" className="secondary" onClick={ () => setIsClosing(true) }>
+                                    <S.FooterButton type="button" $variant="secondary" className="secondary" onClick={ () => setIsClosing(true) }>
                                         <I.BanIcon/>
 
-                                        <Styled.FooterButtonText> Cancelar </Styled.FooterButtonText>
-                                    </Styled.FooterButton>
-                                    <Styled.FooterButton type="submit" $variant="primary" className="primary" form={ formId }>
+                                        <S.FooterButtonText> Cancelar </S.FooterButtonText>
+                                    </S.FooterButton>
+                                    <S.FooterButton type="submit" $variant="primary" className="primary" form={ formId }>
                                         { mode === "create" ? <I.SaveIcon/> : mode === "edit"? <I.SquarePenIcon/> : <I.HardDriveUploadIcon/> }
 
-                                        <Styled.FooterButtonText> { mode === "create" ? "Salvar" : mode === "edit" ? "Atualizar" : "Importar" } </Styled.FooterButtonText>
-                                    </Styled.FooterButton>
+                                        <S.FooterButtonText> { mode === "create" ? "Salvar" : mode === "edit" ? "Atualizar" : "Importar" } </S.FooterButtonText>
+                                    </S.FooterButton>
                                 </G.ButtonsContainer>
                             ) }
-                        </Styled.Footer>
+                        </S.Footer>
                     ) }
-                </Styled.Drawer>
+                </S.Drawer>
             ) }
         </Fragment>
     );

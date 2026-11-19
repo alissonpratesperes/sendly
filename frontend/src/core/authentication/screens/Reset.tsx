@@ -4,7 +4,7 @@ import { StatusCodes } from 'http-status-codes';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import * as Styled from '../styles/reset.style';
+import * as S from '../styles/reset.style';
 import * as I from '../../../shared/styles/icon.style';
 import * as G from '../../../shared/styles/global.style';
 
@@ -71,7 +71,7 @@ export const Reset: React.FC = () => {
 
     return (
         <G.FormContainer>
-            <Styled.ResetForm onSubmit={ handleSubmit }>
+            <S.ResetForm onSubmit={ handleSubmit }>
                 <G.FormTitle> Atualizar senha </G.FormTitle>
                 <G.FormSubtitle> Para configurar sua nova senha, utilize os dois campos abaixo </G.FormSubtitle>
 
@@ -80,27 +80,27 @@ export const Reset: React.FC = () => {
 
                     <G.Input type={ showPassword ? "text" : "password" } id="newPassword" placeholder="Digite sua nova senha" value={ newPassword } onChange={ (inputEvent) => setNewPassword(inputEvent.target.value) } required/>
 
-                    <Styled.EyeButton type="button" onClick={ () => setShowPassword(!showPassword) }> { showPassword ? ( <Styled.EyeButtonIconOpened/> ) : ( <Styled.EyeButtonIconClosed/> ) } </Styled.EyeButton>
+                    <S.EyeButton type="button" onClick={ () => setShowPassword(!showPassword) }> { showPassword ? ( <S.EyeButtonIconOpened/> ) : ( <S.EyeButtonIconClosed/> ) } </S.EyeButton>
                 </G.InputWrapper>
                 <G.InputWrapper>
                     <G.Label htmlFor="confirmPassword"> CONFIRMAR NOVA SENHA </G.Label>
 
                     <G.Input type={ showConfirmPassword ? "text" : "password" } id="confirmPassword" placeholder="Confirme sua nova senha" value={ confirmPassword } onChange={ (inputEvent) => setConfirmPassword(inputEvent.target.value) } required/>
 
-                    <Styled.EyeButton type="button" onClick={ () => setShowConfirmPassword(!showConfirmPassword) }> { showConfirmPassword ? ( <Styled.EyeButtonIconOpened/> ) : ( <Styled.EyeButtonIconClosed/> ) } </Styled.EyeButton>
+                    <S.EyeButton type="button" onClick={ () => setShowConfirmPassword(!showConfirmPassword) }> { showConfirmPassword ? ( <S.EyeButtonIconOpened/> ) : ( <S.EyeButtonIconClosed/> ) } </S.EyeButton>
                 </G.InputWrapper>
 
                 { isLoading && (
                     <LoadingState/>
                 ) }
                 { !isLoading && (
-                    <Styled.PasswordButton type="submit">
+                    <S.PasswordButton type="submit">
                         <I.UserLockIcon/>
 
-                        <Styled.PasswordButtonText> Criar senha </Styled.PasswordButtonText>
-                    </Styled.PasswordButton>
+                        <S.PasswordButtonText> Criar senha </S.PasswordButtonText>
+                    </S.PasswordButton>
                 ) }
-            </Styled.ResetForm>
+            </S.ResetForm>
         </G.FormContainer>
     )
 }

@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import React, { useState, useEffect } from 'react';
 
 import * as G from '../../../shared/styles/global.style';
-import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
+import * as S from '../../../shared/components/drawer/styles/drawer.style';
 
 import { Create, Update } from '../services/user.service';
 import { List } from '../../company/services/company.service';
@@ -121,8 +121,8 @@ export const UserForm: React.FC<FormProps<UserFormData>> = ({ initialValues, onS
     }, [ initialValues, ]);
 
     return (
-        <Styled.Form id="user-form" onSubmit={ handleSubmit }>
-            <Styled.FieldWrapper>
+        <S.Form id="user-form" onSubmit={ handleSubmit }>
+            <S.FieldWrapper>
                 <Dropdown
                     inputId="companyId"
                     isLoading={ isCompaniesLoading }
@@ -131,17 +131,17 @@ export const UserForm: React.FC<FormProps<UserFormData>> = ({ initialValues, onS
                     value={ optionsForCompanies.find((option) => option.value === formData.companyId) ?? null }
                     onChange={ (selectedOption) => setFormData((previous) => ({ ...previous, companyId: selectedOption?.value ?? 0 })) }
                 />
-            </Styled.FieldWrapper>
-            <Styled.FieldWrapper>
+            </S.FieldWrapper>
+            <S.FieldWrapper>
                 <G.Label htmlFor="name"> Nome </G.Label>
 
-                <Styled.Input id="name" name="name" placeholder="Digite o nome do usuário" value={ formData.name } onChange={ handleChange }/>
-            </Styled.FieldWrapper>
-            <Styled.FieldWrapper>
+                <S.Input id="name" name="name" placeholder="Digite o nome do usuário" value={ formData.name } onChange={ handleChange }/>
+            </S.FieldWrapper>
+            <S.FieldWrapper>
                 <G.Label htmlFor="email"> Email </G.Label>
 
-                <Styled.Input id="email" name="email" placeholder="Digite o e-mail do usuário" value={ formData.email } onChange={ handleChange }/>
-            </Styled.FieldWrapper>
-        </Styled.Form>
+                <S.Input id="email" name="email" placeholder="Digite o e-mail do usuário" value={ formData.email } onChange={ handleChange }/>
+            </S.FieldWrapper>
+        </S.Form>
     );
 }

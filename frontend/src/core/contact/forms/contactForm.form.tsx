@@ -4,8 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { AsYouType, CountryCode, getCountryCallingCode, parsePhoneNumberFromString } from 'libphonenumber-js';
 
 import * as G from '../../../shared/styles/global.style';
-import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
-import * as ContactFormStyled from '../../../shared/components/dropdown/styles/contactFormDropdown.style';
+import * as S from '../../../shared/components/drawer/styles/drawer.style';
+import * as F from '../../../shared/components/dropdown/styles/contactFormDropdown.style';
 
 import { List } from '../../list/services/list.service';
 import { Create, Update } from '../services/contact.service';
@@ -164,8 +164,8 @@ export const ContactForm: React.FC<FormProps<ContactFormData>> = ({ initialValue
     }, [ initialValues, ]);
 
     return (
-        <Styled.Form id="contact-form" onSubmit={ handleSubmit }>
-            <Styled.FieldWrapper>
+        <S.Form id="contact-form" onSubmit={ handleSubmit }>
+            <S.FieldWrapper>
                 <Dropdown
                     inputId="listId"
                     isLoading={ isListsLoading }
@@ -175,25 +175,25 @@ export const ContactForm: React.FC<FormProps<ContactFormData>> = ({ initialValue
                     onChange={ (selectedOption) => setFormData((previous) => ({ ...previous, listId: selectedOption?.value ?? 0 })) }
 
                     formatOptionLabel={ (option) => (
-                        <ContactFormStyled.OptionContent>
-                            <ContactFormStyled.ListColor $color={ option.color }/>
+                        <F.OptionContent>
+                            <F.ListColor $color={ option.color }/>
 
                             <span> { option.label } </span>
-                        </ContactFormStyled.OptionContent>
+                        </F.OptionContent>
                     ) }
                 />
-            </Styled.FieldWrapper>
-            <Styled.FieldWrapper>
+            </S.FieldWrapper>
+            <S.FieldWrapper>
                 <G.Label htmlFor="name"> Nome </G.Label>
 
-                <Styled.Input id="name" name="name" placeholder="Digite o nome do contato" value={ formData.name } onChange={ handleChange }/>
-            </Styled.FieldWrapper>
-            <Styled.FieldWrapper>
+                <S.Input id="name" name="name" placeholder="Digite o nome do contato" value={ formData.name } onChange={ handleChange }/>
+            </S.FieldWrapper>
+            <S.FieldWrapper>
                 <G.Label htmlFor="phone"> Telefone </G.Label>
 
-                <Styled.Input id="phone" name="phone" placeholder="Digite o telefone do contato" value={ formData.phone } onChange={ handleChange }/>
-            </Styled.FieldWrapper>
-            <Styled.FieldWrapper>
+                <S.Input id="phone" name="phone" placeholder="Digite o telefone do contato" value={ formData.phone } onChange={ handleChange }/>
+            </S.FieldWrapper>
+            <S.FieldWrapper>
                 <Dropdown
                     inputId="country"
                     options={ optionsForCountries }
@@ -202,14 +202,14 @@ export const ContactForm: React.FC<FormProps<ContactFormData>> = ({ initialValue
                     onChange={ (selectedOption) => setFormData((previous) => ({ ...previous, country: selectedOption?.value ?? "" })) }
 
                     formatOptionLabel={ (option) => (
-                        <ContactFormStyled.OptionContent>
-                            <ContactFormStyled.CountryFlag> { option.flag } </ContactFormStyled.CountryFlag>
+                        <F.OptionContent>
+                            <F.CountryFlag> { option.flag } </F.CountryFlag>
 
                             <span> { option.label } </span>
-                        </ContactFormStyled.OptionContent>
+                        </F.OptionContent>
                     ) }
                 />
-            </Styled.FieldWrapper>
-        </Styled.Form>
+            </S.FieldWrapper>
+        </S.Form>
     );
 }

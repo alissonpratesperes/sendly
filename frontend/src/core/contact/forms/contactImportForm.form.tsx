@@ -1,8 +1,8 @@
 import { toast } from 'react-toastify';
 import React, { Fragment, useEffect, useState } from 'react';
 
-import * as Styled from '../../../shared/components/drawer/styles/drawer.style';
-import * as ContactFormStyled from '../../../shared/components/dropdown/styles/contactFormDropdown.style';
+import * as S from '../../../shared/components/drawer/styles/drawer.style';
+import * as F from '../../../shared/components/dropdown/styles/contactFormDropdown.style';
 
 import { List } from '../../list/services/list.service';
 import { ImportContactsCsv } from '../services/contact.service';
@@ -110,8 +110,8 @@ export const ContactImportForm: React.FC<ImportFormProps> = ({ onCancel, onSubmi
     return (
         <Fragment>
             { !importResult ? (
-                <Styled.Form id="contact-import-form" onSubmit={ handleSubmit }>
-                    <Styled.FieldWrapper>
+                <S.Form id="contact-import-form" onSubmit={ handleSubmit }>
+                    <S.FieldWrapper>
                         <Dropdown
                             inputId="listId"
                             isLoading={ isListsLoading }
@@ -121,43 +121,43 @@ export const ContactImportForm: React.FC<ImportFormProps> = ({ onCancel, onSubmi
                             onChange={ (selectedOption) => setListId(selectedOption?.value ?? 0) }
 
                             formatOptionLabel={ (option) => (
-                                <ContactFormStyled.OptionContent>
-                                    <ContactFormStyled.ListColor $color={ option.color }/>
+                                <F.OptionContent>
+                                    <F.ListColor $color={ option.color }/>
 
                                     <span> { option.label } </span>
-                                </ContactFormStyled.OptionContent>
+                                </F.OptionContent>
                             ) }
                         />
-                    </Styled.FieldWrapper>
+                    </S.FieldWrapper>
 
                     <Uploader isCsv={ true } value={ csvFile } onChange={ (file) => setCsvFile(file as File | undefined) } blockRemove={ false }/>
-                </Styled.Form>
+                </S.Form>
             ) : (
-                <Styled.ContactImportResultContainer>
-                    <Styled.ImportResultTitle> <Styled.ImportResultTitleIcon/> Resultado da importação </Styled.ImportResultTitle>
+                <S.ContactImportResultContainer>
+                    <S.ImportResultTitle> <S.ImportResultTitleIcon/> Resultado da importação </S.ImportResultTitle>
 
-                    <Styled.ImportResultInformations>
-                        <Styled.ImportResultSucceededTitle> <Styled.ImportResultTitleCheckIcon/> { importResult.valid } </Styled.ImportResultSucceededTitle>
-                        <Styled.ImportResultUnsucceededTitle> <Styled.ImportResultTitleAlertIcon/> { importResult.invalid } </Styled.ImportResultUnsucceededTitle>
-                    </Styled.ImportResultInformations>
+                    <S.ImportResultInformations>
+                        <S.ImportResultSucceededTitle> <S.ImportResultTitleCheckIcon/> { importResult.valid } </S.ImportResultSucceededTitle>
+                        <S.ImportResultUnsucceededTitle> <S.ImportResultTitleAlertIcon/> { importResult.invalid } </S.ImportResultUnsucceededTitle>
+                    </S.ImportResultInformations>
 
                     { importResult.errors.length > 0 && (
-                        <Styled.ImportResultErrorList>
-                            <Styled.ImportResultErrorListTitle> <Styled.ImportResultErrorListIcon/> Log do processamento </Styled.ImportResultErrorListTitle>
+                        <S.ImportResultErrorList>
+                            <S.ImportResultErrorListTitle> <S.ImportResultErrorListIcon/> Log do processamento </S.ImportResultErrorListTitle>
 
                             { importResult.errors.map((error, index) => (
-                                <Styled.ImportResultErrorListItem key={ index }>
-                                    <Styled.ImportResultLeftContainer> <Styled.ImportResultLeftContainerIcon/> </Styled.ImportResultLeftContainer>
+                                <S.ImportResultErrorListItem key={ index }>
+                                    <S.ImportResultLeftContainer> <S.ImportResultLeftContainerIcon/> </S.ImportResultLeftContainer>
 
-                                    <Styled.ImportResultRightContainer>
-                                        <Styled.ImportResultErrorName> { error.name } </Styled.ImportResultErrorName>
-                                        <Styled.ImportResultErrorMessage> { importErrorMessages[error.error] ?? "Erro desconhecido" } </Styled.ImportResultErrorMessage>
-                                    </Styled.ImportResultRightContainer>
-                                </Styled.ImportResultErrorListItem>
+                                    <S.ImportResultRightContainer>
+                                        <S.ImportResultErrorName> { error.name } </S.ImportResultErrorName>
+                                        <S.ImportResultErrorMessage> { importErrorMessages[error.error] ?? "Erro desconhecido" } </S.ImportResultErrorMessage>
+                                    </S.ImportResultRightContainer>
+                                </S.ImportResultErrorListItem>
                             )) }
-                        </Styled.ImportResultErrorList>
+                        </S.ImportResultErrorList>
                     ) }
-                </Styled.ContactImportResultContainer>
+                </S.ContactImportResultContainer>
             )}
         </Fragment>
     );

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
+import * as S from '../../../styles/modal.style';
 import * as G from '../../../styles/global.style';
-import * as Styled from '../../../styles/modal.style';
 import * as I from '../../../../shared/styles/icon.style';
 
 import { ModalProps } from '../interfaces/modalProps.interface';
@@ -10,37 +10,37 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, entityName, onClose, onCon
     const [isClosing, setIsClosing] = useState(false);
 
     return (
-        <Styled.ModalOverlay $open={ isOpen && !isClosing }>
+        <S.ModalOverlay $open={ isOpen && !isClosing }>
             { isOpen && (
-                <Styled.ModalWrapper $open={ !isClosing } onClick={ (event) => event.stopPropagation() }  onAnimationEnd={ (event) => { if (event.currentTarget === event.target && isClosing) { onClose(); setIsClosing(false); } } }>
-                    <Styled.ModalContainer>
-                        <Styled.ModalHeader>
-                            <Styled.ModalTitle> Exclusão de cadastro </Styled.ModalTitle>
+                <S.ModalWrapper $open={ !isClosing } onClick={ (event) => event.stopPropagation() }  onAnimationEnd={ (event) => { if (event.currentTarget === event.target && isClosing) { onClose(); setIsClosing(false); } } }>
+                    <S.ModalContainer>
+                        <S.ModalHeader>
+                            <S.ModalTitle> Exclusão de cadastro </S.ModalTitle>
 
-                            <Styled.ModalDismissButton type="button" onClick={ () => setIsClosing(true) }> <I.XIcon/> </Styled.ModalDismissButton>
-                        </Styled.ModalHeader>
+                            <S.ModalDismissButton type="button" onClick={ () => setIsClosing(true) }> <I.XIcon/> </S.ModalDismissButton>
+                        </S.ModalHeader>
 
-                        <Styled.ModalBody>
-                            <Styled.ModalText> Tem certeza que deseja excluir <Styled.ModalBoldText> { entityName } </Styled.ModalBoldText> ? </Styled.ModalText>
-                        </Styled.ModalBody>
+                        <S.ModalBody>
+                            <S.ModalText> Tem certeza que deseja excluir <S.ModalBoldText> { entityName } </S.ModalBoldText> ? </S.ModalText>
+                        </S.ModalBody>
 
-                        <Styled.ModalFooter>
+                        <S.ModalFooter>
                             <G.ButtonsContainer>
-                                <Styled.ModalPrimaryButton onClick={ () => setIsClosing(true) }>
+                                <S.ModalPrimaryButton onClick={ () => setIsClosing(true) }>
                                     <I.BanIcon/>
 
-                                    <Styled.ModalFooterButtonText> Cancelar </Styled.ModalFooterButtonText>
-                                </Styled.ModalPrimaryButton>
-                                <Styled.ModalSecondaryButton onClick={ onConfirm }>
+                                    <S.ModalFooterButtonText> Cancelar </S.ModalFooterButtonText>
+                                </S.ModalPrimaryButton>
+                                <S.ModalSecondaryButton onClick={ onConfirm }>
                                     <I.TrashIcon/>
 
-                                    <Styled.ModalFooterButtonText> Excluir </Styled.ModalFooterButtonText>
-                                </Styled.ModalSecondaryButton>
+                                    <S.ModalFooterButtonText> Excluir </S.ModalFooterButtonText>
+                                </S.ModalSecondaryButton>
                             </G.ButtonsContainer>
-                        </Styled.ModalFooter>
-                    </Styled.ModalContainer>
-                </Styled.ModalWrapper>
+                        </S.ModalFooter>
+                    </S.ModalContainer>
+                </S.ModalWrapper>
             ) }
-        </Styled.ModalOverlay>
+        </S.ModalOverlay>
     );
 }

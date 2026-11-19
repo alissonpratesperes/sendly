@@ -2,7 +2,7 @@ import { toast } from 'react-toastify';
 import { FileRejection, useDropzone } from 'react-dropzone';
 import React, { useCallback, useEffect, useMemo } from 'react';
 
-import * as Styled from '../styles/uploader.style';
+import * as S from '../styles/uploader.style';
 import * as I from '../../../../shared/styles/icon.style';
 
 import { UploaderItemType } from '../types/uploaderItemType.type';
@@ -162,45 +162,45 @@ export const Uploader: React.FC<UploaderProps> = ({ value, existingImage, blockR
     }, [ value, filePreview, isCsv, ]);
 
     return (
-        <Styled.UploaderWrapper>
+        <S.UploaderWrapper>
             { shouldShowDropzone && (!blockRemove || hasFile) && (
-                <Styled.DropzoneArea { ...getRootProps() } $isDragActive={ isDragActive } $hasFile={ !!value || !!existingImage } $backgroundImage={ filePreview }>
+                <S.DropzoneArea { ...getRootProps() } $isDragActive={ isDragActive } $hasFile={ !!value || !!existingImage } $backgroundImage={ filePreview }>
                     <input { ...getInputProps() }/>
 
                     { !hasFile && (
-                        <Styled.DropzoneTextContainer>
-                            <Styled.DropzoneUploadArea> <I.UploadIcon/> </Styled.DropzoneUploadArea>
+                        <S.DropzoneTextContainer>
+                            <S.DropzoneUploadArea> <I.UploadIcon/> </S.DropzoneUploadArea>
 
-                            <Styled.DropzoneStrongContent> { isDragActive ? `Solte ${ isCsv ? "o arquivo CSV" : "a imagem" } aqui` : `Arraste e solte ${ isCsv ? "o arquivo CSV" : "a imagem" }` } </Styled.DropzoneStrongContent>
+                            <S.DropzoneStrongContent> { isDragActive ? `Solte ${ isCsv ? "o arquivo CSV" : "a imagem" } aqui` : `Arraste e solte ${ isCsv ? "o arquivo CSV" : "a imagem" }` } </S.DropzoneStrongContent>
 
-                            <Styled.DropzoneLabel> ou selecione o arquivo </Styled.DropzoneLabel>
+                            <S.DropzoneLabel> ou selecione o arquivo </S.DropzoneLabel>
 
-                            <Styled.DropzoneActiveText> { isDragActive ? `Somente ${ isCsv ? "um arquivo CSV é permitido" : "uma imagem é permitida" }` : `Tipos aceitos: ${ getAcceptedText() }` } </Styled.DropzoneActiveText>
-                        </Styled.DropzoneTextContainer>
+                            <S.DropzoneActiveText> { isDragActive ? `Somente ${ isCsv ? "um arquivo CSV é permitido" : "uma imagem é permitida" }` : `Tipos aceitos: ${ getAcceptedText() }` } </S.DropzoneActiveText>
+                        </S.DropzoneTextContainer>
                     ) }
-                </Styled.DropzoneArea>
+                </S.DropzoneArea>
             ) }
             { hasFile && (
-                <Styled.DraggedFilesList>
-                    <Styled.DraggedFilesListItem>
-                        <Styled.ListItemContainer>
-                            <Styled.DraggedFileArea> { isCsv ? <I.FileUpIcon/> : <I.ImageUpIcon/> } </Styled.DraggedFileArea>
+                <S.DraggedFilesList>
+                    <S.DraggedFilesListItem>
+                        <S.ListItemContainer>
+                            <S.DraggedFileArea> { isCsv ? <I.FileUpIcon/> : <I.ImageUpIcon/> } </S.DraggedFileArea>
 
-                            <Styled.DraggedFileData>
-                                <Styled.DraggedFileName> { getFileName(value) } </Styled.DraggedFileName>
+                            <S.DraggedFileData>
+                                <S.DraggedFileName> { getFileName(value) } </S.DraggedFileName>
 
-                                { value && ( <Styled.DraggedFileSize> { getFileSize(value) } </Styled.DraggedFileSize> ) }
-                            </Styled.DraggedFileData>
-                        </Styled.ListItemContainer>
+                                { value && ( <S.DraggedFileSize> { getFileSize(value) } </S.DraggedFileSize> ) }
+                            </S.DraggedFileData>
+                        </S.ListItemContainer>
 
-                        <Styled.DraggedFilesActionsContainer>
-                            <Styled.DraggedFilesActionButton type="button" onClick={ downloadFile }> { isCsv ? <I.FileDownIcon/> : <I.ImageDownIcon/> } </Styled.DraggedFilesActionButton>
+                        <S.DraggedFilesActionsContainer>
+                            <S.DraggedFilesActionButton type="button" onClick={ downloadFile }> { isCsv ? <I.FileDownIcon/> : <I.ImageDownIcon/> } </S.DraggedFilesActionButton>
 
-                            { !blockRemove && (<Styled.DraggedFilesActionButton type="button" onClick={ onFileRemove }> <I.EraserIcon/> </Styled.DraggedFilesActionButton>) }
-                        </Styled.DraggedFilesActionsContainer>
-                    </Styled.DraggedFilesListItem>
-                </Styled.DraggedFilesList>
+                            { !blockRemove && (<S.DraggedFilesActionButton type="button" onClick={ onFileRemove }> <I.EraserIcon/> </S.DraggedFilesActionButton>) }
+                        </S.DraggedFilesActionsContainer>
+                    </S.DraggedFilesListItem>
+                </S.DraggedFilesList>
             ) }
-        </Styled.UploaderWrapper>
+        </S.UploaderWrapper>
     );
 }

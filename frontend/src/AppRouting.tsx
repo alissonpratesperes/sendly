@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 
-import * as Styled from './shared/styles/global.style';
+import * as S from './shared/styles/global.style';
 
 import { Reset } from './core/authentication/screens/Reset';
 import { Home } from './shared/components/home/screens/Home';
@@ -29,7 +29,7 @@ export const AppRouting: React.FC = () => {
         <Fragment>
             { shouldUseAppLayout && (<Header links={ links }/>) }
 
-            <Styled.Main applyPadding={ shouldUseAppLayout }>
+            <S.Main applyPadding={ shouldUseAppLayout }>
                 <Routes>
                     <Route path="/authentication/reset" element={ <PublicRoute element={ <Reset/> }/> }/>
                     <Route path="/authentication/forgot" element={ <PublicRoute element={ <Forgot/> }/> }/>
@@ -41,15 +41,15 @@ export const AppRouting: React.FC = () => {
 
                     <Route path="*" element={ <Navigate to="/" replace/> }/>
                 </Routes>
-            </Styled.Main>
+            </S.Main>
 
-            <Styled.Footer>
-                <Styled.FooterContentContainer>
+            <S.Footer>
+                <S.FooterContentContainer>
                     <Brand/>
 
                     <Copyright/>
-                </Styled.FooterContentContainer>
-            </Styled.Footer>
+                </S.FooterContentContainer>
+            </S.Footer>
         </Fragment>
     );
 }

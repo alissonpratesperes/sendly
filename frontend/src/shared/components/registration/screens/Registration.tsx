@@ -2,7 +2,7 @@ import { Fragment, useState } from 'react';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 
 import * as G from '../../../styles/global.style';
-import * as Styled from '../styles/registration.style';
+import * as S from '../styles/registration.style';
 
 import { User } from '../../../../core/user/screens/User';
 import { NavigationTab } from '../types/navigationTab.type';
@@ -23,30 +23,30 @@ export const Registration: React.FC = () => {
 
     return (
         <Fragment>
-            <Styled.HeaderWrapper>
+            <S.HeaderWrapper>
                 <G.SessionInformationWrapper>
                     <G.SessionTitle> Gerenciar cadastros </G.SessionTitle>
 
                     <G.SessionSubtitle> Crie, edite e gerencie todos os seus cadastros </G.SessionSubtitle>
                 </G.SessionInformationWrapper>
 
-                <Styled.NavigationTabs>
+                <S.NavigationTabs>
                     { navigationTabs.map((tab: NavigationTab) => {
                         const isHovered = hoveredTab === tab.path;
                         const isActive = location.pathname.endsWith(tab.path);
 
                         return (
-                            <Styled.NavigationTabButtons key={ tab.path } onClick={ () => navigate(`/registrations/${tab.path}`) } onMouseEnter={ () => setHoveredTab(tab.path) } onMouseLeave={ () => setHoveredTab(null) } $active={ isActive } $hovered={ isHovered }>
+                            <S.NavigationTabButtons key={ tab.path } onClick={ () => navigate(`/registrations/${tab.path}`) } onMouseEnter={ () => setHoveredTab(tab.path) } onMouseLeave={ () => setHoveredTab(null) } $active={ isActive } $hovered={ isHovered }>
                                 { tab.icon }
 
-                                <Styled.NavigationTabButtonText $active={ isActive }> { tab.label } </Styled.NavigationTabButtonText>
-                            </Styled.NavigationTabButtons>
+                                <S.NavigationTabButtonText $active={ isActive }> { tab.label } </S.NavigationTabButtonText>
+                            </S.NavigationTabButtons>
                         );
                     }) }
-                </Styled.NavigationTabs>
-            </Styled.HeaderWrapper>
+                </S.NavigationTabs>
+            </S.HeaderWrapper>
 
-            <Styled.ContentWrapper>
+            <S.ContentWrapper>
                 <Routes>
                     <Route path="/" element={ <Navigate to="company" replace/> }/>
 
@@ -58,7 +58,7 @@ export const Registration: React.FC = () => {
                     <Route path="/batch" element={ <PrivateRoute element={ <Batch/> }/> }/>
                     <Route path="/send" element={ <PrivateRoute element={ <BatchSend/> }/> }/>
                 </Routes>
-            </Styled.ContentWrapper>
+            </S.ContentWrapper>
         </Fragment>
     );
 }

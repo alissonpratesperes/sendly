@@ -2,8 +2,8 @@ import { toast } from 'react-toastify';
 import parsePhoneNumberFromString from 'libphonenumber-js';
 import React, { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import * as Styled from '../../../shared/components/table/styles/table.style';
-import * as ContactFormStyled from '../../../shared/components/dropdown/styles/contactFormDropdown.style';
+import * as S from '../../../shared/components/table/styles/table.style';
+import * as F from '../../../shared/components/dropdown/styles/contactFormDropdown.style';
 
 import { ContactForm } from '../forms/contactForm.form';
 import { Read } from '../../list/services/list.service';
@@ -218,8 +218,8 @@ export const Contact = () => {
                 <LoadingState/>
             ) }
             { !isLoading && (
-                <Styled.WhenInMultiSearchContainer>
-                    <Styled.WhenInAnotherScreenWrapper>
+                <S.WhenInMultiSearchContainer>
+                    <S.WhenInAnotherScreenWrapper>
                         <Dropdown
                             inputId="contactStatusId"
                             isInBatchSendScreen={ true }
@@ -230,8 +230,8 @@ export const Contact = () => {
                             value={ selectedContactActiveOption }
                             onChange={(selectedOption) => { setSelectedContactActive(selectedOption?.value); setPage(1); } }
                         />
-                    </Styled.WhenInAnotherScreenWrapper>
-                    <Styled.WhenInAnotherScreenWrapper>
+                    </S.WhenInAnotherScreenWrapper>
+                    <S.WhenInAnotherScreenWrapper>
                         <Dropdown
                             inputId="listId"
                             isInBatchSendScreen={ true }
@@ -244,17 +244,17 @@ export const Contact = () => {
                             onChange={ (selectedOption) => { setSelectedListId(selectedOption?.value ?? null); setPage(1); } }
 
                             formatOptionLabel={ (option) => (
-                                <ContactFormStyled.OptionContent>
-                                    <ContactFormStyled.ListColor $color={ option.color }/>
+                                <F.OptionContent>
+                                    <F.ListColor $color={ option.color }/>
 
                                     <span> { option.label } </span>
-                                </ContactFormStyled.OptionContent>
+                                </F.OptionContent>
                             ) }
                         />
-                    </Styled.WhenInAnotherScreenWrapper>
+                    </S.WhenInAnotherScreenWrapper>
 
                     <Finder showImportButton={ true } importButtonText="Importar" showAddButton={ true } placeholder="Pesquise um contato por nome ou telefone" buttonText="Cadastrar" search={ search } onAdd={ handleCreate } onImport={ handleImport } onSearchChange={ (value) => { setSearch(value); setPage(1); } }/>
-               </Styled.WhenInMultiSearchContainer>
+               </S.WhenInMultiSearchContainer>
             ) }
             { !isLoading && contacts.length > 0 && (
                 <Fragment>
@@ -266,9 +266,9 @@ export const Contact = () => {
                         onDelete={ (id: number) => { setSelectedContactId(id); setIsDeleteModalOpen(true); } }
                         renderEntityRow={ (contact: ContactResponseDto) => (
                             <Fragment>
-                                <Styled.TableListBodyRowData> <Styled.TableListMultiContent $useSpecificPadding={ true }> <ToggleSwitch label={ contact.active ? "Active" : "Inactive" } checked={ contact.active } onChange={ (event) => handleActiveCommunication(contact.id, event.target.checked) }/> <Styled.TableListColorFragment $color={ listsNames[contact.listId]?.color ?? "transparent" }/> <Styled.ContactNameSpan> { contact.name } </Styled.ContactNameSpan> </Styled.TableListMultiContent> </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> <Styled.UniqueKeyDestak> { parsePhoneNumberFromString(contact.phone)?.formatNational() } </Styled.UniqueKeyDestak> </Styled.TableListBodyRowData>
-                                <Styled.TableListBodyRowData> <Styled.TimeStampDestak> { formatDate(contact.updatedAt, false) } </Styled.TimeStampDestak> </Styled.TableListBodyRowData>
+                                <S.TableListBodyRowData> <S.TableListMultiContent $useSpecificPadding={ true }> <ToggleSwitch label={ contact.active ? "Active" : "Inactive" } checked={ contact.active } onChange={ (event) => handleActiveCommunication(contact.id, event.target.checked) }/> <S.TableListColorFragment $color={ listsNames[contact.listId]?.color ?? "transparent" }/> <S.ContactNameSpan> { contact.name } </S.ContactNameSpan> </S.TableListMultiContent> </S.TableListBodyRowData>
+                                <S.TableListBodyRowData> <S.UniqueKeyDestak> { parsePhoneNumberFromString(contact.phone)?.formatNational() } </S.UniqueKeyDestak> </S.TableListBodyRowData>
+                                <S.TableListBodyRowData> <S.TimeStampDestak> { formatDate(contact.updatedAt, false) } </S.TimeStampDestak> </S.TableListBodyRowData>
                             </Fragment>
                         ) }
                         canEdit={ true }

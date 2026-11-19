@@ -1,15 +1,15 @@
 import React from 'react';
 
-import * as Styled from '../styles/emptyState.style';
+import * as S from '../styles/emptyState.style';
 
 import { EmptyStateProps } from '../interfaces/emptyStateProps.interface';
 
 export const EmptyState: React.FC<EmptyStateProps> = ({ message = "Nenhum registro encontrado" }) => {
     return (
-        <Styled.EmptyStateContainer>
-            <Styled.EmptyStateIcon />
+        <S.EmptyStateContainer>
+            <S.EmptyStateIcon />
 
-            <Styled.EmptyStateText> { message || "Nenhum registro encontrado" } </Styled.EmptyStateText>
-        </Styled.EmptyStateContainer>
+            <S.EmptyStateText> { message || "Nenhum registro encontrado" } </S.EmptyStateText>
+        </S.EmptyStateContainer>
     );
 }

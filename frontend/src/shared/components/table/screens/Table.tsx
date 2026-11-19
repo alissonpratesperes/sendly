@@ -1,20 +1,20 @@
 import React from 'react';
 
-import * as Styled from '../styles/table.style';
+import * as S from '../styles/table.style';
 import * as I from '../../../../shared/styles/icon.style';
 
 import { TableProps } from '../interfaces/tableProps.interface';
 
 export const Table = <T,>({ headers, data, isInBatchScreen, getEntityId, onView, onEdit, onDelete, renderEntityRow, canView = false, canEdit, canDelete, }: TableProps<T>) => {
     return (
-        <Styled.TableWrapper>
-            <Styled.TableListWrapper>
+        <S.TableWrapper>
+            <S.TableListWrapper>
                 <thead>
-                    <Styled.TableListHeaderRow>
+                    <S.TableListHeaderRow>
                         { headers.map((header, index) => (
-                            <Styled.TableListHeaderRowColumn key={ index }> { header } </Styled.TableListHeaderRowColumn>
+                            <S.TableListHeaderRowColumn key={ index }> { header } </S.TableListHeaderRowColumn>
                         )) }
-                    </Styled.TableListHeaderRow>
+                    </S.TableListHeaderRow>
                 </thead>
 
                 <tbody>
@@ -25,29 +25,29 @@ export const Table = <T,>({ headers, data, isInBatchScreen, getEntityId, onView,
                         const shouldShowDelete = Boolean(onDelete && canDelete !== undefined && (typeof canDelete === "boolean" ? canDelete : canDelete(entity)));
 
                         return (
-                            <Styled.TableListBodyRow key={ id }>
+                            <S.TableListBodyRow key={ id }>
                                 { renderEntityRow(entity) }
 
-                                <Styled.TableListBodyRowData $isInBatchScreen={ isInBatchScreen }>
+                                <S.TableListBodyRowData $isInBatchScreen={ isInBatchScreen }>
                                     { (shouldShowView || shouldShowEdit || shouldShowDelete) && (
-                                        <Styled.TableListBodyRowDataActions>
+                                        <S.TableListBodyRowDataActions>
                                             { shouldShowView && (
-                                                <Styled.TableListBodyRowDataActionButton type="button" onClick={ () => onView?.(id) }> <I.MessageSquareMoreIcon/> </Styled.TableListBodyRowDataActionButton>
+                                                <S.TableListBodyRowDataActionButton type="button" onClick={ () => onView?.(id) }> <I.MessageSquareMoreIcon/> </S.TableListBodyRowDataActionButton>
                                             ) }
                                             { shouldShowEdit && (
-                                                <Styled.TableListBodyRowDataActionButton type="button" onClick={ () => onEdit?.(id) }> <I.SquarePenIcon/> </Styled.TableListBodyRowDataActionButton>
+                                                <S.TableListBodyRowDataActionButton type="button" onClick={ () => onEdit?.(id) }> <I.SquarePenIcon/> </S.TableListBodyRowDataActionButton>
                                             ) }
                                             { shouldShowDelete && (
-                                                <Styled.TableListBodyRowDataActionButton type="button" onClick={ () => onDelete?.(id) }> <I.TrashIcon/> </Styled.TableListBodyRowDataActionButton>
+                                                <S.TableListBodyRowDataActionButton type="button" onClick={ () => onDelete?.(id) }> <I.TrashIcon/> </S.TableListBodyRowDataActionButton>
                                             ) }
-                                        </Styled.TableListBodyRowDataActions>
+                                        </S.TableListBodyRowDataActions>
                                     ) }
-                                </Styled.TableListBodyRowData>
-                            </Styled.TableListBodyRow>
+                                </S.TableListBodyRowData>
+                            </S.TableListBodyRow>
                         );
                     }) }
                 </tbody>
-            </Styled.TableListWrapper>
-        </Styled.TableWrapper>
+            </S.TableListWrapper>
+        </S.TableWrapper>
     );
 }
