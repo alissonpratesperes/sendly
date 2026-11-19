@@ -10,7 +10,7 @@ export const UploaderWrapper = styled.div`
 
 export const DropzoneArea = styled.div<DropzoneProps>`
     margin-bottom: 30px;
-    height: 220px;
+    height: 260px;
     width: 100%;
     position: relative;
     display: flex;
@@ -76,23 +76,23 @@ export const DropzoneStrongContent = styled.h5`
     margin-top: 15px;
     font-family: "Lato";
     font-weight: 700;
-    font-size: 14px;
+    font-size: 16px;
     color: #223463;
 `;
 
 export const DropzoneLabel = styled.h5`
     font-family: "Lato";
     font-weight: 700;
-    font-size: 14px;
+    font-size: 16px;
     color: #223463;
 `;
 
 export const DropzoneActiveText = styled.p`
     margin-top: 15px;
     font-family: "Lato";
-    font-weight: 400;
+    font-weight: 500;
     font-size: 14px;
-    color: #767380;
+    color: #171719;
 `;
 
 export const DraggedFilesList = styled.ul`
@@ -139,7 +139,7 @@ export const DraggedFileAreaImageUpIcon = styled(ImageUp)`
 `;
 
 export const DraggedFileData = styled.div`
-    margin-right: 15px;
+    margin-right: 7.5px;
     min-width: 0;
     flex: 1;
     display: flex;
@@ -163,8 +163,8 @@ export const DraggedFileName = styled.p`
 export const DraggedFileSize = styled.span`
     margin-top: 7.5px;
     font-family: "Lato";
-    font-weight: 900;
-    font-size: 14px;
+    font-weight: 700;
+    font-size: 16px;
     color: #223463;
 `;
 
@@ -188,34 +188,19 @@ export const DraggedFilesActionButton = styled.button`
     cursor: pointer;
     color: #FF6B00;
     background-color: rgba(255, 107, 0, 0.25);
-    border-radius: 50%;
     cursor: pointer;
     transition: color 0.3s ease, background-color 0.3s ease;
 
-        &:hover {
-            color: #FF6B00;
-            background: rgba(255, 107, 0, 0.25);
-
-            animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
+        svg {
+            stroke: currentColor;
         }
 
-            &:first-child {
-                border-radius: 0px;
-                border-top-left-radius: 14px;
-                border-bottom-left-radius: 14px;
-            }
-            &:nth-child(2) {
-                border-radius: 0px;
-                border-top-right-radius: 14px;
-                border-bottom-right-radius: 14px;
-            }
-            &:only-child {
-                border-radius: 14px;
-            }
+            &:hover {
+                color: #FF6B00;
+                background: rgba(255, 107, 0, 0.25);
 
-                svg {
-                    stroke: currentColor;
-                }
+                animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
+            }
 `;
 
 export const DraggedFilesActionButtonFileDownIcon = styled(FileDown)`

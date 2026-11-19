@@ -62,15 +62,15 @@ export const CloseButton = styled.button`
     cursor: pointer;
     transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
 
-        &:hover {
-            color: #FFFFFF;
-            background-color: #223463;
-
-            animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
+        svg {
+            stroke: currentColor;
         }
 
-            svg {
-                stroke: currentColor;
+            &:hover {
+                color: #FFFFFF;
+                background-color: #223463;
+
+                animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
             }
 `;
 
@@ -125,16 +125,19 @@ export const Fieldset = styled.fieldset`
 `;
 
 export const Legend = styled.legend`
-    padding: 0px 7.5px;
     width: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between
-    font-family: "Inter";
-    font-weight: 700;
-    font-size: 18px;
-    color: #171719;
+    justify-content: center;
+    gap: 0px;
+    flex-shrink: 0;
+`;
+
+export const LegendButtonsContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 `;
 
 export const VariableTipButton = styled.button<{ $disabled: boolean }>`
@@ -150,7 +153,6 @@ export const VariableTipButton = styled.button<{ $disabled: boolean }>`
     font-weight: 700;
     font-size: 16px;
     border: none;
-    border-radius: 14px;
     color: #FF6B00;
     background: rgba(255, 107, 0, 0.25);
     transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
@@ -158,15 +160,15 @@ export const VariableTipButton = styled.button<{ $disabled: boolean }>`
     opacity: ${ ({ $disabled }) => $disabled ? "0.5" : "1" };
     cursor: ${ ({ $disabled }) => $disabled ? "not-allowed" : "pointer" };
 
-        &:hover:not(:disabled) {
-            color: #F0F0F5;
-            background-color: #FF6B00;
-
-            animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
+        svg {
+            stroke: currentColor;
         }
 
-            svg {
-                stroke: currentColor;
+            &:hover:not(:disabled) {
+                color: #F0F0F5;
+                background-color: #FF6B00;
+
+                animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
             }
 `;
 
@@ -243,7 +245,7 @@ export const TextareaWrapper = styled.div`
 
 export const Textarea = styled.textarea`
     padding: 15px;
-    min-height: 120px;
+    min-height: 190px;
     width: 100%;
     display: block;
     overflow-y: auto;
@@ -309,7 +311,7 @@ export const Footer = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
     column-gap: 30px;
     border-top: 2px solid #E9EAEB;
 
@@ -320,6 +322,19 @@ export const Footer = styled.div`
                 background-color: #E6F4EA;
             }
         }
+        &:not(:has(.secondary:hover)) {
+            .primary {
+                animation: ${buttonHoverAnimation} 0.6s ease-in-out;
+            }
+        }
+`;
+
+export const FooterButtonsContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0px;
+    flex-shrink: 0;
 `;
 
 export const FooterButton = styled.button<{ $variant?: "primary" | "secondary"; $formType?: "default" | "action"; }>`
@@ -334,27 +349,26 @@ export const FooterButton = styled.button<{ $variant?: "primary" | "secondary"; 
     font-weight: 700;
     font-size: 16px;
     border: none;
-    border-radius: 14px;
     cursor: pointer;
     transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
 
     color: ${ ({ $variant }) => $variant === "primary" ? "#FFFFFF" : "#223463" };
     background-color: ${ ({ $variant }) => $variant === "primary" ? "#238636" : "#E8EEF8" };
 
-        &.secondary {
-            svg {
-                stroke: #1C70E9;
+        svg {
+            stroke: currentColor;
+        }
+
+            &.secondary {
+                svg {
+                    stroke: #1C70E9;
+                }
             }
-        }
-        &.secondary:hover {
-            color: #F0F0F5;
-            background-color: #223463;
+            &.secondary:hover {
+                color: #F0F0F5;
+                background-color: #223463;
 
-            animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
-        }
-
-            svg {
-                stroke: currentColor;
+                animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
             }
 `;
 
@@ -533,23 +547,22 @@ export const WhatsAppPreviewToggleButton = styled.button<{ $showPreview: boolean
     font-weight: 700;
     font-size: 16px;
     border: none;
-    border-radius: 14px;
     cursor: pointer;
     transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
 
     color: ${ ({ $showPreview }) => $showPreview ? "#F0F0F5" : "#075E54" };
     background-color: ${ ({ $showPreview }) => $showPreview ? "#075E54" : "rgba(7, 94, 84, 0.25);" };
 
-        &:hover {
-            font-weight: 700;
-            color: #F0F0F5;
-            background-color: #075E54;
-
-            animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
+        svg {
+            stroke: strokeColor;
         }
 
-            svg {
-                stroke: strokeColor;
+            &:hover {
+                font-weight: 700;
+                color: #F0F0F5;
+                background-color: #075E54;
+
+                animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
             }
 `;
 

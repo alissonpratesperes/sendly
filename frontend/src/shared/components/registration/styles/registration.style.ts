@@ -102,13 +102,13 @@ export const NavigationTabButtons = styled.button<{ $active: boolean; $hovered: 
                     left: -14px;
                     border-radius: 0px 0px 14px 0px;
 
-                    box-shadow: 5px 5px 0 5px ${ ({ $active }) => $active ? "#F0F0F5" : "transparent" };
+                    box-shadow: 10px 10px 0 10px ${ ({ $active }) => $active ? "#F0F0F5" : "transparent" };
                 }
                 &::after {
                     right: -14px;
                     border-radius: 0px 0px 0px 14px;
 
-                    box-shadow: -5px 5px 0 5px ${ ({ $active }) => $active ? "#F0F0F5" : "transparent" };
+                    box-shadow: -10px 10px 0 10px ${ ({ $active }) => $active ? "#F0F0F5" : "transparent" };
                 }
 
     ${ ({ $active, $hovered }) => { const showCurves = $active ?? $hovered; return ` z-index: 2; &::before, &::after { opacity: ${ showCurves ? 1 : 0 }; transform: translateY(${ showCurves ? "0" : "100%" }); }`; } };

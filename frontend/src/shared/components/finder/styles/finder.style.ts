@@ -97,28 +97,16 @@ export const AddButton = styled.button`
     background-color: #E6F4EA;
     transition: color 0.3s ease, background-color 0.3s ease;
 
-        &:hover {
-            color: #FFFFFF;
-            background-color: #238636;
-
-            animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
+        svg {
+            stroke: currentColor;
         }
 
-            &:first-child {
-                border-top-left-radius: 14px;
-                border-bottom-left-radius: 14px;
-            }
-            &:last-child {
-                border-top-right-radius: 14px;
-                border-bottom-right-radius: 14px;
-            }
-            &:only-child {
-                border-radius: 14px;
-            }
+            &:hover {
+                color: #FFFFFF;
+                background-color: #238636;
 
-                svg {
-                    stroke: currentColor;
-                }
+                animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
+            }
 `;
 
 export const AddButtonUploadIcon = styled(DatabaseArrowUp)`

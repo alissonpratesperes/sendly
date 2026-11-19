@@ -107,9 +107,17 @@ export const ModalFooter = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
     column-gap: 30px;
     border-top: 2px solid #E9EAEB;
+`;
+
+export const FooterButtonsContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0px;
+    flex-shrink: 0;
 `;
 
 export const ModalFooterButtonText = styled.span`
@@ -128,7 +136,6 @@ export const ModalButton = styled.button`
     font-weight: 400;
     font-size: 16px;
     border: none;
-    border-radius: 14px;
     cursor: pointer;
 `;
 
@@ -142,15 +149,15 @@ export const ModalPrimaryButton = styled(ModalButton)`
     background-color: #E8EEF8;
     transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
 
-        &:hover {
-            color: #FFFFFF;
-            background-color: #223463;
-
-            animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
+        svg {
+            stroke: #1C70E9;
         }
 
-            svg {
-                stroke: #1C70E9;
+            &:hover {
+                color: #FFFFFF;
+                background-color: #223463;
+
+                animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
             }
 `;
 
@@ -168,15 +175,15 @@ export const ModalSecondaryButton = styled(ModalButton)`
     background-color: #FCE8E6;
     transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
 
-        &:hover {
-            color: #FFFFFF;
-            background-color: #DC143C;
-
-            animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
+        svg {
+            stroke: currentColor;
         }
 
-            svg {
-                stroke: currentColor;
+            &:hover {
+                color: #FFFFFF;
+                background-color: #DC143C;
+
+                animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
             }
 `;
 
@@ -199,15 +206,15 @@ export const ModalTertiaryButton = styled(ModalButton)`
     background: rgba(255, 107, 0, 0.25);
     transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
 
-        &:hover {
-            color: #F0F0F5;
-            background-color: #FF6B00;
-
-            animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
+        svg {
+            stroke: currentColor;
         }
 
-            svg {
-                stroke: currentColor;
+            &:hover {
+                color: #F0F0F5;
+                background-color: #FF6B00;
+
+                animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
             }
 `;
 

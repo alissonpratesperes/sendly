@@ -186,13 +186,15 @@ export const TemplateForm: React.FC<FormProps<TemplateFormData>> = ({ initialVal
 
                 <Styled.Fieldset>
                     <Styled.Legend>
-                        <Styled.WhatsAppPreviewToggleButton type="button" onClick={ handleTogglePreview } $showPreview={ showPreview }>
-                            { !showPreview ? <Styled.WhatsAppPreviewToggleButtonPlayIcon/> : <Styled.WhatsAppPreviewToggleButtonPauseIcon/> }
+                        <Styled.LegendButtonsContainer>
+                            <Styled.WhatsAppPreviewToggleButton type="button" onClick={ handleTogglePreview } $showPreview={ showPreview }>
+                                { !showPreview ? <Styled.WhatsAppPreviewToggleButtonPlayIcon/> : <Styled.WhatsAppPreviewToggleButtonPauseIcon/> }
 
-                            <Styled.WhatsAppPreviewToggleButtonText> Preview </Styled.WhatsAppPreviewToggleButtonText>
-                        </Styled.WhatsAppPreviewToggleButton>
+                                <Styled.WhatsAppPreviewToggleButtonText> Preview </Styled.WhatsAppPreviewToggleButtonText>
+                            </Styled.WhatsAppPreviewToggleButton>
 
-                        { !disabled && (<Styled.VariableTipButton $disabled={ hasReachedVariableLimit } disabled={ disabled || hasReachedVariableLimit } type="button" onClick={ handleInsertTemplateVariable }> <Styled.VariableTipButtonIcon/> <Styled.VariableTipButtonText> { "{{name}}" } </Styled.VariableTipButtonText> </Styled.VariableTipButton>) }
+                            { !disabled && (<Styled.VariableTipButton $disabled={ hasReachedVariableLimit } disabled={ disabled || hasReachedVariableLimit } type="button" onClick={ handleInsertTemplateVariable }> <Styled.VariableTipButtonIcon/> <Styled.VariableTipButtonText> { "{{name}}" } </Styled.VariableTipButtonText> </Styled.VariableTipButton>) }
+                        </Styled.LegendButtonsContainer>
                     </Styled.Legend>
 
                     <Styled.FieldWrapper>

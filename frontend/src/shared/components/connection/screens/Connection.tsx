@@ -113,26 +113,28 @@ export const Connection: React.FC<ConnectionProps> = ({ onPairingSuccess, isOpen
                         </Styled.ModalBody>
 
                         <Styled.ModalFooter>
-                            <Styled.ModalPrimaryButton onClick={ () => setIsClosing(true) }>
-                                <Styled.ModalPrimaryButtonIcon/>
+                            <Styled.FooterButtonsContainer>
+                                <Styled.ModalPrimaryButton onClick={ () => setIsClosing(true) }>
+                                    <Styled.ModalPrimaryButtonIcon/>
 
-                                <Styled.ModalFooterButtonText> Fechar </Styled.ModalFooterButtonText>
-                            </Styled.ModalPrimaryButton>
+                                    <Styled.ModalFooterButtonText> Fechar </Styled.ModalFooterButtonText>
+                                </Styled.ModalPrimaryButton>
 
-                            { !status?.connected && !pairingCode && (
-                                <Styled.ModalTertiaryButton type="submit" form="baileys-form" disabled={ loadingStatus }>
-                                    <Styled.ModalTertiaryButtonIcon/>
+                                { !status?.connected && !pairingCode && (
+                                    <Styled.ModalTertiaryButton type="submit" form="baileys-form" disabled={ loadingStatus }>
+                                        <Styled.ModalTertiaryButtonIcon/>
 
-                                  <Styled.ModalFooterButtonText> Gerar código </Styled.ModalFooterButtonText>
-                                </Styled.ModalTertiaryButton>
-                            ) }
-                            { status?.connected && (
-                                <Styled.ModalSecondaryButton onClick={ handleDisconnect }>
-                                    <Styled.ModalSecondaryButtonIcon/>
+                                        <Styled.ModalFooterButtonText> Gerar código </Styled.ModalFooterButtonText>
+                                    </Styled.ModalTertiaryButton>
+                                ) }
+                                { status?.connected && (
+                                    <Styled.ModalSecondaryButton onClick={ handleDisconnect }>
+                                        <Styled.ModalSecondaryButtonIcon/>
 
-                                    <Styled.ModalFooterButtonText> Desconectar </Styled.ModalFooterButtonText>
-                                </Styled.ModalSecondaryButton>
-                            ) }
+                                        <Styled.ModalFooterButtonText> Desconectar </Styled.ModalFooterButtonText>
+                                    </Styled.ModalSecondaryButton>
+                                ) }
+                            </Styled.FooterButtonsContainer>
                         </Styled.ModalFooter>
                     </Styled.ModalContainer>
                 </Styled.ModalWrapper>

@@ -178,7 +178,7 @@ export const BatchSend = () => {
                             isLoading={ isBatchesLoading }
                             isClearable={ true }
                             options={ optionsForBatches }
-                            placeholder="Selecione um lote"
+                            placeholder="Filtre por lote"
                             value={ optionsForBatches.find((option) => option.value === selectedBatchId) ?? null }
                             onChange={ (selectedOption) => { setSelectedBatchId(selectedOption?.value ?? null); setBatchSends([]); setTotal(0); setPage(1); } }
                         />

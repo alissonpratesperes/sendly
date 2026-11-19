@@ -82,6 +82,20 @@ export const GlobalStyle = createGlobalStyle`
     a {
         text-decoration: none;
     }
+
+    button {
+        &:first-child {
+            border-top-left-radius: 14px;
+            border-bottom-left-radius: 14px;
+        }
+        &:last-child {
+            border-top-right-radius: 14px;
+            border-bottom-right-radius: 14px;
+        }
+        &:only-child {
+            border-radius: 14px;
+        }
+    }
 `;
 
 export const Main = styled("main").withConfig({ shouldForwardProp: (prop) => isPropValid(prop) && prop !== "applyPadding" }) <{ applyPadding?: boolean; }>`

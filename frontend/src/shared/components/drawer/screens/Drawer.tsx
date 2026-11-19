@@ -27,7 +27,7 @@ export const Drawer: React.FC<DrawerProps> = ({ isOpen, isSubmitting = false, fo
                                 <LoadingState/>
                             ) }
                             { !isSubmitting && (
-                                <Fragment>
+                                <Styled.FooterButtonsContainer>
                                     <Styled.FooterButton type="button" $variant="secondary" className="secondary" onClick={ () => setIsClosing(true) }>
                                         <Styled.FooterButtonCancelIcon/>
 
@@ -38,7 +38,7 @@ export const Drawer: React.FC<DrawerProps> = ({ isOpen, isSubmitting = false, fo
 
                                         <Styled.FooterButtonText> { mode === "create" ? "Salvar" : mode === "edit" ? "Atualizar" : "Importar" } </Styled.FooterButtonText>
                                     </Styled.FooterButton>
-                                </Fragment>
+                                </Styled.FooterButtonsContainer>
                             ) }
                         </Styled.Footer>
                     ) }

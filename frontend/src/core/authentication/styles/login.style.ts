@@ -129,8 +129,11 @@ export const LoginButtonsContainer = styled.div`
     height: auto;
     width: 100%;
     display: flex;
+    flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
+    gap: 0px;
+    flex-shrink: 0;
 `;
 
 export const ForgotButton = styled(Link)`
@@ -146,7 +149,6 @@ export const ForgotButton = styled(Link)`
     color: #FF6B00;
     border: none;
     outline: none;
-    border-radius: 14px;
     background: rgba(255, 107, 0, 0.25);
     cursor: pointer;
     transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
@@ -161,6 +163,18 @@ export const ForgotButton = styled(Link)`
 
                 animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
             }
+
+                &:first-child {
+                    border-top-left-radius: 14px;
+                    border-bottom-left-radius: 14px;
+                }
+                &:last-child {
+                    border-top-right-radius: 14px;
+                    border-bottom-right-radius: 14px;
+                }
+                &:only-child {
+                    border-radius: 14px;
+                }
 `;
 
 export const ForgotButtonIcon = styled(LockOpen)`
@@ -185,7 +199,6 @@ export const LoginButton = styled.button`
     color: #223463;
     border: none;
     outline: none;
-    border-radius: 14px;
     background-color: #E8EEF8;
     cursor: pointer;
     transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;

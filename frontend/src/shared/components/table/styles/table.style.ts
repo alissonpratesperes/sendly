@@ -76,40 +76,35 @@ export const TableListBodyRowDataActionButton = styled.button`
     cursor: pointer;
     transition: background 0.3s ease, color 0.3s ease;
 
-        &:first-child {
-            color: #238636;
-            background-color: #E6F4EA;
-            border-top-left-radius: 14px;
-            border-bottom-left-radius: 14px;
-        }
-        &:nth-child(2) {
-            color: #DC143C;
-            background-color: #FCE8E6;
-            border-top-right-radius: 14px;
-            border-bottom-right-radius: 14px;
-        }
         &:hover {
             animation: ${ buttonHoverAnimation } 0.6s ease-in-out;
         }
-        &:first-child:hover {
-            color: #FFFFFF;
-            background-color: #238636;
-        }
-        &:nth-child(2):hover {
-            color: #FFFFFF;
-            background-color: #DC143C;
-        }
-        &:only-child {
-            color: #223463;
-            background-color: #E8EEF8;
-            border-radius: 14px;
-        }
-        &:only-child:hover {
-            color: #FFFFFF;
-            background-color: #223463;
-            border-radius: 14px;
 
-        }
+            &:first-child {
+                color: #238636;
+                background-color: #E6F4EA;
+            }
+            &:nth-child(2) {
+                color: #DC143C;
+                background-color: #FCE8E6;
+            }
+            &:only-child {
+                color: #223463;
+                background-color: #E8EEF8;
+            }
+
+                &:first-child:hover {
+                    color: #FFFFFF;
+                    background-color: #238636;
+                }
+                &:nth-child(2):hover {
+                    color: #FFFFFF;
+                    background-color: #DC143C;
+                }
+                &:only-child:hover {
+                    color: #FFFFFF;
+                    background-color: #223463;
+                }
 `;
 
 export const TableListBodyRowDataActionButtonViewIcon = styled(MessageSquareMore)`

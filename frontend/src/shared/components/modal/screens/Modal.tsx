@@ -22,16 +22,18 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, entityName, onClose, onCon
                         </Styled.ModalBody>
 
                         <Styled.ModalFooter>
-                            <Styled.ModalPrimaryButton onClick={ () => setIsClosing(true) }>
-                                <Styled.ModalPrimaryButtonIcon/>
+                            <Styled.FooterButtonsContainer>
+                                <Styled.ModalPrimaryButton onClick={ () => setIsClosing(true) }>
+                                    <Styled.ModalPrimaryButtonIcon/>
 
-                                <Styled.ModalFooterButtonText> Cancelar </Styled.ModalFooterButtonText>
-                            </Styled.ModalPrimaryButton>
-                            <Styled.ModalSecondaryButton onClick={ onConfirm }>
-                                <Styled.ModalSecondaryButtonTrashIcon/>
+                                    <Styled.ModalFooterButtonText> Cancelar </Styled.ModalFooterButtonText>
+                                </Styled.ModalPrimaryButton>
+                                <Styled.ModalSecondaryButton onClick={ onConfirm }>
+                                    <Styled.ModalSecondaryButtonTrashIcon/>
 
-                                <Styled.ModalFooterButtonText> Excluir </Styled.ModalFooterButtonText>
-                            </Styled.ModalSecondaryButton>
+                                    <Styled.ModalFooterButtonText> Excluir </Styled.ModalFooterButtonText>
+                                </Styled.ModalSecondaryButton>
+                            </Styled.FooterButtonsContainer>
                         </Styled.ModalFooter>
                     </Styled.ModalContainer>
                 </Styled.ModalWrapper>
