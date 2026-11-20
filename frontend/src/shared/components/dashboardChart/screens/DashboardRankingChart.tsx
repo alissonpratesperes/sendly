@@ -1,4 +1,6 @@
 
+import type { ECharts } from 'echarts';
+import { useEffect, useState } from 'react';
 import ReactECharts from 'echarts-for-react';
 
 import * as S from '../styles/dashboardChart.style';
@@ -6,12 +8,10 @@ import * as S from '../styles/dashboardChart.style';
 import { DashboardGraphicInfoProps } from '../interfaces/dashboardGraphicInfoProps.interface';
 
 export const DashboardRankingChart = ({ counterData, graphicData, graphicConfig }: DashboardGraphicInfoProps) => {
+    const [chartInstance, setChartInstance] = useState<ECharts | null>(null);
+
     const hasEntityWithMoreThanOneCounted = counterData > 1;
-const testGraphicData = [
-    ...graphicData,
-    ...graphicData,
-    ...graphicData,
-];
+
     const option = {
         legend: {
             left: "60%",
@@ -65,56 +65,16 @@ const testGraphicData = [
                         `;
                     },
         },
-        graphic: [
-            {
-                left: "22.5%",
-                top: "center",
-                type: "group",
-
-                    children: [
-                        {
-                            x: 0,
-                            y: -18,
-                            type: "text",
-
-                                style: {
-                                    width: 100,
-                                    fontSize: 32,
-                                    fontWeight: 700,
-                                    fill: "#171719",
-                                    textAlign: "center",
-
-                                    text: String(counterData),
-                                },
-                        },
-                        {
-                            x: 0,
-                            y: 20,
-                            type: "text",
-
-                                style: {
-                                    width: 100,
-                                    fontSize: 14,
-                                    fontWeight: 400,
-                                    fill: "#7A8497",
-                                    textAlign: "center",
-
-                                    text: `${ hasEntityWithMoreThanOneCounted ? graphicConfig.entityPlural : graphicConfig.entitySingular }`,
-                                },
-                        },
-                    ],
-            },
-        ],
         series: [
             {
                 type: "pie",
                 radius: ["40%", "65%"],
                 center: ["25%", "50%"],
 
-                padAngle: hasEntityWithMoreThanOneCounted ? 4 : 0,
+                padAngle: 4,
 
                     itemStyle: {
-                        borderRadius: hasEntityWithMoreThanOneCounted ? 8 : 0,
+                        borderRadius: 8
                     },
 
                     labelLayout: {
@@ -138,16 +98,70 @@ const testGraphicData = [
                         },
 
                             data: [...graphicData]
-                                .sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'))
+                                .sort((a, b) => a.name.localeCompare(b.name, "pt-BR"))
                                 .map((item) => ({ name: item.name, value: item.value, })),
             },
         ],
     };
 
+    useEffect(() => {
+        if (!chartInstance) {
+            return;
+        }
+
+        const updateGraphic = () => {
+            const width = chartInstance.getWidth();
+            const height = chartInstance.getHeight();
+            const centerX = width * 0.25;
+            const centerY = height * 0.5;
+
+            chartInstance.setOption({
+                graphic: [
+                    {
+                        x: centerX,
+                        type: "text",
+                        y: centerY - 8,
+
+                            style: {
+                                fontSize: 32,
+                                fontWeight: 700,
+                                fill: "#171719",
+                                textAlign: "center",
+                                text: String(counterData),
+                                textVerticalAlign: "middle",
+                            },
+                    },
+                    {
+                        type: "text",
+                        x: centerX,
+                        y: centerY + 20,
+
+                            style: {
+                                fontSize: 14,
+                                fill: "#7A8497",
+                                textAlign: "center",
+                                textVerticalAlign: "middle",
+                                text: hasEntityWithMoreThanOneCounted ? graphicConfig.entityPlural : graphicConfig.entitySingular,
+                            },
+                    },
+                ],
+            });
+        };
+
+        updateGraphic();
+
+        const observer = new ResizeObserver(updateGraphic);
+
+        observer.observe(chartInstance.getDom());
+
+        return () => observer.disconnect();
+
+    }, [ chartInstance, counterData, graphicConfig, hasEntityWithMoreThanOneCounted, ]);
+
     return (
         <S.DashboardChartContainer>
             <S.DashboardChartCard>
-                <ReactECharts option={ option } notMerge={ true }/>
+                <ReactECharts option={ option } notMerge={ true } onChartReady={ (instance) => setChartInstance(instance) }/>
             </S.DashboardChartCard>
         </S.DashboardChartContainer>
     );

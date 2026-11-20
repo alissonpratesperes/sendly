@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 
 export const DashboardChartContainer = styled.div`
-    margin-bottom: 30px;
+    margin: 30px 0px 0px 0px;
     height: 350px;
     width: 100%;
     max-width: 100%;

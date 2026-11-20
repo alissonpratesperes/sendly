@@ -6,6 +6,7 @@ import { BatchSendStatus } from '../../../../core/batch/enums/batchSendStatus.en
 import { TableListColorFragmentProps } from '../../../interfaces/tableListColorFragmentProps.interface';
 
 export const TableWrapper = styled.div`
+    margin: 30px 0px 0px 0px;
     width: 100%;
     overflow-x: auto;
 `;
@@ -148,7 +149,6 @@ export const ContactNameSpan = styled.span`
 
 export const WhenInAnotherScreenWrapper = styled.div`
     width: 100%;
-    margin-bottom: 30px;
     position: relative;
     box-sizing: border-box;
 
