@@ -7,6 +7,7 @@ import { CreateBatchCommandDto } from './dtos/createBatchCommand.dto';
 import { PaginationQueryDto } from '../common/dtos/paginationQuery.dto';
 import { GetBatchSendResponseDto } from './dtos/getBatchSendResponseDto';
 import { PaginatedResponseDto } from '../common/dtos/paginatedResponse.dto';
+import { BatchesRankingResponseDto } from './dtos/batchesRankingResponse.dto';
 
 @Controller("batch")
 export class BatchController {
@@ -18,6 +19,12 @@ export class BatchController {
     @HttpCode(HttpStatus.CREATED)
     async create(@Body() command: CreateBatchCommandDto): Promise<GetBatchResponseDto> {
         return this.batchService.create(command.companyId, command.name, command.templateId, command.listId);
+    }
+
+    @Get("chart/batches-ranking")
+    @HttpCode(HttpStatus.OK)
+    async getBatchesRanking(): Promise<BatchesRankingResponseDto> {
+        return this.batchService.rank();
     }
 
     @Get()

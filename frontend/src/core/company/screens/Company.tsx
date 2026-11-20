@@ -12,7 +12,6 @@ import { Table } from '../../../shared/components/table/screens/Table';
 import { Modal } from '../../../shared/components/modal/screens/Modal';
 import { Finder } from '../../../shared/components/finder/screen/Finder';
 import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
-import { UsersRankingResponseDto } from '../dtos/usersRankingResponse.dto';
 import { Paginate } from '../../../shared/components/paginate/screens/Paginate';
 import { EmptyState } from '../../../shared/components/emptyState/screens/EmpyState';
 import { formatCompanyDocument } from '../../../shared/utils/formatCompanyDocument.util';
@@ -30,12 +29,11 @@ export const Company = () => {
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
     const [companies, setCompanies] = useState<CompanyResponseDto[]>([]);
-    const [ranking, setRanking] = useState<UsersRankingResponseDto[]>([]);
     const [updating, setUpdating] = useState<CompanyFormData | null>(null);
     const [isRankingLoading, setIsRankingLoading] = useState<boolean>(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
     const [selectedCompanyId, setSelectedCompanyId] = useState<number | null>(null);
-    const [usersRanking, setUsersRanking] = useState<UsersRankingResponseDto[]>([]);
+    const [usersRanking, setUsersRanking] = useState<{ name: string; value: number }[]>([]);
 
     const { userInformation } = getAuthenticationStorage();
 
@@ -49,7 +47,12 @@ export const Company = () => {
 
             const response = await Rank();
 
-            setUsersRanking(response);
+            const rankingData = response.map((item) => ({
+                name: item.companyName,
+                value: item.totalUsers,
+            }));
+
+            setUsersRanking(rankingData);
         } catch (error) {
             toast.error(`Erro ao carregar o dashboard para Empresas: ${ error }`);
         } finally {
@@ -133,15 +136,8 @@ export const Company = () => {
                     { !isRankingLoading && usersRanking.length > 0 && (
                         <DashboardRankingChart
                             counterData={ total }
-                            graphicData={ usersRanking.map((item) => ({
-                                name: item.companyName,
-                                value: item.totalUsers,
-                            })) }
-                            graphicConfig={{
-                                entitySingular: "Empresa",
-                                entityPlural: "Empresas",
-                                subEntityPlural: "Usuários",
-                            }}
+                            graphicData={ usersRanking }
+                            graphicConfig={{ entitySingular: "Empresa", entityPlural: "Empresas", subEntityPlural: "Usuários", }}
                         />
                     ) }
 

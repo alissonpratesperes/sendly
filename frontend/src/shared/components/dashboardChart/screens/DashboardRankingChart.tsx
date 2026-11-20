@@ -105,11 +105,15 @@ export const DashboardRankingChart = ({ counterData, graphicData, graphicConfig 
     };
 
     useEffect(() => {
-        if (!chartInstance) {
+        if (!chartInstance || chartInstance.isDisposed()) {
             return;
         }
 
         const updateGraphic = () => {
+            if (!chartInstance || chartInstance.isDisposed()) {
+                return;
+            }
+
             const width = chartInstance.getWidth();
             const height = chartInstance.getHeight();
             const centerX = width * 0.25;

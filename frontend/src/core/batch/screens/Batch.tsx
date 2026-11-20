@@ -3,8 +3,8 @@ import React, { Fragment, useCallback, useEffect, useMemo, useRef, useState } fr
 
 import * as S from '../../../shared/components/table/styles/table.style';
 
-import { List } from '../services/batch.service';
 import { BatchForm } from '../forms/batchForm.form';
+import { List, Rank } from '../services/batch.service';
 import { BatchStatus } from '../enums/batchStatus.enum';
 import { BatchResponseDto } from '../dtos/batchResponse.dto';
 import { BatchFormData } from '../schemas/batchFormSchema.schema';
@@ -22,6 +22,7 @@ import { List as ListTemplates } from '../../template/services/template.service'
 import { EmptyState } from '../../../shared/components/emptyState/screens/EmpyState';
 import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
+import { DashboardRankingChart } from '../../../shared/components/dashboardChart/screens/DashboardRankingChart';
 
 export const Batch = () => {
     const [page, setPage] = useState<number>(1);
@@ -34,9 +35,11 @@ export const Batch = () => {
     const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
     const [updating, setUpdating] = useState<BatchFormData | null>(null);
     const [templates, setTemplates] = useState<TemplateResponseDto[]>([]);
+    const [isRankingLoading, setIsRankingLoading] = useState<boolean>(false);
     const [isTemplatesLoading, setIsTemplatesLoading] = useState<boolean>(false);
     const [selectedTemplateId, setSelectedTemplateId] = useState<number | null>(null);
     const [listsNames, setListsNames] = useState<Record<number, ListResponseDto>>({});
+    const [batchesRanking, setBatchesRanking] = useState<{ name: string; value: number }[]>([]);
     const [templatesNames, setTemplatesNames] = useState<Record<number, TemplateResponseDto>>({});
 
     const listsNamesRef = useRef<Record<number, ListResponseDto>>({});
@@ -66,6 +69,26 @@ export const Batch = () => {
         setUpdating(null);
         setIsDrawerOpen(true);
     }
+    const handleBatchesRanking = useCallback(async () => {
+        try {
+            setIsRankingLoading(true);
+
+            const response = await Rank();
+            const rankingData = [
+                { name: "Pendentes", value: response.pending },
+                { name: "Executando", value: response.running },
+                { name: "Parciais", value: response.partial },
+                { name: "Falhados", value: response.failed },
+                { name: "Finalizados", value: response.finished },
+            ];
+
+            setBatchesRanking(rankingData);
+        } catch (error) {
+            toast.error(`Erro ao carregar o dashboard para Lotes: ${ error }`);
+        } finally {
+            setIsRankingLoading(false);
+        }
+    }, []);
     const handleRead = useCallback(async () => {
         try {
             setIsLoading(true);
@@ -130,6 +153,9 @@ export const Batch = () => {
         }
     }, [ page, limit, search, selectedBatchStatus, selectedTemplateId, ])
 
+    useEffect(() => {
+        handleBatchesRanking();
+    }, [ handleBatchesRanking, ]);
     useEffect(() => {
         const progressiveTemplatesFetch = async () => {
             try {
@@ -207,6 +233,14 @@ export const Batch = () => {
             ) }
             { !isLoading && batches.length > 0 && (
                 <Fragment>
+                    { !isRankingLoading && batchesRanking?.length > 0 && (
+                        <DashboardRankingChart
+                            counterData={ total }
+                            graphicData={ batchesRanking }
+                            graphicConfig={{ entitySingular: "Lote", entityPlural: "Lotes", subEntityPlural: "Lotes", }}
+                        />
+                    ) }
+
                     <Table<BatchResponseDto>
                         headers={[ "Nome", "Template", "Execução", "Atualização", ]}
                         data={ batches }
