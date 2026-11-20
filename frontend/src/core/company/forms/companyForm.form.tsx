@@ -80,17 +80,17 @@ export const CompanyForm: React.FC<FormProps<CompanyFormData>> = ({ initialValue
             <S.FieldWrapper>
                 <G.Label htmlFor="name"> Nome </G.Label>
 
-                <S.Input id="name" name="name" placeholder="Digite o nome da empresa" value={ formData.name } onChange={ handleChange }/>
+                <G.Input id="name" name="name" placeholder="Digite o nome da empresa" value={ formData.name } onChange={ handleChange }/>
             </S.FieldWrapper>
             <S.FieldWrapper>
                 <G.Label htmlFor="document"> CNPJ </G.Label>
 
-                <S.Input id="document" name="document" placeholder="Digite o cnpj da empresa" value={ formatCompanyDocument(formData.document) } onChange={ handleChange }/>
+                <G.Input id="document" name="document" placeholder="Digite o cnpj da empresa" value={ formatCompanyDocument(formData.document) } onChange={ handleChange }/>
             </S.FieldWrapper>
             <S.FieldWrapper>
                 <G.Label htmlFor="description"> Descrição </G.Label>
 
-                <S.Input id="description" name="description" placeholder="Digite uma descrição para a empresa" value={ formData.description } onChange={ handleChange }/>
+                <G.Input id="description" name="description" placeholder="Digite uma descrição para a empresa" value={ formData.description } onChange={ handleChange }/>
             </S.FieldWrapper>
         </S.Form>
     );

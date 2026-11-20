@@ -50,7 +50,7 @@ export const Batch = () => {
         { value: BatchStatus.PARTIAL, label: "Parcial" },
         { value: BatchStatus.FAILED, label: "Falhado" },
         { value: BatchStatus.FINISHED, label: "Finalizado" },
-    ];
+    ].sort((a, b) => a.label.localeCompare(b.label));
 
     const optionsForTemplates = useMemo(() => {
         return templates

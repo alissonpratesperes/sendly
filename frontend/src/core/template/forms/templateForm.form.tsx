@@ -2,6 +2,7 @@ import * as z from 'zod';
 import { toast } from 'react-toastify';
 import React, { useState, useEffect, useRef, Fragment } from 'react';
 
+import * as I from '../../../shared/styles/icon.style';
 import * as G from '../../../shared/styles/global.style';
 import * as S from '../../../shared/components/drawer/styles/drawer.style';
 
@@ -174,6 +175,13 @@ export const TemplateForm: React.FC<FormProps<TemplateFormData>> = ({ initialVal
             setTemplateFields({ ...templateFields, });
         }
     }, [ initialValues, ]);
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setShowPreview(true);
+        }, 300);
+
+        return () => clearTimeout(timer);
+    }, []);
 
     return (
         <Fragment>
@@ -183,26 +191,26 @@ export const TemplateForm: React.FC<FormProps<TemplateFormData>> = ({ initialVal
                 <S.FieldWrapper>
                     <G.Label htmlFor="name"> Nome </G.Label>
 
-                    <S.Input id="name" name="name" placeholder="Digite o nome do template" value={ formData.name } onChange={ (event) => handleChange(event, setFormData) } disabled={ disabled }/>
+                    <G.Input id="name" name="name" placeholder="Digite o nome do template" value={ formData.name } onChange={ (event) => handleChange(event, setFormData) } disabled={ disabled }/>
                 </S.FieldWrapper>
 
                 <S.Fieldset>
                     <S.Legend>
                         <G.ButtonsContainer>
                             <S.WhatsAppPreviewToggleButton type="button" onClick={ handleTogglePreview } $showPreview={ showPreview }>
-                                { !showPreview ? <S.WhatsAppPreviewToggleButtonPlayIcon/> : <S.WhatsAppPreviewToggleButtonPauseIcon/> }
+                                { !showPreview ? <I.PlayIcon/> : <I.PauseIcon/> }
 
                                 <S.WhatsAppPreviewToggleButtonText> Preview </S.WhatsAppPreviewToggleButtonText>
                             </S.WhatsAppPreviewToggleButton>
 
-                            { !disabled && (<S.VariableTipButton $disabled={ hasReachedVariableLimit } disabled={ disabled || hasReachedVariableLimit } type="button" onClick={ handleInsertTemplateVariable }> <S.VariableTipButtonIcon/> <S.VariableTipButtonText> { "{{name}}" } </S.VariableTipButtonText> </S.VariableTipButton>) }
+                            { !disabled && (<S.VariableTipButton $disabled={ hasReachedVariableLimit } disabled={ disabled || hasReachedVariableLimit } type="button" onClick={ handleInsertTemplateVariable }> <I.TagPlusIcon/> <S.VariableTipButtonText> { "{{name}}" } </S.VariableTipButtonText> </S.VariableTipButton>) }
                         </G.ButtonsContainer>
                     </S.Legend>
 
                     <S.FieldWrapper>
                         <G.Label htmlFor="header"> Cabeçalho </G.Label>
 
-                        <S.Input id="header" name="header" placeholder="Digite o cabeçalho do template" value={ templateFields.header } onChange={ (event) => handleChange(event, setTemplateFields) } disabled={ disabled } ref={ templateFormInputRefs.header } onFocus={ () => setActiveField("header") }/>
+                        <G.Input id="header" name="header" placeholder="Digite o cabeçalho do template" value={ templateFields.header } onChange={ (event) => handleChange(event, setTemplateFields) } disabled={ disabled } ref={ templateFormInputRefs.header } onFocus={ () => setActiveField("header") }/>
                     </S.FieldWrapper>
                     <S.FieldWrapper>
                         <S.TextareaWrapper>
@@ -212,7 +220,7 @@ export const TemplateForm: React.FC<FormProps<TemplateFormData>> = ({ initialVal
                     <S.FieldWrapper>
                         <G.Label htmlFor="footer"> Rodapé </G.Label>
 
-                        <S.Input id="footer" name="footer" placeholder="Digite o rodapé do template" value={ templateFields.footer } onChange={ (event) => handleChange(event, setTemplateFields) } disabled={ disabled } ref={ templateFormInputRefs.footer } onFocus={ () => setActiveField("footer") }/>
+                        <G.Input id="footer" name="footer" placeholder="Digite o rodapé do template" value={ templateFields.footer } onChange={ (event) => handleChange(event, setTemplateFields) } disabled={ disabled } ref={ templateFormInputRefs.footer } onFocus={ () => setActiveField("footer") }/>
                     </S.FieldWrapper>
 
                     <Uploader value={ templateImage } existingImage={ existingImage } onRemoveExistingImage={ () => { setExistingImage(undefined); } } onChange={ (file) => { if (file instanceof File) { setTemplateImage(file); } else { setTemplateImage(undefined); } } } blockRemove={ disabled }/>

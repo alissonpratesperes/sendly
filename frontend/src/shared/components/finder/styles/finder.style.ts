@@ -3,15 +3,12 @@ import styled from 'styled-components';
 import { AnimateButtonHover } from '../../../styles/animation.style';
 
 export const SearchInputWrapper = styled.div<{ $isSystemRoot: boolean; }>`
-    margin-bottom: 30px;
     width: 100%;
     position: relative;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    border-top-left-radius: 14px;
-    border-top-right-radius: 14px;
 
     column-gap: ${ ({ $isSystemRoot }) => $isSystemRoot ? "30px" : "0px" };
 `;
@@ -34,7 +31,7 @@ export const SearchInputContainer = styled.div`
             position: absolute;
             inset: -6px;
             border-radius: 18px;
-            border: 2px solid #1C70E9;
+            border: 2px solid #FF6B00;
             opacity: 0;
             transform: scale(1.08);
             transition: transform 0.3s ease, opacity 0.3s ease;
@@ -49,7 +46,7 @@ export const SearchInputContainer = styled.div`
 export const SearchInputField = styled.input`
     margin-left: 15px;
     height: 55px;
-    width: 100%;
+    width: 100% !important;
     font-family: "Lato";
     font-weight: 400;
     font-size: 16px;
@@ -72,7 +69,7 @@ export const AddButton = styled.button`
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: "Lato";
+    font-family: "Orbitron";
     font-weight: 700;
     font-size: 16px;
     border: none;

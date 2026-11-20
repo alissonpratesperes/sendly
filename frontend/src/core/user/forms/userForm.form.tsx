@@ -135,12 +135,12 @@ export const UserForm: React.FC<FormProps<UserFormData>> = ({ initialValues, onS
             <S.FieldWrapper>
                 <G.Label htmlFor="name"> Nome </G.Label>
 
-                <S.Input id="name" name="name" placeholder="Digite o nome do usuário" value={ formData.name } onChange={ handleChange }/>
+                <G.Input id="name" name="name" placeholder="Digite o nome do usuário" value={ formData.name } onChange={ handleChange }/>
             </S.FieldWrapper>
             <S.FieldWrapper>
                 <G.Label htmlFor="email"> Email </G.Label>
 
-                <S.Input id="email" name="email" placeholder="Digite o e-mail do usuário" value={ formData.email } onChange={ handleChange }/>
+                <G.Input id="email" name="email" placeholder="Digite o e-mail do usuário" value={ formData.email } onChange={ handleChange }/>
             </S.FieldWrapper>
         </S.Form>
     );

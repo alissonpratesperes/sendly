@@ -157,7 +157,7 @@ export const WhenInAnotherScreenWrapper = styled.div`
             position: absolute;
             inset: -6px;
             border-radius: 18px;
-            border: 2px solid #1C70E9;
+            border: 2px solid #FF6B00;
             opacity: 0;
             transform: scale(1.08);
             transition: transform 0.3s ease, opacity 0.3s ease;

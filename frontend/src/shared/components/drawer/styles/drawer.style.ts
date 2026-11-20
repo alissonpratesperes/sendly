@@ -41,7 +41,7 @@ export const Header = styled.div`
 `;
 
 export const Title = styled.h2`
-    font-family: "Inter";
+    font-family: "Orbitron";
     font-weight: 700;
     font-size: 18px;
     color: #171719;
@@ -56,7 +56,7 @@ export const CloseButton = styled.button`
     justify-content: center;
     border: none;
     color: #224463;
-    background: none;
+    background-color: #E8EEF8;
     border-radius: 14px;
     cursor: pointer;
     transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
@@ -166,7 +166,7 @@ export const FieldWrapper = styled.div`
             position: absolute;
             inset: -6px;
             border-radius: 18px;
-            border: 2px solid #1C70E9;
+            border: 2px solid #FF6B00;
             opacity: 0;
             transform: scale(1.08);
             transition: transform 0.3s ease, opacity 0.3s ease;
@@ -281,7 +281,7 @@ export const FooterButton = styled.button<{ $variant?: "primary" | "secondary"; 
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    font-family: "Inter";
+    font-family: "Orbitron";
     font-weight: 700;
     font-size: 16px;
     border: none;
@@ -429,7 +429,7 @@ export const WhatsAppPreviewToggleButton = styled.button<{ $showPreview: boolean
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    font-family: "Inter";
+    font-family: "Orbitron";
     font-weight: 700;
     font-size: 16px;
     border: none;

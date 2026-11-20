@@ -186,12 +186,12 @@ export const ContactForm: React.FC<FormProps<ContactFormData>> = ({ initialValue
             <S.FieldWrapper>
                 <G.Label htmlFor="name"> Nome </G.Label>
 
-                <S.Input id="name" name="name" placeholder="Digite o nome do contato" value={ formData.name } onChange={ handleChange }/>
+                <G.Input id="name" name="name" placeholder="Digite o nome do contato" value={ formData.name } onChange={ handleChange }/>
             </S.FieldWrapper>
             <S.FieldWrapper>
                 <G.Label htmlFor="phone"> Telefone </G.Label>
 
-                <S.Input id="phone" name="phone" placeholder="Digite o telefone do contato" value={ formData.phone } onChange={ handleChange }/>
+                <G.Input id="phone" name="phone" placeholder="Digite o telefone do contato" value={ formData.phone } onChange={ handleChange }/>
             </S.FieldWrapper>
             <S.FieldWrapper>
                 <Dropdown

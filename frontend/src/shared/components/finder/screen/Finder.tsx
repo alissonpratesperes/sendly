@@ -1,8 +1,8 @@
 import React from 'react';
 
 import * as S from '../styles/finder.style';
+import * as I from '../../../styles/icon.style';
 import * as G from '../../../styles/global.style';
-import * as I from '../../../shared/styles/icon.style';
 
 import { FinderProps } from '../interfaces/finderProps.interface';
 

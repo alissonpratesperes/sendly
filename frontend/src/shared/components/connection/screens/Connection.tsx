@@ -1,9 +1,9 @@
 import { toast } from 'react-toastify';
 import React, { useState, useEffect, Fragment } from 'react';
 
+import * as I from '../../../styles/icon.style';
 import * as S from '../../../styles/modal.style';
 import * as G from '../../../styles/global.style';
-import * as I from '../../../shared/styles/icon.style';
 
 import { PairingCode } from '../../pairingCode/screens/PairingCode';
 import { LoadingState } from '../../loadingState/screens/LoadingState';
@@ -88,7 +88,7 @@ export const Connection: React.FC<ConnectionProps> = ({ onPairingSuccess, isOpen
                         <S.ModalHeader>
                             <S.ModalTitle> Sessão do WhatsApp </S.ModalTitle>
 
-                            <S.ModalDismissButton type="button" onClick={ () => setIsClosing(true) }> <S.ModalDismissButtonIcon/> </S.ModalDismissButton>
+                            <S.ModalDismissButton type="button" onClick={ () => setIsClosing(true) }> <I.XIcon/> </S.ModalDismissButton>
                         </S.ModalHeader>
 
                         <S.ModalBody>
@@ -125,14 +125,14 @@ export const Connection: React.FC<ConnectionProps> = ({ onPairingSuccess, isOpen
 
                                 { !status?.connected && !pairingCode && (
                                     <S.ModalTertiaryButton type="submit" form="baileys-form" disabled={ loadingStatus }>
-                                        <I.GlobeCode/>
+                                        <I.GlobeCodeIcon/>
 
                                         <S.ModalFooterButtonText> Gerar código </S.ModalFooterButtonText>
                                     </S.ModalTertiaryButton>
                                 ) }
                                 { status?.connected && (
                                     <S.ModalSecondaryButton onClick={ handleDisconnect }>
-                                        <I.GlobeOff/>
+                                        <I.GlobeOffIcon/>
 
                                         <S.ModalFooterButtonText> Desconectar </S.ModalFooterButtonText>
                                     </S.ModalSecondaryButton>

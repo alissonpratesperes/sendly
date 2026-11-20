@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-// import { } from 'lucide-react';
+import { AlertCircle, ArrowBigLeft, ArrowBigRight, Ban, CircleAlert, CircleCheck, DatabaseArrowUp, DatabaseCheck, DatabasePlus, Ellipsis, Eraser, EyeIcon, EyeOffIcon, FileDown, FileUp, Funnel, GlobeCode, GlobeOff, HardDriveUpload, ImageDown, ImageUp, Inbox, KeyRound, LockOpen, MessageSquareMore, Pause, Play, Power, Save, ScrollText, Search, Smartphone, SquarePen, TagPlus, Trash, Upload, UserLock, X } from 'lucide-react';
 
 export const StyledBaseIcon = css`
     height: 25px;
@@ -89,7 +89,7 @@ export const PauseIcon = styled(Pause)`
     ${ StyledBaseIcon }
 `;
 
-export const PauseIcon = styled(Funnel)`
+export const FunnelIcon = styled(Funnel)`
     ${ StyledBaseIcon }
 
         margin-left: 15px;
@@ -99,7 +99,7 @@ export const PauseIcon = styled(Funnel)`
 
 export const SearchIcon = styled(Search)`
     ${ StyledBaseIcon }
-    
+
         color: #FF6B00;
 `;
 
@@ -135,8 +135,8 @@ export const ArrowBigRightIcon = styled(ArrowBigRight)`
 
 export const KeyRoundIcon = styled(KeyRound)`
     ${ StyledBaseIcon }
-    
-    color: #2F2E33;
+
+        color: #1C70E9;
 `;
 
 export const MessageSquareMoreIcon = styled(MessageSquareMore)`
@@ -168,10 +168,6 @@ export const ImageDownIcon = styled(ImageDown)`
 `;
 
 export const EraserIcon = styled(Eraser)`
-    ${ StyledBaseIcon }
-`;
-
-export const TrashIcon = styled(Trash)`
     ${ StyledBaseIcon }
 `;
 

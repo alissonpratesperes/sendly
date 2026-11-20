@@ -35,7 +35,7 @@ export const NavItem = styled(NavLink)`
   align-items: center;
   justify-content: center;
   column-gap: 7.5px;
-  font-family: "Lato";
+  font-family: "Orbitron";
   font-weight: 700;
   font-size: 16px;
   color: #F0F0F5;

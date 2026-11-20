@@ -26,8 +26,8 @@ export const ConnectionBadgeContainer = styled.span<ConnectionBadgeProps>`
     border-radius: 14px;
 
     color: ${ ({ variant }) => CONNECTION_BADGE_CONFIG[variant].fontColor };
-    margin-bottom: ${ ({ variant }) => variant === ConnectionBadgeVariant.CONNECTED ? "0px" : "30px" };
     background-color: ${ ({ variant }) => CONNECTION_BADGE_CONFIG[variant].backgroundColor };
+    margin-bottom: ${ ({ variant }) => variant === ConnectionBadgeVariant.CONNECTED ? "0px" : "30px" };
 `;
 
 export const ConnectionLabel = styled.div`

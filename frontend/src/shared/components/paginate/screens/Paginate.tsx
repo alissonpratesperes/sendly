@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import * as S from '../styles/paginate.style';
-import * as I from '../../../shared/styles/icon.style';
+import * as I from '../../../styles/icon.style';
 
 import { PageOption } from '../types/pageOption.type';
 import { Dropdown } from '../../dropdown/screens/Dropdown';

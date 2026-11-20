@@ -42,7 +42,7 @@ export const BatchSend = () => {
         { value: BatchSendStatus.PROCESSING, label: "Processando" },
         { value: BatchSendStatus.SENT, label: "Enviado" },
         { value: BatchSendStatus.ERROR, label: "Falhado" },
-    ];
+    ].sort((a, b) => a.label.localeCompare(b.label));
     const optionsForBatches = batches
         .filter((batch: BatchResponseDto) => batch.id !== undefined && batch.id !== null)
         .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
@@ -213,7 +213,7 @@ export const BatchSend = () => {
                 <EmptyState message={ selectedBatchId === null ? "Selecione um lote para carregar os envios" : "Nenhum envio encontrado para os filtros selecionados" }/>
             ) }
 
-            <Drawer isOpen={ isDrawerOpen } isSubmitting={ isSubmitting } formId="batch-form" title={ "Template enviado" } mode={ viewingBatchSend ? "edit" : "create" } onClose={ () => { setIsDrawerOpen(false); setViewingBatchSend(null); } } hideFooter={ true }>
+            <Drawer isOpen={ isDrawerOpen } isSubmitting={ isSubmitting } formId="batch-form" title={ "Template enviado" } mode={ viewingBatchSend ? "edit" : "create" } onClose={ () => { setIsDrawerOpen(false); setViewingBatchSend(null); } } viewOrImportMode={ true }>
                 <TemplateForm initialValues={ viewingBatchSend ?? undefined } onCancel={ () => { setIsDrawerOpen(false); if (isSubmitting) { return; } setViewingBatchSend(null); } } onSubmit={ () => { setIsDrawerOpen(false); setViewingBatchSend(null); handleRead(); } } onLoadingChange={ setIsSubmitting } disabled={ true }/>
             </Drawer>
         </Fragment>

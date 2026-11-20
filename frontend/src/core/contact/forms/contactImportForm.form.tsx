@@ -1,6 +1,7 @@
 import { toast } from 'react-toastify';
 import React, { Fragment, useEffect, useState } from 'react';
 
+import * as I from '../../../shared/styles/icon.style';
 import * as S from '../../../shared/components/drawer/styles/drawer.style';
 import * as F from '../../../shared/components/dropdown/styles/contactFormDropdown.style';
 
@@ -134,20 +135,20 @@ export const ContactImportForm: React.FC<ImportFormProps> = ({ onCancel, onSubmi
                 </S.Form>
             ) : (
                 <S.ContactImportResultContainer>
-                    <S.ImportResultTitle> <S.ImportResultTitleIcon/> Resultado da importação </S.ImportResultTitle>
+                    <S.ImportResultTitle> <I.DatabaseCheckIcon/> Resultado da importação </S.ImportResultTitle>
 
                     <S.ImportResultInformations>
-                        <S.ImportResultSucceededTitle> <S.ImportResultTitleCheckIcon/> { importResult.valid } </S.ImportResultSucceededTitle>
-                        <S.ImportResultUnsucceededTitle> <S.ImportResultTitleAlertIcon/> { importResult.invalid } </S.ImportResultUnsucceededTitle>
+                        <S.ImportResultSucceededTitle> <I.CircleCheckIcon/> { importResult.valid } </S.ImportResultSucceededTitle>
+                        <S.ImportResultUnsucceededTitle> <I.CircleAlertIcon/> { importResult.invalid } </S.ImportResultUnsucceededTitle>
                     </S.ImportResultInformations>
 
                     { importResult.errors.length > 0 && (
                         <S.ImportResultErrorList>
-                            <S.ImportResultErrorListTitle> <S.ImportResultErrorListIcon/> Log do processamento </S.ImportResultErrorListTitle>
+                            <S.ImportResultErrorListTitle> <I.ScrollTextIcon/> Log do processamento </S.ImportResultErrorListTitle>
 
                             { importResult.errors.map((error, index) => (
                                 <S.ImportResultErrorListItem key={ index }>
-                                    <S.ImportResultLeftContainer> <S.ImportResultLeftContainerIcon/> </S.ImportResultLeftContainer>
+                                    <S.ImportResultLeftContainer> <I.AlertCircleIcon/> </S.ImportResultLeftContainer>
 
                                     <S.ImportResultRightContainer>
                                         <S.ImportResultErrorName> { error.name } </S.ImportResultErrorName>

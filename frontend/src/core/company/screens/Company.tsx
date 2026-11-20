@@ -12,12 +12,14 @@ import { Table } from '../../../shared/components/table/screens/Table';
 import { Modal } from '../../../shared/components/modal/screens/Modal';
 import { Finder } from '../../../shared/components/finder/screen/Finder';
 import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
+import { UsersRankingResponseDto } from '../dtos/usersRankingResponse.dto';
 import { Paginate } from '../../../shared/components/paginate/screens/Paginate';
 import { EmptyState } from '../../../shared/components/emptyState/screens/EmpyState';
 import { formatCompanyDocument } from '../../../shared/utils/formatCompanyDocument.util';
 import { getAuthenticationStorage } from '../../../shared/utils/authenticationStorage.util';
 import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
+import { DashboardRankingChart } from '../../../shared/components/dashboardChart/screens/DashboardRankingChart';
 
 export const Company = () => {
     const [page, setPage] = useState<number>(1);
@@ -33,6 +35,7 @@ export const Company = () => {
     const [isRankingLoading, setIsRankingLoading] = useState<boolean>(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
     const [selectedCompanyId, setSelectedCompanyId] = useState<number | null>(null);
+    const [usersRanking, setUsersRanking] = useState<UsersRankingResponseDto[]>([]);
 
     const { userInformation } = getAuthenticationStorage();
 
@@ -40,13 +43,13 @@ export const Company = () => {
         setUpdating(null);
         setIsDrawerOpen(true);
     }
-    const handleRank = useCallback(async () => {
+    const handleUsersRanking = useCallback(async () => {
         try {
             setIsRankingLoading(true);
 
             const response = await Rank();
 
-            setRanking(response);
+            setUsersRanking(response);
         } catch (error) {
             toast.error(`Erro ao carregar o dashboard para Empresas: ${ error }`);
         } finally {
@@ -107,8 +110,8 @@ export const Company = () => {
     }
 
     useEffect(() => {
-        handleRank();
-    }, [ handleRank, ]);
+        handleUsersRanking();
+    }, [ handleUsersRanking, ]);
     useEffect(() => {
         const timeout = setTimeout(() => {
             handleRead();
@@ -127,6 +130,21 @@ export const Company = () => {
             ) }
             { !isLoading && companies.length > 0 && (
                 <Fragment>
+                    { !isRankingLoading && usersRanking.length > 0 && (
+                        <DashboardRankingChart
+                            counterData={ total }
+                            graphicData={ usersRanking.map((item) => ({
+                                name: item.companyName,
+                                value: item.totalUsers,
+                            })) }
+                            graphicConfig={{
+                                entitySingular: "Empresa",
+                                entityPlural: "Empresas",
+                                subEntityPlural: "Usuários",
+                            }}
+                        />
+                    ) }
+
                     <Table<CompanyResponseDto>
                         headers={[ "Nome", "Documento", "Descrição", "Atualização", ]}
                         data={ companies }

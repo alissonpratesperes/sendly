@@ -52,7 +52,7 @@ export const FormContainer = styled.div`
 export const FormTitle = styled.h4`
     margin-bottom: 15px;
     align-self: flex-start;
-    font-family: "Inter";
+    font-family: "Orbitron";
     font-weight: 900;
     font-size: 25px;
     color: #171719;
@@ -60,10 +60,10 @@ export const FormTitle = styled.h4`
 
 export const FormSubtitle = styled.span`
     margin-bottom: 30px;
-    align-self: flex-start;
-    font-family: "Inter";
+    text-align: justify;
+    font-family: "Orbitron";
     font-weight: 700;
-    font-size: 18px;
+    font-size: 16px;
     color: #525059;
 `;
 
@@ -77,7 +77,7 @@ export const InputWrapper = styled.div`
             position: absolute;
             inset: -6px;
             border-radius: 18px;
-            border: 2px solid #1C70E9;
+            border: 2px solid #FF6B00;
             opacity: 0;
             transform: scale(1.08);
             transition: transform 0.3s ease, opacity 0.3s ease;
@@ -94,6 +94,7 @@ export const Label = styled.label`
     position: absolute;
     left: 15px;
     top: 7.5px;
+    text-transform: uppercase;
     font-family: "Lato";
     font-weight: 700;
     font-size: 12px;
@@ -101,7 +102,9 @@ export const Label = styled.label`
     pointer-events: none;
 `;
 
-export const SessionInformationWrapper = styled.div`
+export const SessionInformationWrapper = styled.div<{ $isInHomeScreen?: boolean; }>`
+    margin-top: ${ ({ $isInHomeScreen }) => $isInHomeScreen ? "-30px" : "0px" };
+    margin-bottom: 28px;
     height: auto;
     width: 100%;
     display: flex;
@@ -112,7 +115,7 @@ export const SessionInformationWrapper = styled.div`
 
 export const SessionTitle = styled.h1`
     margin-bottom: 7.5px;
-    font-family: "Inter";
+    font-family: "Orbitron";
     font-weight: 900;
     font-size: 25px;
     color: #1C70E9;
@@ -121,7 +124,7 @@ export const SessionTitle = styled.h1`
 export const SessionSubtitle = styled.span`
     margin-bottom: 30px;
     align-self: flex-start;
-    font-family: "Inter";
+    font-family: "Orbitron";
     font-weight: 700;
     font-size: 18px;
     color: #F0F0F5;
@@ -146,12 +149,13 @@ export const Input = styled.input`
         }
 `;
 
-export const ButtonsContainer = styled.div`
+export const ButtonsContainer = styled.div<{ $isInLoginScreen?: boolean; }>`
+    width: ${ ({ $isInLoginScreen }) => $isInLoginScreen ? "100%" : "auto" };
+
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 0px;
-    flex-shrink: 0;
+    justify-content: flex-end;
 `;
 
 export const Footer = styled.footer`

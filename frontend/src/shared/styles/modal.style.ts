@@ -41,7 +41,7 @@ export const ModalHeader = styled.div`
 `;
 
 export const ModalTitle = styled.h3`
-    font-family: "Inter";
+    font-family: "Orbitron";
     font-weight: 700;
     font-size: 18px;
     color: #171719;
@@ -56,7 +56,7 @@ export const ModalDismissButton = styled.button`
     justify-content: center;
     border: none;
     color: #224463;
-    background: none;
+    background-color: #E8EEF8;
     border-radius: 14px;
     cursor: pointer;
     transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
@@ -66,7 +66,7 @@ export const ModalDismissButton = styled.button`
             background-color: #223463;
 
             animation: ${ AnimateButtonHover } 0.6s ease-in-out;
-        }  
+        }
 `;
 
 export const ModalBody = styled.div`
@@ -115,8 +115,8 @@ export const ModalButton = styled.button`
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    font-family: "Lato";
-    font-weight: 400;
+    font-family: "Orbitron";
+    font-weight: 700;
     font-size: 16px;
     border: none;
     cursor: pointer;

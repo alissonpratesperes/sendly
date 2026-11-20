@@ -1,6 +1,6 @@
 import Select, { components, type ControlProps } from 'react-select';
 
-import * as I from '../../../shared/styles/icon.style';
+import * as I from '../../../styles/icon.style';
 
 import { SelectCommonStyles } from '../styles/dropdown.style';
 import { DropdownProps } from '../interfaces/dropdownProps.interface';

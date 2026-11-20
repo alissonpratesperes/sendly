@@ -160,7 +160,7 @@ export const BatchForm: React.FC<FormProps<BatchFormData>> = ({ initialValues, o
             <S.FieldWrapper>
                 <G.Label htmlFor="name"> Nome </G.Label>
 
-                <S.Input id="name" name="name" placeholder="Digite o nome do envio" value={ formData.name } onChange={ handleChange }/>
+                <G.Input id="name" name="name" placeholder="Digite o nome do envio" value={ formData.name } onChange={ handleChange }/>
             </S.FieldWrapper>
             <S.FieldWrapper>
                 <Dropdown

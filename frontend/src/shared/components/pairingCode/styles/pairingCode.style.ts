@@ -27,15 +27,17 @@ export const PairingCodeCharactersCards = styled.span`
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-weight: bold;
+    font-family: "Orbitron";
+    font-weight: 900;
     font-size: 18px;
     color: #FFFFFF;
-    background-color: #1C70E9;
-    border-radius: 7px;
+    background-color: #FF6B00;
+    border-radius: 8px;
 `;
 
 export const PairingCodeCharactersSeparator = styled.span`
+    margin: 0px 7.5px 0px 7.5px;
     font-size: 25px;
     font-weight: bold;
-    color: #2F2E33;
+    color: #171719;
 `;

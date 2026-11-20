@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
 import parsePhoneNumberFromString from 'libphonenumber-js';
 
+import * as I from '../../../styles/icon.style';
 import * as S from '../styles/connectionBadge.style';
-import * as I from '../../../shared/styles/icon.style';
 
 import { ConnectionBadgeProps } from '../interfaces/connectionBadgeProps.interface';
 import { CONNECTION_BADGE_CONFIG } from '../constants/connectionBadgeConfig.constant';

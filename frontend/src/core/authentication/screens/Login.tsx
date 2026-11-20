@@ -71,10 +71,10 @@ export const Authentication: React.FC = () => {
 
                     <G.Input type={ showPassword ? "text" : "password" } id="password" placeholder="Digite sua senha" value={ password } onChange={ (inputEvent) => setPassword(inputEvent.target.value) } required/>
 
-                   <S.EyeButton type="button" onClick={ togglePasswordVisibility }> { showPassword ? ( <G.EyeIconIcon/> ) : ( <G.EyeOffIconIcon/> ) } </S.EyeButton>
+                   <S.EyeButton type="button" onClick={ togglePasswordVisibility }> { showPassword ? ( <I.EyeIconIcon/> ) : ( <I.EyeOffIconIcon/> ) } </S.EyeButton>
                 </G.InputWrapper>
 
-                <G.ButtonsContainer>
+                <G.ButtonsContainer $isInLoginScreen={ true }>
                     { isLoading && (
                         <LoadingState/>
                     ) }

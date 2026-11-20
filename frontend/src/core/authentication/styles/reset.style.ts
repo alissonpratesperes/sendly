@@ -37,7 +37,7 @@ export const PasswordButton = styled.button`
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: "Lato";
+    font-family: "Orbitron";
     font-weight: 700;
     font-size: 16px;
     color: #223463;

@@ -14,9 +14,7 @@ export const PairingCode: React.FC<PairingCodeProps> = ({ pairingCode }) => {
             <S.PairingCodeTextContainer>
                 <I.KeyRoundIcon/>
 
-                <M.ModalBoldText>
-                    Insira o código abaixo no seu aplicativo do WhatsApp
-                </M.ModalBoldText>
+                <M.ModalBoldText> Insira o código abaixo no seu aplicativo do WhatsApp </M.ModalBoldText>
             </S.PairingCodeTextContainer>
 
             <S.PairingCodeDigitsContainer>
@@ -24,7 +22,7 @@ export const PairingCode: React.FC<PairingCodeProps> = ({ pairingCode }) => {
                     <Fragment key={ index }>
                         <S.PairingCodeCharactersCards> { char } </S.PairingCodeCharactersCards>
 
-                        { index === 3 && (<S.PairingCodeCharactersSeparator> - </S.PairingCodeCharactersSeparator>) }
+                        { index === 3 && (<S.PairingCodeCharactersSeparator> • </S.PairingCodeCharactersSeparator>) }
                     </Fragment>
                 )) }
             </S.PairingCodeDigitsContainer>

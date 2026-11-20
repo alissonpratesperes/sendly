@@ -50,7 +50,7 @@ export const Contact = () => {
     const optionsForContactActive = [
         { value: true, label: "Ativo" },
         { value: false, label: "Inativo" },
-    ];
+    ].sort((a, b) => a.label.localeCompare(b.label));
     const selectedContactActiveOption = useMemo(() => {
         return optionsForContactActive.find((option) => option.value === selectedContactActive) ?? null;
     }, [ optionsForContactActive, selectedContactActive, ]);
@@ -284,7 +284,7 @@ export const Contact = () => {
 
             <Modal isOpen={ isDeleteModalOpen } entityName={ contacts.find((contact: ContactResponseDto) => contact.id === selectedContactId)?.name ?? " " } onClose={ () => setIsDeleteModalOpen(false) } onConfirm={ handleDelete }/>
 
-            <Drawer isOpen={ isImportDrawerOpen } isSubmitting={ isSubmitting } formId="contact-import-form" title={ "Importação em lote" } mode="import" onClose={ () => { setIsImportDrawerOpen(false); setIsImportDrawerOpen(false); setHasImportErrors(false); handleRead(); } } hideFooter={ hasImportErrors }>
+            <Drawer isOpen={ isImportDrawerOpen } isSubmitting={ isSubmitting } formId="contact-import-form" title={ "Importação em lote" } mode="import" onClose={ () => { setIsImportDrawerOpen(false); setIsImportDrawerOpen(false); setHasImportErrors(false); handleRead(); } } viewOrImportMode={ hasImportErrors }>
                 <ContactImportForm onCancel={ () => { setIsImportDrawerOpen(false); if (isSubmitting) { return; } } } onSubmit={ () => { setIsImportDrawerOpen(false); handleRead(); } } onLoadingChange={ setIsSubmitting } onResultChange={ setHasImportErrors }/>
             </Drawer>
             <Drawer isOpen={ isDrawerOpen } isSubmitting={ isSubmitting } formId="contact-form" title={ updating ? "Editar contato" : "Novo contato" } mode={ updating ? "edit" : "create" } onClose={ () => { setIsDrawerOpen(false); setUpdating(null); } }>

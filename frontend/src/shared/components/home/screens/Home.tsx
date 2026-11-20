@@ -7,7 +7,7 @@ export const Home: React.FC = () => {
     return (
         <Fragment>
             <S.HeaderWrapper>
-                <G.SessionInformationWrapper>
+                <G.SessionInformationWrapper $isInHomeScreen={ true }>
                     <G.SessionTitle> Gerenciar envios </G.SessionTitle>
 
                     <G.SessionSubtitle> Monitore os envios, e fique por dentro da execução </G.SessionSubtitle>

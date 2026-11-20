@@ -80,14 +80,14 @@ export const Reset: React.FC = () => {
 
                     <G.Input type={ showPassword ? "text" : "password" } id="newPassword" placeholder="Digite sua nova senha" value={ newPassword } onChange={ (inputEvent) => setNewPassword(inputEvent.target.value) } required/>
 
-                    <S.EyeButton type="button" onClick={ () => setShowPassword(!showPassword) }> { showPassword ? ( <S.EyeButtonIconOpened/> ) : ( <S.EyeButtonIconClosed/> ) } </S.EyeButton>
+                    <S.EyeButton type="button" onClick={ () => setShowPassword(!showPassword) }> { showPassword ? ( <I.EyeIconIcon/> ) : ( <I.EyeOffIconIcon/> ) } </S.EyeButton>
                 </G.InputWrapper>
                 <G.InputWrapper>
                     <G.Label htmlFor="confirmPassword"> CONFIRMAR NOVA SENHA </G.Label>
 
                     <G.Input type={ showConfirmPassword ? "text" : "password" } id="confirmPassword" placeholder="Confirme sua nova senha" value={ confirmPassword } onChange={ (inputEvent) => setConfirmPassword(inputEvent.target.value) } required/>
 
-                    <S.EyeButton type="button" onClick={ () => setShowConfirmPassword(!showConfirmPassword) }> { showConfirmPassword ? ( <S.EyeButtonIconOpened/> ) : ( <S.EyeButtonIconClosed/> ) } </S.EyeButton>
+                    <S.EyeButton type="button" onClick={ () => setShowConfirmPassword(!showConfirmPassword) }> { showConfirmPassword ? ( <I.EyeIconIcon/> ) : ( <I.EyeOffIconIcon/> ) } </S.EyeButton>
                 </G.InputWrapper>
 
                 { isLoading && (

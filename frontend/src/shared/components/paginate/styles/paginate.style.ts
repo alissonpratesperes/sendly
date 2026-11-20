@@ -22,8 +22,8 @@ export const PaginateButton = styled.button`
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    font-family: "Lato";
-    font-weight: 500;
+    font-family: "Orbitron";
+    font-weight: 700;
     font-size: 16px;
     background: none;
     border: none;
@@ -48,9 +48,6 @@ export const PaginateButton = styled.button`
 export const PreviousButtonText = styled.span`
     display: flex;
     align-items: center;
-    font-family: "Lato";
-    font-weight: 700;
-    font-size: 16px;
 `;
 
 export const PagesArrayContainer = styled.div`
@@ -65,7 +62,7 @@ export const PageButton = styled.button<{ $active?: boolean; $anotherHovered: bo
     padding: 15px;
     height: 55px;
     width: 55px;
-    font-family: "Lato";
+    font-family: "Orbitron";
     font-weight: 700;
     font-size: 16px;
     border-radius: 14px;
@@ -85,7 +82,6 @@ export const PageButton = styled.button<{ $active?: boolean; $anotherHovered: bo
 
             ${ ({ $active }) => !$active &&
                 css` &:hover {
-                    font-weight: 700;
                     color: #FFFFFF;
                     background-color: #223463;
 
@@ -97,7 +93,4 @@ export const PageButton = styled.button<{ $active?: boolean; $anotherHovered: bo
 export const NextButtonText = styled.span`
     display: flex;
     align-items: center;
-    font-family: "Lato";
-    font-weight: 700;
-    font-size: 16px;
 `;

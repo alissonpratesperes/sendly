@@ -1,5 +1,6 @@
+import { ClsService } from 'nestjs-cls';
 import { Company, Prisma } from '@prisma/client';
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
 import { GetCompanyResponseDto } from './dtos/getCompanyResponse.dto';
@@ -10,6 +11,7 @@ import { formatCompanyDocument } from '../common/formatters/companyDocument.form
 @Injectable()
 export class CompanyService {
     constructor(
+        private readonly clsService: ClsService,
         private readonly prismaService: PrismaService,
     ) {}
 
@@ -62,6 +64,49 @@ export class CompanyService {
         return this.toCompanyResponse(createdCompany);
     }
 
+    async rank(): Promise<UsersRankingResponseDto[]> {
+        const companyId = this.clsService.get<number>("companyId");
+        const isSystemRoot = this.clsService.get<boolean>("isSystemRoot");
+
+        if (!isSystemRoot && companyId === undefined) {
+            throw new ForbiddenException("Company context not found");
+        }
+
+        const client = isSystemRoot ? this.prismaService.authClient : this.prismaService.client;
+        const ranking = await client.$queryRaw<{ companyId: number; companyName: string; totalUsers: bigint; }[]>`
+            SELECT
+                c.Id AS companyId,
+                c.Name AS companyName,
+                COUNT(u.Id) AS totalUsers
+            FROM
+                Company c
+            INNER JOIN
+                User u
+            ON
+                u.CompanyId = c.Id
+            WHERE
+                c.DeletedAt IS NULL
+            AND
+                u.DeletedAt IS NULL
+
+                    ${ !isSystemRoot ? Prisma.sql`AND c.Id = ${ companyId }` : Prisma.empty }
+            GROUP BY
+                c.Id,
+                c.Name
+            ORDER BY
+                totalUsers DESC,
+                c.Id ASC
+        `;
+
+        return ranking.map((item) =>
+            new UsersRankingResponseDto(
+                Number(item.companyId),
+                item.companyName,
+                Number(item.totalUsers),
+            ),
+        );
+    }
+
     async read(id: number): Promise<GetCompanyResponseDto> {
         const company = await this.prismaService.client.company.findFirst({
             where: {
@@ -98,37 +143,6 @@ export class CompanyService {
             total,
 
             companies.map((company: Company) => this.toCompanyResponse(company)),
-        );
-    }
-
-    async rank(): Promise<UsersRankingResponseDto[]> {
-        const ranking = await this.prismaService.client.$queryRaw<{ companyId: number; companyName: string; totalUsers: bigint; }[]>`
-            SELECT
-                c.Id AS companyId,
-                c.Name AS companyName,
-                COUNT(u.Id) AS totalUsers
-            FROM
-                Company c
-            INNER JOIN
-                User u
-            ON
-                u.CompanyId = c.Id
-            WHERE
-                c.DeletedAt IS NULL
-            GROUP BY
-                c.Id,
-                c.Name
-            ORDER BY
-                totalUsers DESC,
-                c.Id ASC
-        `;
-
-        return ranking.map((item) =>
-            new UsersRankingResponseDto(
-                Number(item.companyId),
-                item.companyName,
-                Number(item.totalUsers),
-            ),
         );
     }
 
