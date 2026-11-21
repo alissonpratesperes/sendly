@@ -2,6 +2,7 @@ import { UserResponseDto } from '../dtos/userResponse.dto';
 import { IdParamDto } from '../../../shared/dtos/idParam.dto';
 import { CreateUserCommandDto } from '../dtos/createUserCommand.dto';
 import { UpdateUserCommandDto } from '../dtos/updateUserCommand.dto';
+import { UsersRankingResponseDto } from '../dtos/usersRankingResponse.dto';
 import axiosInstance from '../../authentication/interceptors/authorization.interceptor';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
 import { PaginatedResponseDto } from '../../../shared/components/paginate/dtos/paginatedResponse.dto';
@@ -10,6 +11,12 @@ const BASE_ENDPOINT: string = "user";
 
 export const Create = async (command: CreateUserCommandDto): Promise<UserResponseDto> => {
     const { data } = await axiosInstance.post<UserResponseDto>(BASE_ENDPOINT, command);
+
+    return data;
+}
+
+export const Rank = async(): Promise<UsersRankingResponseDto> => {
+    const { data } = await axiosInstance.get<UsersRankingResponseDto>(`${ BASE_ENDPOINT }/chart/users-ranking`);
 
     return data;
 }

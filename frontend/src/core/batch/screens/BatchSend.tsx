@@ -66,8 +66,8 @@ export const BatchSend = () => {
             setBatchSendsRanking([
                 { name: "Aguardando", value: response.waiting },
                 { name: "Processando", value: response.processing },
-                { name: "Enviado", value: response.sent },
-                { name: "Falhado", value: response.error },
+                { name: "Enviados", value: response.sent },
+                { name: "Falhados", value: response.error },
             ]);
         } catch (error) {
             toast.error(`Erro ao carregar o dashboard para Envios: ${ error }`);

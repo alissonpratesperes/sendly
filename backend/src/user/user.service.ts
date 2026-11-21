@@ -1,19 +1,22 @@
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
+import { ClsService } from 'nestjs-cls';
 import { Prisma, User } from '@prisma/client';
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 
 import { MailService } from '../mail/mail.service';
 import { TokenService } from '../token/token.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { CompanyService } from '../company/company.service';
 import { GetUserResponseDto } from './dtos/getUserResponse.dto';
+import { UsersRankingResponseDto } from './dtos/usersRankingResponse.dto';
 import { PaginatedResponseDto } from '../common/dtos/paginatedResponse.dto';
 import { requireEnvironmentVariable } from '../common/utils/requireEnvironmentVariable.util';
 
 @Injectable()
 export class UserService {
     constructor(
+        private readonly clsService: ClsService,
         private readonly mailService: MailService,
         private readonly tokenService: TokenService,
         private readonly prismaService: PrismaService,
@@ -97,6 +100,40 @@ export class UserService {
         );
 
         return this.toUserResponse(createdUser);
+    }
+
+    async rank(): Promise<UsersRankingResponseDto> {
+        const companyId = this.clsService.get<number>("companyId");
+        const isSystemRoot = this.clsService.get<boolean>("isSystemRoot");
+
+        if (!isSystemRoot && companyId === undefined) {
+            throw new ForbiddenException("Company context not found");
+        }
+
+        const client = isSystemRoot ? this.prismaService.authClient : this.prismaService.client;
+
+        const [ranking] = await client.$queryRaw<{ active: bigint; inactive: bigint; }[]>`
+            SELECT
+                COALESCE(SUM(CASE WHEN u.PasswordResetToken IS NULL AND u.IsFirstAccess = 0 THEN 1 ELSE 0 END), 0) AS active,
+                COALESCE(SUM(CASE WHEN u.PasswordResetToken IS NOT NULL AND u.IsFirstAccess = 1 THEN 1 ELSE 0 END), 0) AS inactive
+            FROM
+                User u
+            INNER JOIN
+                Company c
+            ON
+                c.Id = u.CompanyId
+            WHERE
+                u.DeletedAt IS NULL
+            AND
+                c.DeletedAt IS NULL
+
+                    ${ !isSystemRoot ? Prisma.sql`AND c.Id = ${ companyId }` : Prisma.empty }
+        `;
+
+        return new UsersRankingResponseDto(
+            Number(ranking.active),
+            Number(ranking.inactive),
+        );
     }
 
     async read(id: number): Promise<GetUserResponseDto> {

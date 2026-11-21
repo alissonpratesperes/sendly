@@ -5,8 +5,8 @@ import * as S from '../../../shared/components/table/styles/table.style';
 
 import { UserForm } from '../forms/userForm.form';
 import { UserStatus } from '../enums/userStatus.enum';
-import { List, Delete } from '../services/user.service';
 import { UserResponseDto } from '../dtos/userResponse.dto';
+import { Rank, List, Delete } from '../services/user.service';
 import { UserFormData } from '../schemas/userFormSchema.schema';
 import { formatDate } from '../../../shared/utils/formatDate.util';
 import { Modal } from '../../../shared/components/modal/screens/Modal';
@@ -22,6 +22,7 @@ import { StatusBadge } from '../../../shared/components/statusBadge/screens/Stat
 import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
 import { getAuthenticationStorage } from '../../../shared/utils/authenticationStorage.util';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
+import { DashboardRankingChart } from '../../../shared/components/dashboardChart/screens/DashboardRankingChart';
 
 export const User = () => {
     const [page, setPage] = useState<number>(1);
@@ -34,10 +35,12 @@ export const User = () => {
     const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
     const [updating, setUpdating] = useState<UserFormData | null>(null);
     const [companies, setCompanies] = useState<CompanyResponseDto[]>([]);
+    const [isRankingLoading, setIsRankingLoading] = useState<boolean>(false);
     const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
     const [isCompaniesLoading, setIsCompaniesLoading] = useState<boolean>(false);
     const [selectedCompanyId, setSelectedCompanyId] = useState<number | null>(null);
+    const [usersRanking, setUsersRanking] = useState<{ name: string; value: number }[]>([]);
 
     const { userInformation } = getAuthenticationStorage();
 
@@ -55,6 +58,23 @@ export const User = () => {
         setUpdating(null);
         setIsDrawerOpen(true);
     }
+    const handleUsersRanking = useCallback(async () => {
+        try {
+            setIsRankingLoading(true);
+
+            const response = await Rank();
+            const rankingData = [
+                { name: "Ativos", value: response.active },
+                { name: "Inativos", value: response.inactive },
+            ];
+
+            setUsersRanking(rankingData);
+        } catch (error) {
+            toast.error(`Erro ao carregar o dashboard para Contatos: ${ error }`);
+        } finally {
+            setIsRankingLoading(false);
+        }
+    }, []);
     const handleRead = useCallback(async () => {
         try {
             setIsLoading(true);
@@ -108,6 +128,9 @@ export const User = () => {
         } finally { }
     }
 
+    useEffect(() => {
+        handleUsersRanking();
+    }, [ handleUsersRanking, ]);
     useEffect(() => {
         const progressiveCompaniesFetch = async () => {
             try {
@@ -173,6 +196,14 @@ export const User = () => {
             ) }
             { !isLoading && users.length > 0 && (
                 <Fragment>
+                    { !isRankingLoading && (
+                        <DashboardRankingChart
+                            counterData={ total }
+                            graphicData={ usersRanking }
+                            graphicConfig={{ entitySingular: "Usuário", entityPlural: "Usuários", subEntityPlural: "Quantidade", }}
+                        />
+                    ) }
+
                     <Table<UserResponseDto>
                         headers={[ "Nome", "E-mail", "Atualização", ]}
                         data={ users }

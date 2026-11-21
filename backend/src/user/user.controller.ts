@@ -6,6 +6,7 @@ import { GetUserResponseDto } from './dtos/getUserResponse.dto';
 import { CreateUserCommandDto } from './dtos/createUserCommand.dto';
 import { UpdateUserCommandDto } from './dtos/updateUserCommand.dto';
 import { PaginationQueryDto } from '../common/dtos/paginationQuery.dto';
+import { UsersRankingResponseDto } from './dtos/usersRankingResponse.dto';
 import { PaginatedResponseDto } from '../common/dtos/paginatedResponse.dto';
 import { IsSystemRoot } from '../authentication/decorators/isSystemRoot.decorator';
 import { GetCurrentUser } from '../authentication/decorators/getCurrentUser.decorator';
@@ -21,6 +22,12 @@ export class UserController {
     @HttpCode(HttpStatus.CREATED)
     async create(@Body() command: CreateUserCommandDto): Promise<GetUserResponseDto> {
         return this.userService.create(command.companyId, command.name, command.email);
+    }
+
+    @Get("chart/users-ranking")
+    @HttpCode(HttpStatus.OK)
+    async getUsersRanking(): Promise<UsersRankingResponseDto> {
+        return this.userService.rank();
     }
 
     @Get(":id")
