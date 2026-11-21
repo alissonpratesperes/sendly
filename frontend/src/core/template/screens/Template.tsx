@@ -128,7 +128,7 @@ export const Template = () => {
             ) }
             { !isLoading && templates.length > 0 && (
                 <Fragment>
-                    { !isRankingLoading && templatesRanking.length > 0 && (
+                    { !isRankingLoading && (
                         <DashboardRankingChart
                             counterData={ total }
                             graphicData={ templatesRanking }

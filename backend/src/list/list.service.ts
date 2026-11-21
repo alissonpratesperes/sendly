@@ -1,14 +1,17 @@
+import { ClsService } from 'nestjs-cls';
 import { List, Prisma } from '@prisma/client';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
 import { CompanyService } from '../company/company.service';
 import { GetListResponseDto } from './dtos/getListResponse.dto';
+import { ListsRankingResponseDto } from './dtos/listsRankingResponse.dto';
 import { PaginatedResponseDto } from '../common/dtos/paginatedResponse.dto';
 
 @Injectable()
 export class ListService {
     constructor(
+        private readonly clsService: ClsService,
         private readonly prismaService: PrismaService,
         private readonly companyService: CompanyService,
     ) {}
@@ -59,6 +62,55 @@ export class ListService {
         });
 
         return this.toListResponse(createdList);
+    }
+
+    async rank(): Promise<ListsRankingResponseDto[]> {
+        const companyId = this.clsService.get<number>("companyId");
+        const isSystemRoot = this.clsService.get<boolean>("isSystemRoot");
+
+        if (!isSystemRoot && companyId === undefined) {
+            throw new ForbiddenException("Company context not found");
+        }
+
+        const client = isSystemRoot ? this.prismaService.authClient : this.prismaService.client;
+        const ranking = await client.$queryRaw<{ listId: number; listName: string; totalBatches: bigint; }[]>`
+            SELECT
+                l.Id AS listId,
+                l.Name AS listName,
+                COUNT(b.Id) AS totalBatches
+            FROM
+                List l
+            INNER JOIN
+                Batch b
+            ON
+                b.ListId = l.Id
+            INNER JOIN
+                Company c
+            ON
+                c.Id = l.CompanyId
+            WHERE
+                l.DeletedAt IS NULL
+            AND
+                b.DeletedAt IS NULL
+            AND
+                c.DeletedAt IS NULL
+
+                    ${ !isSystemRoot ? Prisma.sql`AND c.Id = ${ companyId }` : Prisma.empty }
+        GROUP BY
+            l.Id,
+            l.Name
+        ORDER BY
+            totalBatches DESC,
+            l.Id ASC
+        `;
+
+        return ranking.map((item) =>
+            new ListsRankingResponseDto(
+                Number(item.listId),
+                item.listName,
+                Number(item.totalBatches),
+            ),
+        );
     }
 
     async read(id: number): Promise<GetListResponseDto> {

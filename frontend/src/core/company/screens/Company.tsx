@@ -132,7 +132,7 @@ export const Company = () => {
             ) }
             { !isLoading && companies.length > 0 && (
                 <Fragment>
-                    { !isRankingLoading && usersRanking.length > 0 && (
+                    { !isRankingLoading && (
                         <DashboardRankingChart
                             counterData={ total }
                             graphicData={ usersRanking }

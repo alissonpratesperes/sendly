@@ -6,6 +6,7 @@ import { GetListResponseDto } from './dtos/getListResponse.dto';
 import { CreateListCommandDto } from './dtos/createListCommand.dto';
 import { UpdateListCommandDto } from './dtos/updateListCommand.dto';
 import { PaginationQueryDto } from '../common/dtos/paginationQuery.dto';
+import { ListsRankingResponseDto } from './dtos/listsRankingResponse.dto';
 import { PaginatedResponseDto } from '../common/dtos/paginatedResponse.dto';
 
 @Controller("list")
@@ -18,6 +19,12 @@ export class ListController {
     @HttpCode(HttpStatus.CREATED)
     async create(@Body() command: CreateListCommandDto): Promise<GetListResponseDto> {
         return this.listService.create(command.companyId, command.name, command.subject, command.color);
+    }
+
+    @Get("chart/lists-ranking")
+    @HttpCode(HttpStatus.OK)
+    async getUsersRanking(): Promise<ListsRankingResponseDto[]> {
+        return this.listService.rank();
     }
 
     @Get(":id")

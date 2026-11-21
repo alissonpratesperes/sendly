@@ -4,8 +4,8 @@ import React, { Fragment, useCallback, useEffect, useState } from 'react';
 import * as S from '../../../shared/components/table/styles/table.style';
 
 import { ListForm } from '../forms/listForm.form';
-import { List, Delete } from '../services/list.service';
 import { ListResponseDto } from '../dtos/listResponse.dto';
+import { Rank, List, Delete } from '../services/list.service';
 import { ListFormData } from '../schemas/listFormSchema.schema';
 import { formatDate } from '../../../shared/utils/formatDate.util';
 import { Modal } from '../../../shared/components/modal/screens/Modal';
@@ -16,6 +16,7 @@ import { Paginate } from '../../../shared/components/paginate/screens/Paginate';
 import { EmptyState } from '../../../shared/components/emptyState/screens/EmpyState';
 import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
+import { DashboardRankingChart } from '../../../shared/components/dashboardChart/screens/DashboardRankingChart';
 
 export const Lists = () => {
     const [page, setPage] = useState<number>(1);
@@ -27,13 +28,32 @@ export const Lists = () => {
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
     const [updating, setUpdating] = useState<ListFormData | null>(null);
+    const [isRankingLoading, setIsRankingLoading] = useState<boolean>(false);
     const [selectedListId, setSelectedListId] = useState<number | null>(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+    const [listsRanking, setListsRanking] = useState<{ name: string; value: number }[]>([]);
 
     const handleCreate = () => {
         setUpdating(null);
         setIsDrawerOpen(true);
     }
+    const handleListsRanking = useCallback(async () => {
+        try {
+            setIsRankingLoading(true);
+
+            const response = await Rank();
+            const rankingData = response.map((item) => ({
+                name: item.listName,
+                value: item.totalBatches,
+            }));
+
+            setListsRanking(rankingData);
+        } catch (error) {
+            toast.error(`Erro ao carregar o dashboard para Listas: ${ error }`);
+        } finally {
+            setIsRankingLoading(false);
+        }
+    }, []);
     const handleRead = useCallback(async () => {
         try {
             setIsLoading(true);
@@ -89,6 +109,9 @@ export const Lists = () => {
     }
 
     useEffect(() => {
+        handleListsRanking();
+    }, [ handleListsRanking, ]);
+    useEffect(() => {
         const timeout = setTimeout(() => {
             handleRead();
         }, 500);
@@ -106,6 +129,14 @@ export const Lists = () => {
             ) }
             { !isLoading && lists.length > 0 && (
                 <Fragment>
+                    { !isRankingLoading && (
+                        <DashboardRankingChart
+                            counterData={ total }
+                            graphicData={ listsRanking }
+                            graphicConfig={{ entitySingular: "Lista", entityPlural: "Listas", subEntityPlural: "Lotes", }}
+                        />
+                    ) }
+
                     <Table<ListResponseDto>
                         headers={[ "Nome", "Assunto", "Atualização", ]}
                         data={ lists }

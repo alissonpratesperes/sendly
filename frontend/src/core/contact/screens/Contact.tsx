@@ -281,7 +281,7 @@ export const Contact = () => {
             ) }
             { !isLoading && contacts.length > 0 && (
                 <Fragment>
-                    { !isRankingLoading && contactsRanking.length > 0 && (
+                    { !isRankingLoading && (
                         <DashboardRankingChart
                             counterData={ total }
                             graphicData={ contactsRanking }

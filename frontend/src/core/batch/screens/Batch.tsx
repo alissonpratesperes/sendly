@@ -233,7 +233,7 @@ export const Batch = () => {
             ) }
             { !isLoading && batches.length > 0 && (
                 <Fragment>
-                    { !isRankingLoading && batchesRanking?.length > 0 && (
+                    { !isRankingLoading && (
                         <DashboardRankingChart
                             counterData={ total }
                             graphicData={ batchesRanking }
