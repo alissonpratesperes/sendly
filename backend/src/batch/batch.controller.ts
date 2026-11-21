@@ -1,6 +1,7 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Query } from '@nestjs/common';
 
 import { BatchService } from './batch.service';
+import { BatchSendService } from './batchSend.service';
 import { IdParamDto } from '../common/dtos/idParam.dto';
 import { GetBatchResponseDto } from './dtos/getBatchResponse.dto';
 import { CreateBatchCommandDto } from './dtos/createBatchCommand.dto';
@@ -8,11 +9,13 @@ import { PaginationQueryDto } from '../common/dtos/paginationQuery.dto';
 import { GetBatchSendResponseDto } from './dtos/getBatchSendResponseDto';
 import { PaginatedResponseDto } from '../common/dtos/paginatedResponse.dto';
 import { BatchesRankingResponseDto } from './dtos/batchesRankingResponse.dto';
+import { BatchSendsRankingResponseDto } from './dtos/batchSendsRankingResponse.dto';
 
 @Controller("batch")
 export class BatchController {
     constructor(
         private readonly batchService: BatchService,
+        private readonly batchSendService: BatchSendService,
     ) {}
 
     @Post()
@@ -25,6 +28,12 @@ export class BatchController {
     @HttpCode(HttpStatus.OK)
     async getBatchesRanking(): Promise<BatchesRankingResponseDto> {
         return this.batchService.rank();
+    }
+
+    @Get(":id/chart/batch-sends-ranking")
+    @HttpCode(HttpStatus.OK)
+    async getBatchSendsRanking(@Param() param: IdParamDto): Promise<BatchSendsRankingResponseDto> {
+        return this.batchSendService.rank(param.id);
     }
 
     @Get()

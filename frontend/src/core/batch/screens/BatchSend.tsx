@@ -3,7 +3,6 @@ import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react
 
 import * as S from '../../../shared/components/table/styles/table.style';
 
-import { List, ListSends } from '../services/batch.service';
 import { BatchResponseDto } from '../dtos/batchResponse.dto';
 import { Read } from '../../contact/services/contact.service';
 import { BatchSendStatus } from '../enums/batchSendStatus.enum';
@@ -13,12 +12,14 @@ import { TemplateForm } from '../../template/forms/templateForm.form';
 import { Table } from '../../../shared/components/table/screens/Table';
 import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
 import { ContactResponseDto } from '../../contact/dtos/contactResponse.dto';
+import { BatchSendsRank, List, ListSends } from '../services/batch.service';
 import { Paginate } from '../../../shared/components/paginate/screens/Paginate';
 import { Dropdown } from '../../../shared/components/dropdown/screens/Dropdown';
 import { TemplateFormData } from '../../template/schemas/templateFormSchema.schema';
 import { EmptyState } from '../../../shared/components/emptyState/screens/EmpyState';
 import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
+import { DashboardRankingChart } from '../../../shared/components/dashboardChart/screens/DashboardRankingChart';
 
 export const BatchSend = () => {
     const [page, setPage] = useState<number>(1);
@@ -32,9 +33,11 @@ export const BatchSend = () => {
     const contactsNamesRef = useRef<Record<number, ContactResponseDto>>({});
     const [batchSends, setBatchSends] = useState<BatchSendResponseDto[]>([]);
     const [isBatchesLoading, setIsBatchesLoading] = useState<boolean>(false);
+    const [isRankingLoading, setIsRankingLoading] = useState<boolean>(false);
     const [selectedBatchId, setSelectedBatchId] = useState<number | null>(null);
     const [viewingBatchSend, setViewingBatchSend] = useState<TemplateFormData | null>(null);
     const [contactsNames, setContactsNames] = useState<Record<number, ContactResponseDto>>({});
+    const [batchSendsRanking, setBatchSendsRanking] = useState<{ name: string; value: number }[]>([]);
     const [selectedBatchSendStatus, setSelectedBatchSendStatus] = useState<BatchSendStatus | null>(null);
 
     const optionsForBatchSendStatus = [
@@ -48,6 +51,32 @@ export const BatchSend = () => {
         .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
         .map((batch: BatchResponseDto) => ({ value: Number(batch.id), label: batch.name, }));
 
+    const handleBatchSendsRanking = useCallback(async () => {
+        if (selectedBatchId === null) {
+            setBatchSendsRanking([]);
+
+            return;
+        }
+
+        try {
+            setIsRankingLoading(true);
+
+            const response = await BatchSendsRank({ id: Number(selectedBatchId) });
+
+            setBatchSendsRanking([
+                { name: "Aguardando", value: response.waiting },
+                { name: "Processando", value: response.processing },
+                { name: "Enviado", value: response.sent },
+                { name: "Falhado", value: response.error },
+            ]);
+        } catch (error) {
+            toast.error(`Erro ao carregar o dashboard para Envios: ${ error }`);
+
+            setBatchSendsRanking([]);
+        } finally {
+            setIsRankingLoading(false);
+        }
+    }, [ selectedBatchId, ]);
     const handleRead = useCallback(async () => {
         if (selectedBatchId === null) {
             setBatchSends([]);
@@ -114,6 +143,9 @@ export const BatchSend = () => {
         setIsDrawerOpen(true);
     }
 
+    useEffect(() => {
+        handleBatchSendsRanking();
+    }, [ handleBatchSendsRanking, ]);
     useEffect(() => {
         const timeout = setTimeout(() => {
             handleRead();
@@ -188,6 +220,14 @@ export const BatchSend = () => {
             ) }
             { !isLoading && batchSends.length > 0 && (
                 <Fragment>
+                    { !isRankingLoading && (
+                        <DashboardRankingChart
+                            counterData={ total }
+                            graphicData={ batchSendsRanking }
+                            graphicConfig={{ entitySingular: "Envio", entityPlural: "Envios", subEntityPlural: "Quantidade", }}
+                        />
+                    ) }
+
                     <Table<BatchSendResponseDto>
                         headers={[ "Contato", "Agendamento", "Execução", "Atualização", ]}
                         data={ batchSends }

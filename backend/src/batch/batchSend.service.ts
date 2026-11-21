@@ -1,16 +1,19 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { ClsService } from 'nestjs-cls';
 import { BatchSend, BatchSend_Status, Contact, Prisma } from '@prisma/client';
+import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
 import { TemplateSnapshot } from './types/templateSnapshot.type';
 import { GetBatchSendResponseDto } from './dtos/getBatchSendResponseDto';
 import { PaginatedResponseDto } from '../common/dtos/paginatedResponse.dto';
 import { ParsedTemplate } from '../template/interfaces/parsedTemplate.interface';
+import { BatchSendsRankingResponseDto } from './dtos/batchSendsRankingResponse.dto';
 import { TemplateInterpolator } from '../template/interpolators/templateInterpolator.interpolator';
 
 @Injectable()
 export class BatchSendService {
     constructor(
+        private readonly clsService: ClsService,
         private readonly prismaService: PrismaService,
         private readonly templateInterpolator: TemplateInterpolator,
     ) {}
@@ -117,6 +120,49 @@ export class BatchSendService {
         } ));
 
         return createdBatchSends.map(({ Id }) => Id);
+    }
+
+    async rank(batchId: number): Promise<BatchSendsRankingResponseDto> {
+        const companyId = this.clsService.get<number>("companyId");
+        const isSystemRoot = this.clsService.get<boolean>("isSystemRoot");
+
+        if (!isSystemRoot && companyId === undefined) {
+            throw new ForbiddenException("Company context not found");
+        }
+
+        const client = isSystemRoot ? this.prismaService.authClient : this.prismaService.client;
+        const [ranking] = await client.$queryRaw<{ waiting: bigint; processing: bigint; sent: bigint; error: bigint; }[]>`
+            SELECT
+                COALESCE(SUM(CASE WHEN bs.Status = 'WAITING' THEN 1 ELSE 0 END), 0) AS waiting,
+                COALESCE(SUM(CASE WHEN bs.Status = 'PROCESSING' THEN 1 ELSE 0 END), 0) AS processing,
+                COALESCE(SUM(CASE WHEN bs.Status = 'SENT' THEN 1 ELSE 0 END), 0) AS sent,
+                COALESCE(SUM(CASE WHEN bs.Status = 'ERROR' THEN 1 ELSE 0 END), 0) AS error
+            FROM
+                BatchSend bs
+            INNER JOIN
+                Batch b
+            ON
+                b.Id = bs.BatchId
+            INNER JOIN
+                Company c
+            ON
+                c.Id = bs.CompanyId
+            WHERE
+                bs.BatchId = ${ batchId }
+            AND
+                b.DeletedAt IS NULL
+            AND
+                c.DeletedAt IS NULL
+
+                    ${ !isSystemRoot ? Prisma.sql`AND c.Id = ${ companyId }` : Prisma.empty }
+        `;
+
+        return new BatchSendsRankingResponseDto(
+            Number(ranking.waiting),
+            Number(ranking.processing),
+            Number(ranking.sent),
+            Number(ranking.error),
+        );
     }
 
     async listByBatchId(batchId: number, page: number = 1, limit: number = 15, status?: BatchSend_Status): Promise<PaginatedResponseDto<GetBatchSendResponseDto>> {

@@ -3,6 +3,7 @@ import { IdParamDto } from '../../../shared/dtos/idParam.dto';
 import { BatchSendResponseDto } from '../dtos/batchSendResponse.dto';
 import { CreateBatchCommandDto } from '../dtos/createBatchCommand.dto';
 import { BatchesRankingResponseDto } from '../dtos/batchesRankingResponse.dto';
+import { BatchSendsRankingResponseDto } from '../dtos/batchSendsRankingResponse.dto';
 import axiosInstance from '../../../core/authentication/interceptors/authorization.interceptor';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
 import { PaginatedResponseDto } from '../../../shared/components/paginate/dtos/paginatedResponse.dto';
@@ -15,8 +16,14 @@ export const Create = async (command: CreateBatchCommandDto): Promise<BatchRespo
     return data;
 }
 
-export const Rank = async(): Promise<BatchesRankingResponseDto> => {
+export const BatchesRank = async(): Promise<BatchesRankingResponseDto> => {
     const { data } = await axiosInstance.get<BatchesRankingResponseDto>(`${ BASE_ENDPOINT }/chart/batches-ranking`);
+
+    return data;
+}
+
+export const BatchSendsRank = async (param: IdParamDto): Promise<BatchSendsRankingResponseDto> => {
+    const { data } = await axiosInstance.get<BatchSendsRankingResponseDto>(`${ BASE_ENDPOINT }/${ param.id }/chart/batch-sends-ranking`);
 
     return data;
 }

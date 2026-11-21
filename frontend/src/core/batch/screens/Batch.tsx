@@ -4,9 +4,9 @@ import React, { Fragment, useCallback, useEffect, useMemo, useRef, useState } fr
 import * as S from '../../../shared/components/table/styles/table.style';
 
 import { BatchForm } from '../forms/batchForm.form';
-import { Rank, List } from '../services/batch.service';
 import { BatchStatus } from '../enums/batchStatus.enum';
 import { BatchResponseDto } from '../dtos/batchResponse.dto';
+import { BatchesRank, List } from '../services/batch.service';
 import { BatchFormData } from '../schemas/batchFormSchema.schema';
 import { formatDate } from '../../../shared/utils/formatDate.util';
 import { ListResponseDto } from '../../list/dtos/listResponse.dto';
@@ -73,7 +73,7 @@ export const Batch = () => {
         try {
             setIsRankingLoading(true);
 
-            const response = await Rank();
+            const response = await BatchesRank();
             const rankingData = [
                 { name: "Pendentes", value: response.pending },
                 { name: "Executando", value: response.running },
