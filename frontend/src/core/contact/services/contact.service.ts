@@ -2,6 +2,7 @@ import { IdParamDto } from '../../../shared/dtos/idParam.dto';
 import { ContactResponseDto } from '../dtos/contactResponse.dto';
 import { CreateContactCommandDto } from '../dtos/createContactCommand.dto';
 import { UpdateContactCommandDto } from '../dtos/updateContactCommand.dto';
+import { ContactsRankingResponseDto } from '../dtos/contactsRankingResponse.dto';
 import axiosInstance from '../../../core/authentication/interceptors/authorization.interceptor';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
 import { PaginatedResponseDto } from '../../../shared/components/paginate/dtos/paginatedResponse.dto';
@@ -14,6 +15,12 @@ export const Create = async (command: CreateContactCommandDto): Promise<ContactR
     return data;
 }
 
+export const Rank = async(): Promise<ContactsRankingResponseDto> => {
+    const { data } = await axiosInstance.get<ContactsRankingResponseDto>(`${ BASE_ENDPOINT }/chart/contacts-ranking`);
+
+    return data;
+}
+
 export const Read = async (param: IdParamDto): Promise<ContactResponseDto> => {
     const { data } = await axiosInstance.get<ContactResponseDto>(`${ BASE_ENDPOINT }/${ param.id }`);
 
@@ -21,7 +28,7 @@ export const Read = async (param: IdParamDto): Promise<ContactResponseDto> => {
 }
 
 export const List = async (query: PaginatedQueryDto): Promise<PaginatedResponseDto<ContactResponseDto>> => {
-    const { data } = await axiosInstance.get<PaginatedResponseDto<ContactResponseDto>>(BASE_ENDPOINT, { params: query });
+    const { data } = await axiosInstance.get<PaginatedResponseDto<ContactResponseDto>>(BASE_ENDPOINT, { params: query, });
 
     return data;
 }

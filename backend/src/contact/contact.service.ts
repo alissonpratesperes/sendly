@@ -2,7 +2,7 @@ import { parse } from 'csv-parse/sync';
 import { ClsService } from 'nestjs-cls';
 import { Contact, Prisma } from '@prisma/client';
 import { type CountryCode } from 'libphonenumber-js';
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 
 import { ListService } from '../list/list.service';
 import { PrismaService } from '../prisma/prisma.service';
@@ -14,6 +14,7 @@ import { ImportContactErrorDto } from './dtos/importContactError.dto';
 import { CsvContactBefore } from './interfaces/csvContactBefore.interface';
 import { PaginatedResponseDto } from '../common/dtos/paginatedResponse.dto';
 import { ImportContactResponseDto } from './dtos/importContactResponse.dto';
+import { ContactsRankingResponseDto } from './dtos/contactsRankingResponse.dto';
 import { formatContactPhoneNumber } from '../common/formatters/contactPhoneNumber.formatter';
 
 @Injectable()
@@ -77,6 +78,45 @@ export class ContactService {
         });
 
         return this.toContactResponse(createdContact);
+    }
+
+    async rank(): Promise<ContactsRankingResponseDto> {
+        const companyId = this.clsService.get<number>("companyId");
+        const isSystemRoot = this.clsService.get<boolean>("isSystemRoot");
+
+        if (!isSystemRoot && companyId === undefined) {
+            throw new ForbiddenException("Company context not found");
+        }
+
+        const client = isSystemRoot ? this.prismaService.authClient : this.prismaService.client;
+        const [ranking] = await client.$queryRaw<{ active: bigint; inactive: bigint; }[]>`
+            SELECT
+                COALESCE(SUM(CASE WHEN ct.Active = 1 THEN 1 ELSE 0 END), 0) AS active,
+                COALESCE(SUM(CASE WHEN ct.Active = 0 THEN 1 ELSE 0 END), 0) AS inactive
+            FROM
+                Contact ct
+            INNER JOIN
+                List l
+            ON
+                l.Id = ct.ListId
+            INNER JOIN
+                Company c
+            ON
+                c.Id = l.CompanyId
+            WHERE
+                ct.DeletedAt IS NULL
+            AND
+                l.DeletedAt IS NULL
+            AND
+                c.DeletedAt IS NULL
+
+                    ${ !isSystemRoot ? Prisma.sql`AND c.Id = ${ companyId }` : Prisma.empty }
+        `;
+
+        return new ContactsRankingResponseDto(
+            Number(ranking.active),
+            Number(ranking.inactive),
+        );
     }
 
     async read(id: number): Promise<GetContactResponseDto> {

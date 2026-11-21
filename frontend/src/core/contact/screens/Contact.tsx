@@ -8,7 +8,6 @@ import * as F from '../../../shared/components/dropdown/styles/contactFormDropdo
 import { ContactForm } from '../forms/contactForm.form';
 import { Read } from '../../list/services/list.service';
 import { ContactResponseDto } from '../dtos/contactResponse.dto';
-import { List, Update, Delete } from '../services/contact.service';
 import { List as ListLits} from '../../list/services/list.service';
 import { formatDate } from '../../../shared/utils/formatDate.util';
 import { ListResponseDto } from '../../list/dtos/listResponse.dto';
@@ -16,6 +15,7 @@ import { ContactImportForm } from '../forms/contactImportForm.form';
 import { ContactFormData } from '../schemas/contactFormSchema.schema';
 import { Table } from '../../../shared/components/table/screens/Table';
 import { Modal } from '../../../shared/components/modal/screens/Modal';
+import { Rank, List, Update, Delete } from '../services/contact.service';
 import { Finder } from '../../../shared/components/finder/screen/Finder';
 import { Drawer } from '../../../shared/components/drawer/screens/Drawer';
 import { Paginate } from '../../../shared/components/paginate/screens/Paginate';
@@ -24,6 +24,7 @@ import { EmptyState } from '../../../shared/components/emptyState/screens/EmpySt
 import { ToggleSwitch } from '../../../shared/components/toggleSwitch/screens/ToggleSwitch';
 import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
+import { DashboardRankingChart } from '../../../shared/components/dashboardChart/screens/DashboardRankingChart';
 
 export const Contact = () => {
     const [page, setPage] = useState<number>(1);
@@ -38,11 +39,13 @@ export const Contact = () => {
     const [isListsLoading, setIsListsLoading] = useState<boolean>(false);
     const [updating, setUpdating] = useState<ContactFormData | null>(null);
     const [hasImportErrors, setHasImportErrors] = useState<boolean>(false);
+    const [isRankingLoading, setIsRankingLoading] = useState<boolean>(false);
     const [selectedListId, setSelectedListId] = useState<number | null>(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
     const [isImportDrawerOpen, setIsImportDrawerOpen] = useState<boolean>(false);
     const [selectedContactId, setSelectedContactId] = useState<number | null>(null);
     const [listsNames, setListsNames] = useState<Record<number, ListResponseDto>>({});
+    const [contactsRanking, setContactsRanking] = useState<{ name: string; value: number }[]>([]);
     const [selectedContactActive, setSelectedContactActive] = useState<boolean | undefined>(undefined);
 
     const listsNamesRef = useRef<Record<number, ListResponseDto>>({});
@@ -71,6 +74,23 @@ export const Contact = () => {
         setUpdating(null);
         setIsDrawerOpen(true);
     }
+    const handleContactsRanking = useCallback(async () => {
+        try {
+            setIsRankingLoading(true);
+
+            const response = await Rank();
+            const rankingData = [
+                { name: "Ativos", value: response.active },
+                { name: "Inativos", value: response.inactive },
+            ];
+
+            setContactsRanking(rankingData);
+        } catch (error) {
+            toast.error(`Erro ao carregar o dashboard para Contatos: ${ error }`);
+        } finally {
+            setIsRankingLoading(false);
+        }
+    }, []);
     const handleRead = useCallback(async () => {
         try {
             setIsLoading(true);
@@ -171,6 +191,9 @@ export const Contact = () => {
     }
 
     useEffect(() => {
+        handleContactsRanking();
+    }, [ handleContactsRanking, ]);
+    useEffect(() => {
         const progressiveListsFetch = async () => {
             try {
                 setIsListsLoading(true);
@@ -258,6 +281,14 @@ export const Contact = () => {
             ) }
             { !isLoading && contacts.length > 0 && (
                 <Fragment>
+                    { !isRankingLoading && contactsRanking.length > 0 && (
+                        <DashboardRankingChart
+                            counterData={ total }
+                            graphicData={ contactsRanking }
+                            graphicConfig={{ entitySingular: "Contato", entityPlural: "Contatos", subEntityPlural: "Contatos", }}
+                        />
+                    ) }
+
                     <Table<ContactResponseDto>
                         headers={[ "Nome", "Telefone", "Atualização", ]}
                         data={ contacts }

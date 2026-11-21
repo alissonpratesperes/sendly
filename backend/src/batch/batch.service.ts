@@ -126,9 +126,9 @@ export class BatchService {
             ON
                 c.Id = b.CompanyId
             WHERE
-                c.DeletedAt IS NULL
-            AND
                 b.DeletedAt IS NULL
+            AND
+                c.DeletedAt IS NULL
 
                     ${ !isSystemRoot ? Prisma.sql`AND c.Id = ${ companyId }` : Prisma.empty }
         `;

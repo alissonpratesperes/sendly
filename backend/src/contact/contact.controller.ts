@@ -10,6 +10,7 @@ import { UpdateContactCommandDto } from './dtos/updateContactCommand.dto';
 import { ImportContactCommandDto } from './dtos/importContactCommand.dto';
 import { PaginatedResponseDto } from '../common/dtos/paginatedResponse.dto';
 import { ImportContactResponseDto } from './dtos/importContactResponse.dto';
+import { ContactsRankingResponseDto } from './dtos/contactsRankingResponse.dto';
 
 @Controller("contact")
 export class ContactController {
@@ -21,6 +22,12 @@ export class ContactController {
     @HttpCode(HttpStatus.CREATED)
     async create(@Body() command: CreateContactCommandDto): Promise<GetContactResponseDto> {
         return this.contactService.create(command.companyId, command.listId, command.name, command.phone, command.country);
+    }
+
+    @Get("chart/contacts-ranking")
+    @HttpCode(HttpStatus.OK)
+    async getUsersRanking(): Promise<ContactsRankingResponseDto> {
+        return this.contactService.rank();
     }
 
     @Get(":id")

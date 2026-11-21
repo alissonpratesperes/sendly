@@ -109,6 +109,9 @@ export const DashboardRankingChart = ({ counterData, graphicData, graphicConfig 
             return;
         }
 
+        let previousWidth = 0;
+        let previousHeight = 0;
+
         const updateGraphic = () => {
             if (!chartInstance || chartInstance.isDisposed()) {
                 return;
@@ -116,6 +119,14 @@ export const DashboardRankingChart = ({ counterData, graphicData, graphicConfig 
 
             const width = chartInstance.getWidth();
             const height = chartInstance.getHeight();
+
+            if (width === previousWidth && height === previousHeight) {
+                return;
+            }
+
+            previousWidth = width;
+            previousHeight = height;
+
             const centerX = width * 0.25;
             const centerY = height * 0.5;
 
@@ -165,7 +176,7 @@ export const DashboardRankingChart = ({ counterData, graphicData, graphicConfig 
     return (
         <S.DashboardChartContainer>
             <S.DashboardChartCard>
-                <ReactECharts option={ option } notMerge={ true } onChartReady={ (instance) => setChartInstance(instance) }/>
+                <ReactECharts option={ option } notMerge={ false } onChartReady={ (instance) => setChartInstance(instance) }/>
             </S.DashboardChartCard>
         </S.DashboardChartContainer>
     );

@@ -4,7 +4,7 @@ import React, { Fragment, useCallback, useEffect, useMemo, useRef, useState } fr
 import * as S from '../../../shared/components/table/styles/table.style';
 
 import { BatchForm } from '../forms/batchForm.form';
-import { List, Rank } from '../services/batch.service';
+import { Rank, List } from '../services/batch.service';
 import { BatchStatus } from '../enums/batchStatus.enum';
 import { BatchResponseDto } from '../dtos/batchResponse.dto';
 import { BatchFormData } from '../schemas/batchFormSchema.schema';
