@@ -31,6 +31,7 @@ export const PaginateButton = styled.button`
     cursor: pointer;
     border-radius: 14px;
     color: #223463;
+    background-color: #E8EEF8;
     transition: font-weight 0.3s ease, color 0.3s ease, background-color 0.3s ease;
 
         &:hover:not(:disabled) {
@@ -40,6 +41,7 @@ export const PaginateButton = styled.button`
             animation: ${ AnimateButtonHover } 0.6s ease-in-out;
         }
         &:disabled {
+            background-color: transparent;
             cursor: not-allowed;
             opacity: 0.5;
         }

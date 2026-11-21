@@ -2,34 +2,49 @@ import { Queue } from 'bullmq';
 import { Injectable } from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bullmq';
 
+import { PrismaService } from '../prisma/prisma.service';
 import { requireEnvironmentVariable } from '../common/utils/requireEnvironmentVariable.util';
-import { generateSpacedIntervalInMilliseconds } from '../common/utils/generateSpacedIntervalInMilliseconds.util';
 
 @Injectable()
 export class QueueService {
     constructor(
         @InjectQueue(requireEnvironmentVariable("REDIS_QUEUE_NAME"))
         private readonly queue: Queue,
+        private readonly prismaService: PrismaService,
     ) {}
 
     private readonly queueName = requireEnvironmentVariable("REDIS_QUEUE_NAME");
-    private readonly queueInterval = requireEnvironmentVariable("REDIS_QUEUE_INTERVAL");
 
     async enqueueBatchSends(batchSendIds: number[]): Promise<void> {
         if (!batchSendIds.length) {
             return;
         }
 
-        const jobs = batchSendIds.map((batchSendId) => ({
+        const batchSends = await this.prismaService.client.batchSend.findMany({
+            where: {
+                Id: {
+                    in: batchSendIds,
+                },
+            },
+            select: {
+                Id: true,
+                ScheduledAt: true,
+            },
+        });
+        const now = Date.now();
+        const jobs = batchSends.map((batchSend) => ({
             name: this.queueName,
-            data: { batchSendId },
+            data: {
+                batchSendId: batchSend.Id,
+            },
             opts: {
-                // delay: generateSpacedIntervalInMilliseconds(Number(this.queueInterval)),
+                jobId: `batch-send-${ batchSend.Id }`,
+                delay: Math.max(0, (batchSend.ScheduledAt?.getTime() ?? now) - now),
                 removeOnComplete: true,
                 removeOnFail: true,
                 attempts: 3,
                 backoff: {
-                    type: "exponential",
+                    type: "exponential" as const,
                     delay: 5000,
                 },
             },

@@ -4,11 +4,14 @@ import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/com
 
 import { PrismaService } from '../prisma/prisma.service';
 import { TemplateSnapshot } from './types/templateSnapshot.type';
+import { BatchSendSchedulerService } from './batchSendScheduler.service';
 import { GetBatchSendResponseDto } from './dtos/getBatchSendResponseDto';
 import { PaginatedResponseDto } from '../common/dtos/paginatedResponse.dto';
 import { ParsedTemplate } from '../template/interfaces/parsedTemplate.interface';
 import { BatchSendsRankingResponseDto } from './dtos/batchSendsRankingResponse.dto';
+import { requireEnvironmentVariable } from 'src/common/utils/requireEnvironmentVariable.util';
 import { TemplateInterpolator } from '../template/interpolators/templateInterpolator.interpolator';
+import { generateSpacedIntervalInMilliseconds } from 'src/common/utils/generateSpacedIntervalInMilliseconds.util';
 
 @Injectable()
 export class BatchSendService {
@@ -16,6 +19,7 @@ export class BatchSendService {
         private readonly clsService: ClsService,
         private readonly prismaService: PrismaService,
         private readonly templateInterpolator: TemplateInterpolator,
+        private readonly batchSendSchedulerService: BatchSendSchedulerService,
     ) {}
 
     private toBatchSendResponse(batchSend: BatchSend): GetBatchSendResponseDto {
@@ -59,7 +63,7 @@ export class BatchSendService {
         };
     }
 
-    private async validateAndBuildTemplateSnapshot(tx: Prisma.TransactionClient, companyId: number, templateId: number, contactIds: number[]): Promise<{template: TemplateSnapshot, contacts: Contact[]; }> {
+    private async validateAndBuildTemplateSnapshot(tx: Prisma.TransactionClient, companyId: number, templateId: number, contactIds: number[]): Promise<{ template: TemplateSnapshot, contacts: Contact[]; }> {
         const template = await tx.template.findFirst({
             where: {
                 Id: templateId,
@@ -79,6 +83,9 @@ export class BatchSendService {
                 },
                 CompanyId: companyId,
                 DeletedAt: null,
+            },
+            orderBy: {
+                Id: "asc",
             },
         });
 
@@ -100,26 +107,35 @@ export class BatchSendService {
 
     async create(tx: Prisma.TransactionClient, companyId: number, batchId: number, templateId: number, contactIds: number[]): Promise<number[]> {
         const { template, contacts } = await this.validateAndBuildTemplateSnapshot(tx, companyId, templateId, contactIds);
-        const createdBatchSends = await Promise.all(contacts.map((contact) => {
-            const interpolatedTemplate = this.templateInterpolator.interpolate(template.content as unknown as ParsedTemplate, contact.Name);
-            const templateSnapshot = { id: template.id, name: template.name, content: interpolatedTemplate, }
+        const createdBatchSendIds: number[] = [];
 
-            return tx.batchSend.create({
+        let previousScheduledAt = new Date();
+
+        for (const contact of contacts) {
+            const interval = generateSpacedIntervalInMilliseconds();
+            const scheduledAt = this.batchSendSchedulerService.getNextScheduledAt(previousScheduledAt, interval);
+            const interpolatedTemplate = this.templateInterpolator.interpolate(template.content as unknown as ParsedTemplate, contact.Name);
+            const templateSnapshot = { id: template.id, name: template.name, content: interpolatedTemplate };
+            const createdBatchSend = await tx.batchSend.create({
                 data: {
                     CompanyId: companyId,
                     BatchId: batchId,
                     ContactId: contact.Id,
                     TemplateSnapshot: templateSnapshot as unknown as Prisma.InputJsonValue,
                     Status: BatchSend_Status.WAITING,
-                    ScheduledAt: new Date(),
+                    ScheduledAt: scheduledAt,
                 },
                 select: {
                     Id: true,
                 },
             });
-        } ));
 
-        return createdBatchSends.map(({ Id }) => Id);
+            createdBatchSendIds.push(createdBatchSend.Id);
+
+            previousScheduledAt = scheduledAt;
+        }
+
+        return createdBatchSendIds;
     }
 
     async rank(batchId: number): Promise<BatchSendsRankingResponseDto> {
@@ -230,13 +246,7 @@ export class BatchSendService {
             where: {
                 Id: id,
                 CompanyId: companyId,
-
-                Status: {
-                    in: [
-                        BatchSend_Status.WAITING,
-                        BatchSend_Status.PROCESSING,
-                    ],
-                },
+                Status: BatchSend_Status.WAITING,
 
                 Batch: {
                     CompanyId: companyId,
@@ -303,5 +313,46 @@ export class BatchSendService {
         if (updatedBatchSend.count === 0) {
             throw new BadRequestException("BatchSend is no longer processing");
         }
+    }
+
+    async releaseForRetry(companyId: number, id: number): Promise<boolean> {
+        const updated = await this.prismaService.client.batchSend.updateMany({
+            where: {
+                Id: id,
+                CompanyId: companyId,
+                Status: BatchSend_Status.PROCESSING,
+
+                Batch: {
+                    CompanyId: companyId,
+                    DeletedAt: null,
+                },
+            },
+            data: {
+                Status: BatchSend_Status.WAITING,
+            },
+        });
+
+        return updated.count > 0;
+    }
+
+    async reschedule(companyId: number, id: number, scheduledAt: Date, expectedScheduledAt: Date | null): Promise<boolean> {
+        const updated = await this.prismaService.client.batchSend.updateMany({
+            where: {
+                Id: id,
+                CompanyId: companyId,
+                ScheduledAt: expectedScheduledAt,
+                Status: BatchSend_Status.WAITING,
+
+                Batch: {
+                    CompanyId: companyId,
+                    DeletedAt: null,
+                },
+            },
+            data: {
+                ScheduledAt: scheduledAt,
+            },
+        });
+
+        return updated.count > 0;
     }
 }

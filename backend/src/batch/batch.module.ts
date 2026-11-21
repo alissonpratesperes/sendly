@@ -9,6 +9,7 @@ import { ContactModule } from '../contact/contact.module';
 import { BaileysModule } from '../baileys/baileys.module';
 import { TemplateModule } from '../template/template.module';
 import { BatchSendProcessor } from './processors/batchSend.processor';
+import { BatchSendSchedulerService } from './batchSendScheduler.service';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { BatchSendProcessor } from './processors/batchSend.processor';
     BatchService,
     BatchSendService,
     BatchSendProcessor,
+    BatchSendSchedulerService,
   ],
 })
 export class BatchModule {}
