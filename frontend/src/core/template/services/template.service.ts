@@ -1,5 +1,6 @@
 import { IdParamDto } from '../../../shared/dtos/idParam.dto';
 import { TemplateResponseDto } from '../dtos/templateResponse.dto';
+import { TemplatesRankingResponseDto } from '../dtos/templatesRankingResponse.dto';
 import axiosInstance from '../../authentication/interceptors/authorization.interceptor';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
 import { PaginatedResponseDto } from '../../../shared/components/paginate/dtos/paginatedResponse.dto';
@@ -12,6 +13,12 @@ export const Create = async (formData: FormData): Promise<TemplateResponseDto> =
     return data;
 }
 
+export const Rank = async(): Promise<TemplatesRankingResponseDto[]> => {
+    const { data } = await axiosInstance.get<TemplatesRankingResponseDto[]>(`${ BASE_ENDPOINT }/chart/templates-ranking`);
+
+    return data;
+}
+
 export const Read = async (param: IdParamDto): Promise<TemplateResponseDto> => {
     const { data } = await axiosInstance.get<TemplateResponseDto>(`${ BASE_ENDPOINT }/${ param.id }`);
 
@@ -19,7 +26,7 @@ export const Read = async (param: IdParamDto): Promise<TemplateResponseDto> => {
 }
 
 export const List = async (query: PaginatedQueryDto): Promise<PaginatedResponseDto<TemplateResponseDto>> => {
-    const { data } = await axiosInstance.get<PaginatedResponseDto<TemplateResponseDto>>(BASE_ENDPOINT, { params: query });
+    const { data } = await axiosInstance.get<PaginatedResponseDto<TemplateResponseDto>>(BASE_ENDPOINT, { params: query, });
 
     return data;
 }

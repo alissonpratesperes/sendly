@@ -11,6 +11,7 @@ import { PaginatedResponseDto } from '../common/dtos/paginatedResponse.dto';
 import { CreateTemplateCommandDto } from './dtos/createTemplateCommand.dto';
 import { UpdateTemplateCommandDto } from './dtos/updateTemplateCommand.dto';
 import { imagePathToContent } from './uploaders/imagePathToContent.uploader';
+import { TemplatesRankingResponseDto } from './dtos/templatesRankingResponse.dto';
 import { TemplateImageInterceptor } from './interceptors/templateImage.interceptor';
 
 @Controller("template")
@@ -29,6 +30,12 @@ export class TemplateController {
         const content = await imagePathToContent(parsedContent, image);
 
         return this.templateService.create(command.companyId, command.name, content);
+    }
+
+    @Get("chart/templates-ranking")
+    @HttpCode(HttpStatus.OK)
+    async getUsersRanking(): Promise<TemplatesRankingResponseDto[]> {
+        return this.templateService.rank();
     }
 
     @Get(":id")

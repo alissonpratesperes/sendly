@@ -237,7 +237,7 @@ export const Batch = () => {
                         <DashboardRankingChart
                             counterData={ total }
                             graphicData={ batchesRanking }
-                            graphicConfig={{ entitySingular: "Lote", entityPlural: "Lotes", subEntityPlural: "Lotes", }}
+                            graphicConfig={{ entitySingular: "Lote", entityPlural: "Lotes", subEntityPlural: "Quantidade", }}
                         />
                     ) }
 

@@ -1,5 +1,6 @@
+import { ClsService } from 'nestjs-cls';
 import { Prisma, Template } from '@prisma/client';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
 import { CompanyService } from '../company/company.service';
@@ -9,10 +10,12 @@ import { WhatsAppMessage } from '../common/types/whatsAppMessage.type';
 import { ParsedTemplate } from './interfaces/parsedTemplate.interface';
 import { GetTemplateResponseDto } from './dtos/getTemplateResponse.dto';
 import { PaginatedResponseDto } from '../common/dtos/paginatedResponse.dto';
+import { TemplatesRankingResponseDto } from './dtos/templatesRankingResponse.dto';
 
 @Injectable()
 export class TemplateService {
     constructor(
+        private readonly clsService: ClsService,
         private readonly prismaService: PrismaService,
         private readonly companyService: CompanyService,
         private readonly templateParser: TemplateParser,
@@ -71,6 +74,55 @@ export class TemplateService {
         });
 
         return this.toTemplateResponse(createdTemplate);
+    }
+
+    async rank(): Promise<TemplatesRankingResponseDto[]> {
+        const companyId = this.clsService.get<number>("companyId");
+        const isSystemRoot = this.clsService.get<boolean>("isSystemRoot");
+
+        if (!isSystemRoot && companyId === undefined) {
+            throw new ForbiddenException("Company context not found");
+        }
+
+        const client = isSystemRoot ? this.prismaService.authClient : this.prismaService.client;
+        const ranking = await client.$queryRaw<{ templateId: number; templateName: string; totalBatches: bigint; }[]>`
+            SELECT
+                t.Id AS templateId,
+                t.Name AS templateName,
+                COUNT(b.Id) AS totalBatches
+            FROM
+                Template t
+            INNER JOIN
+                Batch b
+            ON
+                b.TemplateId = t.Id
+            INNER JOIN
+                Company c
+            ON
+                c.Id = t.CompanyId
+            WHERE
+                t.DeletedAt IS NULL
+            AND
+                b.DeletedAt IS NULL
+            AND
+                c.DeletedAt IS NULL
+
+                    ${ !isSystemRoot ? Prisma.sql`AND c.Id = ${ companyId }` : Prisma.empty }
+        GROUP BY
+            t.Id,
+            t.Name
+        ORDER BY
+            totalBatches DESC,
+            t.Id ASC
+        `;
+
+        return ranking.map((item) =>
+            new TemplatesRankingResponseDto(
+                Number(item.templateId),
+                item.templateName,
+                Number(item.totalBatches),
+            ),
+        );
     }
 
     async read(id: number): Promise<GetTemplateResponseDto> {

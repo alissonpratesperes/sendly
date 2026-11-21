@@ -285,7 +285,7 @@ export const Contact = () => {
                         <DashboardRankingChart
                             counterData={ total }
                             graphicData={ contactsRanking }
-                            graphicConfig={{ entitySingular: "Contato", entityPlural: "Contatos", subEntityPlural: "Contatos", }}
+                            graphicConfig={{ entitySingular: "Contato", entityPlural: "Contatos", subEntityPlural: "Quantidade", }}
                         />
                     ) }
 

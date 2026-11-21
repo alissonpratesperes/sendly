@@ -46,7 +46,6 @@ export const Company = () => {
             setIsRankingLoading(true);
 
             const response = await Rank();
-
             const rankingData = response.map((item) => ({
                 name: item.companyName,
                 value: item.totalUsers,

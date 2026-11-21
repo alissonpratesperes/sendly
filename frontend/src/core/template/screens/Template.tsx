@@ -4,7 +4,7 @@ import React, { Fragment, useCallback, useEffect, useState } from 'react';
 import * as S from '../../../shared/components/table/styles/table.style';
 
 import { TemplateForm } from '../forms/templateForm.form';
-import { List, Delete } from '../services/template.service';
+import { Rank, List, Delete } from '../services/template.service';
 import { TemplateResponseDto } from '../dtos/templateResponse.dto';
 import { formatDate } from '../../../shared/utils/formatDate.util';
 import { Modal } from '../../../shared/components/modal/screens/Modal';
@@ -16,6 +16,7 @@ import { Paginate } from '../../../shared/components/paginate/screens/Paginate';
 import { EmptyState } from '../../../shared/components/emptyState/screens/EmpyState';
 import { LoadingState } from '../../../shared/components/loadingState/screens/LoadingState';
 import { PaginatedQueryDto } from '../../../shared/components/paginate/dtos/paginatedQuery.dto';
+import { DashboardRankingChart } from '../../../shared/components/dashboardChart/screens/DashboardRankingChart';
 
 export const Template = () => {
     const [page, setPage] = useState<number>(1);
@@ -27,13 +28,32 @@ export const Template = () => {
     const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
     const [templates, setTemplates] = useState<TemplateResponseDto[]>([]);
     const [updating, setUpdating] = useState<TemplateFormData | null>(null);
+    const [isRankingLoading, setIsRankingLoading] = useState<boolean>(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
     const [selectedTemplateId, setSelectedTemplateId] = useState<number | null>(null);
+    const [templatesRanking, setTemplatesRanking] = useState<{ name: string; value: number }[]>([]);
 
     const handleCreate = () => {
         setUpdating(null);
         setIsDrawerOpen(true);
     }
+    const handleTemplatesRanking = useCallback(async () => {
+        try {
+            setIsRankingLoading(true);
+
+            const response = await Rank();
+            const rankingData = response.map((item) => ({
+                name: item.templateName,
+                value: item.totalBatches,
+            }));
+
+            setTemplatesRanking(rankingData);
+        } catch (error) {
+            toast.error(`Erro ao carregar o dashboard para Templates: ${ error }`);
+        } finally {
+            setIsRankingLoading(false);
+        }
+    }, []);
     const handleRead = useCallback(async () => {
         try {
             setIsLoading(true);
@@ -88,6 +108,9 @@ export const Template = () => {
     }
 
     useEffect(() => {
+        handleTemplatesRanking();
+    }, [ handleTemplatesRanking, ]);
+    useEffect(() => {
         const timeout = setTimeout(() => {
             handleRead();
         }, 500);
@@ -105,6 +128,14 @@ export const Template = () => {
             ) }
             { !isLoading && templates.length > 0 && (
                 <Fragment>
+                    { !isRankingLoading && templatesRanking.length > 0 && (
+                        <DashboardRankingChart
+                            counterData={ total }
+                            graphicData={ templatesRanking }
+                            graphicConfig={{ entitySingular: "Template", entityPlural: "Templates", subEntityPlural: "Lotes", }}
+                        />
+                    ) }
+
                     <Table<TemplateResponseDto>
                         headers={[ "Nome", "Atualização", ]}
                         data={ templates }
