@@ -9,7 +9,6 @@ import { Forgot } from './core/authentication/screens/Forgot';
 import { Brand } from './shared/elements/brand/screens/Brand';
 import { Header } from './shared/components/header/screens/Header';
 import { Authentication } from './core/authentication/screens/Login';
-import { Copyright } from './shared/elements/copyright/screens/Copyright';
 import { AppRoutes } from './shared/components/header/enums/appRoutes.enum';
 import { PublicRoute } from './shared/components/public/screens/PublicRoute';
 import { PrivateRoute } from './shared/components/private/screens/PrivateRoute';
@@ -44,11 +43,7 @@ export const AppRouting: React.FC = () => {
             </S.Main>
 
             <S.Footer>
-                <S.FooterContentContainer>
-                    <Brand/>
-
-                    <Copyright/>
-                </S.FooterContentContainer>
+                <S.FooterContentContainer> <Brand/> </S.FooterContentContainer>
             </S.Footer>
         </Fragment>
     );

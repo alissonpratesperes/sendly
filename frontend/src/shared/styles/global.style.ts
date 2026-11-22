@@ -160,7 +160,8 @@ export const ButtonsContainer = styled.div<{ $isInLoginScreen?: boolean; }>`
 
 export const Footer = styled.footer`
     margin-top: 60px;
-    height: 160px;
+    padding-bottom: 30px;
+    height: auto;
     width: 100%;
     display: flex;
     flex-direction: row;

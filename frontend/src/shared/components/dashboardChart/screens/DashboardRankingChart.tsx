@@ -98,6 +98,7 @@ export const DashboardRankingChart = ({ counterData, graphicData, graphicConfig 
                         },
 
                             data: [...graphicData]
+                                .filter((item) => item.value > 0)
                                 .sort((a, b) => a.name.localeCompare(b.name, "pt-BR"))
                                 .map((item) => ({ name: item.name, value: item.value, })),
             },
