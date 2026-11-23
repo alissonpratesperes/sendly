@@ -213,7 +213,6 @@ export const TimeStampsRowContent = styled.div`
 `;
 
 export const TimeStampDestak = styled.span<{ $statusColor?: string }>`
-    padding: 3.75px;
     font-family: "Orbitron";
     font-size: 13px;
 

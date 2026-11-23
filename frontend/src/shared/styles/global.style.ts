@@ -159,7 +159,7 @@ export const ButtonsContainer = styled.div<{ $isInLoginScreen?: boolean; }>`
 `;
 
 export const Footer = styled.footer`
-    margin-top: 60px;
+    margin-top: 90px;
     padding-bottom: 30px;
     height: auto;
     width: 100%;
