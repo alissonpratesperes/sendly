@@ -14,7 +14,7 @@
 
 ## SOBRE
 
-A **sendly** é uma Aplicação desenvolvida para o gerenciamento de _listas de contatos_, _templates de mensagens_ e _lotes de envios_ de campanhas de marketing através do WhatsApp.
+A **sendly** é uma Aplicação de gerenciamento e automação de campanhas via WhatsApp, desenvolvida para centralizar, listas de distribuição, contatos, templates de mensagens e lotes de envio. Permite estruturar campanhas personalizadas e automatizar seu processamento em segundo plano, proporcionando maior organização, eficiência e controle operacional.
 
 ## TECNOLOGIAS
 
@@ -71,19 +71,31 @@ A **sendly** é uma Aplicação desenvolvida para o gerenciamento de _listas de 
 
 ## FEATURES
 
-- **BANCO DE DADOS**: Abordagem Database First, com definição do esquema por meio de um script SQL previamente elaborado, permitindo a preparação da estrutura do banco de dados antes da integração com a aplicação;
-- **BACK-END**: Desenvolvido com NestJS, aproveitando sua arquitetura modular e opinativa, em conjunto com o Prisma ORM para introspecção do banco de dados existente e integração entre a camada de aplicação e a persistência de dados;
-- **AUTENTICAÇÃO**: Implementação de um fluxo baseado em JWT e Refresh Tokens, com renovação de sessões, gerenciamento do ciclo de vida dos tokens e mecanismos para reforçar a segurança da autenticação;
-- **HIERARQUIA E PERMISSÕES**: Estrutura hierárquica para gerenciamento de cadastros específicos, organização de níveis de acesso e segregação de funcionalidades conforme o perfil do usuário;
-- **MULTI-TENANT**: Arquitetura Multi-Tenant que permite a utilização da plataforma por múltiplas empresas em uma única infraestrutura de banco de dados, com mecanismos centralizados de validação e isolamento dos dados por organização;
-- **INTEGRAÇÃO**: Adoção do Facade Pattern para disponibilizar uma API interna coesa e extensível, simplificando a comunicação entre os componentes e permitindo o gerenciamento das integrações diretamente pela interface da aplicação;
-- **DOCUMENTAÇÃO**: Integração com Swagger para documentação interativa da API, facilitando a exploração dos endpoints, a validação de requisições e futuras integrações com serviços externos;
-- **FRONT-END**: Interface componentizada, com foco em reutilização, consistência visual e produtividade operacional. Utiliza Styled Components na abordagem CSS-in-JS, além de uma estrutura inicial de Design System para padronização dos componentes;
-- **LISTAS E CONTATOS**: Gerenciamento intuitivo de listas e contatos, com recursos de ativação e inativação para controle dos destinatários e maior organização das ações de comunicação;
-- **TEMPLATES**: Criação e gerenciamento de modelos reutilizáveis de mensagens para campanhas, com suporte a cabeçalho, corpo, rodapé e imagem, além da interpolação de dados dos contatos para personalização do conteúdo;
-- **LOTES DE ENVIO**: Criação de lotes de campanhas direcionadas a listas com múltiplos contatos ativos, com processamento automatizado e desacoplado das operações realizadas na interface;
-- **PROCESSAMENTO ASSÍNCRONO**: Utilização do BullMQ para gerenciamento de filas e execução de tarefas em segundo plano, com estratégias de distribuição variável dos intervalos de envio, aplicação de jitter e políticas de retentativa com atrasos progressivos em caso de falhas;
-- **RASTREABILIDADE**: Estrutura inicial dividida em duas frentes: monitoramento operacional das filas por meio do Bull Board, com acesso restrito a usuários autorizados, e acompanhamento individual dos envios por meio de logs, incluindo tentativas de processamento, erros e retornos disponibilizados pela integração com o WhatsApp. Esses registros facilitam o diagnóstico de problemas e a análise do histórico de execução das campanhas.
+- **BANCO DE DADOS**: Abordagem Database First, com modelagem do banco de dados por meio de scripts SQL previamente elaborados, permitindo definir sua estrutura antes da integração com a aplicação;
+
+- **BACK-END**: Desenvolvido com NestJS, utilizando sua arquitetura modular para organização e desacoplamento das responsabilidades, em conjunto com o Prisma ORM para introspecção do esquema existente e integração com a camada de persistência de dados;
+
+- **INTEGRAÇÃO**: Aplicação do Facade Pattern na integração com o Baileys, centralizando e abstraindo suas operações por meio de uma interface interna padronizada, reduzindo o acoplamento entre a biblioteca e os demais componentes da aplicação, além de facilitar a manutenção e futuras substituições da biblioteca;
+
+- **MULTI-TENANT**: Implementação de uma arquitetura Multi-Tenant que permite atender múltiplas organizações em uma única infraestrutura de banco de dados, com mecanismos centralizados de identificação, validação e isolamento dos dados, garantindo a segregação das informações entre os diferentes tenants;
+
+- **AUTENTICAÇÃO**: Implementação de autenticação baseada em JWT e Refresh Tokens, contemplando renovação de sessões, gerenciamento do ciclo de vida dos tokens e mecanismos de controle para reforçar a segurança e a validade das sessões;
+
+- **HIERARQUIA E PERMISSÕES**: Implementação de uma estrutura hierárquica de usuários, com gerenciamento de níveis de acesso e controle de permissões, permitindo segmentar funcionalidades e restringir operações conforme o perfil e o nível hierárquico de cada usuário;
+
+- **PROCESSAMENTO ASSÍNCRONO**: Utilização do BullMQ para gerenciamento de filas e execução de tarefas em segundo plano, com distribuição programada dos intervalos entre envios, respeitando janelas de agendamento de 30 a 60 minutos, dias úteis e horários comerciais, proporcionando maior controle sobre a execução das campanhas;
+
+- **RASTREABILIDADE**: Monitoramento operacional das filas por meio do Bull Board, com acesso restrito a usuários autorizados, e acompanhamento individual dos envios por meio de registros de execução, contemplando status de processamento, erros e respostas retornadas pela integração com o WhatsApp. Esses registros permitem acompanhar o histórico das campanhas e facilitam o diagnóstico de falhas operacionais;
+
+- **DOCUMENTAÇÃO**: Integração com Swagger para geração de documentação interativa da API, permitindo explorar endpoints, visualizar parâmetros e estruturas de resposta, além de facilitar a validação de requisições durante o desenvolvimento;
+
+- **FRONT-END**: Interface desenvolvida com arquitetura componentizada, priorizando reutilização, manutenibilidade e consistência visual. Utiliza Styled Components na abordagem CSS-in-JS para padronização e uniformidade dos componentes visuais;
+
+- **LISTAS E CONTATOS**: Gerenciamento centralizado de contatos e listas de distribuição, com recursos de cadastro, organização e controle de ativação dos destinatários, permitindo segmentar públicos e direcionar campanhas de comunicação;
+
+- **TEMPLATES**: Criação e gerenciamento de modelos reutilizáveis de mensagens para campanhas, com suporte a diferentes componentes de conteúdo, como cabeçalho, corpo, rodapé e imagens, além de interpolação dinâmica de dados dos contatos para personalização das mensagens;
+
+- **LOTES DE ENVIO**: Criação e gerenciamento de lotes de envio associados a listas de distribuição, contemplando múltiplos contatos ativos e permitindo a execução automatizada das campanhas em segundo plano, reduzindo a necessidade de intervenção manual da equipe operacional durante os disparos;
 
 ## VALOR
 
