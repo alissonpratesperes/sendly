@@ -105,13 +105,15 @@ _Além de otimizar tarefas repetitivas, a solução oferece recursos de monitora
 
 ## EXECUTE
 
-    - Instalar o NodeJS para a execução da aplicação
-    - Instalar o Docker para a execução dos containers
-    - Clonar esse repositório
+    Pré-requisitos
 
-    Preparando o Docker para os containers dos Bancos de Dados
+    - NodeJS e NPM para execução e gerenciamento de dependências;
+    - Docker Engine para gerenciamento dos containers;
+    - Git para clonar o repositório.
 
-    >_ Docker
+    Preparando os containers dos Bancos de Dados
+
+    >_ Implementando o Docker
       |- Executar o Comando: "docker pull mysql:latest" para baixar a Imagem do Banco de Dados MYSQL
       |- Executar o Comando: "docker network create sendly_databases_network" para criar a Rede interna, porque serão utilizados dois Bancos de Dados
       |- Executar o Comando: "docker volume create sendly_mysql_data" para criar o Volume do primeiro Banco de Dados
@@ -119,21 +121,24 @@ _Além de otimizar tarefas repetitivas, a solução oferece recursos de monitora
       |- Executar o Comando: "docker volume create sendly_redis_data" para criar o Volume do segundo Banco de Dados
       |- Executar o Comando: "docker run -d --name sendly_redis_database --network sendly_databases_network -p 6379:6379 -v sendly_redis_data:/data redis:7-alpine redis-server --requirepass '<SENHA>'" para criar o Container do segundo Banco de Dados
       |- Executar o Comando: "CREATE DATABASE sendly" dentro de um cliente MySQL para criar o primeiro Banco de Dados
+
       >_ Executar o Script SQL: acessar "./backend/scripts/Database.sql" e implementar o esquema no primeiro Banco de Dados
 
     Preparando e executando a Aplicação
 
-    >_ Acessar o Back-End: "./backend"
-      |- Criar a Variável de Ambiente: ".env" e preencher os dados utilizando o arquivo ".env.example" como modelo
+    >_ Implementando o Back-End: "./backend"
+      |- Criar a Variável de Ambiente: ".env" e preencher os dados de acordo com o ".env.example"
       |- Executar o Comando: "npm install --force" para instalar as dependências
       |- Executar o Comando: "npm run prisma:introspect" para introspectar o esquema do primeiro Banco de Dados
-      |- Executar o Comando: "npm run prisma:generate" para criar o Client do Prisma ORM
-      |- Executar o Comando: "npm run prisma:seed" para gerar o Usuário Root que nascerá na primeira execução
+      |- Executar o Comando: "npm run prisma:generate" para atualizar o Client do Prisma ORM
+      |- Executar o Comando: "npm run prisma:seed" para gerar o usuário que nascerá na primeira execução
+
       >_ Executar o Comando: "npm run start:dev" para iniciar o Back-End
 
-    >_ Acessar o Front-End: "./frontend"
-      |- Criar a Variável de Ambiente: ".env" e preencher os dados utilizando o arquivo ".env.example" como modelo
+    >_ Implementando o Front-End: "./frontend"
+      |- Criar a Variável de Ambiente: ".env" e preencher os dados de acordo com o ".env.example"
       |- Executar o Comando: "npm install --force" para instalar as dependências
+
       >_ Executar o Comando: "npm run start" para iniciar o Front-End
 
 ## LICENÇA
