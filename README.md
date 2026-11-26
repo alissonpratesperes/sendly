@@ -12,6 +12,10 @@
 
 <br/>
 
+<p align="center">
+  <img src="./github/sendly-dashboard.png" alt="sendly-dashboard" width="100%"/>
+</p>
+
 ## SOBRE
 
 A **sendly** é uma Aplicação de gerenciamento e automação de campanhas via WhatsApp, desenvolvida para centralizar, listas de distribuição, contatos, templates de mensagens e lotes de envio. Permite estruturar campanhas personalizadas e automatizar seu processamento em segundo plano, proporcionando maior organização, eficiência e controle operacional.
